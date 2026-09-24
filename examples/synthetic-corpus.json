@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "corpus_id": "synthetic-demo-v1",
+  "title": "Margin fictional metadata demonstration",
+  "data_kind": "synthetic",
+  "metadata_usage_basis": "Original fictional software-test fixture created for this project; no third-party financial documents are included.",
+  "coverage_notes": [
+    "All companies and filings are fictional. Do not use for investment or company research.",
+    "Metadata only. There are no document files, financial facts or live sources.",
+    "Aarya Software has selected annual and quarterly metadata, not continuous coverage. Deccan Products has no filings in this corpus."
+  ],
+  "companies": [
+    {
+      "company_id": "demo-aarya-software",
+      "legal_name": "Aarya Software Limited (Fictional)",
+      "aliases": ["Aarya", "Aarya Software"],
+      "securities": [
+        {
+          "security_id": "demo-aarya-software-equity",
+          "listings": [
+            {"exchange": "NSE", "symbol": "DEMOAARYASW"},
+            {"exchange": "BSE", "symbol": "DEMOAARYASW", "exchange_code": "DEMO001"}
+          ]
+        }
+      ]
+    },
+    {
+      "company_id": "demo-aarya-systems",
+      "legal_name": "Aarya Systems Limited (Fictional)",
+      "aliases": ["Aarya", "Aarya Systems"],
+      "securities": [
+        {
+          "security_id": "demo-aarya-systems-equity",
+          "listings": [{"exchange": "BSE", "symbol": "DEMOAARYASYS", "exchange_code": "DEMO002"}]
+        }
+      ]
+    },
+    {
+      "company_id": "demo-deccan-products",
+      "legal_name": "Deccan Products Limited (Fictional)",
+      "aliases": ["Deccan Products"],
+      "securities": [
+        {
+          "security_id": "demo-deccan-products-equity",
+          "listings": [{"exchange": "NSE", "symbol": "DEMODECCAN"}]
+        }
+      ]
+    }
+  ],
+  "filings": [
+    {
+      "filing_id": "demo-aarya-fy25-annual",
+      "company_id": "demo-aarya-software",
+      "title": "Fictional FY2024-25 annual report metadata",
+      "document_type": "annual_report",
+      "reporting_basis": "consolidated",
+      "period_start": "2024-04-01",
+      "period_end": "2025-03-31",
+      "published_at": "2025-06-20T10:00:00+05:30",
+      "observed_at": "2026-09-23T18:00:00+05:30",
+      "publisher": "Synthetic fixture"
+    },
+    {
+      "filing_id": "demo-aarya-fy26-q1-consolidated",
+      "company_id": "demo-aarya-software",
+      "title": "Fictional June 2025 consolidated quarterly results metadata",
+      "document_type": "financial_results",
+      "reporting_basis": "consolidated",
+      "period_start": "2025-04-01",
+      "period_end": "2025-06-30",
+      "published_at": "2025-07-20T16:00:00+05:30",
+      "observed_at": "2026-09-23T18:00:00+05:30",
+      "publisher": "Synthetic fixture"
+    },
+    {
+      "filing_id": "demo-aarya-fy26-q2-consolidated",
+      "company_id": "demo-aarya-software",
+      "title": "Fictional September 2025 consolidated quarterly results metadata",
+      "document_type": "financial_results",
+      "reporting_basis": "consolidated",
+      "period_start": "2025-07-01",
+      "period_end": "2025-09-30",
+      "published_at": "2025-10-20T16:00:00+05:30",
+      "observed_at": "2026-09-23T18:00:00+05:30",
+      "publisher": "Synthetic fixture"
+    },
+    {
+      "filing_id": "demo-aarya-fy26-q2-standalone",
+      "company_id": "demo-aarya-software",
+      "title": "Fictional September 2025 standalone quarterly results metadata",
+      "document_type": "financial_results",
+      "reporting_basis": "standalone",
+      "period_start": "2025-07-01",
+      "period_end": "2025-09-30",
+      "published_at": "2025-10-20T16:00:00+05:30",
+      "observed_at": "2026-09-23T18:00:00+05:30",
+      "publisher": "Synthetic fixture"
+    },
+    {
+      "filing_id": "demo-systems-announcement",
+      "company_id": "demo-aarya-systems",
+      "title": "Fictional board meeting announcement metadata",
+      "document_type": "announcement",
+      "reporting_basis": "not_applicable",
+      "published_at": "2025-10-01T10:00:00+05:30",
+      "observed_at": "2026-09-23T18:00:00+05:30",
+      "publisher": "Synthetic fixture"
+    }
+  ]
+}

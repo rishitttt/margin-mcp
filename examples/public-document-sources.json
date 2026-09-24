@@ -1,0 +1,52 @@
+{
+  "wipro-q2-fy26-reg33": {
+    "company_id": "wipro",
+    "issuer_name": "Wipro Limited",
+    "filing_id": "wipro-q2-fy26-reg33",
+    "title": "Wipro Q2 FY26 Regulation 33 results",
+    "published_on": "2025-10-16",
+    "source_url": "https://www.wipro.com/content/dam/nexus/en/investor/quarterly-results/2025-2026/q2fy26/regulation-33-financial-results-q2fy26.pdf",
+    "discovery_url": "https://www.wipro.com/investors/corporate-governance/stock-exchange-filings/",
+    "expected_sha256": "fbd030c17809cef911cf55e71af0e383d1bf56990a6b216c2c8cf122e52f6dde"
+  },
+  "wipro-q2-fy26-press": {
+    "company_id": "wipro",
+    "issuer_name": "Wipro Limited",
+    "filing_id": "wipro-q2-fy26-press",
+    "title": "Wipro Q2 FY26 press release and media presentation",
+    "published_on": "2025-10-16",
+    "source_url": "https://www.bseindia.com/xml-data/corpfiling/AttachHis/7f1a68bf-fa8f-4732-80a5-40416354c498.pdf",
+    "discovery_url": "https://www.bseindia.com/xml-data/corpfiling/AttachHis/7f1a68bf-fa8f-4732-80a5-40416354c498.pdf",
+    "expected_sha256": "e277c00fbc233a81a62263426c83f3d369280b72c52ea2199d69a2e80fb9d35b"
+  },
+  "tcs-q2-fy26-results": {
+    "company_id": "tcs",
+    "issuer_name": "Tata Consultancy Services Limited",
+    "filing_id": "tcs-q2-fy26-results",
+    "title": "TCS Q2 FY26 standalone and consolidated financial results",
+    "published_on": "2025-10-09",
+    "source_url": "https://www.bseindia.com/xml-data/corpfiling/AttachHis/b5a9119d-5d7f-4030-a898-879287327a87.pdf",
+    "discovery_url": "https://www.bseindia.com/xml-data/corpfiling/AttachHis/b5a9119d-5d7f-4030-a898-879287327a87.pdf",
+    "expected_sha256": "53a0d441a8cc0591a224d4d0b3db0b0b2457c67ef1d79f5dfaa67e9c370d1eb2"
+  },
+  "infosys-q2-fy26-board": {
+    "company_id": "infosys",
+    "issuer_name": "Infosys Limited",
+    "filing_id": "infosys-q2-fy26-board",
+    "title": "Infosys Q2 FY26 board outcome, financial statements and press release",
+    "published_on": "2025-10-16",
+    "source_url": "https://www.bseindia.com/xml-data/corpfiling/AttachHis/1f505822-671c-4544-a6aa-f7274b3aa685.pdf",
+    "discovery_url": "https://www.bseindia.com/xml-data/corpfiling/AttachHis/1f505822-671c-4544-a6aa-f7274b3aa685.pdf",
+    "expected_sha256": "52a4806c71b9ea9aa638afa98892872de04f00198dd4ba5568ba2a9db01fc696"
+  },
+  "hcltech-q2-fy26-results": {
+    "company_id": "hcltech",
+    "issuer_name": "HCL Technologies Limited",
+    "filing_id": "hcltech-q2-fy26-results",
+    "title": "HCLTech Q2 FY26 unaudited financial results and limited review reports",
+    "published_on": "2025-10-13",
+    "source_url": "https://www.bseindia.com/xml-data/corpfiling/AttachHis/eb3e5f52-2c5b-497b-8cb2-bfda6772bed2.pdf",
+    "discovery_url": "https://www.bseindia.com/xml-data/corpfiling/AttachLive/eb3e5f52-2c5b-497b-8cb2-bfda6772bed2.pdf",
+    "expected_sha256": "916d84e6771e4ea2d5ce553b6861467739c03406ac56978d5b804bd91659aedf"
+  }
+}

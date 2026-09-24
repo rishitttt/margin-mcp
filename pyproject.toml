@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=77,<83"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "margin-mcp"
+version = "0.1.0"
+description = "Evidence-backed research tools for Indian listed-company disclosures"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["mcp==2.2.0", "pydantic>=2.11,<3", "pdfplumber>=0.11,<0.12"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "ruff>=0.11,<1", "reportlab>=4,<5"]
+
+[project.scripts]
+margin = "margin_mcp.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
