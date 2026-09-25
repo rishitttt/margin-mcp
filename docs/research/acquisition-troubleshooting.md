@@ -1,5 +1,7 @@
 # Successful real-document acquisition
 
+Follow-up, 25 September 2026: [corpus trial](corpus-trial.md) records new aggregator-discovered BSE documents, fresh failure checks and real extraction results.
+
 Update, 24 September 2026: [BSE acquisition now works for TCS, Infosys, HCLTech and Wipro](bse-acquisition-results.md). The issuer/NSE failures below remain route-specific. The original Wipro command now shares the reusable, hash-pinned acquisition implementation.
 
 Historical experiment, verified 23 September 2026. Wipro's original Q2 FY26 Regulation 33 results PDF was downloaded twice, imported into the private archive, and visually inspected. TCS and HCLTech issuer routes were unsuccessful in this experiment. This resolves the immediate real-document acquisition blocker without claiming all sources work.

@@ -1,19 +1,23 @@
 # Ingestion design: implemented foundations and remaining work
 
-Design updated 24 September 2026; source/provider observations below originate from research on 23 September. PDF registration, region-based candidate extraction and curated acquisition are implemented; accepted-fact publication, automated discovery and other adapters remain proposed. Use [the ingestion guide](../ingestion-development.md), [acquisition guide](../acquisition-development.md) and [implementation status](../implementation.md) for current behavior.
+Design updated 25 September 2026; source/provider observations below originate from research on 23 September. PDF registration, region-based candidate extraction and curated acquisition are implemented; accepted-fact publication, automated discovery and other adapters remain proposed. Use [the ingestion guide](../ingestion-development.md), [acquisition guide](../acquisition-development.md) and [implementation status](../implementation.md) for current behavior.
 
 ## Recommendation
 
-Complete the document/evidence path using the existing private archive and curated downloads. Evaluate structured provider data through the same normalization boundary later. Treat acquisition and parsing as separate problems: a local PDF, an issuer download and an authorized exchange attachment can share the same parser.
+Scope clarification: this archive/import design remains supported alongside the proposed external API/tool and temporary-session paths. Persistent ingestion is optional for those future paths; existing local commands and MCP metadata contracts are preserved. Temporary parsing must not silently register documents in the archive. See [architecture](architecture.md#extensible-capabilities-and-preservation) for shared evidence, expiry and capability-routing requirements. No new external/session behavior is implemented by this design update.
 
-Start with the acquired documents across four IT companies, validate the first real extraction, then obtain a second independent results filing per company. Broader sector/history targets are defined in the [delivery plan](../plan.md). Prefer digitally generated PDFs. Start with revenue from operations, profit before tax and profit for the period, preserving the exact original labels. Add profit attributable to owners and EPS separately; never map them blindly into a generic net-profit field. Banks and insurers need separate metric definitions and are outside this experiment.
+Prioritize external-source adapters and temporary evidence retrieval. Preserve the existing private archive and curated downloader, but do not expand the corpus or require archive completion before provider integration. Treat acquisition and parsing as separate problems: a local PDF, an issuer download and an authorized exchange attachment can share the same parser.
+
+The acquired documents and 36 selected real candidates remain development evidence; independent review is still pending. The earlier second-filing and broader collection targets are superseded by the [external-source delivery plan](../plan.md). Prefer digitally generated PDFs. Start with revenue from operations, profit before tax and profit for the period, preserving the exact original labels. Add profit attributable to owners and EPS separately; never map them blindly into a generic net-profit field. Banks and insurers need separate metric definitions and are outside this experiment.
 
 ## Sources and roles
 
 | Source | Data/formats | Suggested use | Access state |
 | --- | --- | --- | --- |
 | Issuer investor relations | Results PDFs, annual reports, presentations, transcripts, HTML | Primary evidence for the first small corpus | Wipro results acquired twice; tested Infosys/TCS issuer requests were denied and HCLTech delivery failed |
-| NSE/BSE filings | Financial results, announcements, ownership and governance disclosures; documents and structured filings | Cross-check completeness and timestamps; eventual acquisition adapter | Four BSE attachments acquired twice and imported; tested NSE delivery failed; automatic discovery and hosted rights remain unresolved |
+| NSE/BSE filings | Financial results, announcements, ownership and governance disclosures; documents and structured filings | Cross-check completeness and timestamps; eventual acquisition adapter | Six BSE attachments acquired repeatedly and imported; tested NSE delivery failed; automatic discovery and hosted rights remain unresolved |
+| Screener company pages | Observed annual-report and concall document links | Secondary discovery leading to original exchange/issuer attachments | Infosys page parsed; two BSE documents acquired through observed links; no whole-market completeness claim |
+| Tijori company pages and file host | Annual-report, earnings-release, presentation and call-document links; platform financial/research views | Secondary discovery and validated alternate document locations | Infosys page parsed; two mirrors hash-matched BSE originals; broader document downloads and structured-data integration untested; see [access inventory](../research/corpus-trial.md#tijori-access-inventory) |
 | NSE RSS | New corporate updates, including results and annual reports | Incremental discovery after a feed test | Categories documented; feed contents, retention, gap recovery and attachment delivery untested |
 | Exchange XBRL | Tagged facts with periods, units and contexts | Prefer structured extraction when actual instance files are available | Filing/taxonomy documentation verified; no sample instance ingested or bulk endpoint established |
 | Upstox fundamentals | JSON financial statements, ownership, ratios, corporate actions | Candidate structured adapter and cross-check | Authenticated API documented; account entitlement, history and product rights untested |
@@ -55,6 +59,26 @@ Use an explicit run log: discovered/acquired/parsed/needs_review/accepted/failed
 
 The existing metadata snapshot and separate SQLite PDF archive are implemented. The archive stores original blobs, provenance registrations and candidate runs; evidence regions live in run payloads. Next, add validated identity links, review/publication records and migrations without overloading the metadata payload with PDFs. Keep originals under ignored `data/private/`. Object storage and PostgreSQL can follow hosting requirements.
 
+### Endpoint and execution boundaries
+
+| Surface | Current or proposed role | Boundary |
+| --- | --- | --- |
+| Issuer/exchange/aggregator HTML directories | Discover observed attachment URLs | HTML access does not prove download access or complete history |
+| BSE attachment/viewer and Tijori file URLs | Supply a document or an observed redirect | Validate the actual response; directory IDs and filename patterns are not a documented bulk API |
+| Local acquisition/import/inspection/extraction commands | Implemented ingestion operations | Run separately from MCP research queries; saved-page parsing performs no network calls |
+| Five MCP tools, workflow resource and prompt | Implemented stdio research metadata and discovery guidance | Exact contracts in [tools](../tools.md); no hosted HTTP endpoint, fact retrieval or passage retrieval today |
+| Accepted-fact, passage, comparison and citation interfaces | Proposed publication/query layer | Require review, evidence records and validated metadata/archive joins before being advertised as delivered |
+
+The proposed coverage matrix and persistent candidate registry should drive backfill and record attempts/failures. The current discovery plan does not execute those jobs. Record discovery URL, download URL and alternate locations separately; preserve failed candidates and avoid treating the number of links as corpus size.
+
+## Agent-assisted discovery: implemented boundary
+
+MCP now provides server instructions, a discovery-plan tool, `margin://workflows/filing-discovery` and a `discover_filings` prompt. This follows MCP's [resource](https://modelcontextprotocol.io/specification/2025-11-25/server/resources) and [prompt](https://modelcontextprotocol.io/specification/2025-11-25/server/prompts) primitives. Hosts control whether guidance is loaded; it cannot compel agent behavior. A tool alternative supports hosts that primarily expose tools. See [implemented contracts](../tools.md#agent-discovery-guidance).
+
+The host can search/browse, preserve observed candidate links and hand off to the local acquisition workflow. The offline saved-HTML parser is implemented; general crawling, automatic candidate approval and scheduled source refresh are not. Stages are distinct: discovered, downloaded, inspected, extracted, independently reviewed, published. Only the first four have working local components; the last two need persisted review/publication contracts. Guidance never replaces hash, schema and evidence checks.
+
+[Source experiments](../research/corpus-trial.md) show that aggregator discovery can lead to primary exchange files. Preserve the full discovery chain and mirror observations; do not make aggregator labels canonical financial facts. Raw bytes stay immutable, candidate lists/receipts stay private, and facts remain unreviewed until the future publication gate.
+
 ## Parser choices
 
 | Input | First option | Evaluation requirement |
@@ -68,11 +92,11 @@ Use one PDF parser first, and add another only when observed failures justify it
 
 ## Storage and refresh
 
-Store original documents, parsed pages, accepted facts and provenance when the source permits retention. Rebuild parsing outputs when parser versions change. Schedule authorized discovery once daily initially; keep a separate backfill job and reconciliation checks so a short feed outage does not silently erase coverage. The schedule is our proposed refresh interval, not a source freshness guarantee.
+Store original documents, parsed pages, accepted facts and provenance when the source permits retention. Rebuild parsing outputs when parser versions change. The earlier daily discovery/backfill proposal is deferred. Active retrieval is on demand, with bounded temporary caching; no scheduled corpus collection is planned.
 
 MCP requests should query accepted stored data and report its actual coverage/freshness. Prices and user-account data, if added, can use separate live adapters. Retain corrections as versions; do not overwrite history or infer that a later comparative was available at the earlier date.
 
-## Remaining experiment and completion criteria
+## Earlier local-archive experiments — deferred
 
 1. Link the acquired real documents to verified company/filing metadata. Registration, hashing and duplicate/invalid/changed-file tests already exist.
 2. Extract pages and one supported financial table. Manually verify evidence for the three selected metrics and both current/comparative columns. Two reviewers independently check labels, values, scale, basis and periods.
@@ -82,4 +106,4 @@ MCP requests should query accepted stored data and report its actual coverage/fr
 
 Measure exact numeric/context match, citation correctness, missing-value detection, extraction coverage, processing time and review effort. Published benchmark facts must all match the reviewed labels; report automatic extraction accuracy before manual fixes separately. Passing a small corpus does not establish market-wide accuracy.
 
-Next sequence: metadata/archive linkage → validated real extraction → review records and citations → accepted facts through MCP → compatible comparisons and additional layouts. Automated discovery and optional structured adapters follow. See the [citation design](citations.md) for verification requirements. First paid-provider selection should compare source evidence, historical depth, revision behavior, schema stability, permitted hosting and cost against the same benchmark.
+The preceding list is the deferred local-archive sequence, not the active build order. Active work follows the external-source and temporary-session sequence in the delivery plan. Automated discovery and optional structured adapters follow. See the [citation design](citations.md) for verification requirements. First paid-provider selection should compare source evidence, historical depth, revision behavior, schema stability, permitted hosting and cost against the same benchmark.

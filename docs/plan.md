@@ -1,77 +1,85 @@
 # Six-to-eight-week delivery and evaluation plan
 
-Updated 24 September 2026. See the [functionality-to-data map](design/functionality-data-map.md) for current dependencies, scope gates and completion checks. The week-by-week table is a proposed sequence, not elapsed-time progress.
+Updated 25 September 2026. This is the active proposal, not implemented behavior or elapsed-time progress. See [implementation status](implementation.md) for delivered capabilities and [architecture](design/architecture.md) for boundaries.
 
 ## Confirmed constraints
 
-- Four people, learning skills as needed; Python selected for the implementation.
-- Professor-supervised project intended to become a usable product.
-- Free prototype; evaluate paid sources later.
-- Approximately 1.5–2 months available.
-- Small initial universe; no requirement for live retrieval.
-- A hosted MCP/data service is a later option.
-- Refinitiv Eikon access exists but is not assumed usable for this project.
+- Four people, Python, professor-supervised project intended to become a usable product.
+- Free prototype, approximately six to eight weeks; paid services and hosting can be evaluated later.
+- Indian-market research through the user's own AI harness, without a custom chat frontend or mandatory model subscription.
+- Focus on external APIs/tools and temporary evidence retrieval. Do not build, expand, backfill or schedule maintenance of our own financial corpus.
+- Preserve existing local metadata, discovery, acquisition, archive and extraction functionality as optional utilities and regression fixtures.
+- Providers are interchangeable candidates, not a fixed list. Refinitiv Eikon is not an assumed entitlement.
+- Continuous live feeds are not required. On-demand retrieval can use available historical data from upstream providers.
 
 ## Release definition
 
-The broader coverage target is **five selected companies**, **eight quarters and two annual reports each**; report actual gaps. First complete a cited workflow on the existing five documents across Wipro, TCS, Infosys and HCLTech, then acquire a second independent results filing per company. These are historical IT-sector samples, not current or cross-sector coverage. For the broader release, revisit company selection to include at least two from one sector and at least two other sectors; candidates may include ITC, Asian Paints and Larsen & Toubro, subject to access. Do not let the larger collection target delay accepted facts and a working host demonstration.
+Deliver a cited research workflow that starts without importing a metadata corpus: resolve an Indian company, select an available source, retrieve financial/contextual data or temporarily read a document, and return bounded evidence to the host. The current server still requires an imported database; removing that requirement for external mode is work to implement, not current behavior.
 
-Select six to ten clearly defined metrics, such as revenue from operations, profit before tax, profit for the period, profit attributable to owners, basic/diluted EPS, total assets, cash and equivalents, and operating cash flow. They need not all exist at quarterly frequency. Return available annual/half-year balance-sheet and cash-flow periods honestly.
+Start with one source and a few representative questions, then add a complementary source. Verify actual access, history, units, reporting basis, source attribution and failure behavior before choosing providers. Retain provider-reported values, extraction candidates and independently reviewed facts as distinct statuses. Citation depth must match available evidence; an API value without a filing locator cannot claim page-level verification.
+
+Temporary sessions hold only the material required for a question, with bounded files/results, expiry and cleanup. The default external workflow does not promote content into the persistent archive. Existing import commands remain available when explicitly chosen. The [architecture](design/architecture.md#extensible-capabilities-and-preservation) specifies the shared capability and evidence boundaries.
 
 Demonstration questions:
 
-1. Resolve a company and explain which security/listing was matched.
-2. Find the latest results **available in this corpus**.
-3. Return consolidated revenue with the original period, unit and exact source.
-4. Compare a compatible prior quarter and show the calculation.
-5. Retrieve a relevant management/risk passage and distinguish interpretation.
-6. Explain why a requested figure or comparison is unavailable.
-7. Generate a citation from stored evidence and reject a deliberately altered numeric claim or reporting period using the proposed [citation verification component](design/citations.md). Report the scope checked; arbitrary prose is not automatically verified.
+1. Resolve a company and identify the security/listing unambiguously.
+2. Retrieve a financial metric with its reporting basis, period, unit, provider and actual coverage.
+3. Compare compatible periods and show the inputs and formula; reject incompatible or missing inputs.
+4. Discover a filing/transcript, read relevant pages temporarily and return source-linked excerpts.
+5. Summarize recent news and management commentary while distinguishing provider labels from model interpretation.
+6. Explain unavailable history, failed providers, expired evidence or unsupported claims honestly.
+7. Produce a cited answer in one real MCP host without maintaining a local financial database.
 
-Ownership, broad event monitoring, bank-specific metrics, prices and macro adapters are stretch work after the core gates pass. Defer a custom chat frontend.
+News tone, management outlook, analyst concerns and market response are separate signals. Social sentiment requires an evaluated source. Broad monitoring, automatic trading, model training and exhaustive source coverage are outside the first release.
+
+### Proposed corpus composition
+
+**Superseded collection proposal; retained here to preserve earlier references.** The earlier target was five companies, eight quarterly results and two annual reports each (50 core coverage slots), with optional calls/presentations toward 90–130 slots. This is no longer an active collection or release target. There is no replacement document-count goal.
+
+The seven acquired PDFs and existing extraction study remain development evidence, not a corpus to expand. See [current measurements](implementation.md#real-document-checkpoint) and [experiment findings](research/corpus-trial.md). Small synthetic or permitted test fixtures and independently checked evaluation cases do not require maintaining a financial-data repository.
 
 ## Milestones
 
+The sequence below is a proposed allocation, not a claim that these weeks have elapsed.
+
 | Time | Outcome | Exit evidence |
 | --- | --- | --- |
-| Week 1 | Confirm permitted source path, select companies and metrics, define evidence schema | Written source assessment, one usable document, two-reviewer labels, host chosen |
-| Week 2 | One end-to-end local MCP workflow | Lookup → filing → one sourced fact works in a host; failures are explicit |
-| Weeks 3–4 | Expand curated ingestion, normalization and comparison | Coverage inventory, repeatable import, source-linked facts, meaningful regression tests |
-| Week 5 | Passage retrieval, revision/missing-data behavior, usability | Brief/earnings workflow, documented error cases and parser limitations |
-| Week 6 | Freeze a submission-quality release | Benchmark results, install instructions, report, architecture and recorded demo |
-| Weeks 7–8 if available | Improve portability and selected coverage | Second host, targeted accuracy fixes; optional private hosting only if rights permit |
+| Week 1 | Shared capability/evidence contracts and one source feasibility test | Actual bounded responses, coverage/access limits, example research questions |
+| Week 2 | First external MCP path and provider-only startup | Fresh startup without corpus import, source-linked output, explicit errors; existing local regression checks pass |
+| Weeks 3–4 | Temporary document sessions and a complementary source | Page-aware retrieval, expiry/cleanup, duplicate/conflict handling, compatible financial contexts |
+| Week 5 | Citations, comparisons and bounded news/sentiment workflow | Supported claims linked to evidence; interpretations and gaps are visible |
+| Week 6 | Submission-quality release | Host demonstration, evaluation, setup instructions and report |
+| Weeks 7–8 if available | Targeted reliability and portability improvements | Second host/source checks, fixes driven by measured failures; optional hosting |
 
-Curated acquisition is established for the current samples. If expanding coverage stalls, reduce document breadth and prioritize the existing corpus or authorized user-file import. Use synthetic fixtures for software behavior, but do not count them as real-company accuracy evidence. Do not let a broad discovery adapter delay the first reviewed fact/citation workflow.
+If a provider is blocked by access or cost, test another capability-compatible source or reduce the demonstration scope. Do not fall back to building a historical warehouse as the default remedy. Preserve failed experiments and avoid counting documented features as tested integrations.
 
 ## Four ownership areas
 
-These are suggested workstreams for the human team, not assignments already made.
+Suggested workstreams for the human team, not assignments already made:
 
 | Owner | Responsibility | Shared interface |
 | --- | --- | --- |
-| A | Source permissions, acquisition, identity and manifests | Versioned document and entity records |
-| B | Parsing, metric definitions and financial validation | Facts, contexts and evidence locations |
-| C | Storage/query services, MCP handlers and host integration | Stable typed tool contracts |
-| D | Benchmark labels, evaluation, developer experience and documentation | Test questions, scoring, reproducible experiments |
+| A | Source evaluation, adapters, identity and quota/history handling | Capability and provider response contracts |
+| B | Temporary extraction, financial semantics and evidence | Context-preserving facts/passages with expiry and status |
+| C | MCP tools, routing, sessions and host integration | Small typed tool contracts and compatibility checks |
+| D | Independent evaluation, citations, developer experience and docs | Labelled questions, support checks and reproducible fixtures |
 
-Pair A/B on source samples and C/D on real user workflows. Every material benchmark number should be independently checked by someone other than its extractor. Review integration twice weekly using the same small corpus before widening coverage.
+Integrate using the same small question set. Financial/evidence labels should be checked by someone other than the extractor. Preserve all existing local commands and tests while adding new modes.
 
 ## Evaluation design
 
-Build **60 real-company questions**: 10 identity, 20 numeric facts, 10 period comparisons, 10 passage/citation questions, and 10 missing/conflicting/revised-data cases. Reserve 20 as a held-out set including unseen documents or issuers. Track category counts and actual source availability; do not fabricate real-world revisions if none are collected. Synthetic edge cases belong in a separate software test suite.
+Evaluate research tasks rather than corpus volume. Cover identity, financial facts, compatible comparisons, passages/citations, news/sentiment support and missing/conflicting/expired data. Include quota exhaustion, partial pagination/history and provider failure cases. Final question counts and split are to be set after access testing; the earlier 60-question corpus benchmark is a reference proposal, not a collection prerequisite.
 
-Label company, metric definition, unit, period, scope, accounting basis, expected value/answerability, source and exact evidence location. Numeric correctness requires the full tuple, not just a matching number. Two reviewers reconcile disagreements before freezing labels.
+Use independent labels for company, metric, period, basis, unit, expected answerability and source support. Keep software fixtures separate from live financial accuracy evidence. Use small permitted or synthetic response fixtures for repeatable tests; do not assume volatile upstream responses are reproducible. Freeze model, prompt, tool availability, source query window and retrieval time in each experiment. Historical as-of claims require upstream evidence for that date.
 
-Compare the same host/model under: (A) no Margin, with its permitted normal research tools documented; (B) authorized raw-document retrieval only; (C) Margin's normalized facts and evidence. Freeze corpus, model identifier, prompt, tool availability and run time. Where feasible repeat trials and report variability. Record unavailable baselines rather than inventing results. An offline no-tool baseline measures data access as well as reasoning, so do not overclaim causality.
+Where feasible compare the same host/model using its ordinary tools, direct provider/raw-document access, and Margin's normalized tools/evidence. Record differences in access rather than attributing all gains to reasoning. Test unseen documents/questions without tuning to their labels.
 
-Measure entity accuracy, fact accuracy, answered-question coverage, citation precision/support, citation coverage, comparison validity, correct abstention, passage relevance, task completion, latency and token use. Include errors and unsupported questions in denominators. Report both supported-subset and full-benchmark performance.
-
-Proposed acceptance targets (not observed results): all returned numeric facts have evidence references; at least 95% exact fact-tuple correctness on the supported held-out set; all deliberate incompatible comparisons in the software suite are rejected; no fabricated values for missing fields. Also report answer coverage so high accuracy cannot be achieved by refusing everything. Record p50/p95 query latency with hardware and cache state; set performance budgets after the first measured implementation.
+Measure exact financial-context correctness, answer coverage, citation support/location, comparison validity, passage relevance, sentiment support and correct abstention. Also measure source calls/credits, latency, expired-session behavior and task completion. A sentiment label's agreement with another model is not proof of market sentiment or price prediction. Report category performance and unanswered cases; set numeric acceptance thresholds after a baseline is measured.
 
 ## Product validation
 
-Have three to five prospective users perform a cited results comparison with their own preferred harness. Measure time to a verified answer, failed tool calls, citation usefulness, and whether installation is understandable. Ask what they would use repeatedly. This supplies product evidence beyond a successful professor demo.
+Have three to five prospective users perform a financial comparison and a document/news research task in their own harness. Measure time to inspect supporting evidence, failed calls, installation friction and citation usefulness. Confirm that the new external path requires no corpus import while the old local workflow still works.
 
 ## Remaining decisions
 
-Remaining near-term decisions: first host, final benchmark company selection, reviewed metric definitions and calendar submission date. The current sample corpus and acquisition routes are documented; wider collection and hosted-serving scope need separate assessment. Code licensing must be chosen before claiming a public reuse license. Paid suppliers, commercial packaging and hosting platforms can wait.
+Select the first accessible provider and complementary capability, credential model, session lifetime, host, representative companies/questions and calendar submission date. Establish actual free-tier access and evidence depth before promising coverage. Code licensing must be chosen before claiming a public reuse license. No provider purchase, outreach or account creation is implied by this plan.

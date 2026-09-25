@@ -1,6 +1,6 @@
 # Curated document acquisition
 
-Implemented workflow, current as of 24 September 2026. This guide downloads a specific reviewed document and prepares it for private import. It does not discover new filings or query a live exchange feed.
+Implemented workflow, current as of 25 September 2026. This guide downloads a specific reviewed document and prepares it for private import. It does not discover new filings or query a live exchange feed.
 
 ## Prerequisites
 
@@ -17,8 +17,24 @@ Original PDFs and databases are excluded from Git. A fresh clone has no real cor
 | `tcs-q2-fy26-results` | BSE results and auditor reports | 22 |
 | `infosys-q2-fy26-board` | BSE board outcome and financial package | 198 |
 | `hcltech-q2-fy26-results` | BSE results and limited review reports | 27 |
+| `infosys-fy25-annual` | BSE annual report, BRSR and AGM notice | 370 |
+| `infosys-q2-fy26-transcripts` | BSE press conference and earnings-call transcripts | 38 |
 
-All concern September 2025. They are different documents, not interchangeable copies. The Infosys package contains multiple accounting bases and currencies; choose the relevant section before extraction. Successful access does not establish public hosting or redistribution rights.
+The quarterly documents concern September 2025; the annual report covers FY2024-25. They are different documents, not interchangeable copies. The Infosys package contains multiple accounting bases and currencies; choose the relevant section before extraction. Successful access does not establish public hosting or redistribution rights.
+
+## Discover candidates before acquisition
+
+The MCP [discovery workflow](tools.md#agent-discovery-guidance) guides an agent using its host web tools. For a saved UTF-8 HTML page, extract observed PDF/viewer links offline:
+
+```sh
+.venv/bin/python examples/discover_document_links.py \
+  --html /path/to/saved-page.html \
+  --source-url https://www.screener.in/company/INFY/consolidated/
+```
+
+The output contains unverified candidates, labels, discovery URL, original fragment links, source-page hash and parsing time. It makes no network requests; parsing time is not acquisition time. It accepts at most 2 MiB and only HTTPS anchor links containing `.pdf` in their path/query. It removes duplicate fragments, ignores credentials/non-HTTPS links, and does not execute JS, honor HTML base tags, resolve redirects or establish issuer/period identity. A zero count is not proof of no filings. Retain the page acquisition receipt separately. Review candidates before adding a hash-pinned catalog entry.
+
+A BSE viewer can return a redirect: inspect its observed destination and validate that attachment separately. Current acquisition deliberately does not follow redirects. The [corpus trial](research/corpus-trial.md) records a working Screener → BSE chain and matching Tijori mirrors.
 
 ## Download and import
 

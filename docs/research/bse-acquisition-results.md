@@ -1,5 +1,7 @@
 # Working exchange acquisition: 24 September 2026
 
+Follow-up, 25 September 2026: [corpus trial](corpus-trial.md) records new aggregator-discovered BSE documents, fresh failure checks and real extraction results.
+
 Four BSE-hosted PDFs were downloaded twice each, with matching hashes across the two acquisitions, and imported into the private archive. Together with the earlier issuer-hosted Wipro results, we now have five distinct real documents for four companies. This establishes a small usable document set, not comprehensive exchange coverage.
 
 ## Acquired documents

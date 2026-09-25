@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "purpose": "Development check of 36 manually selected cells; not held-out or independently reviewed accuracy.",
+  "review_status": "independent_review_pending",
+  "documents": [
+    {
+      "source_key": "wipro-q2-fy26-reg33",
+      "recipe": "wipro-q2-fy26-reg33.json",
+      "sha256": "fbd030c17809cef911cf55e71af0e383d1bf56990a6b216c2c8cf122e52f6dde",
+      "source_scale": "million",
+      "expected": [
+        {
+          "metric": "revenue_from_operations",
+          "period_start": "2025-07-01",
+          "period_end": "2025-09-30",
+          "period_kind": "quarter",
+          "source_value": "226973"
+        },
+        {
+          "metric": "revenue_from_operations",
+          "period_start": "2024-07-01",
+          "period_end": "2024-09-30",
+          "period_kind": "quarter",
+          "source_value": "223016"
+        },
+        {
+          "metric": "revenue_from_operations",
+          "period_start": "2025-04-01",
+          "period_end": "2025-09-30",
+          "period_kind": "half_year",
+          "source_value": "448319"
+        },
+        {
+          "metric": "profit_before_tax",
+          "period_start": "2025-07-01",
+          "period_end": "2025-09-30",
+          "period_kind": "quarter",
+          "source_value": "42824"
+        },
+        {
+          "metric": "profit_before_tax",
+          "period_start": "2024-07-01",
+          "period_end": "2024-09-30",
+          "period_kind": "quarter",
+          "source_value": "42778"
+        },
+        {
+          "metric": "profit_before_tax",
+          "period_start": "2025-04-01",
+          "period_end": "2025-09-30",
+          "period_kind": "half_year",
+          "source_value": "85407"
+        },
+        {
+          "metric": "profit_for_period",
+          "period_start": "2025-07-01",
+          "period_end": "2025-09-30",
+          "period_kind": "quarter",
+          "source_value": "32624"
+        },
+        {
+          "metric": "profit_for_period",
+          "period_start": "2024-07-01",
+          "period_end": "2024-09-30",
+          "period_kind": "quarter",
+          "source_value": "32266"
+        },
+        {
+          "metric": "profit_for_period",
+          "period_start": "2025-04-01",
+          "period_end": "2025-09-30",
+          "period_kind": "half_year",
+          "source_value": "65989"
+        }
+      ]
+    },
+    {
+      "source_key": "tcs-q2-fy26-results",
+      "recipe": "tcs-q2-fy26-results.json",
+      "sha256": "53a0d441a8cc0591a224d4d0b3db0b0b2457c67ef1d79f5dfaa67e9c370d1eb2",
+      "source_scale": "crore",
+      "expected": [
+        {
+          "metric": "revenue_from_operations",
+          "period_start": "2025-07-01",
+          "period_end": "2025-09-30",
+          "period_kind": "quarter",
+          "source_value": "65799"
+        },
+        {
+          "metric": "revenue_from_operations",
+          "period_start": "2024-07-01",
+          "period_end": "2024-09-30",
+          "period_kind": "quarter",
+          "source_value": "64259"
+        },
+        {
+          "metric": "revenue_from_operations",
+          "period_start": "2025-04-01",
+          "period_end": "2025-09-30",
+          "period_kind": "half_year",
+          "source_value": "129236"
+        },
+        {
+          "metric": "profit_before_tax",
+          "period_start": "2025-07-01",
+          "period_end": "2025-09-30",
+          "period_kind": "quarter",
+          "source_value": "16068"
+        },
+        {
+          "metric": "profit_before_tax",
+          "period_start": "2024-07-01",
+          "period_end": "2024-09-30",
+          "period_kind": "quarter",
+          "source_value": "16032"
+        },
+        {
+          "metric": "profit_before_tax",
+          "period_start": "2025-04-01",
+          "period_end": "2025-09-30",
+          "period_kind": "half_year",
+          "source_value": "33047"
+        },
+        {
+          "metric": "profit_for_period",
+          "period_start": "2025-07-01",
+          "period_end": "2025-09-30",
+          "period_kind": "quarter",
+          "source_value": "12131"
+        },
+        {
+          "metric": "profit_for_period",
+          "period_start": "2024-07-01",
+          "period_end": "2024-09-30",
+          "period_kind": "quarter",
+          "source_value": "11955"
+        },
+        {
+          "metric": "profit_for_period",
+          "period_start": "2025-04-01",
+          "period_end": "2025-09-30",
+          "period_kind": "half_year",
+          "source_value": "24950"
+        }
+      ]
+    },
+    {
+      "source_key": "hcltech-q2-fy26-results",
+      "recipe": "hcltech-q2-fy26-results.json",
+      "sha256": "916d84e6771e4ea2d5ce553b6861467739c03406ac56978d5b804bd91659aedf",
+      "source_scale": "crore",
+      "expected": [
+        {
+          "metric": "revenue_from_operations",
+          "period_start": "2025-07-01",
+          "period_end": "2025-09-30",
+          "period_kind": "quarter",
+          "source_value": "31942"
+        },
+        {
+          "metric": "revenue_from_operations",
+          "period_start": "2024-07-01",
+          "period_end": "2024-09-30",
+          "period_kind": "quarter",
+          "source_value": "28862"
+        },
+        {
+          "metric": "revenue_from_operations",
+          "period_start": "2025-04-01",
+          "period_end": "2025-09-30",
+          "period_kind": "half_year",
+          "source_value": "62291"
+        },
+        {
+          "metric": "profit_before_tax",
+          "period_start": "2025-07-01",
+          "period_end": "2025-09-30",
+          "period_kind": "quarter",
+          "source_value": "5702"
+        },
+        {
+          "metric": "profit_before_tax",
+          "period_start": "2024-07-01",
+          "period_end": "2024-09-30",
+          "period_kind": "quarter",
+          "source_value": "5687"
+        },
+        {
+          "metric": "profit_before_tax",
+          "period_start": "2025-04-01",
+          "period_end": "2025-09-30",
+          "period_kind": "half_year",
+          "source_value": "10891"
+        },
+        {
+          "metric": "profit_for_period",
+          "period_start": "2025-07-01",
+          "period_end": "2025-09-30",
+          "period_kind": "quarter",
+          "source_value": "4236"
+        },
+        {
+          "metric": "profit_for_period",
+          "period_start": "2024-07-01",
+          "period_end": "2024-09-30",
+          "period_kind": "quarter",
+          "source_value": "4237"
+        },
+        {
+          "metric": "profit_for_period",
+          "period_start": "2025-04-01",
+          "period_end": "2025-09-30",
+          "period_kind": "half_year",
+          "source_value": "8080"
+        }
+      ]
+    },
+    {
+      "source_key": "infosys-q2-fy26-board",
+      "recipe": "infosys-q2-fy26-board.json",
+      "sha256": "52a4806c71b9ea9aa638afa98892872de04f00198dd4ba5568ba2a9db01fc696",
+      "source_scale": "crore",
+      "expected": [
+        {
+          "metric": "revenue_from_operations",
+          "period_start": "2025-07-01",
+          "period_end": "2025-09-30",
+          "period_kind": "quarter",
+          "source_value": "44490"
+        },
+        {
+          "metric": "revenue_from_operations",
+          "period_start": "2024-07-01",
+          "period_end": "2024-09-30",
+          "period_kind": "quarter",
+          "source_value": "40986"
+        },
+        {
+          "metric": "revenue_from_operations",
+          "period_start": "2025-04-01",
+          "period_end": "2025-09-30",
+          "period_kind": "half_year",
+          "source_value": "86769"
+        },
+        {
+          "metric": "profit_before_tax",
+          "period_start": "2025-07-01",
+          "period_end": "2025-09-30",
+          "period_kind": "quarter",
+          "source_value": "10229"
+        },
+        {
+          "metric": "profit_before_tax",
+          "period_start": "2024-07-01",
+          "period_end": "2024-09-30",
+          "period_kind": "quarter",
+          "source_value": "9253"
+        },
+        {
+          "metric": "profit_before_tax",
+          "period_start": "2025-04-01",
+          "period_end": "2025-09-30",
+          "period_kind": "half_year",
+          "source_value": "19970"
+        },
+        {
+          "metric": "profit_for_period",
+          "period_start": "2025-07-01",
+          "period_end": "2025-09-30",
+          "period_kind": "quarter",
+          "source_value": "7375"
+        },
+        {
+          "metric": "profit_for_period",
+          "period_start": "2024-07-01",
+          "period_end": "2024-09-30",
+          "period_kind": "quarter",
+          "source_value": "6516"
+        },
+        {
+          "metric": "profit_for_period",
+          "period_start": "2025-04-01",
+          "period_end": "2025-09-30",
+          "period_kind": "half_year",
+          "source_value": "14300"
+        }
+      ]
+    }
+  ]
+}

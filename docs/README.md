@@ -1,6 +1,6 @@
 # Documentation index
 
-Updated 24 September 2026. Start with [implementation status](implementation.md) for what works today. Usage guides describe executable workflows; design documents describe intended behavior; research notes preserve dated observations.
+Updated 25 September 2026. Start with [implementation status](implementation.md) for what works today. Usage guides describe executable workflows; design documents describe intended behavior; research notes preserve dated observations.
 
 ## Reading order
 
@@ -17,7 +17,7 @@ This index is navigation. It does not duplicate implementation status or replace
 
 1. [Project README](../README.md) — purpose, capabilities and quick start.
 2. [Development guide](development.md) — installation, synthetic demo, testing and MCP host configuration.
-3. [Implemented tool contracts](tools.md) — the four current tools, their schemas, errors and limits.
+3. [Implemented tool contracts](tools.md) — four metadata tools, the discovery tool/resource/prompt, their schemas, errors and limits.
 4. [Acquisition guide](acquisition-development.md) and [PDF ingestion guide](ingestion-development.md) — download, import, inspect and extract candidates.
 5. [Feature/data map](design/functionality-data-map.md) — priorities, dependencies and completion checks.
 6. [Citation design](design/citations.md) — proposed citation creation, claim verification and answer audits.
@@ -32,7 +32,7 @@ This index is navigation. It does not duplicate implementation status or replace
 | [Tool contracts](tools.md) | Authoritative implemented MCP behavior |
 | [Acquisition](acquisition-development.md) | Curated source catalog, downloads, manifests and troubleshooting |
 | [PDF ingestion](ingestion-development.md) | Archive, recipes, extraction outputs and limitations |
-| [Delivery plan](plan.md) | Proposed schedule, human workstreams and evaluation targets |
+| [Delivery plan](plan.md) | Active external-source/session roadmap, superseded corpus target, workstreams and evaluation |
 | [Contributor instructions](../AGENTS.md) | Repository engineering conventions |
 
 ## Design proposals
@@ -41,7 +41,7 @@ A design's presence does not mean its tools or schemas are implemented. Check [s
 
 | Document | Purpose |
 | --- | --- |
-| [Feature/data map](design/functionality-data-map.md) | Feature inputs, existing foundations, missing work and acceptance gates |
+| [Feature/data map](design/functionality-data-map.md) | Active external build order and retained earlier local-path dependency analysis |
 | [Architecture](design/architecture.md) | Target service boundaries, domain records, comparison rules and deployment |
 | [Ingestion design](design/ingestion.md) | Existing ingestion foundations and remaining source/extraction/publication work |
 | [Citations](design/citations.md) | Proposed evidence identities, creation, verification results and evaluation |
@@ -53,7 +53,8 @@ These records distinguish documentation found, code inspected, transfers observe
 
 | Document | How to use it |
 | --- | --- |
-| [BSE acquisition results](research/bse-acquisition-results.md) | Latest recorded successful exchange downloads, hashes, content checks and limits |
+| [Corpus trial](research/corpus-trial.md) | 25 September source experiments, Tijori access inventory, seven-document corpus, 36-cell extraction study and coverage gaps |
+| [BSE acquisition results](research/bse-acquisition-results.md) | Initial successful exchange downloads, hashes, content checks and limits |
 | [Issuer acquisition troubleshooting](research/acquisition-troubleshooting.md) | Earlier Wipro success and issuer-route failures; use the acquisition guide for current commands |
 | [Initial access log](research/ingestion-access-log.md) | Historical failures and links to subsequent successes |
 | [Infosys feasibility](research/infosys-feasibility.md) | Early issuer-site discovery and unvalidated example numbers; not benchmark truth |
@@ -69,7 +70,7 @@ The contributor changing behavior owns its documentation update, whether that co
 | Change | Document these details | Primary file(s) to update |
 | --- | --- | --- |
 | Capability completed, removed or materially limited | Delivered behavior, implementation boundary, evidence of completion, remaining gaps | [implementation.md](implementation.md); refresh [context.md](context.md) and root README summary only if affected |
-| MCP tool added/changed | Exact arguments/defaults, result shape, errors, limits, pagination, evidence behavior and realistic example | [tools.md](tools.md), matching code/tests; mark the relevant design section's implementation status |
+| MCP tool, resource or prompt added/changed | Exact arguments/defaults, result shape, errors, limits, pagination, evidence behavior and realistic example | [tools.md](tools.md), matching code/tests; mark the relevant design section's implementation status |
 | Installation, dependencies, CLI/server or host setup | Requirements, portable commands, configuration, expected result and failure handling | [development.md](development.md); root README quick start if affected; dependency manifests/constraints and CI when applicable |
 | PDF import, parsing, recipes or archive behavior | Accepted inputs, schema/version, units/periods, outputs, failure states, replay/migration behavior and reproducible example | [ingestion-development.md](ingestion-development.md); relevant design rationale in [design/ingestion.md](design/ingestion.md) |
 | Source acquisition or catalog change | Exact source/discovery URL, issuer/filing identity, publication date, hash, observed status, timeouts and repeatability limits | [acquisition-development.md](acquisition-development.md) for usage; `examples/public-document-sources.json` for reviewed entries; relevant `research/` note for observations |

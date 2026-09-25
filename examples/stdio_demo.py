@@ -30,12 +30,25 @@ async def demonstrate(db_path: Path) -> None:
                 },
             ),
             ("get_filing", {"filing_id": "demo-aarya-fy26-q2-consolidated"}),
+            (
+                "get_discovery_plan",
+                {"company_query": "Infosys", "period_end": "2025-09-30"},
+            ),
         ]:
             result = await client.call_tool(tool, arguments, read_timeout_seconds=15)
             if result.is_error:
                 raise RuntimeError(f"{tool} failed: {result.content}")
             print(f"\n{tool}")
             print(json.dumps(result.structured_content, indent=2))
+        workflow = await client.read_resource("margin://workflows/filing-discovery")
+        prompt = await client.get_prompt(
+            "discover_filings", {"company_query": "Infosys", "period_end": "2025-09-30"}
+        )
+        print(
+            "\nDiscovery resource and prompt retrieved:",
+            bool(workflow.contents),
+            bool(prompt.messages),
+        )
 
 
 if __name__ == "__main__":

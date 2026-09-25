@@ -48,5 +48,25 @@
     "source_url": "https://www.bseindia.com/xml-data/corpfiling/AttachHis/eb3e5f52-2c5b-497b-8cb2-bfda6772bed2.pdf",
     "discovery_url": "https://www.bseindia.com/xml-data/corpfiling/AttachLive/eb3e5f52-2c5b-497b-8cb2-bfda6772bed2.pdf",
     "expected_sha256": "916d84e6771e4ea2d5ce553b6861467739c03406ac56978d5b804bd91659aedf"
+  },
+  "infosys-fy25-annual": {
+    "company_id": "infosys",
+    "issuer_name": "Infosys Limited",
+    "filing_id": "infosys-fy25-annual",
+    "title": "Infosys FY25 integrated annual report, BRSR and AGM notice",
+    "published_on": "2025-06-02",
+    "source_url": "https://www.bseindia.com/xml-data/corpfiling/AttachHis/4527f4d2-dac4-4528-a1dc-5070fd9e140d.pdf",
+    "discovery_url": "https://www.screener.in/company/INFY/consolidated/",
+    "expected_sha256": "6224d11244d3f44f7e95901428a8ff23164f383cd1960e02a47483c48612a3c5"
+  },
+  "infosys-q2-fy26-transcripts": {
+    "company_id": "infosys",
+    "issuer_name": "Infosys Limited",
+    "filing_id": "infosys-q2-fy26-transcripts",
+    "title": "Infosys Q2 FY26 press conference and earnings-call transcripts",
+    "published_on": "2025-10-21",
+    "source_url": "https://www.bseindia.com/xml-data/corpfiling/AttachHis/cf4a6179-8e43-4959-b055-91f1f7f4f076.pdf",
+    "discovery_url": "https://www.bseindia.com/stockinfo/AnnPdfOpen.aspx?Pname=cf4a6179-8e43-4959-b055-91f1f7f4f076.pdf",
+    "expected_sha256": "5f8c7daa665148a4eb40556bb74bf312655fca5d5b99d841a1f9317a8f09d6b3"
   }
 }

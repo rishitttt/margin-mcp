@@ -1,39 +1,46 @@
 # Margin: functionality, data and delivery map
 
-24 September 2026. This is a proposed implementation map grounded in the current repository and acquired corpus. It does not add tools or expand the current API contract.
+Updated 25 September 2026. This is a proposed implementation map grounded in the current repository and acquired corpus. It does not add tools or expand the current API contract.
 
 ## Product outcome and scope
 
-A user should be able to resolve an Indian company, find a disclosure, obtain a financial fact, inspect its evidence, compare compatible periods and assemble a cited research brief in their own AI harness.
+The active goal is external research and temporary evidence retrieval without building a Margin-owned corpus. Preserve delivered local functionality, but defer archive completion and corpus expansion as workstreams. Sources remain extensible. See [architecture](architecture.md#extensible-capabilities-and-preservation) and [active delivery plan](../plan.md).
 
-The next release should complete that workflow for a small declared corpus. Start with existing Wipro, TCS, Infosys and HCLTech documents; all four are IT businesses and the acquired documents concern September 2025. This is a historical development corpus, not current market coverage. Broader sector/history targets follow the core workflow and may require changing the final company selection.
+Active build order:
 
-Priority definitions: **P0** completes the first usable research workflow; **P1** adds research depth after P0 passes; **P2** is optional expansion. Source discovery can be manual during P0, provided coverage and provenance are explicit.
+1. Define source capability, identity, financial-context and evidence contracts; test one accessible source.
+2. Add an external mode that starts without corpus import, preserving local tool contracts.
+3. Add bounded temporary document preparation, reading/search, evidence references and expiry.
+4. Add a complementary source, deduplication, explicit conflicts and compatible comparisons.
+5. Demonstrate a cited host workflow and evaluate news/sentiment support separately from financial facts.
+
+The detailed local-path tables below preserve earlier design work. Their P0/P1/P2 labels describe the former corpus-first plan, not current scheduling. Reuse relevant semantics and tests without treating local archive publication or a document-count target as an external-mode prerequisite.
 
 ## Current baseline
 
-- Four implemented MCP tools: `lookup_company`, `get_coverage`, `list_filings`, `get_filing`. They query imported metadata; bundled examples are synthetic. `get_filing` does not serve document content.
-- Five real documents privately archived across four companies; reproducible acquisition from a curated URL/hash catalog. No automatic exchange discovery or refresh.
-- CLI inspection and candidate extraction with hash-bound regions, context anchors and exact decimal parsing. Three supported metrics: revenue from operations, profit before tax, profit for the period.
+- Four implemented metadata MCP tools: `lookup_company`, `get_coverage`, `list_filings`, `get_filing`. They query imported metadata; bundled examples are synthetic. `get_filing` does not serve document content.
+- A discovery-plan tool, workflow resource/prompt and offline HTML link parser guide missing-source research; host web capabilities remain external.
+- Seven real documents privately archived across four companies; reproducible acquisition from a curated URL/hash catalog. No automatic exchange discovery or refresh.
+- CLI inspection and candidate extraction with hash-bound regions, context anchors and exact decimal parsing. Three supported metrics: revenue from operations, profit before tax, profit for the period. Four recipes produced 36 candidates matching visual development transcriptions; independent review is pending.
 - Archive company/filing references are not yet validated against the metadata corpus. There is no accepted-fact publication or review workflow, and no real financial facts served over MCP.
 - [Current validation](../implementation.md#validation) records software checks. These are not a measured real-document extraction accuracy score; graphical host validation remains pending.
 
-## P0: first usable workflow
+## Earlier local path: first usable workflow (deferred)
 
 | Functionality / example | Required data | What we have | Remaining implementation and completion check |
 | --- | --- | --- | --- |
 | Resolve a company: “Find TCS” | Canonical company ID, names/aliases; linked security/listing records with exchange codes, ISIN/CIN where verified | Lookup logic and synthetic entity fixtures; real issuer names and some identifiers in PDFs | Curate the four real entities and join archive references to them. Never invent missing identifiers. Verify exact/ambiguous matches and issuer versus security distinctions. |
-| Find filings and inspect coverage | Filing ID, company ID, document purpose, period, publication precision, publisher, URL, source version; explicit collection gaps | Metadata tools and five archived documents in a separate store | Register real filing metadata and link it to archived document IDs. Return “latest in corpus”; show missing coverage and acquisition/parse/review states separately. |
+| Find filings and inspect coverage | Filing ID, company ID, document purpose, period, publication precision, publisher, URL, source version; explicit collection gaps | Metadata tools and seven archived documents in a separate store | Register real filing metadata and link it to archived document IDs. Return “latest in corpus”; show missing coverage and acquisition/parse/review states separately. |
 | Retrieve evidence: “Show where that came from” | Immutable PDF/hash, physical page, text/cell coordinates, source URL, extracted passage and parser version | Raw archive, page inspection, extraction-region coordinates | Add a bounded evidence retrieval service and proposed `get_evidence` tool. Every reference must resolve to the exact archived version/page; expose excerpt availability independently from full PDF delivery. |
 | Create and verify citations | Canonical source/evidence IDs, context anchors, accepted review records, exact claim, claim-to-citation mapping and verifier version | Hash/provenance checks and extraction anchors exist; no dedicated citation component | Build [citation creation and verification](citations.md). Generate references from stored evidence, check full numeric context and formulas, and report unsupported/unverified claims separately. Citation formatting does not imply claim support. |
-| Get financial facts | Original label/value; canonical metric, currency/scale, reporting basis, accounting standard, period, audit status and evidence | Three-metric candidate extractor; results tables in real PDFs | Validate real recipes, add persisted review decisions and an accepted-fact view, then proposed `get_financial_facts`. Rejected/uncertain candidates must never appear as accepted facts. |
+| Get financial facts | Original label/value; canonical metric, currency/scale, reporting basis, accounting standard, period, audit status and evidence | Three-metric extractor; 36 mapped real candidates, not independently reviewed | Validate real recipes, add persisted review decisions and an accepted-fact view, then proposed `get_financial_facts`. Rejected/uncertain candidates must never appear as accepted facts. |
 | Compare reporting periods | Two accepted facts with matching metric definition, basis, standard, currency, duration and relevant dimensions; revision policy | Comparative columns exist; no comparison service | Add deterministic calculations and proposed `compare_periods`. Return inputs, evidence, formula and result. Reject incompatible contexts; handle missing/zero denominators and negative-base growth explicitly. |
 | Search/retrieve a relevant passage | Page text, stable passage IDs, section labels, company/filing filters and page provenance | Text can be inspected; no persistent passage search | Start with bounded page-aware lexical search and section retrieval. Test relevance and citation location; distinguish no match from unindexed content. Embeddings require evidence of a retrieval problem first. |
 | Produce a cited brief in a user's host | Accepted facts, comparison outputs, relevant passages, dates and coverage warnings | Inputs partially available; host workflow not tested | Provide a prompt/example using the tools; the host writes the prose. Verify important claims against citations, separate management statements from interpretation, and demonstrate in one real MCP host. A dedicated brief tool is optional. |
 
 These capabilities need not each become a separate MCP tool. Keep acquisition/review in operator workflows and expose a small read-only query surface. Proposed tool names are not implemented contracts.
 
-## P1/P2: expansion and its data dependencies
+## Earlier expansion dependencies (reference)
 
 | Priority / functionality | Additional data needed | Work beyond obtaining files |
 | --- | --- | --- |
@@ -59,7 +66,7 @@ These are logical records, not a requirement to create separate tables immediate
 6. **Derived result:** formula/version, exact input fact IDs, output unit and calculation rules. Never store calculated growth as if quoted from the filing.
 7. **Coverage/operations:** expected versus observed documents where expectations are known, last source check, missing periods, failure reason, extraction/review state and serving scope. Acquisition time alone does not prove source freshness.
 
-For real fact publication, first validate that archive company/filing IDs map to the real metadata corpus and that all evidence belongs to the claimed document. This join and the review gate are the current critical dependencies.
+For accepted local-archive facts, validate entity/filing joins and review decisions before publication. External responses instead retain provider provenance and explicit verification status; the local join is not an external-mode prerequisite.
 
 Citation records, evidence bundles, typed claims and versioned verification/audit reports extend these contracts; see [the citation design](citations.md). Verify source support before publication and check the host's resulting claims after generation. Do not treat URL validity or parser replay as independent claim verification.
 
@@ -76,7 +83,7 @@ Citation records, evidence bundles, typed claims and versioned verification/audi
 | Data operations | Repeatable import, consistent IDs, immutable evidence, restore checks and visible source failures | Re-import/reprocess is safe; archived data can be restored and linked to accepted facts |
 | Product usefulness | Focus on actual research tasks rather than tool count | Three to five users complete a fact verification/comparison task and report time, friction and citation usefulness |
 
-## Build order and scope gates
+## Earlier local build order (superseded)
 
 ```mermaid
 flowchart TD
@@ -90,7 +97,7 @@ flowchart TD
     F --> G[Broader history, sectors and selected features]
 ```
 
-1. **Connect the existing corpus.** Curate four real companies, classify five documents and link metadata to the archive. Exit: lookup → filing → available document/evidence references works without synthetic/real confusion.
+1. **Connect the existing corpus.** Curate four real companies, classify seven documents and link metadata to the archive. Exit: lookup → filing → available document/evidence references works without synthetic/real confusion.
 2. **Validate the first facts.** Start with revenue, PBT and profit for the period on supported consolidated Ind AS tables. Manually verify labels, contexts and cells, with an independent reviewer. Exit: accepted facts and evidence resolve correctly through MCP; uncertain cells stay unpublished.
 3. **Establish comparisons.** Use compatible comparative columns for an initial demonstration; acquire a second independent results filing per company to test different layouts and version handling. Two columns from one filing are not two independent source documents. Exit: reproducible comparisons and explicit rejection cases.
 4. **Complete the research workflow.** Add passage retrieval and a host prompt/demo, then evaluate against manual labels. Exit: users can verify a number, compare periods and inspect supporting commentary.

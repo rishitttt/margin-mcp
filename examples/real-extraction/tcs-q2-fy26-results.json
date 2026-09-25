@@ -1,0 +1,627 @@
+{
+  "schema_version": 1,
+  "document_sha256": "53a0d441a8cc0591a224d4d0b3db0b0b2457c67ef1d79f5dfaa67e9c370d1eb2",
+  "mappings": [
+    {
+      "metric": "revenue_from_operations",
+      "period_start": "2025-07-01",
+      "period_end": "2025-09-30",
+      "period_kind": "quarter",
+      "reporting_basis": "consolidated",
+      "accounting_standard": "Ind AS",
+      "currency": "INR",
+      "source_scale": "crore",
+      "label": {
+        "page": 8,
+        "bbox": [
+          28,
+          136,
+          277,
+          145
+        ],
+        "expected_text": "Revenue from operations"
+      },
+      "value": {
+        "page": 8,
+        "bbox": [
+          280,
+          136,
+          334,
+          145
+        ]
+      },
+      "period_header": {
+        "page": 8,
+        "bbox": [
+          280,
+          99,
+          433,
+          131
+        ],
+        "expected_text": "Three months ended\nSeptember 30, June 30, September 30,\n2025 2025 2024"
+      },
+      "basis_header": {
+        "page": 8,
+        "bbox": [
+          191,
+          76,
+          419,
+          86
+        ],
+        "expected_text": "Audited Consolidated Interim Statement of Financial Results"
+      },
+      "unit_header": {
+        "page": 8,
+        "bbox": [
+          559,
+          89,
+          591,
+          98
+        ],
+        "expected_text": "~ crore)"
+      },
+      "standard_header": {
+        "page": 11,
+        "bbox": [
+          144,
+          86,
+          503,
+          97
+        ],
+        "expected_text": "Indian Accounting Standard (referred to as \"Ind AS\") 34 - Interim Financial Reportin"
+      }
+    },
+    {
+      "metric": "revenue_from_operations",
+      "period_start": "2024-07-01",
+      "period_end": "2024-09-30",
+      "period_kind": "quarter",
+      "reporting_basis": "consolidated",
+      "accounting_standard": "Ind AS",
+      "currency": "INR",
+      "source_scale": "crore",
+      "label": {
+        "page": 8,
+        "bbox": [
+          28,
+          136,
+          277,
+          145
+        ],
+        "expected_text": "Revenue from operations"
+      },
+      "value": {
+        "page": 8,
+        "bbox": [
+          379,
+          136,
+          433,
+          145
+        ]
+      },
+      "period_header": {
+        "page": 8,
+        "bbox": [
+          280,
+          99,
+          433,
+          131
+        ],
+        "expected_text": "Three months ended\nSeptember 30, June 30, September 30,\n2025 2025 2024"
+      },
+      "basis_header": {
+        "page": 8,
+        "bbox": [
+          191,
+          76,
+          419,
+          86
+        ],
+        "expected_text": "Audited Consolidated Interim Statement of Financial Results"
+      },
+      "unit_header": {
+        "page": 8,
+        "bbox": [
+          559,
+          89,
+          591,
+          98
+        ],
+        "expected_text": "~ crore)"
+      },
+      "standard_header": {
+        "page": 11,
+        "bbox": [
+          144,
+          86,
+          503,
+          97
+        ],
+        "expected_text": "Indian Accounting Standard (referred to as \"Ind AS\") 34 - Interim Financial Reportin"
+      }
+    },
+    {
+      "metric": "revenue_from_operations",
+      "period_start": "2025-04-01",
+      "period_end": "2025-09-30",
+      "period_kind": "half_year",
+      "reporting_basis": "consolidated",
+      "accounting_standard": "Ind AS",
+      "currency": "INR",
+      "source_scale": "crore",
+      "label": {
+        "page": 8,
+        "bbox": [
+          28,
+          136,
+          277,
+          145
+        ],
+        "expected_text": "Revenue from operations"
+      },
+      "value": {
+        "page": 8,
+        "bbox": [
+          434,
+          136,
+          488,
+          145
+        ]
+      },
+      "period_header": {
+        "page": 8,
+        "bbox": [
+          434,
+          99,
+          542,
+          131
+        ],
+        "expected_text": "Six months ended\nSeptember 30, September 30,\n2025 2024"
+      },
+      "basis_header": {
+        "page": 8,
+        "bbox": [
+          191,
+          76,
+          419,
+          86
+        ],
+        "expected_text": "Audited Consolidated Interim Statement of Financial Results"
+      },
+      "unit_header": {
+        "page": 8,
+        "bbox": [
+          559,
+          89,
+          591,
+          98
+        ],
+        "expected_text": "~ crore)"
+      },
+      "standard_header": {
+        "page": 11,
+        "bbox": [
+          144,
+          86,
+          503,
+          97
+        ],
+        "expected_text": "Indian Accounting Standard (referred to as \"Ind AS\") 34 - Interim Financial Reportin"
+      }
+    },
+    {
+      "metric": "profit_before_tax",
+      "period_start": "2025-07-01",
+      "period_end": "2025-09-30",
+      "period_kind": "quarter",
+      "reporting_basis": "consolidated",
+      "accounting_standard": "Ind AS",
+      "currency": "INR",
+      "source_scale": "crore",
+      "label": {
+        "page": 8,
+        "bbox": [
+          28,
+          270,
+          277,
+          280
+        ],
+        "expected_text": "PROFIT BEFORE TAX"
+      },
+      "value": {
+        "page": 8,
+        "bbox": [
+          280,
+          270,
+          334,
+          280
+        ]
+      },
+      "period_header": {
+        "page": 8,
+        "bbox": [
+          280,
+          99,
+          433,
+          131
+        ],
+        "expected_text": "Three months ended\nSeptember 30, June 30, September 30,\n2025 2025 2024"
+      },
+      "basis_header": {
+        "page": 8,
+        "bbox": [
+          191,
+          76,
+          419,
+          86
+        ],
+        "expected_text": "Audited Consolidated Interim Statement of Financial Results"
+      },
+      "unit_header": {
+        "page": 8,
+        "bbox": [
+          559,
+          89,
+          591,
+          98
+        ],
+        "expected_text": "~ crore)"
+      },
+      "standard_header": {
+        "page": 11,
+        "bbox": [
+          144,
+          86,
+          503,
+          97
+        ],
+        "expected_text": "Indian Accounting Standard (referred to as \"Ind AS\") 34 - Interim Financial Reportin"
+      }
+    },
+    {
+      "metric": "profit_before_tax",
+      "period_start": "2024-07-01",
+      "period_end": "2024-09-30",
+      "period_kind": "quarter",
+      "reporting_basis": "consolidated",
+      "accounting_standard": "Ind AS",
+      "currency": "INR",
+      "source_scale": "crore",
+      "label": {
+        "page": 8,
+        "bbox": [
+          28,
+          270,
+          277,
+          280
+        ],
+        "expected_text": "PROFIT BEFORE TAX"
+      },
+      "value": {
+        "page": 8,
+        "bbox": [
+          379,
+          270,
+          433,
+          280
+        ]
+      },
+      "period_header": {
+        "page": 8,
+        "bbox": [
+          280,
+          99,
+          433,
+          131
+        ],
+        "expected_text": "Three months ended\nSeptember 30, June 30, September 30,\n2025 2025 2024"
+      },
+      "basis_header": {
+        "page": 8,
+        "bbox": [
+          191,
+          76,
+          419,
+          86
+        ],
+        "expected_text": "Audited Consolidated Interim Statement of Financial Results"
+      },
+      "unit_header": {
+        "page": 8,
+        "bbox": [
+          559,
+          89,
+          591,
+          98
+        ],
+        "expected_text": "~ crore)"
+      },
+      "standard_header": {
+        "page": 11,
+        "bbox": [
+          144,
+          86,
+          503,
+          97
+        ],
+        "expected_text": "Indian Accounting Standard (referred to as \"Ind AS\") 34 - Interim Financial Reportin"
+      }
+    },
+    {
+      "metric": "profit_before_tax",
+      "period_start": "2025-04-01",
+      "period_end": "2025-09-30",
+      "period_kind": "half_year",
+      "reporting_basis": "consolidated",
+      "accounting_standard": "Ind AS",
+      "currency": "INR",
+      "source_scale": "crore",
+      "label": {
+        "page": 8,
+        "bbox": [
+          28,
+          270,
+          277,
+          280
+        ],
+        "expected_text": "PROFIT BEFORE TAX"
+      },
+      "value": {
+        "page": 8,
+        "bbox": [
+          434,
+          270,
+          488,
+          280
+        ]
+      },
+      "period_header": {
+        "page": 8,
+        "bbox": [
+          434,
+          99,
+          542,
+          131
+        ],
+        "expected_text": "Six months ended\nSeptember 30, September 30,\n2025 2024"
+      },
+      "basis_header": {
+        "page": 8,
+        "bbox": [
+          191,
+          76,
+          419,
+          86
+        ],
+        "expected_text": "Audited Consolidated Interim Statement of Financial Results"
+      },
+      "unit_header": {
+        "page": 8,
+        "bbox": [
+          559,
+          89,
+          591,
+          98
+        ],
+        "expected_text": "~ crore)"
+      },
+      "standard_header": {
+        "page": 11,
+        "bbox": [
+          144,
+          86,
+          503,
+          97
+        ],
+        "expected_text": "Indian Accounting Standard (referred to as \"Ind AS\") 34 - Interim Financial Reportin"
+      }
+    },
+    {
+      "metric": "profit_for_period",
+      "period_start": "2025-07-01",
+      "period_end": "2025-09-30",
+      "period_kind": "quarter",
+      "reporting_basis": "consolidated",
+      "accounting_standard": "Ind AS",
+      "currency": "INR",
+      "source_scale": "crore",
+      "label": {
+        "page": 8,
+        "bbox": [
+          28,
+          323,
+          277,
+          332
+        ],
+        "expected_text": "PROFIT FOR THE PERIOD"
+      },
+      "value": {
+        "page": 8,
+        "bbox": [
+          280,
+          323,
+          334,
+          332
+        ]
+      },
+      "period_header": {
+        "page": 8,
+        "bbox": [
+          280,
+          99,
+          433,
+          131
+        ],
+        "expected_text": "Three months ended\nSeptember 30, June 30, September 30,\n2025 2025 2024"
+      },
+      "basis_header": {
+        "page": 8,
+        "bbox": [
+          191,
+          76,
+          419,
+          86
+        ],
+        "expected_text": "Audited Consolidated Interim Statement of Financial Results"
+      },
+      "unit_header": {
+        "page": 8,
+        "bbox": [
+          559,
+          89,
+          591,
+          98
+        ],
+        "expected_text": "~ crore)"
+      },
+      "standard_header": {
+        "page": 11,
+        "bbox": [
+          144,
+          86,
+          503,
+          97
+        ],
+        "expected_text": "Indian Accounting Standard (referred to as \"Ind AS\") 34 - Interim Financial Reportin"
+      }
+    },
+    {
+      "metric": "profit_for_period",
+      "period_start": "2024-07-01",
+      "period_end": "2024-09-30",
+      "period_kind": "quarter",
+      "reporting_basis": "consolidated",
+      "accounting_standard": "Ind AS",
+      "currency": "INR",
+      "source_scale": "crore",
+      "label": {
+        "page": 8,
+        "bbox": [
+          28,
+          323,
+          277,
+          332
+        ],
+        "expected_text": "PROFIT FOR THE PERIOD"
+      },
+      "value": {
+        "page": 8,
+        "bbox": [
+          379,
+          323,
+          433,
+          332
+        ]
+      },
+      "period_header": {
+        "page": 8,
+        "bbox": [
+          280,
+          99,
+          433,
+          131
+        ],
+        "expected_text": "Three months ended\nSeptember 30, June 30, September 30,\n2025 2025 2024"
+      },
+      "basis_header": {
+        "page": 8,
+        "bbox": [
+          191,
+          76,
+          419,
+          86
+        ],
+        "expected_text": "Audited Consolidated Interim Statement of Financial Results"
+      },
+      "unit_header": {
+        "page": 8,
+        "bbox": [
+          559,
+          89,
+          591,
+          98
+        ],
+        "expected_text": "~ crore)"
+      },
+      "standard_header": {
+        "page": 11,
+        "bbox": [
+          144,
+          86,
+          503,
+          97
+        ],
+        "expected_text": "Indian Accounting Standard (referred to as \"Ind AS\") 34 - Interim Financial Reportin"
+      }
+    },
+    {
+      "metric": "profit_for_period",
+      "period_start": "2025-04-01",
+      "period_end": "2025-09-30",
+      "period_kind": "half_year",
+      "reporting_basis": "consolidated",
+      "accounting_standard": "Ind AS",
+      "currency": "INR",
+      "source_scale": "crore",
+      "label": {
+        "page": 8,
+        "bbox": [
+          28,
+          323,
+          277,
+          332
+        ],
+        "expected_text": "PROFIT FOR THE PERIOD"
+      },
+      "value": {
+        "page": 8,
+        "bbox": [
+          434,
+          323,
+          488,
+          332
+        ]
+      },
+      "period_header": {
+        "page": 8,
+        "bbox": [
+          434,
+          99,
+          542,
+          131
+        ],
+        "expected_text": "Six months ended\nSeptember 30, September 30,\n2025 2024"
+      },
+      "basis_header": {
+        "page": 8,
+        "bbox": [
+          191,
+          76,
+          419,
+          86
+        ],
+        "expected_text": "Audited Consolidated Interim Statement of Financial Results"
+      },
+      "unit_header": {
+        "page": 8,
+        "bbox": [
+          559,
+          89,
+          591,
+          98
+        ],
+        "expected_text": "~ crore)"
+      },
+      "standard_header": {
+        "page": 11,
+        "bbox": [
+          144,
+          86,
+          503,
+          97
+        ],
+        "expected_text": "Indian Accounting Standard (referred to as \"Ind AS\") 34 - Interim Financial Reportin"
+      }
+    }
+  ]
+}

@@ -2,6 +2,9 @@
 
 24 September 2026. Proposed P0 component; not yet implemented. The current archive already verifies document bytes/provenance and extraction recipes retain page regions and text anchors. It does not create citation records, independently verify financial claims, or audit generated answers.
 
+
+Scope update, 25 September 2026: citation creation/verification remains active for external provider responses and temporary document evidence. A permanent local corpus is not required. The archive-specific records and implementation slices below are preserved design references, not prerequisites for the external workflow. Session evidence must include its source, retrieval time, locator/hash where available and expiry; missing or expired content cannot be re-verified without reacquisition. Provider-only attribution must not claim original page verification. See [architecture](architecture.md#extensible-capabilities-and-preservation) and [active plan](../plan.md).
+
 ## Purpose and boundary
 
 Margin should generate citations from stored evidence and check whether that evidence supports the exact claim being made. A working URL, matching number or plausible page reference is insufficient. Verification establishes support in a particular source version; it does not establish that an issuer's disclosure is objectively true or that an auditor verified our extraction.

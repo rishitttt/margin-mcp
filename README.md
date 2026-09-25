@@ -2,21 +2,24 @@
 
 Evidence-backed financial research for Indian listed companies, accessible from an AI harness through MCP.
 
-Margin is an early Python prototype. It has a working metadata MCP server, private PDF ingestion and a curated document downloader. Financial-fact serving, citation verification and period comparisons are planned, not implemented.
+Margin is an early Python prototype. It has a metadata MCP server with agent discovery guidance, private PDF ingestion and a curated document downloader. Financial-fact serving, citation verification and period comparisons are planned, not implemented.
+
+The active direction is external APIs/tools, temporary document reading, and news/sentiment research. Building or expanding our own financial corpus is out of the active plan; existing local features remain optional utilities. Sources are extensible; users should not need to maintain a financial database for the future external mode. Those adapters and sessions are not implemented yet. See the [architecture](docs/design/architecture.md#extensible-capabilities-and-preservation).
 
 ## Current capabilities
 
 | Component | Implemented behavior |
 | --- | --- |
 | Metadata MCP | `lookup_company`, `get_coverage`, `list_filings`, `get_filing` over local stdio |
+| Discovery guidance | `get_discovery_plan`, a workflow resource and `discover_filings` prompt; offline HTML document-link discovery |
 | Corpus import | Validated JSON metadata imported into SQLite, with explicit replacement and revision-aware pagination |
 | PDF ingestion | Private archive of original bytes, provenance and hashes; physical-page inspection |
 | Candidate extraction | Explicit, hash-bound recipes for revenue from operations, profit before tax and profit for the period |
 | Acquisition | Bounded HTTPS downloads from a curated URL/hash catalog, with PDF validation and importer manifests |
 
-The MCP tools currently return **metadata only**. The PDF archive is separate from the metadata corpus; extracted candidates remain unreviewed and are not returned as financial facts.
+The four corpus-query tools return **metadata only**; the discovery tool returns guidance without fetching sources. The PDF archive is separate from the metadata corpus; extracted candidates remain unreviewed and are not returned as financial facts.
 
-As of 24 September 2026, five real documents across Wipro, TCS, Infosys and HCLTech have been downloaded twice with matching hashes and imported privately. They concern September 2025 and are historical development samples, not current market coverage. **Those PDFs and databases are not included in a clone.** Bundled data is synthetic; the public source catalog and acquisition commands allow a contributor to attempt the documented downloads locally.
+As of 25 September 2026, seven real documents across Wipro, TCS, Infosys and HCLTech have been downloaded repeatedly with matching hashes and imported privately, including Infosys FY25 annual report and Q2 FY26 transcripts. They are historical development samples, not current market coverage. A 36-cell extraction study matched visually transcribed development expectations; independent review remains pending. See the [corpus trial](docs/research/corpus-trial.md). **Those PDFs and databases are not included in a clone.** Bundled data is synthetic; the public source catalog and acquisition commands allow a contributor to attempt the documented downloads locally.
 
 See [implementation status](docs/implementation.md) for delivered behavior, validation and limitations.
 
@@ -31,7 +34,7 @@ python3.12 -m venv .venv
 .venv/bin/python examples/stdio_demo.py --db data/demo.sqlite3
 ```
 
-The demo launches a real stdio MCP subprocess and calls all four tools using three fictional companies and five fictional filings. No API key or model subscription is needed. Re-importing into an existing corpus requires `--replace`; it replaces the entire corpus. On Windows, use the virtual environment's `Scripts` directory instead of `bin`.
+The demo launches a real stdio MCP subprocess and calls the four metadata tools using three fictional companies and five fictional filings, then retrieves the discovery plan/resource/prompt for a real-company search target without fetching it. No API key or model subscription is needed. Re-importing into an existing corpus requires `--replace`; it replaces the entire corpus. On Windows, use the virtual environment's `Scripts` directory instead of `bin`.
 
 To start the MCP server for a host:
 
@@ -47,7 +50,7 @@ The process waits for MCP input; it is not an interactive chat. See [development
 - [PDF ingestion guide](docs/ingestion-development.md): generate a synthetic PDF, inspect pages and run an extraction recipe.
 - [Implemented MCP contracts](docs/tools.md): inputs, outputs, errors and limits.
 
-Downloading a PDF does not validate its financial values. Real extraction, review/publication, metadata/archive linkage and citation verification remain the next work.
+Downloading a PDF does not validate its financial values. Existing four-company extraction recipes remain reusable experiments; their review and archive-linkage gaps are documented. The active work is external adapters, temporary evidence retrieval and citations, without making local archive completion a prerequisite.
 
 ## Development
 
@@ -74,7 +77,7 @@ docs/             Usage guides, implementation status, plans and dated research
 
 Start with the [documentation index](docs/README.md). The [feature/data map](docs/design/functionality-data-map.md) defines priorities and acceptance checks; the [citation design](docs/design/citations.md) specifies the proposed creation and verification component.
 
-The next usable workflow is **real company → filing → reviewed fact → verifiable citation → compatible period comparison**. Start with the existing four-company corpus. The broader target is five selected non-financial companies, eight quarters and two annual reports each, subject to source availability, sector diversity and validation. The [delivery plan](docs/plan.md) describes the proposed sequence and evaluation.
+The next usable workflow is **research question → external source → structured data or temporary document evidence → cited answer**. Preserve financial-context validation and compatible comparisons. Corpus expansion targets are superseded; the [delivery plan](docs/plan.md) prioritizes provider evaluation, operation without corpus import, temporary sessions and a host demonstration.
 
 Margin is a four-person, professor-supervised project with a free-prototype budget and a six-to-eight-week delivery window. Live feeds and hosting are optional later work; Refinitiv Eikon is not a dependency. The user's AI harness supplies the model. Margin supports research, not trade execution or personalized investment recommendations.
 

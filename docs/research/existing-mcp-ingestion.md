@@ -1,5 +1,21 @@
 # Exchange sources and existing MCP acquisition approaches
 
+Latest experiment: [25 September corpus trial](corpus-trial.md) adds two documents through aggregator-discovered BSE links and tests 36 real financial cells. The earlier investigation below remains a dated record.
+
+## Follow-up: 25 September 2026
+
+Three additional public repositories were cloned into temporary folders for source inspection only. None was installed or executed. Their underlying public sources were tested separately with bounded requests; see the [trial results](corpus-trial.md#new-source-routes-tested).
+
+| Project and inspected revision | Actual source strategy in code | Implication for Margin |
+| --- | --- | --- |
+| LogeshR15/screener-mcp, `396dd7d315a2a5a1184df8165d78ae5cb3f3503d` | [Document tools](https://github.com/LogeshR15/screener-mcp/blob/396dd7d315a2a5a1184df8165d78ae5cb3f3503d/src/screener_mcp/tools/documents.py) parse annual-report/concall links from Screener HTML; fall back to NSE annual-report metadata. A separate pdfplumber/RAG path downloads linked PDFs | Copy the separation of discovery and document processing as an architectural idea. Public Screener Infosys HTML worked, and two original BSE documents were acquired. No reason to adopt its embedding stack before a retrieval benchmark |
+| LaZZy0v0/tijori-finance-mcp, `64be6c49f99a3fb3355ab5a727ce05cf260a7acc` | [Company tools](https://github.com/LaZZy0v0/tijori-finance-mcp/blob/64be6c49f99a3fb3355ab5a727ce05cf260a7acc/src/tools/company.js) inspect the knowledge-base section for `files.tijorifinance.com` links. The [browser layer](https://github.com/LaZZy0v0/tijori-finance-mcp/blob/64be6c49f99a3fb3355ab5a727ce05cf260a7acc/src/browser.js) loads saved authenticated browser state | Our separate public-page test needed no account and found matching mirrors of the two BSE files. This does not establish access to the project's authenticated features or reuse rights. Filenames alone are insufficient period/date evidence |
+| vanshikaaa01/nse-bse-mcp, `b3749a8b3fe6cd2788736be0375dad453875b96b` | [Server](https://github.com/vanshikaaa01/nse-bse-mcp/blob/b3749a8b3fe6cd2788736be0375dad453875b96b/server.py) calls yfinance's `Ticker.financials`, `balance_sheet` and `cashflow`, scales values to crore | Its NSE/BSE branding does not imply original exchange-PDF ingestion. Our plain Yahoo financials-page request got 429; yfinance itself was not run. Normalized provider values would need original evidence and financial-context verification |
+
+The earlier Tapetide inspection found a hosted-service bridge; its proprietary upstream collection remains unknown. Do not infer that its advertised coverage supplies a reusable free raw-document corpus. Software licensing, successful public viewing, data storage and hosted redistribution are different questions.
+
+The useful result was **Screener discovery → original BSE files**, with **Tijori copies checked by hash**. Margin's new offline parser generalizes observed HTML anchor extraction without importing third-party code, logging in, crawling sites or automatically downloading candidates. Paid/authenticated providers remain untested options, not current corpus dependencies. The [Tijori access inventory](corpus-trial.md#tijori-access-inventory) separates annual-report, earnings-release, presentation and call-document URL candidates from the two files actually acquired, and records untested platform-data boundaries.
+
 Follow-up: [four BSE documents have now been acquired and imported](bse-acquisition-results.md), with a reusable command and curated catalog. Discovery remains manual; the proposed exchange listing adapter below is still pending.
 
 Investigated 24 September 2026 IST. This supplements [acquisition troubleshooting](acquisition-troubleshooting.md). Source inspection is not a successful live integration test.

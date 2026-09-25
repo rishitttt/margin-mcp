@@ -1,6 +1,6 @@
 # Local PDF ingestion and candidate extraction
 
-Implemented workflow, updated 24 September 2026. These CLI commands register local PDFs, inspect pages and extract unreviewed candidates. A separate [curated acquisition command](acquisition-development.md) can download known documents first. The four existing MCP tools still read metadata only; document processing uses a separate archive and never changes that corpus implicitly.
+Implemented workflow, updated 25 September 2026. These CLI commands register local PDFs, inspect pages and extract unreviewed candidates. A separate [curated acquisition command](acquisition-development.md) can download known documents first. The four existing MCP tools still read metadata only; document processing uses a separate archive and never changes that corpus implicitly.
 
 ## Run the synthetic example
 
@@ -56,6 +56,18 @@ Coordinates are PDF points using pdfplumber's `(x0, top, x1, bottom)` convention
 
 Supported metrics are revenue from operations, profit before tax and profit for the period. Monetary values are INR, with rupee/lakh/crore/million scales. EPS, ownership attribution and other metrics require distinct contracts later. Indian and international digit grouping are supported, as are parenthesized losses and Unicode minus signs. Zero remains zero. Empty regions/dashes/NA become missing candidates; malformed or multi-number cells fail explicitly.
 
+## Run the real-cell development study
+
+After acquiring/importing the four financial-results packages from the catalog:
+
+```sh
+.venv/bin/python examples/evaluate_real_corpus.py --archive data/private/real-archive
+```
+
+This uses `examples/real-extraction/study.json` and four hash-bound recipes. It persists/replays extraction runs, compares 36 selected cells against visually transcribed development expectations and prints a JSON report. Exit 0 means all selected cells matched; missing documents, extraction failures or mismatches return exit 2. Use `--study PATH` for a separately prepared study; recipe paths must remain inside its directory. The provided study covers only consolidated Ind AS INR values in crore/million scales. It is not a general benchmark schema.
+
+The recipes were developed on the same pages as the expected values. A match is not independent verification or accepted-fact publication. Current results and text-layer gaps are recorded in the [corpus trial](research/corpus-trial.md). Original PDFs remain private and absent from a fresh clone.
+
 ## Storage and reproducibility
 
 `--archive DIR` uses `DIR/documents.sqlite3`, with a distinct application ID and schema version from the metadata store. Tables contain immutable PDF blobs keyed by SHA-256, provenance registrations, and extraction runs. Original bytes and registration records commit together. Unrelated databases are rejected. Reads do not create a missing archive; document bytes and provenance hashes are checked before inspection/extraction.
@@ -68,4 +80,4 @@ This is a small, operator-controlled local archive. Size/page limits are basic i
 
 See [current validation results](implementation.md#validation) for test counts and outcomes. Ingestion checks cover import/replay, deduplication, changed versions, corrupt bytes, provenance requirements, invalid/encrypted PDFs, size bounds, blank pages, exact decimal scaling, Indian grouping, missing versus zero, anchor/page/region errors and the CLI workflow. The synthetic PDF was rendered and visually inspected. These results establish behavior on controlled fixtures, not real financial-document accuracy.
 
-Use the existing Ruff and pytest commands in [development](development.md). See the [acquisition log](research/ingestion-access-log.md) for real-document status. Five real documents across four companies have now been downloaded twice with matching hashes and imported, with selected pages visually inspected; see [working BSE sources and commands](research/bse-acquisition-results.md). Next: prepare and visually verify a recipe, then add a review/publication contract before exposing facts through MCP.
+Use the existing Ruff and pytest commands in [development](development.md). See the [acquisition log](research/ingestion-access-log.md) for real-document status. Seven real documents are now imported and four real extraction recipes have been run; see the [corpus trial](research/corpus-trial.md). Next: independent numeric/context review and a review/publication contract before exposing facts through MCP.

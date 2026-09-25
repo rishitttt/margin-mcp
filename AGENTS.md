@@ -17,12 +17,13 @@ Design documents are proposals unless their implementation is confirmed in code 
 - Four-person team, free prototype, approximately six to eight weeks from September 2026.
 - Paid-provider entitlements and hosted redistribution rights remain unresolved. Curated local acquisition exists; do not rely on Eikon or paid APIs.
 - Preserve evidence, units, periods and standalone/consolidated distinctions during candidate extraction and future fact publication.
+- Focus new work on external APIs/tools and temporary evidence retrieval. Do not build, expand, backfill or schedule maintenance of a Margin-owned financial corpus as an active project goal. Preserve existing local metadata, discovery, acquisition, archive and extraction functionality as optional utilities and regression fixtures. The product direction includes provider APIs/tools and temporary document sessions without requiring users to maintain a corpus; named providers are examples, not a fixed dependency list. See `docs/design/architecture.md` for the proposed boundaries.
 - Never represent synthetic examples as real financial evidence. Keep synthetic labeling in tool responses.
 
 ## Engineering
 
 - Python 3.12+, official MCP SDK, thin MCP handlers, independently testable domain services.
-- Keep network acquisition separate from queries. Initial tools are read-only and metadata-only.
+- Keep network acquisition separate from queries. Corpus-query tools remain read-only and metadata-only; discovery guidance must not imply network access or verified facts.
 - Do not add speculative dependencies, agents, a vector database, or a frontend without a concrete need.
 - SQLite queries must not create a missing database. Corpus replacement requires the CLI's explicit flag.
 - Keep raw third-party documents, credentials and local databases out of Git.

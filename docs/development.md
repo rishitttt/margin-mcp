@@ -42,7 +42,7 @@ For hosts that accept an `mcpServers` configuration object, adapt this example t
 }
 ```
 
-Configuration locations and formats depend on the host. This template has not been verified in a graphical host. To complete that gate: confirm four tools appear, ask for coverage, look up `Aarya` and verify ambiguity is preserved, then retrieve `DEMOAARYASW` filings and confirm the response calls them synthetic metadata. Record the host/version and observed results. Do not interpret these checks as financial accuracy evaluation.
+Configuration locations and formats depend on the host. This template has not been verified in a graphical host. To complete that gate: confirm five tools appear, ask for coverage, look up `Aarya` and verify ambiguity is preserved, then retrieve `DEMOAARYASW` filings and confirm the response calls them synthetic metadata. Try `get_discovery_plan` for a missing real filing and, where the host exposes them, load the discovery resource/prompt. Confirm these return guidance without claiming a download. Record the host/version and observed results. Do not interpret these checks as financial accuracy evaluation.
 
 ## Import your own metadata
 
