@@ -2,6 +2,8 @@
 
 Updated 25 September 2026. This is a proposed implementation map grounded in the current repository and acquired corpus. It does not add tools or expand the current API contract.
 
+**Priority superseded 8 October 2026:** first aggregate BharatStock MCP and Drishti MCP using their native read tools. The [new aggregation design](mcp-aggregation.md) owns the active stage order and the [current delivery plan](../plan.md) owns milestones. The external/session build order below is deferred reference material, not the current Stage 1 checklist.
+
 ## Product outcome and scope
 
 The active goal is external research and temporary evidence retrieval without building a Margin-owned corpus. Preserve delivered local functionality, but defer archive completion and corpus expansion as workstreams. Sources remain extensible. See [architecture](architecture.md#extensible-capabilities-and-preservation) and [active delivery plan](../plan.md).

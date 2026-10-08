@@ -1,85 +1,46 @@
-# Six-to-eight-week delivery and evaluation plan
+# Delivery and evaluation plan
 
-Updated 25 September 2026. This is the active proposal, not implemented behavior or elapsed-time progress. See [implementation status](implementation.md) for delivered capabilities and [architecture](design/architecture.md) for boundaries.
+Updated 8 October 2026. Proposal only; no aggregation implemented. The user now wants **BharatStock MCP + Drishti MCP as one aggregated MCP first**, and permits paid plans. [Aggregation architecture](design/mcp-aggregation.md) owns design decisions and exact stage acceptance checks; [provider research](research/mcp-provider-feasibility.md) owns endpoint, quota, price and coverage evidence. [Implementation status](implementation.md) owns delivered software.
 
-## Confirmed constraints
+## Active scope
 
-- Four people, Python, professor-supervised project intended to become a usable product.
-- Free prototype, approximately six to eight weeks; paid services and hosting can be evaluated later.
-- Indian-market research through the user's own AI harness, without a custom chat frontend or mandatory model subscription.
-- Focus on external APIs/tools and temporary evidence retrieval. Do not build, expand, backfill or schedule maintenance of our own financial corpus.
-- Preserve existing local metadata, discovery, acquisition, archive and extraction functionality as optional utilities and regression fixtures.
-- Providers are interchangeable candidates, not a fixed list. Refinitiv Eikon is not an assumed entitlement.
-- Continuous live feeds are not required. On-demand retrieval can use available historical data from upstream providers.
+A local Python MCP gateway serves the user's harness and connects to both hosted upstream MCPs. It requires no metadata import or Margin financial database. Begin with namespaced native read tools and preserve upstream schemas/results. Later add selected normalized tools from the supplied PDF, shared financial/event records, comparisons and stronger evidence support. The host supplies the LLM.
 
-## Release definition
+Research recommends BharatStock Developer + Drishti Starter at a published ₹3,000/month. Accounts/keys, actual entitlement/billing, team permissions and the new calendar deadline remain unverified. The original six-to-eight-week estimate was given in September; implementation estimates below are working-day allocations, not elapsed progress or a new submission date.
 
-Deliver a cited research workflow that starts without importing a metadata corpus: resolve an Indian company, select an available source, retrieve financial/contextual data or temporarily read a document, and return bounded evidence to the host. The current server still requires an imported database; removing that requirement for external mode is work to implement, not current behavior.
-
-Start with one source and a few representative questions, then add a complementary source. Verify actual access, history, units, reporting basis, source attribution and failure behavior before choosing providers. Retain provider-reported values, extraction candidates and independently reviewed facts as distinct statuses. Citation depth must match available evidence; an API value without a filing locator cannot claim page-level verification.
-
-Temporary sessions hold only the material required for a question, with bounded files/results, expiry and cleanup. The default external workflow does not promote content into the persistent archive. Existing import commands remain available when explicitly chosen. The [architecture](design/architecture.md#extensible-capabilities-and-preservation) specifies the shared capability and evidence boundaries.
-
-Demonstration questions:
-
-1. Resolve a company and identify the security/listing unambiguously.
-2. Retrieve a financial metric with its reporting basis, period, unit, provider and actual coverage.
-3. Compare compatible periods and show the inputs and formula; reject incompatible or missing inputs.
-4. Discover a filing/transcript, read relevant pages temporarily and return source-linked excerpts.
-5. Summarize recent news and management commentary while distinguishing provider labels from model interpretation.
-6. Explain unavailable history, failed providers, expired evidence or unsupported claims honestly.
-7. Produce a cited answer in one real MCP host without maintaining a local financial database.
-
-News tone, management outlook, analyst concerns and market response are separate signals. Social sentiment requires an evaluated source. Broad monitoring, automatic trading, model training and exhaustive source coverage are outside the first release.
-
-### Proposed corpus composition
-
-**Superseded collection proposal; retained here to preserve earlier references.** The earlier target was five companies, eight quarterly results and two annual reports each (50 core coverage slots), with optional calls/presentations toward 90–130 slots. This is no longer an active collection or release target. There is no replacement document-count goal.
-
-The seven acquired PDFs and existing extraction study remain development evidence, not a corpus to expand. See [current measurements](implementation.md#real-document-checkpoint) and [experiment findings](research/corpus-trial.md). Small synthetic or permitted test fixtures and independently checked evaluation cases do not require maintaining a financial-data repository.
+No corpus building, historical backfill, exchange crawler, trading engine, frontend, LLM hosting or WebSocket ingestion is required. Preserve the prior committed prototype on `d1`. It also remains on `main`; planning has not cleared/reset code. Decide any removal/isolation in a later normal commit.
 
 ## Milestones
 
-The sequence below is a proposed allocation, not a claim that these weeks have elapsed.
-
-| Time | Outcome | Exit evidence |
+| Sequence | Proposed outcome | Exit evidence |
 | --- | --- | --- |
-| Week 1 | Shared capability/evidence contracts and one source feasibility test | Actual bounded responses, coverage/access limits, example research questions |
-| Week 2 | First external MCP path and provider-only startup | Fresh startup without corpus import, source-linked output, explicit errors; existing local regression checks pass |
-| Weeks 3–4 | Temporary document sessions and a complementary source | Page-aware retrieval, expiry/cleanup, duplicate/conflict handling, compatible financial contexts |
-| Week 5 | Citations, comparisons and bounded news/sentiment workflow | Supported claims linked to evidence; interpretations and gaps are visible |
-| Week 6 | Submission-quality release | Host demonstration, evaluation, setup instructions and report |
-| Weeks 7–8 if available | Targeted reliability and portability improvements | Second host/source checks, fixes driven by measured failures; optional hosting |
+| 0; 1–2 days | Access, catalogs, contracts and small coverage exercise | Both eligible keys authenticate; actual schemas, costs, history, units/basis and evidence depth recorded |
+| 1a; 2–3 days | Minimal local aggregation | Real stdio client discovers/calls both sources through Margin; no corpus prerequisite; native schema/result preservation |
+| 1b; 2–3 days | Reliability and observability | Independent failures, limits, receipts, cancellation, cleanup, credential isolation and bounded results tested |
+| 1c; 2–3 days | Real host demonstration and baseline | At least six paired tasks, source attribution and measured call/credit costs; clear unavailable/partial cases |
+| 2; after evidence review | A few semantic financial/event tools | Compatible normalization/comparison and actual claim support checked; do not implement all ten names automatically |
+| Later; optional | Hosted/multi-user deployment or more sources | Provider/team permissions, user auth, tenant isolation, accounting and hosting need independently established |
 
-If a provider is blocked by access or cost, test another capability-compatible source or reduce the demonstration scope. Do not fall back to building a historical warehouse as the default remedy. Preserve failed experiments and avoid counting documented features as tested integrations.
+The architecture document assigns four ownership areas for the human team: upstream access/contracts; MCP bridge/lifecycle; policy/identity/provenance; independent evaluation/host/docs. Work against shared schema snapshots and the same question set.
 
-## Four ownership areas
+## Evaluation
 
-Suggested workstreams for the human team, not assignments already made:
+Use the proposed 12-company panel in the architecture: ten liquid mainboard firms across sectors, one verified BSE-exclusive firm, one NSE SME firm. Request bounded quarterly/annual rows, one year of EOD prices and 30 days of events/news. This is a coverage experiment, not a dataset collection target. Report requested versus returned periods and non-null financial fields, original-link support and event/call history separately.
 
-| Owner | Responsibility | Shared interface |
-| --- | --- | --- |
-| A | Source evaluation, adapters, identity and quota/history handling | Capability and provider response contracts |
-| B | Temporary extraction, financial semantics and evidence | Context-preserving facts/passages with expiry and status |
-| C | MCP tools, routing, sessions and host integration | Small typed tool contracts and compatibility checks |
-| D | Independent evaluation, citations, developer experience and docs | Labelled questions, support checks and reproducible fixtures |
+Compare directly attaching the two provider MCPs with using Margin, holding host/model/credentials/windows constant. Stage 1's expected contribution is a single configuration plus reliable policy/observability; accuracy improvement is a hypothesis, not a claim. Include numeric-plus-event research, identity ambiguity, missing history, empty events, source failures, quota/credit errors and citation insufficiency. Stage 2 can evaluate normalization/orchestration against this baseline.
 
-Integrate using the same small question set. Financial/evidence labels should be checked by someone other than the extractor. Preserve all existing local commands and tests while adding new modes.
+Measure task completion, identity/context correctness, answerability, citation/source support, correct abstention, schema/result fidelity, latency and upstream calls/credits. Independently inspect a small set of numeric cells and dated events rather than counting transport tests as financial verification. Keep model/prompt/schema/query date/version fixed in each trial; latest provider data is not point-in-time historical evidence. Use synthetic/minimized software fixtures and permitted temporary private snapshots, without committing raw provider datasets.
 
-## Evaluation design
+The initial source-test budget proposed in research is 500 Drishti credits with an explicit stop. Actual per-tool charges and MCP rate enforcement must be established before claiming sustained capacity or hard quota guarantees. Do not buy higher tiers until measurements show the constraint.
 
-Evaluate research tasks rather than corpus volume. Cover identity, financial facts, compatible comparisons, passages/citations, news/sentiment support and missing/conflicting/expired data. Include quota exhaustion, partial pagination/history and provider failure cases. Final question counts and split are to be set after access testing; the earlier 60-question corpus benchmark is a reference proposal, not a collection prerequisite.
+## Deferred material and remaining gates
 
-Use independent labels for company, metric, period, basis, unit, expected answerability and source support. Keep software fixtures separate from live financial accuracy evidence. Use small permitted or synthetic response fixtures for repeatable tests; do not assume volatile upstream responses are reproducible. Freeze model, prompt, tool availability, source query window and retrieval time in each experiment. Historical as-of claims require upstream evidence for that date.
+Earlier external REST/session plans and normalized architecture remain in [architecture](design/architecture.md), [feature/data map](design/functionality-data-map.md) and [citations](design/citations.md).
 
-Where feasible compare the same host/model using its ordinary tools, direct provider/raw-document access, and Margin's normalized tools/evidence. Record differences in access rather than attributing all gains to reasoning. Test unseen documents/questions without tuning to their labels.
+### Proposed corpus composition
 
-Measure exact financial-context correctness, answer coverage, citation support/location, comparison validity, passage relevance, sentiment support and correct abstention. Also measure source calls/credits, latency, expired-session behavior and task completion. A sentiment label's agreement with another model is not proof of market sentiment or price prediction. Report category performance and unanswered cases; set numeric acceptance thresholds after a baseline is measured.
+This heading is retained for older research links. The earlier 50-document core-corpus target and 90–130 optional coverage slots are superseded. Seven acquired PDFs remain historical development evidence; completing a local archive/fact warehouse is not a prerequisite for aggregation. The current target is a bounded external-provider coverage experiment, not document collection.
 
-## Product validation
+### Remaining gates
 
-Have three to five prospective users perform a financial comparison and a document/news research task in their own harness. Measure time to inspect supporting evidence, failed calls, installation friction and citation usefulness. Confirm that the new external path requires no corpus import while the old local workflow still works.
-
-## Remaining decisions
-
-Select the first accessible provider and complementary capability, credential model, session lifetime, host, representative companies/questions and calendar submission date. Establish actual free-tier access and evidence depth before promising coverage. Code licensing must be chosen before claiming a public reuse license. No provider purchase, outreach or account creation is implied by this plan.
+Before implementation, verify eligible key access and the actual hosted catalogs/billing. Before public operation, establish raw-data re-serving, institutional/team access and retention permissions; paying for a plan does not settle these. No provider purchase/outreach is implied, and this research task has not implemented the milestones.

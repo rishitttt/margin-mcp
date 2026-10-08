@@ -1,6 +1,12 @@
 # Implementation status and decisions
 
-Current as of 25 September 2026. This document describes delivered behavior. [Tool contracts](tools.md) specify the implemented MCP API; files in [design/](README.md#design-proposals) describe intended extensions.
+Status reviewed 8 October 2026; the latest recorded runtime validation remains 25 September 2026. This document describes delivered behavior. [Tool contracts](tools.md) specify the implemented MCP API; files in [design/](README.md#design-proposals) describe intended extensions.
+
+## Aggregation planning checkpoint: 8 October 2026
+
+The immediate direction is a single gateway over BharatStock MCP and Drishti MCP. Paid plans are now acceptable. The [new architecture](design/mcp-aggregation.md) separates native aggregation from later semantic tools; [provider research](research/mcp-provider-feasibility.md) records current exact URLs, package/schema inspection, pricing, limits and coverage gaps.
+
+This checkpoint changes documentation only. No upstream adapter, aggregate tool, normalization or citation verifier has been implemented. Public schemas/status registers and unauthenticated MCP responses were inspected; no authenticated financial/event response was obtained. Existing source files and runtime behavior are unchanged, and no fresh lint/pytest or graphical host validation is claimed. `d1` preserves the previous committed state at `c77963d`; `main` has not been cleared/reset.
 
 ## Delivered components
 

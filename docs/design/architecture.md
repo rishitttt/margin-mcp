@@ -2,6 +2,8 @@
 
 Design proposal, updated 25 September 2026. Some foundations are now implemented; [current tool contracts](../tools.md) and [implementation history](../implementation.md) are authoritative for delivered behavior. External-source routing, temporary sessions, sentiment analysis and the citation component below remain proposed.
 
+**Stage priority changed 8 October 2026:** the [MCP aggregation design](mcp-aggregation.md) now owns the immediate BharatStock + Drishti gateway architecture. The broader normalized API/session design below is retained for later stages and historical rationale; it is not the Stage 1 implementation checklist. No code or branch cleanup has occurred as part of planning.
+
 ## Product shape
 
 Margin is an extensible Indian financial-research and evidence layer with an MCP interface. Prioritize external provider APIs/tools and on-demand temporary document extraction. Preserve the existing local corpus/archive as optional functionality; building or expanding a Margin-owned corpus is not an active workstream. Users should not have to build or maintain a financial database to use the external path. Preserve the delivered local functionality and its contracts; adding providers does not replace it. The user's harness selects the model and writes the narrative. Plain Python callers should be able to invoke the same domain services; an optional REST adapter can serve non-MCP integrations later. Do not make the first release depend on a separate chat UI or on a particular model API.

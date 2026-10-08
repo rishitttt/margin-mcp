@@ -14,10 +14,10 @@ Design documents are proposals unless their implementation is confirmed in code 
 ## Product constraints
 
 - Indian listed-company research; do not substitute a US-only dataset.
-- Four-person team, free prototype, approximately six to eight weeks from September 2026.
-- Paid-provider entitlements and hosted redistribution rights remain unresolved. Curated local acquisition exists; do not rely on Eikon or paid APIs.
+- Four-person professor-supervised team. The original estimate was six to eight weeks from September 2026; do not treat it as a newly confirmed deadline.
+- As of 8 October 2026 the user permits paid provider plans. Research recommends BharatStock Developer + Drishti Starter; no account, purchase or credential is assumed. Do not rely on Eikon. Hosted redistribution and team access rights remain unresolved.
 - Preserve evidence, units, periods and standalone/consolidated distinctions during candidate extraction and future fact publication.
-- Focus new work on external APIs/tools and temporary evidence retrieval. Do not build, expand, backfill or schedule maintenance of a Margin-owned financial corpus as an active project goal. Preserve existing local metadata, discovery, acquisition, archive and extraction functionality as optional utilities and regression fixtures. The product direction includes provider APIs/tools and temporary document sessions without requiring users to maintain a corpus; named providers are examples, not a fixed dependency list. See `docs/design/architecture.md` for the proposed boundaries.
+- The immediate proposed stage is one MCP gateway aggregating BharatStock MCP and Drishti MCP; shared normalized tools and temporary evidence sessions follow later. See `docs/design/mcp-aggregation.md` and its dated research note. Do not build, expand, backfill or maintain a Margin-owned financial corpus. The prior committed implementation is preserved on `d1`; it still exists on `main`. Do not reset/clear branches or remove legacy code solely because a planning document proposes a transition. Preserve the snapshot and make any later migration a reviewable change.
 - Never represent synthetic examples as real financial evidence. Keep synthetic labeling in tool responses.
 
 ## Engineering

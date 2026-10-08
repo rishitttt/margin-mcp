@@ -32,7 +32,7 @@ This index is navigation. It does not duplicate implementation status or replace
 | [Tool contracts](tools.md) | Authoritative implemented MCP behavior |
 | [Acquisition](acquisition-development.md) | Curated source catalog, downloads, manifests and troubleshooting |
 | [PDF ingestion](ingestion-development.md) | Archive, recipes, extraction outputs and limitations |
-| [Delivery plan](plan.md) | Active external-source/session roadmap, superseded corpus target, workstreams and evaluation |
+| [Delivery plan](plan.md) | Active two-MCP aggregation roadmap, feasibility gates and links to later work |
 | [Contributor instructions](../AGENTS.md) | Repository engineering conventions |
 
 ## Design proposals
@@ -41,18 +41,20 @@ A design's presence does not mean its tools or schemas are implemented. Check [s
 
 | Document | Purpose |
 | --- | --- |
-| [Feature/data map](design/functionality-data-map.md) | Active external build order and retained earlier local-path dependency analysis |
-| [Architecture](design/architecture.md) | Target service boundaries, domain records, comparison rules and deployment |
+| [MCP aggregation](design/mcp-aggregation.md) | Current Stage 1 architecture: BharatStock + Drishti, native contracts, policy, stage gates and later semantic tools |
+| [Feature/data map](design/functionality-data-map.md) | Deferred external/session and earlier local-path dependency analysis; aggregation design owns current Stage 1 |
+| [Architecture](design/architecture.md) | Earlier normalized-service, domain-record and deployment proposals for later stages |
 | [Ingestion design](design/ingestion.md) | Existing ingestion foundations and remaining source/extraction/publication work |
 | [Citations](design/citations.md) | Proposed evidence identities, creation, verification results and evaluation |
 | [Data policy](design/data-policy.md) | Proposed storage, revision, serving and source-permission rules |
 
 ## Dated research and experiments
 
-These records distinguish documentation found, code inspected, transfers observed and capabilities actually tested. Provider terms, prices and third-party APIs are observations at the stated research date, not guarantees of current access. External links have not been revalidated as part of the documentation cleanup.
+These records distinguish documentation found, code inspected, transfers observed and capabilities actually tested. Provider terms, prices and third-party APIs are observations at the stated research date, not guarantees of current access. The 8 October provider note contains fresh investigation; older research links/findings have not all been revalidated.
 
 | Document | How to use it |
 | --- | --- |
+| [MCP provider feasibility](research/mcp-provider-feasibility.md) | 8 October exact endpoints, inspected tool mappings, paid/free plans, credit estimates, public probes and unverified data coverage |
 | [Corpus trial](research/corpus-trial.md) | 25 September source experiments, Tijori access inventory, seven-document corpus, 36-cell extraction study and coverage gaps |
 | [BSE acquisition results](research/bse-acquisition-results.md) | Initial successful exchange downloads, hashes, content checks and limits |
 | [Issuer acquisition troubleshooting](research/acquisition-troubleshooting.md) | Earlier Wipro success and issuer-route failures; use the acquisition guide for current commands |

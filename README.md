@@ -4,7 +4,9 @@ Evidence-backed financial research for Indian listed companies, accessible from 
 
 Margin is an early Python prototype. It has a metadata MCP server with agent discovery guidance, private PDF ingestion and a curated document downloader. Financial-fact serving, citation verification and period comparisons are planned, not implemented.
 
-The active direction is external APIs/tools, temporary document reading, and news/sentiment research. Building or expanding our own financial corpus is out of the active plan; existing local features remain optional utilities. Sources are extensible; users should not need to maintain a financial database for the future external mode. Those adapters and sessions are not implemented yet. See the [architecture](docs/design/architecture.md#extensible-capabilities-and-preservation).
+The active proposal, updated 8 October 2026, is to **aggregate BharatStock MCP and Drishti MCP into one Margin connection**, then add normalized financial/event research tools. The user now permits paid plans; research recommends BharatStock Developer + Drishti Starter at a published ₹3,000/month. No aggregation code or authenticated data integration exists yet. See the [aggregation architecture and stages](docs/design/mcp-aggregation.md) and [endpoint, quota and coverage research](docs/research/mcp-provider-feasibility.md). Building or maintaining a Margin financial corpus is outside this scope.
+
+The previous committed implementation is preserved on local branch `d1` at `c77963d`. It also remains on `main`; this planning task has not cleared or reset it. The capabilities and quick start below describe that existing local prototype, not the proposed aggregated MCP.
 
 ## Current capabilities
 
@@ -77,8 +79,8 @@ docs/             Usage guides, implementation status, plans and dated research
 
 Start with the [documentation index](docs/README.md). The [feature/data map](docs/design/functionality-data-map.md) defines priorities and acceptance checks; the [citation design](docs/design/citations.md) specifies the proposed creation and verification component.
 
-The next usable workflow is **research question → external source → structured data or temporary document evidence → cited answer**. Preserve financial-context validation and compatible comparisons. Corpus expansion targets are superseded; the [delivery plan](docs/plan.md) prioritizes provider evaluation, operation without corpus import, temporary sessions and a host demonstration.
+The next milestone is **one MCP connection → namespaced read tools from both providers**, without corpus import. Authenticate and measure actual schemas, costs and coverage before building normalized research, comparisons or citation verification. The [delivery plan](docs/plan.md) links the current stage gates; older corpus and temporary-session proposals are deferred reference material.
 
-Margin is a four-person, professor-supervised project with a free-prototype budget and a six-to-eight-week delivery window. Live feeds and hosting are optional later work; Refinitiv Eikon is not a dependency. The user's AI harness supplies the model. Margin supports research, not trade execution or personalized investment recommendations.
+Margin is a four-person, professor-supervised project. The original September estimate was six to eight weeks; the new schedule and provider accounts remain to be confirmed. Paid plans are now acceptable; live feeds and hosting are optional later work. Refinitiv Eikon is not a dependency. The user's AI harness supplies the model. Margin supports research, not trade execution or personalized investment recommendations.
 
 Keep raw third-party documents, local databases and credentials out of Git. Public download access does not establish hosted redistribution rights; see the [data policy](docs/design/data-policy.md).
