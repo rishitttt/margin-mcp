@@ -8,13 +8,13 @@ A local Python MCP gateway serves the user's harness and connects to both hosted
 
 Research recommends BharatStock Developer + Drishti Starter at a published ₹3,000/month. Accounts/keys, actual entitlement/billing, team permissions and the new calendar deadline remain unverified. The original six-to-eight-week estimate was given in September; implementation estimates below are working-day allocations, not elapsed progress or a new submission date.
 
-No corpus building, historical backfill, exchange crawler, trading engine, frontend, LLM hosting or WebSocket ingestion is required. Preserve the prior committed prototype on `d1`. It also remains on `main`; planning has not cleared/reset code. Decide any removal/isolation in a later normal commit.
+No corpus building, historical backfill, exchange crawler, trading engine, frontend, LLM hosting or WebSocket ingestion is required. The prior committed prototype is preserved on pushed `d1`; the user has authorized removing legacy tracked files from `main` through a normal commit. `main` is now the documentation/credential-template workspace, with no aggregated server or old package commands. Ignored private data/environments remain local.
 
 ## Milestones
 
 | Sequence | Proposed outcome | Exit evidence |
 | --- | --- | --- |
-| 0; 1–2 days | Access, catalogs, contracts and small coverage exercise | Both eligible keys authenticate; actual schemas, costs, history, units/basis and evidence depth recorded |
+| 0; 1–2 days | Access, catalogs, contracts and small coverage exercise | Public preflight complete; after subscriptions/keys, both accounts authenticate and schemas/costs/history/units/basis/evidence depth are recorded |
 | 1a; 2–3 days | Minimal local aggregation | Real stdio client discovers/calls both sources through Margin; no corpus prerequisite; native schema/result preservation |
 | 1b; 2–3 days | Reliability and observability | Independent failures, limits, receipts, cancellation, cleanup, credential isolation and bounded results tested |
 | 1c; 2–3 days | Real host demonstration and baseline | At least six paired tasks, source attribution and measured call/credit costs; clear unavailable/partial cases |
@@ -31,11 +31,11 @@ Compare directly attaching the two provider MCPs with using Margin, holding host
 
 Measure task completion, identity/context correctness, answerability, citation/source support, correct abstention, schema/result fidelity, latency and upstream calls/credits. Independently inspect a small set of numeric cells and dated events rather than counting transport tests as financial verification. Keep model/prompt/schema/query date/version fixed in each trial; latest provider data is not point-in-time historical evidence. Use synthetic/minimized software fixtures and permitted temporary private snapshots, without committing raw provider datasets.
 
-The initial source-test budget proposed in research is 500 Drishti credits with an explicit stop. Actual per-tool charges and MCP rate enforcement must be established before claiming sustained capacity or hard quota guarantees. Do not buy higher tiers until measurements show the constraint.
+Follow [API/MCP testing](api-testing.md): begin with a 50-credit two-company smoke budget, included within the 500-credit expanded evaluation budget. Accounts are not purchased yet. Actual per-tool charges and MCP rate enforcement must be established before claiming sustained capacity or hard quota guarantees. Do not buy higher tiers until measurements show the constraint.
 
 ## Deferred material and remaining gates
 
-Earlier external REST/session plans and normalized architecture remain in [architecture](design/architecture.md), [feature/data map](design/functionality-data-map.md) and [citations](design/citations.md).
+Earlier external REST/session plans, normalized architecture, feature maps and citation designs remain in the [`d1` documentation](https://github.com/rishitttt/margin-mcp/tree/d1/docs). They were retired from current `main` navigation to avoid describing legacy capabilities as the new runtime.
 
 ### Proposed corpus composition
 

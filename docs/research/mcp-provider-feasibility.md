@@ -11,7 +11,7 @@ The first download attempt failed because the system Python's TLS certificate ch
 | Artifact/check | Observed result | Limit of evidence |
 | --- | --- | --- |
 | BharatStock REST OpenAPI | HTTPS JSON download, 112,940 bytes, OpenAPI 3.1.0 | Schema descriptions/examples are not financial observations |
-| Drishti REST OpenAPI | HTTPS JSON download, 145,935 bytes, OpenAPI 3.0.1 | Does not include every MCP-only operation |
+| Drishti REST OpenAPI | HTTPS JSON download, 145,935 bytes, OpenAPI 3.1.0 | Guide labels it 3.0.1; downloaded artifact declares 3.1.0 and does not include every MCP-only operation |
 | `bharatstock-mcp` npm archive | Latest registry version 0.1.2; inspected 31 tool registrations and SDK calls | Does not establish the hosted catalog is identical |
 | `drishti-mcp` npm archive | Latest registry version 0.1.4; installer writes hosted URL/Bearer configurations | Contains no hosted MCP tool implementation/schema |
 | BharatStock `GET /v1/plans` | Free 25/day; Starter 3,000; Developer 10,000; Pro 50,000, with prices below | Public current plan metadata, not our account's counters |
@@ -206,3 +206,30 @@ Before implementation: obtain securely supplied eligible keys; initialize and co
 Before public product deployment: clarify the intended aggregated MCP use, organizational/team key access, public versus private hosting, raw-result redistribution, retention, user attribution and exchange data licensing. BharatStock's [terms](https://bharatstockapi.com/terms) restrict key sharing, re-serving/substantially raw data and competing data products, and condition retained paid data on an active subscription. Buying a Developer/Pro plan does not grant a public data-feed license. A private BYOK connector is the proposed feasibility architecture, not a blanket permission conclusion. Do not assume four people may copy a personally bound key, or that adding normalization removes source restrictions. Drishti's technical docs do not establish a redistribution entitlement; its subscription/agreement must be checked.
 
 This research recommends plans and bounded tests. It does not authorize purchases, contact providers or assert a legal interpretation as settled. The active design requires no Margin financial warehouse and leaves the existing `d1` snapshot intact.
+
+## Follow-up: branch cleanup and public endpoint pass
+
+The user subsequently authorized clearing/pushing `main` and endpoint testing, and confirmed that subscriptions **have not been purchased**. `d1` at `c77963d` was pushed first; planning was committed as `be04aba`, then legacy tracked runtime/tests/examples/manifests/CI and superseded guides were removed from `main` without a reset or force-push. Current planning/research remain. Ignored local data/environments were not deleted.
+
+A fresh sequential **14-request** preflight used system curl with TLS verification, 20-second timeouts, 2 MiB response caps and no retry. No credentials, authenticated data requests or paid tool calls were involved. Temporary raw receipts are outside Git. Results:
+
+| Method | Exact URL | Observed HTTP/result |
+| --- | --- | --- |
+| GET | `https://bharatstockapi.com/v1/plans` | 200; Developer ₹1,000/month and 10,000/day, other tiers unchanged from the table above |
+| GET | `https://bharatstockapi.com/v1/status` | 200; provider says operational, 43/43 passing; `last_verified=2026-10-08T16:46:02.837088+00:00` |
+| GET | `https://bharatstockapi.com/openapi.json` | 200; 35 distinct path entries, OpenAPI 3.1.0; hash unchanged |
+| GET | `https://developers.manasija.in/openapi.json` | 200; 30 distinct path entries, OpenAPI 3.1.0; hash unchanged |
+| GET | `https://bharatstockapi.com/v1/stocks/RELIANCE` | 401; missing key |
+| GET | `https://bharatstockapi.com/v1/stocks/RELIANCE/financials?period_type=quarterly&page_size=1` | 401; missing key |
+| GET | `https://developers.manasija.in/v1/news?symbols=RELIANCE&limit=1` | 401; missing key |
+| GET | `https://developers.manasija.in/v1/announcements?symbols=RELIANCE&limit=1` | 401; missing key |
+| GET | `https://developers.manasija.in/v1/concalls?symbols=RELIANCE&limit=1` | 401; missing key |
+| GET | `https://developers.manasija.in/v1/account/usage` | 401; missing key |
+| POST initialize | `https://bharatstockapi.com/v1/mcp` | 200; protocol `2025-06-18`, server `bharatstock` 0.1.0 |
+| POST initialized notification | `https://bharatstockapi.com/v1/mcp` | 202 |
+| POST tools/list | `https://bharatstockapi.com/v1/mcp` | 401; JSON-RPC `-32001` missing-key error |
+| POST initialize | `https://mcp.drishti.manasija.in` | 401; `invalid_token` |
+
+Correction: Drishti's guide calls its schema OpenAPI 3.0.1, but the actual downloaded file declares **3.1.0**. The earlier table has been corrected to the inspected artifact. Path counts refer to REST schema entries, not MCP tool counts. Provider status is self-reported; a missing-key response confirms reachability/authentication behavior rather than validating that endpoint's paid payload.
+
+The recommended subscriptions remain Developer + Starter at a published ₹3,000/month. The [API/MCP test protocol](../api-testing.md) defines local key setup, catalog/account checks, a 50-credit smoke pass within the 500-credit expanded budget, selective REST comparisons, numeric/event quality checks and recorded evidence. These authenticated steps remain pending accounts/keys; no gateway or committed probe client has been implemented.

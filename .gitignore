@@ -21,3 +21,4 @@ data/private/
 *.db-wal
 tmp/
 logs/
+reports/private/

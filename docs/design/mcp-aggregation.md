@@ -19,7 +19,7 @@ Recommended initial subscriptions: **BharatStock Developer + Drishti Starter, pu
 | 2: financial interface | Selected semantic tools from the PDF, common financial/event records, compatible comparisons and evidence links | Build only capabilities supported by Stage 0/1 measurements |
 | Later, optional | Hosted multi-user access, near-live subscriptions or more providers | Separate deployment, credential isolation and provider permission work |
 
-The ten semantic names in the PDF are proposed Stage 2 contracts, not newly delivered tools. Existing PDF extraction and metadata utilities remain preserved on `d1`; deciding what to remove from `main` is a later implementation change.
+The ten semantic names in the PDF are proposed Stage 2 contracts, not newly delivered tools. Existing PDF extraction and metadata utilities remain preserved on pushed `d1`. The user has now authorized clearing the legacy tracked implementation from `main`; the new branch state contains documentation and a credential template, not an aggregate server.
 
 ## Architecture
 
@@ -45,9 +45,9 @@ There is no financial database, web crawler, document ETL, vector index, hosted 
 
 The data path is an on-demand transformation: **discover capabilities → resolve the company → fetch bounded upstream results → retain provenance → return to the harness**. Stage 1 passes native results through; Stage 2 adds validation/normalization between fetch and return. The equivalent of ETL runs per request and expires with its session, without loading an owned historical repository. Do not introduce a scheduled ingestion pipeline simply to combine the connectors.
 
-Use Python 3.12 and the official MCP Python SDK for server/client lifecycle and Streamable HTTP. The existing project already uses that SDK. A low-level dynamic tool registry is a good fit for forwarding arbitrary reviewed schemas. Do not force a new protocol version: negotiate what both ends support and record the result. The current [MCP tools specification](https://modelcontextprotocol.io/specification/latest/server/tools) defines discovery/calls/results; [official SDK documentation](https://py.sdk.modelcontextprotocol.io/) is the implementation reference.
+Use Python 3.12 and the official MCP Python SDK for server/client lifecycle and Streamable HTTP. The previous implementation on `d1` used that SDK; `main` has no installed-package contract yet. A low-level dynamic tool registry is a good fit for forwarding arbitrary reviewed schemas. Do not force a new protocol version: negotiate what both ends support and record the result. The current [MCP tools specification](https://modelcontextprotocol.io/specification/latest/server/tools) defines discovery/calls/results; [official SDK documentation](https://py.sdk.modelcontextprotocol.io/) is the implementation reference.
 
-[Standalone FastMCP proxy providers](https://gofastmcp.com/servers/providers/proxy) are a credible alternative for less custom bridging code, but they are a separate package from the SDK's `FastMCP` helper. Their session and feature-forwarding defaults need explicit review. Choose that dependency only if a small compatibility exercise establishes that it preserves schemas/results and supports our admission policy better than the existing SDK. Do not introduce an agent framework just to aggregate MCPs.
+[Standalone FastMCP proxy providers](https://gofastmcp.com/servers/providers/proxy) are a credible alternative for less custom bridging code, but they are a separate package from the SDK's `FastMCP` helper. Their session and feature-forwarding defaults need explicit review. Choose that dependency only if a small compatibility exercise establishes that it preserves schemas/results and supports our admission policy better than the official SDK. Do not introduce an agent framework just to aggregate MCPs.
 
 ### Exact connections
 
@@ -149,7 +149,7 @@ Citation creation and verification remain distinct. First report which provider/
 
 ## Implementation sequence and team ownership
 
-The following is a proposed sequence after planning, not work authorized or completed in this research task:
+The following is the proposed build sequence. The current user has authorized branch cleanup/push and endpoint testing; no gateway implementation has been started:
 
 | Step | Deliverable | Exit gate |
 | --- | --- | --- |
@@ -182,7 +182,7 @@ Compare **directly attached two MCPs vs Margin's aggregate** with the same host/
 
 ## Repository transition and product boundary
 
-`d1` preserves the prior committed implementation at `c77963d`. On 8 October both `main` and `d1` pointed there before these planning-only edits. `d1` has not been observed pushed. This task does not clear, reset or implement `main`. Later, preserve/push the snapshot if desired, then make a normal reviewable commit removing or isolating old runtime files while retaining relevant context and evidence designs. Do not force-push or rewrite history as a shortcut.
+`d1` preserves the prior committed implementation at `c77963d` and has now been pushed to GitHub. The user subsequently authorized clearing `main`: aggregation planning was committed first (`be04aba`), then legacy tracked runtime/tests/examples/CI/manifests and superseded docs were removed through a normal reviewable transition. Current architecture/research remain on `main`; historical citation and corpus designs are available on [`d1`](https://github.com/rishitttt/margin-mcp/tree/d1/docs). No reset, force-push or gateway implementation is involved. Ignored local documents/databases/environments remain private.
 
 Plan 1 is a private/local connector using an entitled user's own credentials. Paying for API access does **not** automatically authorize a public MCP that republishes raw results. BharatStock's published terms materially restrict re-serving data, competing data products, key sharing and retained data after a subscription ends. A BYOK gateway is the proposed development model, not a determination that every distributed/hosted use is permitted. Obtain provider clarification for the intended product and team access before public operation. Drishti's public technical docs do not settle redistribution rights either. No outreach or purchase has occurred.
 

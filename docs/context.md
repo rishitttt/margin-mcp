@@ -1,37 +1,29 @@
 # Project context and handoff
 
-Current as of 8 October 2026. [Implementation status](implementation.md) owns delivered capabilities; [documentation index](README.md) routes usage, design and research.
+Current checkpoint: 8 October 2026. [Implementation status](implementation.md) owns delivered/validated state; [documentation index](README.md) routes the remaining material.
 
-## Current direction
+## Direction and constraints
 
-Margin is a professor-supervised four-person Indian financial-research project. The user's AI harness supplies the model. Python remains the implementation language. The new first stage is **one aggregated MCP over BharatStock MCP and Drishti MCP**, using existing native read tools. Higher-level normalized tools, comparisons, temporary extraction and citation verification are later stages. Do not build or maintain a Margin financial corpus.
+Margin is a four-person professor-supervised Indian financial-research project. The user's harness owns the model. First build a Python MCP gateway over **BharatStock MCP + Drishti MCP**, preserving reviewed native tools; normalize financial/event records, comparisons and citations later. Do not maintain a Margin financial corpus. Eikon, hosting, live streams and a custom frontend are not prerequisites.
 
-The user now permits paid subscriptions. Research recommends BharatStock Developer + Drishti Starter at a published ₹3,000/month, with Drishti credits likely to constrain sustained research before daily request quotas. Accounts, purchases and credentials have not been observed. The earlier six-to-eight-week estimate dates from September; it is not a newly confirmed calendar deadline. Live feeds/hosting remain optional, and Eikon is not a dependency.
+Paid plans are permitted. Recommend BharatStock Developer + Drishti Starter at published ₹3,000/month. The user confirmed subscriptions are **not purchased yet**; no credentials are configured. The earlier six-to-eight-week estimate dates from September, not a new deadline. Team and public-product permissions remain unresolved.
 
-Read the [aggregation design](design/mcp-aggregation.md) for architecture, tool policy, proposed package boundaries and acceptance gates. Read [provider feasibility](research/mcp-provider-feasibility.md) for exact URLs, tool/REST mappings, rates, price scenarios, observed probes and coverage uncertainty. Earlier architecture/session/corpus proposals are reference material; they do not override this stage order.
+## Branch and delivered state
 
-## Delivered software and repository state
+The prior implementation is preserved at `c77963d` on **pushed `origin/d1`**. Its source, tests, fixtures, CI, package manifests and old documentation have been removed from `main` in a normal history-preserving transition. The aggregation planning/research was committed first. Ignored local data/virtual environments remain private and are not a new runtime.
 
-The existing code is still the local prototype: metadata MCP tools/discovery guidance, offline HTML link discovery, separate PDF archive/candidate extraction and curated document acquisition. It requires an imported metadata corpus. Seven private PDFs and the dated 36-cell development extraction study remain historical evidence, not product coverage; candidates are unreviewed. A clone contains synthetic fixtures and a source catalog, not those PDFs/databases. See [implementation status](implementation.md) for the full boundary and recorded validation.
+`main` contains current architecture/research, status/context, roadmap, API test protocol and a blank `.env.example`. It has no installable Margin package, MCP gateway or old corpus commands. Do not claim the old implementation or its September test count as current `main` behavior.
 
-`d1` preserves the prior committed state at `c77963d`; it is local and has not been observed pushed. Before planning edits, `main` pointed at the same commit and was clean. This task has updated documentation only: no reset/clearing, runtime migration, new MCP tools or provider adapters. Do not remove old code without a subsequent reviewable transition.
+## Source evidence
 
-There is no aggregation, provider-only startup, financial-fact service, comparison service, accepted-fact store, evidence-serving tool or citation verifier implemented. Latest runtime checks remain the dated September checkpoint; no fresh full suite or model-host verification is implied by this research.
+Public OpenAPI schemas and BharatStock plan/status registers were downloaded successfully. Both inspected schemas are OpenAPI **3.1.0**; Drishti's guide calls its spec 3.0.1, so prefer the actual downloaded artifact. Both MCP endpoints are reachable: BharatStock allows no-key initialization but rejects tool discovery, while Drishti rejects no-key initialization. Representative protected REST endpoints reject requests without keys. No authenticated financial/event record or credit debit has been tested.
 
-## Evidence learned in this scope
+The inspected BharatStock npm package has 31 tools; its hosted initialization reports an older version. Drishti's installer points to its hosted server and does not reveal hosted schemas. MCP-only Drishti event/search tools do not have equivalent public REST routes. Units/basis, SME/BSE coverage, history, original source links and actual MCP rate/billing behavior are the next evidence gates.
 
-- Current public API schemas were downloaded and inspected. BharatStock npm 0.1.2 has 31 tools; Drishti npm 0.1.4 configures a hosted connector and does not contain its server tool schemas.
-- Both published MCP URLs are reachable. BharatStock initialized without a key but rejected tool discovery; Drishti rejected initialization. No authenticated financial/event data was retrieved.
-- The hosted BharatStock initialization version differs from its inspected npm package version. Its internal request retries/control traffic need usage measurement before equating native calls with quota units.
-- Drishti's public MCP catalog includes search/events capabilities absent from its public REST schema; do not invent equivalent endpoints. Published REST RPM limits are not independently verified MCP ceilings.
-- Numeric units/basis, SME/micro-cap coverage, event retention, original source links and page citations require paid-payload checks. Addressable universe is not complete joint coverage.
-- Paid API access does not automatically permit public raw-data re-serving or key sharing. Private entitled-credential access is the proposed feasibility setup; team/product permissions require clarification before broader operation.
+## Next steps
 
-## Next implementation order
+1. Activate Developer + Starter and supply keys locally through ignored `.env`/environment; test client must explicitly load them.
+2. Follow [API/MCP testing](api-testing.md): account diagnostics, authenticated catalogs, two-company smoke test, billing/context checks, then the bounded 12-company panel if successful.
+3. Implement the minimal bridge from [aggregation design](design/mcp-aggregation.md) only after measured contracts; add policies/receipts and host evaluation before semantic orchestration.
 
-1. Obtain eligible accounts/secure keys through the user's chosen process; authenticate catalogs, schemas, plan limits and representative calls. Measure credits and numerical/evidence coverage on the small panel before making guarantees.
-2. Decide the reviewable `main` transition while preserving `d1`; create a provider-only local gateway with two upstream MCP clients and namespaced, reviewed native tools.
-3. Add quota admission, independent failures, receipts, schema preservation, shutdown, bounded payloads and routing guidance; test actual stdio transport and one real host.
-4. Compare direct two-provider access with aggregation using the same tasks/model. Build a few normalized tools only after results justify them.
-
-The present user request is research/planning only. This list is a proposal for later work, not authorization to implement it now. Existing acquisition findings, financial-context rules and citation designs remain useful historical foundations; do not expand their corpus as a workaround for provider limitations.
+The current endpoint checks use direct temporary research requests, not a committed test client or aggregation implementation. Accounts/keys are the remaining prerequisite for authenticated tests; no purchase or provider outreach has occurred.
