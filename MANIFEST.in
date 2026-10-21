@@ -1,0 +1,4 @@
+include requirements-dev.lock AGENTS.md .env.example
+recursive-include docs *.md *.json
+recursive-include tests *.py
+include scripts/smoke_workbench.py

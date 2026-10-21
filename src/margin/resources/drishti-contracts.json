@@ -1,0 +1,889 @@
+{
+  "purpose": "Reviewed first-slice input contracts; runtime admission is separately implemented in registry.py.",
+  "observedOn": "2026-10-09",
+  "serverName": "drishti-mcp",
+  "serverVersion": "3.3.1",
+  "protocolVersion": "2025-11-25",
+  "completeness": "25 confirmed operations covering the live routing guides and inspected documented market list; search is capped and has no exhaustive enumeration guarantee",
+  "evidence": {
+    "descriptionsSHA256": {
+      "describe-1.json": "76f313403e98a7a1d211428a55a5919bf88392ba8e01631607f987debf616c0a",
+      "describe-2.json": "070b471df466dcc3ef9498153f60d89b2320dcebd3e67fbddd7b0078ca624d01",
+      "describe-3.json": "f607448c3ced4659a97960cab989055633de5a633b2836e086691c719c383e85"
+    },
+    "restSchemaSHA256": "b4e45c56fc3d3f853cda272518c84e9ede523c4260d508f7a964288c120f7734"
+  },
+  "schemaEditing": "Provider description/example prose omitted; validation keywords, references, defaults and titles preserved",
+  "nativeTools": [
+    {
+      "name": "read_me",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "search_tools",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "default": "",
+            "type": "string"
+          },
+          "limit": {
+            "default": 8,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "describe_tools",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "names": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": [
+          "names"
+        ],
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "execute_tool",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "arguments": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "outputSchema": null
+    }
+  ],
+  "operations": [
+    {
+      "name": "get_news",
+      "category": "news",
+      "inputSchema": {
+        "$defs": {
+          "NewsQueryParams": {
+            "properties": {
+              "symbols": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Symbols"
+              },
+              "scrip_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Scrip Codes"
+              },
+              "sentiment": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "positive",
+                      "negative",
+                      "neutral"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Sentiment"
+              },
+              "from": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "From"
+              },
+              "to": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "To"
+              },
+              "page": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Page"
+              },
+              "limit": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Limit"
+              },
+              "ids": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Ids"
+              },
+              "lookback_days": {
+                "anyOf": [
+                  {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Lookback Days"
+              }
+            },
+            "title": "NewsQueryParams",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NewsQueryParams"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Query"
+          }
+        },
+        "title": "Get_NewsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/news"
+      ],
+      "publishedCredits": [
+        1
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_symbols",
+      "category": "identity",
+      "inputSchema": {
+        "$defs": {
+          "SymbolMetadataQueryParams": {
+            "properties": {
+              "symbols": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Symbols"
+              },
+              "scrip_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Scrip Codes"
+              }
+            },
+            "title": "SymbolMetadataQueryParams",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/SymbolMetadataQueryParams"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Query"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "title": "Get_SymbolsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/symbols/metadata"
+      ],
+      "publishedCredits": [
+        1
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "resolve_symbols",
+      "category": "identity",
+      "inputSchema": {
+        "properties": {
+          "queries": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Queries"
+          }
+        },
+        "required": [
+          "queries"
+        ],
+        "title": "Resolve_SymbolsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": [
+        1
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_announcements",
+      "category": "filings",
+      "inputSchema": {
+        "$defs": {
+          "AnnouncementsQueryParams": {
+            "properties": {
+              "symbols": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Symbols"
+              },
+              "scrip_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Scrip Codes"
+              },
+              "from": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "From"
+              },
+              "to": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "To"
+              },
+              "detailed": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Detailed"
+              },
+              "page": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Page"
+              },
+              "limit": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Limit"
+              },
+              "categories": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Categories"
+              },
+              "important": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Important"
+              },
+              "ids": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Ids"
+              },
+              "lookback_days": {
+                "anyOf": [
+                  {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Lookback Days"
+              }
+            },
+            "title": "AnnouncementsQueryParams",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/AnnouncementsQueryParams"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Query"
+          }
+        },
+        "title": "Get_AnnouncementsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/announcements"
+      ],
+      "publishedCredits": [
+        1,
+        2
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_announcement_categories",
+      "category": "filings",
+      "inputSchema": {
+        "properties": {},
+        "title": "Get_Announcement_CategoriesInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/announcements/categories"
+      ],
+      "publishedCredits": [
+        0
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "list_earnings",
+      "category": "earnings",
+      "inputSchema": {
+        "$defs": {
+          "EarningsQueryParams": {
+            "properties": {
+              "symbols": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Symbols"
+              },
+              "scrip_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Scrip Codes"
+              },
+              "from": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "From"
+              },
+              "to": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "To"
+              },
+              "detailed": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Detailed"
+              },
+              "page": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Page"
+              },
+              "limit": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Limit"
+              },
+              "ids": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Ids"
+              },
+              "lookback_days": {
+                "anyOf": [
+                  {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Lookback Days"
+              }
+            },
+            "title": "EarningsQueryParams",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/EarningsQueryParams"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Query"
+          }
+        },
+        "title": "List_EarningsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/earnings"
+      ],
+      "publishedCredits": [
+        2,
+        3
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_earnings_filing",
+      "category": "earnings",
+      "inputSchema": {
+        "properties": {
+          "symbol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Symbol"
+          },
+          "quarter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Quarter"
+          },
+          "earnings_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Earnings Id"
+          },
+          "detailed": {
+            "default": false,
+            "title": "Detailed",
+            "type": "boolean"
+          }
+        },
+        "title": "Get_Earnings_FilingInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "paired_observation",
+      "restPaths": [
+        "/v1/earnings/detail"
+      ],
+      "publishedCredits": [
+        3
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": true,
+      "observedExecutionCredits": 3
+    }
+  ]
+}

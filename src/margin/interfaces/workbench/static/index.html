@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Margin · Research workbench</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css"><script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header><a class="wordmark" href="/">margin<span> / workbench</span></a><div id="mode" class="badge">Loading local state</div></header>
+  <main>
+    <section class="intro"><p class="eyebrow">INDIAN COMPANY RESEARCH · DEVELOPMENT INTERFACE</p><h1>Inspect the data.<br>Keep the evidence.</h1><p class="lede">Company financials and developments, with provider context and an inspectable execution trail.</p></section>
+    <div id="mode-note" class="notice"></div><div id="error" class="notice error" role="alert" hidden></div>
+    <div class="workspace">
+      <aside class="panel setup">
+        <div class="section-title"><span class="step">01</span><h2>Set up a run</h2></div>
+        <form id="company-form"><label for="symbol">Security / ticker</label><input id="symbol" name="symbol" autocomplete="off" maxlength="40" required><label for="exchange">Exchange</label><select id="exchange"><option>NSE</option><option>BSE</option></select><div class="button-row"><button type="submit" id="load-company" class="secondary">Inspect snapshot</button><button type="button" id="search-directory" class="quiet">Search directory</button></div></form>
+        <p id="company-context" class="small">Select an explicit listing; names alone can be ambiguous.</p>
+        <fieldset><legend>Include in overview (up to 8)</legend><div id="modules"></div><div id="access-note" role="note"></div></fieldset>
+        <details class="date-options"><summary>Price window</summary><label for="price-from">From</label><input type="date" id="price-from"><label for="price-to">To</label><input type="date" id="price-to"></details>
+        <button id="preview" class="primary wide">Preview operation plan</button>
+        <div class="provider-connect"><button id="connect" class="quiet">Connect / refresh Drishti</button><p id="connection-status" class="small" role="status" aria-live="polite">Checking local connection state…</p><p class="small">Explicit metadata action. Live mode counts lifecycle requests.</p></div>
+        <div class="section-title budget-title"><span class="step">↳</span><h2>Process allowance</h2></div><div id="budget"></div><p class="small">Local counters reset on backend restart. They are not account-wide quotas.</p>
+      </aside>
+      <section class="results">
+        <div id="plan" class="panel" hidden><div class="section-title"><span class="step">02</span><h2>Review the plan</h2></div><div id="plan-body"></div><p class="small">No provider calls have been made by this preview. Credits are estimates; MCP lifecycle traffic is additional.</p><button id="run" class="primary">Run selected operations</button></div>
+        <div class="panel run-panel"><div class="section-title"><span class="step">03</span><h2>Results &amp; evidence</h2><span id="run-status" class="badge subtle">Ready</span></div><div class="run-actions"><button id="cancel" class="quiet" hidden>Cancel pending work</button><button id="restore" class="quiet" hidden>Restore last run</button></div><div id="trace"></div><div id="cards"><div class="empty-state"><span class="empty-mark">↗</span><h3>A deliberate research workflow.</h3><p>Inspect a snapshot or preview a small overview. Results stay separated by provider and reporting context.</p><p class="small">No provider request runs when this page loads.</p></div></div></div>
+      </section>
+    </div>
+    <footer>LOCAL DEVELOPMENT BUILD · NO INVESTMENT RECOMMENDATIONS · PROVIDER OUTPUT IS NOT INDEPENDENTLY VERIFIED</footer>
+  </main>
+</body>
+</html>

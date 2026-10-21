@@ -1,0 +1,2377 @@
+{
+  "purpose": "Reference snapshot only; not executable Margin handlers or a forwarding allowlist",
+  "observedOn": "2026-10-09",
+  "serverName": "drishti-mcp",
+  "serverVersion": "3.3.1",
+  "protocolVersion": "2025-11-25",
+  "completeness": "25 confirmed operations covering the live routing guides and inspected documented market list; search is capped and has no exhaustive enumeration guarantee",
+  "evidence": {
+    "descriptionsSHA256": {
+      "describe-1.json": "76f313403e98a7a1d211428a55a5919bf88392ba8e01631607f987debf616c0a",
+      "describe-2.json": "070b471df466dcc3ef9498153f60d89b2320dcebd3e67fbddd7b0078ca624d01",
+      "describe-3.json": "f607448c3ced4659a97960cab989055633de5a633b2836e086691c719c383e85"
+    },
+    "restSchemaSHA256": "b4e45c56fc3d3f853cda272518c84e9ede523c4260d508f7a964288c120f7734"
+  },
+  "schemaEditing": "Provider description/example prose omitted; validation keywords, references, defaults and titles preserved",
+  "nativeTools": [
+    {
+      "name": "read_me",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "search_tools",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "default": "",
+            "type": "string"
+          },
+          "limit": {
+            "default": 8,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "describe_tools",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "names": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": [
+          "names"
+        ],
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "execute_tool",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "arguments": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "outputSchema": null
+    }
+  ],
+  "operations": [
+    {
+      "name": "search_docs",
+      "category": "documentation",
+      "inputSchema": {
+        "properties": {
+          "query": {
+            "title": "Query",
+            "type": "string"
+          },
+          "limit": {
+            "default": 10,
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "title": "Search_DocsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": null,
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_doc",
+      "category": "documentation",
+      "inputSchema": {
+        "properties": {
+          "path_or_href": {
+            "title": "Path Or Href",
+            "type": "string"
+          }
+        },
+        "required": [
+          "path_or_href"
+        ],
+        "title": "Get_DocInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": null,
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_workflow_prompt",
+      "category": "guidance",
+      "inputSchema": {
+        "properties": {
+          "workflow": {
+            "title": "Workflow",
+            "type": "string"
+          },
+          "company_or_symbol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Company Or Symbol"
+          },
+          "question": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Question"
+          },
+          "quarter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Quarter"
+          },
+          "topic": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Topic"
+          },
+          "symbols": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Symbols"
+          },
+          "days": {
+            "default": 5,
+            "title": "Days",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "workflow"
+        ],
+        "title": "Get_Workflow_PromptInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": null,
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_block_deals",
+      "category": "deals",
+      "inputSchema": {
+        "properties": {
+          "symbols": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Symbols"
+          },
+          "exchange": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Exchange"
+          },
+          "from_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "From Date"
+          },
+          "to_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "To Date"
+          },
+          "page": {
+            "default": 1,
+            "title": "Page",
+            "type": "integer"
+          },
+          "limit": {
+            "default": 20,
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "title": "Get_Block_DealsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/block-deals"
+      ],
+      "publishedCredits": null,
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_news",
+      "category": "news",
+      "inputSchema": {
+        "$defs": {
+          "NewsQueryParams": {
+            "properties": {
+              "symbols": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Symbols"
+              },
+              "scrip_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Scrip Codes"
+              },
+              "sentiment": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "positive",
+                      "negative",
+                      "neutral"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Sentiment"
+              },
+              "from": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "From"
+              },
+              "to": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "To"
+              },
+              "page": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Page"
+              },
+              "limit": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Limit"
+              },
+              "ids": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Ids"
+              },
+              "lookback_days": {
+                "anyOf": [
+                  {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Lookback Days"
+              }
+            },
+            "title": "NewsQueryParams",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NewsQueryParams"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Query"
+          }
+        },
+        "title": "Get_NewsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/news"
+      ],
+      "publishedCredits": [
+        1
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_symbols",
+      "category": "identity",
+      "inputSchema": {
+        "$defs": {
+          "SymbolMetadataQueryParams": {
+            "properties": {
+              "symbols": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Symbols"
+              },
+              "scrip_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Scrip Codes"
+              }
+            },
+            "title": "SymbolMetadataQueryParams",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/SymbolMetadataQueryParams"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Query"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "title": "Get_SymbolsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/symbols/metadata"
+      ],
+      "publishedCredits": [
+        1
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "resolve_symbols",
+      "category": "identity",
+      "inputSchema": {
+        "properties": {
+          "queries": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Queries"
+          }
+        },
+        "required": [
+          "queries"
+        ],
+        "title": "Resolve_SymbolsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": [
+        1
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_daily_summary",
+      "category": "market",
+      "inputSchema": {
+        "properties": {
+          "report_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Report Type"
+          },
+          "report_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Report Date"
+          }
+        },
+        "title": "Get_Daily_SummaryInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "different_workflow",
+      "restPaths": [
+        "/v1/daily-summary/"
+      ],
+      "publishedCredits": [
+        1
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_announcements",
+      "category": "filings",
+      "inputSchema": {
+        "$defs": {
+          "AnnouncementsQueryParams": {
+            "properties": {
+              "symbols": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Symbols"
+              },
+              "scrip_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Scrip Codes"
+              },
+              "from": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "From"
+              },
+              "to": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "To"
+              },
+              "detailed": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Detailed"
+              },
+              "page": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Page"
+              },
+              "limit": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Limit"
+              },
+              "categories": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Categories"
+              },
+              "important": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Important"
+              },
+              "ids": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Ids"
+              },
+              "lookback_days": {
+                "anyOf": [
+                  {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Lookback Days"
+              }
+            },
+            "title": "AnnouncementsQueryParams",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/AnnouncementsQueryParams"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Query"
+          }
+        },
+        "title": "Get_AnnouncementsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/announcements"
+      ],
+      "publishedCredits": [
+        1,
+        2
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "search_announcements",
+      "category": "search",
+      "inputSchema": {
+        "properties": {
+          "search_query": {
+            "title": "Search Query",
+            "type": "string"
+          },
+          "symbols": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Symbols"
+          },
+          "days": {
+            "default": 60,
+            "title": "Days",
+            "type": "integer"
+          },
+          "from_date": {
+            "default": "",
+            "title": "From Date",
+            "type": "string"
+          },
+          "to_date": {
+            "default": "",
+            "title": "To Date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "search_query"
+        ],
+        "title": "Search_AnnouncementsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": [
+        1
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_announcement_categories",
+      "category": "filings",
+      "inputSchema": {
+        "properties": {},
+        "title": "Get_Announcement_CategoriesInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/announcements/categories"
+      ],
+      "publishedCredits": [
+        0
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_concalls",
+      "category": "calls",
+      "inputSchema": {
+        "$defs": {
+          "ConcallsQueryParams": {
+            "properties": {
+              "symbols": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Symbols"
+              },
+              "scrip_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Scrip Codes"
+              },
+              "from": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "From"
+              },
+              "to": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "To"
+              },
+              "detailed": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Detailed"
+              },
+              "page": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Page"
+              },
+              "limit": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Limit"
+              },
+              "ids": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Ids"
+              },
+              "include_full_transcript": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Include Full Transcript"
+              },
+              "lookback_days": {
+                "anyOf": [
+                  {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Lookback Days"
+              }
+            },
+            "title": "ConcallsQueryParams",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ConcallsQueryParams"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Query"
+          }
+        },
+        "title": "Get_ConcallsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/concalls",
+        "/v1/concalls/detail"
+      ],
+      "publishedCredits": [
+        2,
+        3
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_upcoming_concalls",
+      "category": "calendar",
+      "inputSchema": {
+        "$defs": {
+          "UpcomingConcallsQueryParams": {
+            "properties": {
+              "symbols": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Symbols"
+              },
+              "scrip_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Scrip Codes"
+              },
+              "detailed": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Detailed"
+              },
+              "page": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Page"
+              },
+              "limit": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Limit"
+              }
+            },
+            "title": "UpcomingConcallsQueryParams",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/UpcomingConcallsQueryParams"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Query"
+          }
+        },
+        "title": "Get_Upcoming_ConcallsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/concalls/upcoming"
+      ],
+      "publishedCredits": null,
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_upcoming_earnings",
+      "category": "calendar",
+      "inputSchema": {
+        "$defs": {
+          "UpcomingEarningsQueryParams": {
+            "properties": {
+              "symbols": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Symbols"
+              },
+              "scrip_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Scrip Codes"
+              },
+              "page": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Page"
+              },
+              "limit": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Limit"
+              }
+            },
+            "title": "UpcomingEarningsQueryParams",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/UpcomingEarningsQueryParams"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Query"
+          }
+        },
+        "title": "Get_Upcoming_EarningsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/earnings/upcoming"
+      ],
+      "publishedCredits": null,
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_events",
+      "category": "calendar",
+      "inputSchema": {
+        "properties": {
+          "symbols": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Symbols"
+          },
+          "days_count": {
+            "default": 3,
+            "title": "Days Count",
+            "type": "integer"
+          }
+        },
+        "title": "Get_EventsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": [
+        1
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "search_concalls",
+      "category": "search",
+      "inputSchema": {
+        "properties": {
+          "search_query": {
+            "title": "Search Query",
+            "type": "string"
+          },
+          "symbols": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Symbols"
+          },
+          "quarter_selector": {
+            "default": "LAST",
+            "title": "Quarter Selector",
+            "type": "string"
+          },
+          "num_quarters": {
+            "default": 2,
+            "title": "Num Quarters",
+            "type": "integer"
+          },
+          "specific_quarters": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Specific Quarters"
+          },
+          "result_mode": {
+            "default": "auto",
+            "title": "Result Mode",
+            "type": "string"
+          },
+          "page": {
+            "default": 1,
+            "title": "Page",
+            "type": "integer"
+          },
+          "per_page": {
+            "default": 20,
+            "title": "Per Page",
+            "type": "integer"
+          },
+          "candidate_top_k": {
+            "default": 0,
+            "title": "Candidate Top K",
+            "type": "integer"
+          },
+          "market_cap_min": {
+            "default": 0.0,
+            "title": "Market Cap Min",
+            "type": "number"
+          },
+          "market_cap_max": {
+            "default": 0.0,
+            "title": "Market Cap Max",
+            "type": "number"
+          },
+          "include_relaxed_matches": {
+            "default": true,
+            "title": "Include Relaxed Matches",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "search_query"
+        ],
+        "title": "Search_ConcallsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": [
+        2
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "search_news",
+      "category": "search",
+      "inputSchema": {
+        "properties": {
+          "queries": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Queries"
+          },
+          "symbols": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Symbols"
+          },
+          "days": {
+            "default": 30,
+            "title": "Days",
+            "type": "integer"
+          },
+          "sources": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Sources"
+          },
+          "include_global": {
+            "default": true,
+            "title": "Include Global",
+            "type": "boolean"
+          },
+          "per_query_limit": {
+            "default": 15,
+            "title": "Per Query Limit",
+            "type": "integer"
+          },
+          "from_date": {
+            "default": "",
+            "title": "From Date",
+            "type": "string"
+          },
+          "to_date": {
+            "default": "",
+            "title": "To Date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "queries"
+        ],
+        "title": "Search_NewsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": null,
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "list_earnings",
+      "category": "earnings",
+      "inputSchema": {
+        "$defs": {
+          "EarningsQueryParams": {
+            "properties": {
+              "symbols": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Symbols"
+              },
+              "scrip_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Scrip Codes"
+              },
+              "from": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "From"
+              },
+              "to": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "To"
+              },
+              "detailed": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Detailed"
+              },
+              "page": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Page"
+              },
+              "limit": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Limit"
+              },
+              "ids": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Ids"
+              },
+              "lookback_days": {
+                "anyOf": [
+                  {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Lookback Days"
+              }
+            },
+            "title": "EarningsQueryParams",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/EarningsQueryParams"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Query"
+          }
+        },
+        "title": "List_EarningsInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "family",
+      "restPaths": [
+        "/v1/earnings"
+      ],
+      "publishedCredits": [
+        2,
+        3
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_earnings_filing",
+      "category": "earnings",
+      "inputSchema": {
+        "properties": {
+          "symbol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Symbol"
+          },
+          "quarter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Quarter"
+          },
+          "earnings_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Earnings Id"
+          },
+          "detailed": {
+            "default": false,
+            "title": "Detailed",
+            "type": "boolean"
+          }
+        },
+        "title": "Get_Earnings_FilingInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "paired_observation",
+      "restPaths": [
+        "/v1/earnings/detail"
+      ],
+      "publishedCredits": [
+        3
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": true,
+      "observedExecutionCredits": 3
+    },
+    {
+      "name": "get_price_and_volume_since",
+      "category": "prices",
+      "inputSchema": {
+        "properties": {
+          "symbols": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Symbols"
+          },
+          "days_count": {
+            "title": "Days Count",
+            "type": "integer"
+          },
+          "series": {
+            "default": false,
+            "title": "Series",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "symbols",
+          "days_count"
+        ],
+        "title": "Get_Price_And_Volume_SinceInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": [
+        2
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_sectoral_data",
+      "category": "peers",
+      "inputSchema": {
+        "properties": {
+          "symbols": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Symbols"
+          }
+        },
+        "required": [
+          "symbols"
+        ],
+        "title": "Get_Sectoral_DataInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": [
+        1
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_sector_wise_companies",
+      "category": "peers",
+      "inputSchema": {
+        "properties": {
+          "symbols": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Symbols"
+          },
+          "mode": {
+            "default": "live",
+            "title": "Mode",
+            "type": "string"
+          },
+          "same_direction_only": {
+            "default": false,
+            "title": "Same Direction Only",
+            "type": "boolean"
+          },
+          "start_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Start Date"
+          },
+          "end_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "End Date"
+          }
+        },
+        "required": [
+          "symbols"
+        ],
+        "title": "Get_Sector_Wise_CompaniesInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": [
+        1
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_top_movers",
+      "category": "market",
+      "inputSchema": {
+        "properties": {
+          "top_n": {
+            "default": 5,
+            "title": "Top N",
+            "type": "integer"
+          },
+          "market_cap_min": {
+            "default": 500.0,
+            "title": "Market Cap Min",
+            "type": "number"
+          }
+        },
+        "title": "Get_Top_MoversInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": [
+        1
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_top_traded",
+      "category": "market",
+      "inputSchema": {
+        "properties": {
+          "top_n": {
+            "default": 10,
+            "title": "Top N",
+            "type": "integer"
+          },
+          "market_cap_min": {
+            "default": 1000.0,
+            "title": "Market Cap Min",
+            "type": "number"
+          }
+        },
+        "title": "Get_Top_TradedInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": [
+        1
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    },
+    {
+      "name": "get_52w_data",
+      "category": "market",
+      "inputSchema": {
+        "properties": {
+          "data_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Data Type"
+          },
+          "days_range": {
+            "default": 0,
+            "title": "Days Range",
+            "type": "integer"
+          },
+          "symbols": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Symbols"
+          }
+        },
+        "title": "Get_52W_DataInput",
+        "type": "object"
+      },
+      "outputSchema": null,
+      "restRelationship": "none",
+      "restPaths": [],
+      "publishedCredits": [
+        2
+      ],
+      "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
+      "dataExecutionObserved": false,
+      "observedExecutionCredits": null
+    }
+  ],
+  "restRoutes": [
+    {
+      "path": "/v1/announcements/categories",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": [
+        "get_announcement_categories"
+      ]
+    },
+    {
+      "path": "/v1/announcements",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": [
+        "get_announcements"
+      ]
+    },
+    {
+      "path": "/v1/symbols/metadata",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": [
+        "get_symbols"
+      ]
+    },
+    {
+      "path": "/v1/news",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": [
+        "get_news"
+      ]
+    },
+    {
+      "path": "/v1/block-deals",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": [
+        "get_block_deals"
+      ]
+    },
+    {
+      "path": "/v1/daily-summary/",
+      "methods": [
+        "POST"
+      ],
+      "relatedOperations": [
+        "get_daily_summary"
+      ]
+    },
+    {
+      "path": "/v1/earnings/citations/{earnings_id}/pdf",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/earnings/citations/{earnings_id}/page/{page}",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/earnings/index",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/earnings",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": [
+        "list_earnings"
+      ]
+    },
+    {
+      "path": "/v1/earnings/upcoming",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": [
+        "get_upcoming_earnings"
+      ]
+    },
+    {
+      "path": "/v1/earnings/attachments",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/earnings/detail",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": [
+        "get_earnings_filing"
+      ]
+    },
+    {
+      "path": "/v1/concalls/citations/{concall_id}/pdf",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/concalls/index",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/concalls/upcoming",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": [
+        "get_upcoming_concalls"
+      ]
+    },
+    {
+      "path": "/v1/concalls",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": [
+        "get_concalls"
+      ]
+    },
+    {
+      "path": "/v1/concalls/detail",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": [
+        "get_concalls"
+      ]
+    },
+    {
+      "path": "/v1/concalls/transcripts",
+      "methods": [
+        "POST"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/concalls/transcript",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/alerts",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/account/announcement-addon",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/account/announcement-addon/categories",
+      "methods": [
+        "PUT"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/account",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/account/limits",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/account/usage",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/account/ledger",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/batch/jobs",
+      "methods": [
+        "POST",
+        "GET"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/batch/jobs/{job_id}",
+      "methods": [
+        "GET",
+        "DELETE"
+      ],
+      "relatedOperations": []
+    },
+    {
+      "path": "/v1/batch/jobs/{job_id}/results",
+      "methods": [
+        "GET"
+      ],
+      "relatedOperations": []
+    }
+  ]
+}
