@@ -2,7 +2,7 @@
 
 **20 October 2026 scope update:** Phase 1 now builds reusable Python core services and a temporary local workbench. The [core/workbench architecture](core-workbench.md) is the active implementation design; [delivery plan](../plan.md) owns sequencing. This document preserves the **9 October downstream MCP design for a later phase**, not an instruction to package a Margin MCP server first. Its “first release” references below mean the later MCP release. Shared provider/admission/evidence principles remain relevant, but current lifecycle/result/UI contracts come from the core design.
 
-No core, UI or Margin MCP server is implemented. The [25-function reference](../reference/drishti-functions.md) and [provider research](../research/mcp-provider-feasibility.md) own source contracts/evidence; [implementation status](../implementation.md) owns delivered behavior.
+The core and local UI are now implemented; the Margin MCP server remains deferred. The [7 November research plan](research-environment-review.md) prioritizes bounded replay and agent experiments using ordinary Python tools before this adapter. First-release and in-memory-only statements below belong to the historical MCP proposal, not the new research-release scope. The [25-function reference](../reference/drishti-functions.md) and [provider research](../research/mcp-provider-feasibility.md) own source contracts/evidence; [implementation status](../implementation.md) owns delivered behavior.
 
 ## Decision and scope
 

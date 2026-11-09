@@ -1,96 +1,72 @@
 # Delivery and evaluation plan
 
-Updated for the **first core/workbench build**. The synthetic core, provider adapters and temporary interface are implemented; authenticated runtime/source validation and Margin MCP packaging remain open. [Core/workbench architecture](design/core-workbench.md) is the active design; [later MCP adapter](design/mcp-aggregation.md) preserves the packaging target. [Implementation status](implementation.md) owns delivered behavior and [API testing](api-testing.md) owns bounded source experiments.
+Updated **7 November 2026** after reviewing the current code, the 29 October product proposal and the professor's 2 November research note. This is planning, not new implementation or authorization for paid calls/publication. The [complete review and architecture](design/research-environment-review.md) owns the audit, record contracts, task/data matrix, rights/pricing findings and research design. [Implementation status](implementation.md) owns delivered behavior. The [finance/protocol proposal](design/analysis-and-protocols.md) remains the longer-term product backlog.
 
 ## Current objective
 
-Build and validate the core financial-research functionality through a **local browser workbench before packaging our own MCP server**. The same Python services must later support MCP without rewriting providers, validation, budgets or evidence handling. Provider transport stays **BharatStock REST + Drishti MCP**; the latter still requires an MCP client during this phase.
+Deliver a small, inspectable research environment over the existing Python core: individually callable operations, bounded frozen responses where permitted, fixed ordinary financial questions, independently filing-verified answer keys and genuine recorded agent trajectories. Keep BharatStock REST + Drishti MCP and the local workbench. A new downstream MCP server, general DCF, full sentiment workflow and universal provenance framework are not first-research-release dependencies.
 
-Implemented **FastAPI + a small local HTML/CSS/JavaScript interface**, one process/worker bound to loopback. The core is framework-independent. No React app, public hosting, database/corpus, LLM service or chat UI is a prerequisite. Synthetic mode is the default. The workbench is a development tool, not a financial-data repository or product frontend.
-
-Existing evidence is the 8/9 October trial and 25-function schema map. It supports beginning core implementation, not universal live access or accuracy claims. Last observed Drishti balance was 986 on **9 October**, not a current reading. The initial build used no agent-initiated authenticated API requests or purchase. The user’s 21 October PDF now adds successful combined live execution evidence, with presentation/billing/source gaps recorded in implementation status.
+The existing thirteen-operation core remains useful. Replay, capture, task/gold records and the agent runner do not yet exist. The 7 November audit passed lint/format and 50 offline tests; the latest selected live workflow evidence remains the user's 21 October RELIANCE export. Software checks do not establish source accuracy, current account rights or market-wide coverage.
 
 ## Build sequence
 
-Current progress: increments 0–3 have an implementation and offline integration checks; increment 4 has started with the user’s successful eight-call RELIANCE workflow. News/earnings rendering, detail selection and print defects found in the export must be resolved before claiming the interface complete. Browser acceptance covers the main workflow; remaining Phase 1 work is bounded live validation, original-source review where obtainable, and clean/manual handoff. See [delivered evidence](implementation.md#first-coreworkbench-build-checkpoint) and [runnable guide](workbench.md). This does not mark all live shapes or Phase 1 complete.
+Estimate roughly **3–5 working weeks for four contributors after feasibility and permissions are settled**, with source review and implementation overlapping. No new project deadline is inferred. Reduce companies/tasks before reducing evidence fidelity or independent review.
 
-Estimates below are working effort for a four-person team, subject to availability and provider access. They are not a new submission deadline. The first useful synthetic vertical slice should precede the full interface; plan roughly **6–9 working days** for an initial core/workbench pilot, with workstreams in parallel where interfaces are agreed.
-
-| Increment | Deliverable | Acceptance / evidence |
+| Stage | Work package | Exit gate |
 | --- | --- | --- |
-| 0: contracts and scaffold; 0.5–1 day | Python package/test setup, core request/result/plan/receipt records, approved operation registry, synthetic mode | Tests run without keys or external/provider network; no FastAPI import in core; raw licensed outputs are not fixtures |
-| 1: execution vertical slice; 1–2 days | One REST snapshot and one reviewed Drishti earnings operation through policy, adapters, sanitizer and receipt services | Real clients against synthetic REST/MCP servers; identity/context preserved, errors/unsafe output handled and spend reserved atomically |
-| 2: workbench shell; 1–2 days, can overlap increment 1 | FastAPI lifecycle, local static UI, plan/run controls and sanitized result inspector | Search/Run are explicit actions; GET/rerender makes no data call; keys stay backend-side; duplicate Run causes one dispatch |
-| 3: useful research modules; 1–2 days | Company identity; financials/ratios/prices/actions; selected news/filings/earnings; simple bounded overview preset | Realistic synthetic tables/price line/event cards, separate periods/bases/units, partial-provider behavior and trace/citation display |
-| 4: bounded live/source review; about 1 day, access permitting | RELIANCE first, selective TCS comparison; current allowances checked under an explicit budget | Actual REST/MCP paths, measured requests/credits, new-operation access and source-quality gaps recorded; no blanket financial verification |
-| 5: manual demo and handoff; 0.5–1 day | Repeatable setup, five workbench scenarios and evidence report | Same services work directly and via UI; no duplicate fetch on refresh; known conflict/missing/uncertain cases visible |
-| Later: MCP adapter | Tool listing, result/error conversion and stdio lifecycle over the tested core | Real downstream MCP transport tests, then paired host/model evaluation; no separate retrieval implementation |
-| Later: evidence/semantic extensions | Transcripts/search, transient source resolver, selected compatible financial/event tools | Independent entitlement/cost/source checks; no automatic expansion to every mapped operation |
-
-Implement admission and sanitation in the first slice, not after the live UI. The first live result can be displayed through the minimal inspector; a polished dashboard is not a gate. A synthetic UI alone is not source validation. Conversely, upstream MCP SDK success is not a delivered Margin MCP server or a model-host demo.
+| 0 — feasibility, first 2–3 team days | Applicable provider/account agreements; private retention/public release/model-use scope; request-to-question coverage; two development-company filing checks; explicit collection/cost manifest | Choose exact public capture, restricted collection or separately labelled filing reconstruction; at least one viable task family with independent evidence |
+| 1 — foundation, 4–6 days | Full request identity and pinned clock; opt-in capture journal; immutable manifest; offline replay; selected real-shape/detail/citation repairs | Replay needs no key/network/live metadata; stable supported responses, distinct unsupported/empty/failure states, safe crash/write behavior |
+| 2 — cases, parallel 4–7 days | Predeclare selection rule/roster/questions before agent outcomes; permitted bounded collection; independent answer keys and cross-review; freeze versions | Every task has observable evidence or justified insufficiency; source rights, periods, units, basis and transformations explicit |
+| 3 — experiments, 3–5 days | Iterative model runner, ordered event logs, fixed model/tool profiles and budgets; development smoke then final runs | Agent chooses subsequent calls; no predetermined prefetch; complete or explicitly incomplete trajectories; gold and extra evidence tools isolated |
+| 4 — release, 3–5 days | Outcome labels/subset annotations, reproducible analysis, worked example, data card/codebook, rights-reviewed files and clean reproduction instructions | Actual files support each claimed analysis/replay/recollection capability; limitations stated |
 
 ## Functional scope and staged runs
 
-| Area | First-phase operations |
-| --- | --- |
-| Identity | BharatStock search/snapshot; selective Drishti resolution/metadata cross-check |
-| Numeric data | BharatStock quarterly/annual financials, ratios, bounded EOD prices and corporate actions |
-| Events/evidence context | Drishti news, announcements/categories, earnings list/detail; safe source locators and provider analysis labels |
-| Diagnostics | Reviewed operation discovery/states, payload inspection, context warnings, receipts, requested/actual coverage and estimated/observed costs |
-| Combined use | Explicit operation plans; start with snapshot + quarterly financials + news + announcements; optional modules are selected, not automatically fetched |
+Start with a three-company research release, aiming for approximately six if coverage permits. The final roster is not automatically RELIANCE/TCS: use a recorded rule covering accessible evidence, corporate-action cases and controls. Fix question families/definitions before observing agent outcomes. EPS changes, latest reported profit, dividend-per-share comparisons and CFO versus cash capex are candidates, not proven current capabilities.
 
-Earnings detail is staged: list a small set, select a returned record/quarter and then fetch that detail. Semantic call search is the first extension after data access/billing/citation checks; market calendars with fallback, ownership/screener expansion and broad sentiment remain later. No autonomous agent, iterative broad discovery, universal reconciliation or claim verifier is in the initial phase.
+Use only selected operations and documented admissible arguments, not all thirteen by default. Financials, corporate actions, earnings discovery/detail and announcements are the likely starting subset. Corporate actions still need live validation; capex and dividend coverage are unproven. Add a bounded issuer-evidence lookup only when necessary to make a task answerable within the environment. Gold sources alone cannot make facts discoverable to agents.
 
-The 9 October design's thirteen proposed downstream MCP tools are a **later packaging profile**, not a requirement to expose thirteen browser controls now. The workbench calls core operation services. For Drishti the adapter internally uses the four actual wrappers and reviewed nested inputs. Twenty-five known schemas are documentation, not permission to enable all operations.
+Two models × six companies × four questions gives 48 target trajectories; three companies gives 24. Neither is a release gate. Real study data must be documented real observations. Fictional software fixtures remain separate. No mutated values or invented traps should be presented as natural source problems.
 
 ## Core and interface acceptance
 
-- Provider tests cover exact REST mapping/headers/pagination and selected Drishti nested schemas/logical bounds; malformed filters, IDs/window conflicts, index expansion and schema drift fail before dispatch.
-- Sanitization covers provider JSON/text/errors/catalog/guidance, embedded/encoded URLs and fake credentials. UI views never receive unsanitized payloads, keys or private signed URLs.
-- Backend state survives browser refresh/tab changes, shares one ledger and one provider context, and deduplicates run submission. Payload expiry/eviction does not permit replay; expired results are not refetched automatically.
-- Adapter lifecycle tests cover async task ownership, implicit MCP catalog traffic, independent provider errors, timeout/cancellation, shutdown and uncertain billing. No automatic data retry or quota exhaustion test against real accounts.
-- Present known context faithfully: original values/paths, period/basis, nulls, conflicting fields, stale numeric versus newer event dates, publication versus ingestion and citation evidence level. Unknown layouts stay unverified.
-- Use separate limits: news/announcements up to 20 records/30 days; earnings/call discovery up to 365 days; eight quarterly/two annual financial rows; prices up to 300 rows for one company/year. Trials use smaller scopes. A second page is another explicit operation.
-- Manual scenarios: company selection with ambiguity; financial and price inspection; news/filing display; selected earnings detail/conflict; one partial/failed/uncertain run. Default tests/scenarios are synthetic and labelled. Selected live scenarios document what was actually checked.
+Reuse the existing core/contracts, not the workbench HTTP layer, for agent tools. Live retrieval keeps current controls and transient results. Capture is opt-in and permissioned; replay is a separate offline path returning frozen agent-visible results and warnings without running current provider readiness or silently falling through to live.
 
-Ruff/pytest, package metadata and a tested development dependency constraint snapshot are delivered with the first package; maintain them alongside runtime changes. Core and HTTP/UI tests are required in Phase 1. Margin stdio packaging/real-model host comparisons are later gates, while the upstream Drishti MCP client is still tested now.
+Record full supplied/resolved arguments, known transformations, original periods/values, retrieval receipts, failures, redactions and checksums. Distinguish original provider information, Margin enrichment and experiment metadata. Unknown adjustment rules remain unknown. Pin relative windows and question cutoffs; changing warnings, helpers or available filings creates a new version/profile.
+
+Keep UI repairs scoped to faithful result/source/detail inspection first. Full print polish is useful but does not block a function-based experiment. Add only minimal snapshot and trajectory inspection views as needed; avoid a frontend rebuild.
+
+Required tests cover request identity, pinned dates, stable replay, schema/policy versions, missing/empty/unsupported distinctions, failed-response replay, no live fallback or spending, safe capture writes, sanitization, complete runner logs and answer-key isolation. Independently review financial arithmetic and accounting definitions.
 
 ## Budgets, retained state and existing source plans
 
-No authenticated live execution occurred in the first core/workbench build. The [test protocol](api-testing.md) retains historical results and prospective bounds; before any later live run, reconcile current key/account state and write an ordered plan including metadata, data, usage checks and cleanup. The 986-credit snapshot and October pricing are historical evidence, not fresh account information. Do not purchase or upgrade solely to build synthetic/core functionality.
+The complete review contains a six-company planning example of 18 BharatStock requests and 54 Drishti MCP credits for 24 data operations, before extra pages, metadata/lifecycle traffic, account diagnostics, sources and optional news. It is not an approved collection budget or measured full cost. Obtain a bounded per-request manifest and current entitlements before dispatch. Replays spend no provider credits; model tokens and annotation effort are separate costs.
 
-| Future source exercise | Existing proposed ceiling / interpretation |
-| --- | --- |
-| Focused Drishti diagnostic | At most 24 HTTP requests / 15 observed credits, including lifecycle/accounting; selected shapes only, not a standing recurring allowance |
-| Focused BharatStock follow-up | At most six REST requests, further reduced by remaining daily quota; search/actions gaps, not a replay of the twelve-request initial trial |
-| Initial live pilot | Up to 50 prospective Drishti credits total including the focused diagnostic; allocate each run first |
-| Expanded coverage | At most 500 prospective credits including the pilot; deferred until measured costs justify the study |
+The old Starter/Starter purchase advice concerns ordinary retrieval, not the new research use. Use the [dated rights/subscription review](design/research-environment-review.md#6-provider-rights-subscriptions-and-collection-cost) before selecting plans; a subscription does not establish public dataset, trajectory redistribution or external model-use rights. No purchase or provider outreach is authorized by this document.
 
-The backend's proposed run/process allowances and the stricter source-test ceiling both apply. Account-wide limits/other processes remain external. No auto-reload/multiple workers during live sessions. A process restart loses in-memory spend history and is not a daily cap. Keep only bounded, expiring sanitized results for inspection; no persistent financial-response cache or data export by default. Idempotency/accounting records are separate from payload buffers and cannot be reset by UI navigation.
-
-Private outputs from 8/9 October have manual review dates 22/23 October. This plan does not extend retention or authorize putting saved licensed payloads into fixtures. Reuse the documented findings and synthetic cases; review private artifacts before any permitted use. Current subscription advice is maintained as dated research, and should be rechecked before purchase.
+Proposed persistent research artifacts are an explicit, permission-gated exception to the transient live workflow. They are bounded/versioned, not a maintained market corpus or backfill. Old raw diagnostics have overdue manual review dates; do not reuse or extend retention implicitly. Private keys, restricted captures and private answer keys remain outside Git, public release paths and agent-visible files.
 
 ## Four-person work split
 
-| Workstream | Owns | Shared artifact |
+| Workstream | Owns | Review |
 | --- | --- | --- |
-| A: providers/contracts | BharatStock REST, Drishti session/discovery, reviewed operation maps and selected live checks | Adapter contract and synthetic upstream fixtures |
-| B: core/policy | Service records, planner/coordinator, validation, budgets, cancellation and safe evidence pipeline | Tested execution path and result/receipt interface |
-| C: workbench | FastAPI lifecycle/routes, local UI, view mapping, idempotency integration and run inspector | Thin interface that calls shared services |
-| D: evaluation/docs | Independent source/financial checks, test cases, demo rubric and setup/status documents | Evidence report and clean-environment reproduction |
+| Core | Request contracts, capture, replay, stability and live regressions | Integration contributor verifies offline/no-fallback behavior |
+| Finance, including Advait | Task definitions, filing calculations, first-pass answer keys; optional separate DCF | Evidence contributor independently checks keys before model outcomes |
+| Evidence/provider | Applicable rights, coverage, source provenance, bounded collection manifest | Finance/core review definitions and access/cost assumptions |
+| Integration/research | Runner, trajectory records, analysis, inspection and reproducibility | Others review leakage, labels and clean setup |
 
-Agree on contracts first; integrate provider and policy tests before adding live credentials to the UI. These are suggested human responsibilities, not delegation to autonomous agents or authorization to contact providers.
+Each stream owns tests/documentation. These are human workstreams, not autonomous delegation instructions.
 
 ## Later evaluation and deferred material
 
-After the two-company pilot, the existing twelve-company coverage panel can measure eight-quarter/two-annual/year-price and event/source coverage. Requested slots remain targets, not acquired data; original-source availability and checked financial cells are separate measures. No corpus acquisition target is restored.
+After a reliable baseline, add typed compatibility/comparison helpers, citation task/assessment workflows, explicit-assumption FCFF DCF/scenarios/sensitivity and bounded sentiment protocols from the existing design. Add them to experiments as explicit versioned conditions; do not silently alter the baseline or use host-LLM assessments as independent gold.
 
-Paired real-host evaluation moves to the MCP phase. Its baseline uses the same REST-backed BharatStock adapter plus directly attached Drishti MCP. The workbench phase measures provider/core correctness, request/credit behavior, inspectability and manual workflow completion; it does not claim LLM accuracy improvements.
+Then package stable services through Margin MCP and validate a real host. Selective semantic search/concall additions follow demonstrated tasks. Broader sectors, market-wide claims, public multiuser hosting and cross-domain generality remain later work.
 
 ### Proposed corpus composition
 
-Retained for older links. Earlier document-count/archive targets are superseded. Historic code/documents remain on [`d1`](https://github.com/rishitttt/margin-mcp/tree/d1/docs). Current work retrieves external data on demand and retains only explicitly permitted temporary diagnostic material.
+Retained for older links. The old maintained corpus project remains superseded on `d1`. The proposed exception is a small permissioned, immutable research environment with declared tool/request coverage, independently verified evidence and explicit public/restricted/reconstructed status.
 
 ### Remaining gates
 
-Before live workbench execution: tests for shared admission, sanitization, idempotency, lifecycle and local interface safety. Before live-source claims: selected entitlement, billing and real-return evidence. Before financial normalization/claim verification: compatible definitions/context and original evidence resolving the known conflict. Before Margin MCP: stable core contracts and workbench validation, then actual downstream transport/host tests. Before public hosting: separate provider permissions, user auth, isolation and accounting design. None of these gates requires a financial corpus.
+Feasibility/rights -> capture/replay -> predeclared cases and independent keys -> frozen environment -> genuine trajectories -> inspectable release. Rebuilding analysis, replaying the same environment and recollecting live data need separate tested instructions. Environment fidelity and independently justified answers take priority over task count, feature count and packaging.

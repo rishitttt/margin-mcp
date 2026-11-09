@@ -1,6 +1,8 @@
 # Phase 1: core research services and local workbench
 
-Architecture set on **20 October 2026**, now implemented as the first synthetic core/workbench slice. Authenticated new-adapter validation and Margin MCP packaging remain pending. This is the active architecture; [delivery plan](../plan.md) owns milestones and [implementation status](../implementation.md) owns actual progress. The [MCP adapter design](mcp-aggregation.md) is deferred until the core is validated.
+Architecture set on **20 October 2026**, implemented as the core/workbench slice, with selected live execution shown in the 21 October user export. Broader financial/source validation and Margin MCP packaging remain pending. This document describes the delivered core boundary; [delivery plan](../plan.md) owns milestones and [implementation status](../implementation.md) owns actual progress. The [MCP adapter design](mcp-aggregation.md) remains deferred.
+
+**7 November proposed extension:** the [research-environment review](research-environment-review.md) adds opt-in permissioned capture, immutable replay, independent answer keys and an agent runner beside this live workflow. They are not implemented. In-memory/TTL/no-agent statements below describe the existing workbench; they do not prohibit the separately scoped future research mode or authorize storing provider data now.
 
 ## Goal and scope
 

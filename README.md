@@ -8,6 +8,8 @@ A Python research core for Indian financial data, integrating **BharatStock REST
 
 The earlier corpus/PDF implementation is preserved on the pushed [`d1` branch](https://github.com/rishitttt/margin-mcp/tree/d1) at `c77963d`. Old corpus commands do not apply to this runtime.
 
+**7 November planning update:** the [complete research review](docs/design/research-environment-review.md) and [revised plan](docs/plan.md) propose a bounded replayable environment, independent filing-based answers and recorded agent experiments over this core. They are not implemented. A permissioned frozen study snapshot is a specific exception to the transient live workflow; general DCF, sentiment and downstream MCP remain later/parallel work. The audit passed Ruff checks and all 50 offline tests; no new authenticated collection or model experiment was run.
+
 ## Run locally
 
 Requires Python 3.12 or newer; dependency constraints were tested on Python 3.12/macOS ARM.
@@ -34,6 +36,7 @@ Trial tests return financial, price, ownership and event data for RELIANCE/TCS. 
 
 ## Start here
 
+- [Short handoff: repo map, documentation update and professor's new notes](HANDOFF.md)
 - [Workbench setup and usage](docs/workbench.md)
 - [Active core/workbench architecture](docs/design/core-workbench.md)
 - [Later MCP interface design](docs/design/mcp-aggregation.md)
@@ -50,9 +53,9 @@ Later, Margin's MCP adapter calls those same services. No financial corpus, publ
 
 ## Access and subscriptions
 
-The supplied **BharatStock Free** key (25 requests/day) and **Drishti trial** (1,000 one-off credits) support pre-purchase tests. Two data/catalog passes and one metadata audit are complete. Free BharatStock does not include native MCP; Drishti native earnings execution succeeded, while transcript search and most other operations remain untested. These historical source diagnostics do not establish that the newly implemented adapters work against current live contracts. The chosen integration uses BharatStock REST, so its native-MCP gate is not a blocker. Do not repeat completed passes against used quota; use the function reference and budget further source checks separately.
+The historical tests used the supplied **BharatStock Free** key (25 requests/day) and **Drishti trial** (1,000 one-off credits); current access and balances have not been revalidated. Two data/catalog passes and one metadata audit are complete. Free BharatStock does not include native MCP; Drishti native earnings execution succeeded, while transcript search and most other operations remain untested. These historical source diagnostics do not establish that the newly implemented adapters work against current live contracts. The chosen integration uses BharatStock REST, so its native-MCP gate is not a blocker. Do not repeat completed passes against used quota; use the function reference and budget further source checks separately.
 
-Build synthetic/core functionality without a purchase. The **9 October** research recommended BharatStock Starter + Drishti Starter at a then-published ₹2,600/month plus applicable tax/charges for later paid history/quota; this is dated guidance and was not rechecked on 20 October. Confirm current pricing/access before purchase. BharatStock Developer/native MCP is not required for the chosen REST path.
+Build synthetic/core functionality without a purchase. The **9 October** Starter/Starter ₹2,600/month recommendation was historical retrieval guidance. For the new research use, consult the [7 November rights/subscription review](docs/design/research-environment-review.md#6-provider-rights-subscriptions-and-collection-cost): ordinary REST access, model evaluation, external model processing and public data/trajectory release are different questions. BharatStock's native MCP remains technically unnecessary; current published rights can still affect the appropriate plan. No plan has been purchased or account quota revalidated by this review.
 
 Trial keys have been copied to local ignored `reports/private/mcptempkeys.txt` with permissions 0600; they have not been staged, committed or pushed. Later, `.env.example` can be copied to `.env` and filled locally. Do not paste credentials into chat or commit raw responses containing account information or signed links. The runtime reads environment variables only; it does not automatically load `.env` or the private text file. Live startup and Drishti connection are explicit; see the workbench guide.
 

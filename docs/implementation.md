@@ -11,6 +11,22 @@ Current state: **the first reusable Python core and temporary local workbench ar
 
 ## Validation
 
+### Documentation handoff: 9 November 2026
+
+Prepared the documentation-only commit covering the earlier finance/protocol proposal, research review, revised plan, preserved professor progress summary and updated contributor/navigation/context documents. Added [HANDOFF.md](../HANDOFF.md), a 532-word repo map and update summary, with the professor's new notes explicitly separated from our proposed response and existing product backlog. Runtime behavior is unchanged; no provider/model calls or new financial/research capabilities are claimed.
+
+All 16 Markdown files and 147 local links/anchors passed; `git diff --check` passed. No runtime test rerun was needed for these documentation-only edits; the last executable audit remains the 7 November checkpoint below. Private credentials and data are excluded from the commit.
+
+### Research-direction audit: 7 November 2026
+
+Reviewed the delivered core/provider/policy/evidence/workbench boundaries against the professor's supplied 2 November note and the earlier finance/protocol plan. Ruff lint and format checks passed; **50 offline tests passed in 1.04 seconds**. No authenticated provider/model request, runtime implementation, dependency installation, purchase, provider outreach, commit or push occurred. Public provider terms/pricing were inspected without credentials; findings and links are in the [complete review](design/research-environment-review.md).
+
+Confirmed gaps: payloads/receipts are not durable; selected receipt fields omit full nested arguments; no immutable environment, replay request identity, independent task/gold records, agent runner or trajectory annotation exists. Generic warnings are not independent financial adjudication; provider-shaped results are not a general normalization or corporate-action join. Software tests do not establish task feasibility, financial accuracy or current account permissions/cost.
+
+The revised [plan](plan.md) prioritizes permissioned capture/replay, fixed independently verified tasks and genuine agent runs. DCF, citation/sentiment protocols and downstream MCP remain planned product extensions. The proposed persistent research snapshot is distinct from the existing transient live workflow and is not implemented or authorized for collection/publication by this documentation change. Previous diagnostic retention dates are not extended.
+
+Documentation validation: 15 Markdown files and 124 local links/anchors passed; `git diff --check` passed. Changes are documentation only. The historical professor-facing progress summary remains 931 words and was not rewritten for the new scope.
+
 ### Public endpoint checkpoint
 
 A bounded sequence of 14 HTTPS requests was run without credentials or paid-data tool calls. TLS verification stayed enabled; each request had a 20-second timeout and 2 MiB response cap. No automatic retries, mutation jobs, authenticated requests or account credits were involved.
