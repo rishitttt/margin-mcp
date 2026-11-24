@@ -5,11 +5,10 @@ from __future__ import annotations
 import copy
 from decimal import DecimalException
 
-from jsonschema import Draft202012Validator, FormatChecker, ValidationError
-
 from margin.analysis import calculations, ratios
 from margin.analysis.facts import FACT_SCHEMA, MONEY_UNITS, check_compatibility, convert_units
 from margin.core.contracts import DomainError
+from margin.core.validation import validation_summary
 from margin.finance import dcf
 
 NUMBER = {"type": ["number", "string"], "maxLength": 64}
@@ -148,13 +147,14 @@ def calculate(operation, arguments):
     if not isinstance(operation, str) or operation not in SPECS:
         raise DomainError("unknown_function", "Choose an enabled local analysis function.")
     fn, schema = SPECS[operation]
-    try:
-        Draft202012Validator(schema, format_checker=FormatChecker()).validate(arguments)
-    except ValidationError:
+    problem = validation_summary(schema, arguments)
+    if problem:
         raise DomainError(
             "invalid_input",
-            "Arguments do not match the local function schema; no coercion or default assumptions.",
-        ) from None
+            "Arguments do not match the local function schema. "
+            + problem
+            + " No fields were dropped, coerced or inferred.",
+        )
     try:
         return fn(**copy.deepcopy(arguments))
     except (DecimalException, OverflowError):

@@ -10,7 +10,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.3.1"
+VERSION = "0.3.2"
 CONTRACT = "margin.mcp.v1"
 ID = {"type": "string", "pattern": r"^[A-Za-z0-9_-]{1,100}$"}
 WAIT = {"type": "integer", "minimum": 0, "maximum": 30, "default": 0}
@@ -170,7 +170,7 @@ def definitions():
         ),
         (
             "margin_calculate",
-            'Call this MCP tool for catalog calculation functions. Example argument structure: {"function":"finance.calculate_margins","arguments":{"profit":<fact object>,"revenue":<fact object>}}. Discover the exact fact schema with margin_catalog(group="calculations",name="finance.calculate_margins",include_schemas=true). Fact objects require reporting context; never invent issuer, units, dates or basis. Put why outside arguments. No provider calls; incomplete outputs are valid. DCF needs explicit assumptions.',
+            'Call this MCP tool for catalog calculation functions. Example argument structure: {"function":"finance.calculate_margins","arguments":{"profit":<fact object>,"revenue":<fact object>}}. Discover the exact fact schema with margin_catalog(group="calculations",name="finance.calculate_margins",include_schemas=true). Use only the declared fields; no hypothetical/why flags inside arguments. Label examples in top-level why or fact.source. Fact objects require reporting context; never invent issuer, units, dates or basis. Numeric strings are supported. No provider calls; incomplete outputs are valid. DCF needs explicit assumptions.',
             schema(
                 {"function": {"enum": sorted(SPECS)}, "arguments": ARGS}, ["function", "arguments"]
             ),

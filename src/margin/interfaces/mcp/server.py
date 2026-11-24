@@ -14,7 +14,6 @@ from dataclasses import replace
 from urllib.parse import unquote
 from uuid import uuid4
 
-from jsonschema import Draft202012Validator, ValidationError
 from mcp import types
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
@@ -24,6 +23,7 @@ from margin.analysis.company import planning_capabilities
 from margin.core.config import Settings
 from margin.core.contracts import DomainError, encoded_size
 from margin.core.service import ResearchService
+from margin.core.validation import validation_summary
 from margin.interfaces.agent.client import BridgeError
 from margin.interfaces.agent.local_config import read_provider_env
 from margin.interfaces.mcp.recording import ToolRecorder
@@ -39,6 +39,10 @@ Request one exact function's schema, not all schemas, when the function is known
 Never invent fact metadata to make a calculation succeed. If units, period, issuer or
 basis are missing, ask for context or return the explicit incomplete result. An example
 must be declared hypothetical with its assumptions, never presented as retrieved facts.
+Use only declared input fields. Label a hypothetical example in why or fact.source;
+do not add hypothetical or why flags inside a function's arguments. Validation errors
+identify locations and allowed fields. Correct the indicated field instead of repeatedly
+changing valid numeric strings to numbers or adding optional fields without evidence.
 Start with margin_status, then margin_catalog for routes and exact schemas. Synthetic mode
 contains fictional examples and must not answer real-company questions. Retrieval and
 company data dependencies require preview then margin_run. Respect holds, process IDs,
@@ -91,12 +95,12 @@ class MarginMCP:
                 arguments = {}
             if not isinstance(arguments, dict) or encoded_size(arguments) > 64 * 1024:
                 raise DomainError("invalid_input", "Use a finite JSON object of at most 64 KiB.")
-            try:
-                Draft202012Validator(self.tools[name].input_schema).validate(arguments)
-            except ValidationError:
+            problem = validation_summary(self.tools[name].input_schema, arguments)
+            if problem:
                 raise DomainError(
-                    "invalid_input", "Arguments do not match the selected MCP tool schema."
-                ) from None
+                    "invalid_input",
+                    "Arguments do not match the selected MCP tool schema. " + problem,
+                )
             why = arguments.get("why")
             if why is not None and not why.strip():
                 raise DomainError(

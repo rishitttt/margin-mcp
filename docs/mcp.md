@@ -1,6 +1,6 @@
 # Run Margin as a local MCP server
 
-Implemented **25 November 2026**, current package **0.3.1**. The stdio adapter exposes 14 workflow
+Implemented **25 November 2026**, current package **0.3.2**. The stdio adapter exposes 14 workflow
 tools over the same core used by the workbench and CLI. It makes 37 retrieval/finance
 functions and ten local review functions discoverable. The web server and skill are not
 required for MCP use. [Architecture](design/mcp-aggregation.md) records the plan published
@@ -70,7 +70,7 @@ be explicitly connected before its data operations; no npm install is needed.
 
 For an offline first connection use `--mode synthetic`, omit the credential-file args
 and keep the limits small. The host should see 14 tools named `margin_*` and server
-version 0.3.1. No host registration/settings were changed automatically by the build.
+version 0.3.2. No host registration/settings were changed automatically by the build.
 
 ## Tools and normal flow
 
@@ -224,3 +224,34 @@ path to a **new** filename before reconnecting, and start a fresh chat so cached
 and failed-call history are cleared. Existing recordings are never overwritten. The
 patched source and installed-package SDK checks do not prove that Qwen now completes the
 workflow; repeat the LM Studio chat test and retain its new log separately.
+
+
+## Financial input diagnostics: 0.3.2
+
+The second LM Studio/Qwen attempt reached `margin_calculate` five times. Each request
+added an unsupported `hypothetical` field inside the function arguments; the first also
+used unsupported `currency`/`date` fields and omitted required fact context. Subsequent
+requests omitted `period_start`. The recorded catalog schema exactly matches the runtime
+schema: numeric strings and numbers are both supported. This was not schema drift.
+
+Version 0.3.2 replaces opaque local-function/MCP validation messages with bounded paths,
+allowed field names, missing required fields and expected types/formats. Messages do not
+quote supplied values, unknown property names or dynamic caller keys. Validation remains
+strict: no dropping extra fields, coercing inputs or inventing facts. For margins, the
+specific root guidance is `/: unexpected fields; allowed fields: profit, revenue.`
+Remove the extra flag, then use the already explicitly declared period start on both
+facts. Removing the flag alone passes schema validation but leaves the calculation
+incomplete; adding the declared starts yields 15% for the hypothetical example.
+
+There are two levels of schema exposure: `tools/list` advertises the strict MCP wrapper
+but leaves its nested `arguments` object generic. `margin_catalog` returns the complete
+selected function schema on demand, which is also used for runtime validation. The
+catalog successfully delivered the exact schema in this observed run. Directly typed
+MCP tools for a small set of common functions are a planned usability improvement;
+this patch does not claim that those have been implemented. Inlining all calculation
+and review schemas at once needs a context-size and host-compatibility evaluation.
+
+After upgrading to 0.3.2, reconnect with a fresh recording filename (for example `03`
+if unused), and start a new chat. Explain hypothetical status in `why` or fact `source`,
+not an undeclared flag inside function `arguments`. Retest actual model recovery; offline
+reproduction is not proof of a successful model conversation.

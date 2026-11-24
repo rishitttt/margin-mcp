@@ -1,5 +1,7 @@
 # Working on Margin
 
+**25 November 0.3.2 schema feedback:** keep bounded schema-owned validation guidance and never echo caller values, arbitrary property names or dynamic keys. Do not drop unknown fields or invent financial metadata to rescue a model. The second Qwen trial used the correct tool but five invalid requests; exact catalog/runtime schemas agreed. The generic wrapper versus on-demand exact schema distinction is documented in docs/mcp.md. 230 offline tests passed; successful model recovery remains unverified.
+
 These instructions apply to human contributors and coding agents.
 
 **25 November MCP routing patch (0.3.1):** catalog identifiers are not callable tools. Preserve per-entry `mcp_execution`, filtered schema guidance and unknown-tool JSON-RPC errors. Do not expose aliases or invent financial context to rescue a model. First LM Studio/Qwen evidence covers only status/catalog; 224 offline tests and SDK acceptance do not prove successful model completion. Read `docs/mcp.md` for the declared hypothetical test and fresh-log/reconnect steps.

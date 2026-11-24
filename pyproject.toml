@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "margin-research"
-version = "0.3.1"
+version = "0.3.2"
 description = "Core Indian financial-research services and a local development workbench"
 readme = "README.md"
 requires-python = ">=3.12"

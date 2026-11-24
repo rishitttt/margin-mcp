@@ -1,5 +1,9 @@
 # Implementation and validation status
 
+## Financial schema-feedback repair: 25 November 2026, 0.3.2
+
+All five failed calculation requests in the private second LM Studio log were reproduced. The catalog schema equals the runtime schema. Each had an extra `hypothetical` function-argument flag; removing it exposes a missing period-start hold, and adding the already declared starts yields 15%. Numeric strings and numbers both work. Safe bounded schema diagnostics now identify paths, permitted/missing fields and types without reflecting caller values or unknown names. No automatic repair or invented metadata was added. The top-level MCP wrapper still uses a generic nested arguments object; direct typed common tools remain proposed. **230 offline tests passed**, including repeated invalid-input recovery and diagnostic privacy. Installed-package/stdio checks and private evidence are under `reports/private/mcp-validation-2026-11-25/`; model completion remains pending a fresh-chat retest.
+
 ## MCP catalog-routing repair: 25 November 2026, 0.3.1
 
 The first LM Studio/Qwen3-8B user attempt reached status/catalog; its private log has two

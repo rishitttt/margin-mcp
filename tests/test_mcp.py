@@ -228,6 +228,41 @@ async def test_declared_margin_example_routes_from_catalog_without_provider_call
         await service.close()
 
 
+@pytest.mark.parametrize("profit,revenue", [(150, 1000), ("150", "1000")])
+async def test_reported_extra_flag_error_guides_recovery_without_changing_context(
+    adapter, profit, revenue
+):
+    # Reproduces the public input shape described by the user; all values are hypothetical.
+    common = {
+        "issuer": "EXAMPLE_ONLY",
+        "unit": "INR",
+        "period_type": "annual",
+        "period_end": "2026-03-31",
+        "basis": "standalone",
+    }
+    inputs = {
+        "profit": common
+        | {"metric": "net_profit", "definition": "Hypothetical net profit", "value": profit},
+        "revenue": common
+        | {"metric": "revenue", "definition": "Hypothetical revenue", "value": revenue},
+        "hypothetical": True,
+    }
+    before = adapter.service.ledger.snapshot()
+    call = {"function": "finance.calculate_margins", "arguments": inputs}
+    failed = await invoke(adapter, "margin_calculate", call, error=True)
+    assert "unexpected fields; allowed fields: profit, revenue" in failed["error"]["message"]
+    inputs.pop("hypothetical")
+    partial = await invoke(adapter, "margin_calculate", call)
+    assert partial["data"]["status"] == "incomplete"
+    assert any("period_start" in issue for issue in partial["data"]["issues"])
+    for item in inputs.values():
+        item["period_start"] = "2025-04-01"
+    result = await invoke(adapter, "margin_calculate", call)
+    assert result["data"]["status"] == "success"
+    assert result["data"]["values"]["margin_percent"] == "15.00"
+    assert adapter.service.ledger.snapshot() == before
+
+
 async def test_company_preview_run_reuse_results_and_facts(adapter):
     preview = await invoke(
         adapter,

@@ -1,5 +1,7 @@
 # Margin
 
+**25 November schema-feedback patch (0.3.2):** the second Qwen trial reached calculations but added an unsupported input flag. Exact catalog/runtime schemas agree. Bounded validation errors now identify locations and allowed/missing fields, preserving strict financial guards. See [input diagnostics](docs/mcp.md#financial-input-diagnostics-032).
+
 **25 November MCP patch (0.3.1):** catalog entries now identify the actual MCP tool and argument binding, addressing the first LM Studio/Qwen attempt to call `finance.calculate_margins` as a tool. Unknown tools return protocol errors. Fact context guards remain unchanged. See [routing repair and test prompt](docs/mcp.md#lm-studio-catalog-routing-repair-031); reload the host with a new log filename after installing the patch. Successful model-host completion remains to be retested.
 
 **25 November MCP alpha (0.3.0):** a local stdio MCP server now exposes the validated core through 14 workflow tools. No web backend or skill is required for MCP use. Read [MCP setup](docs/mcp.md) for installation/configuration, shared process state, logs and limitations. Core checkpoint `6b22f57` and the implementation plan `07b981a` were pushed before adapter work. The old dated notes below remain historical.
