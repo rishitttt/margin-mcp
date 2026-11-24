@@ -108,7 +108,7 @@ async def test_rest_stream_is_bounded_before_json_decode():
 
 
 @asynccontextmanager
-async def fake_drishti(*, changed=None):
+async def fake_drishti(*, changed=None, extra_native=False, missing_native=None):
     calls = []
 
     async def list_tools(ctx, params):
@@ -120,7 +120,21 @@ async def fake_drishti(*, changed=None):
                     output_schema=entry["outputSchema"],
                 )
                 for name, entry in NATIVE.items()
+                if name != missing_native
             ]
+            + (
+                [
+                    types.Tool(
+                        name="report_issue",
+                        input_schema={
+                            "type": "object",
+                            "properties": {"message": {"type": "string"}},
+                        },
+                    )
+                ]
+                if extra_native
+                else []
+            )
         )
 
     async def call_tool(ctx, params):
@@ -133,7 +147,23 @@ async def fake_drishti(*, changed=None):
                     if name != changed
                     else {"type": "object", "required": ["a_new_field"]}
                 )
-                tools.append({"name": name, "input_schema": schema})
+                tools.append(
+                    {
+                        "name": name,
+                        "title": name,
+                        "description": "Fictional upstream descriptor for offline tests.",
+                        "annotations": {
+                            "readOnlyHint": True,
+                            "destructiveHint": False,
+                            "idempotentHint": True,
+                            "openWorldHint": True,
+                        },
+                        "inputSchema": schema,
+                        "outputSchema": {},
+                        "input_schema": schema,
+                        "next_step": "Execute an explicitly selected fixture request.",
+                    }
+                )
             data = {"tools": tools}
         elif params.name == "execute_tool":
             data = drishti_payload(params.arguments["name"], params.arguments["arguments"])
@@ -193,3 +223,25 @@ async def test_schema_drift_quarantines_only_changed_nested_operation():
             assert "execute_tool" not in calls
         finally:
             await adapter.close()
+
+
+@pytest.mark.asyncio
+async def test_additive_native_tools_stay_unexposed_and_missing_required_tools_block():
+    for extra, missing in [(True, None), (False, "execute_tool")]:
+        settings = Settings(mode="live", drishti_key="fake-sdk-key")
+        ledger = Ledger({"bharatstock": 0, "drishti": 20}, 0, paced=False)
+        async with fake_drishti(extra_native=extra, missing_native=missing) as (transport, calls):
+            adapter = DrishtiAdapter(
+                ledger, settings, transport=transport, endpoint="http://127.0.0.1:8769/mcp"
+            )
+            try:
+                if missing:
+                    with pytest.raises(DomainError, match="missing or duplicated"):
+                        await adapter.connect()
+                else:
+                    status = await adapter.connect()
+                    assert status["unexposed_native_tools"] == ["report_issue"]
+                    adapter.assert_ready(Registry(settings).spec("drishti.get_news"))
+                assert "report_issue" not in calls and "execute_tool" not in calls
+            finally:
+                await adapter.close()

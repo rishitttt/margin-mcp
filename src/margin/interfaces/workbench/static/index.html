@@ -2,29 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Margin · Research workbench</title>
+  <title>Margin · Function lab</title>
   <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/static/style.css"><script src="/static/app.js" defer></script>
+  <link rel="stylesheet" href="/static/style.css?v=20261116-console1"><script src="/static/app.js?v=20261116-console1" defer></script>
 </head>
 <body>
-  <header><a class="wordmark" href="/">margin<span> / workbench</span></a><div id="mode" class="badge">Loading local state</div></header>
+  <a class="skip-link" href="#task-context">Skip to workspace</a>
+  <header><a class="wordmark" href="/"><span class="brand-icon" aria-hidden="true">m.</span>margin<span class="wordmark-sub">FUNCTION LAB</span></a><div class="header-status"><span class="local-label">LOCAL WORKSPACE</span><div id="mode" class="badge">Loading local state</div></div></header>
   <main>
-    <section class="intro"><p class="eyebrow">INDIAN COMPANY RESEARCH · DEVELOPMENT INTERFACE</p><h1>Inspect the data.<br>Keep the evidence.</h1><p class="lede">Company financials and developments, with provider context and an inspectable execution trail.</p></section>
+    <section class="intro"><div><p class="eyebrow">RESEARCH / TEST / INSPECT</p><h1>From source to signal.</h1><p class="lede">Retrieve company data. Put the numbers to work.<br>Every function, input and result in one workspace.</p></div><div class="intro-index"><span>01 <strong>Configure</strong></span><span>02 <strong>Preview</strong></span><span>03 <strong>Run &amp; inspect</strong></span></div></section>
     <div id="mode-note" class="notice"></div><div id="error" class="notice error" role="alert" hidden></div>
     <div class="workspace">
       <aside class="panel setup">
-        <div class="section-title"><span class="step">01</span><h2>Set up a run</h2></div>
-        <form id="company-form"><label for="symbol">Security / ticker</label><input id="symbol" name="symbol" autocomplete="off" maxlength="40" required><label for="exchange">Exchange</label><select id="exchange"><option>NSE</option><option>BSE</option></select><div class="button-row"><button type="submit" id="load-company" class="secondary">Inspect snapshot</button><button type="button" id="search-directory" class="quiet">Search directory</button></div></form>
+        <div class="section-title"><span class="step">◎</span><h2>Company context</h2></div>
+        <form id="company-form"><label for="symbol">Security / ticker</label><input id="symbol" name="symbol" autocomplete="off" maxlength="40" required><label for="exchange">Exchange</label><select id="exchange"><option>NSE</option><option>BSE</option></select><div class="button-row"><button type="submit" id="load-company" class="secondary">Preview snapshot</button><button type="button" id="search-directory" class="quiet">Preview directory search</button></div></form>
         <p id="company-context" class="small">Select an explicit listing; names alone can be ambiguous.</p>
-        <fieldset><legend>Include in overview (up to 8)</legend><div id="modules"></div><div id="access-note" role="note"></div></fieldset>
-        <details class="date-options"><summary>Price window</summary><label for="price-from">From</label><input type="date" id="price-from"><label for="price-to">To</label><input type="date" id="price-to"></details>
-        <button id="preview" class="primary wide">Preview operation plan</button>
-        <div class="provider-connect"><button id="connect" class="quiet">Connect / refresh Drishti</button><p id="connection-status" class="small" role="status" aria-live="polite">Checking local connection state…</p><p class="small">Explicit metadata action. Live mode counts lifecycle requests.</p></div>
-        <div class="section-title budget-title"><span class="step">↳</span><h2>Process allowance</h2></div><div id="budget"></div><p class="small">Local counters reset on backend restart. They are not account-wide quotas.</p>
+        <details id="provider-settings" class="provider-connect"><summary>Drishti · news &amp; earnings</summary><button id="connect" class="quiet">Connect / refresh Drishti</button><p id="connection-status" class="small" role="status" aria-live="polite">Checking local connection state…</p><p class="small">Only needed for news, announcements and earnings. Financial functions work without this connection. Live metadata actions count toward request limits.</p></details>
+        <details id="allowance-details" class="allowance-details" open><summary>Usage &amp; process limits</summary><div class="section-title budget-title"><span class="step">↳</span><h2>Process allowance</h2></div><div id="budget"></div><p class="small">Local counters reset on backend restart. They are not account-wide quotas.</p></details>
       </aside>
       <section class="results">
-        <div id="plan" class="panel" hidden><div class="section-title"><span class="step">02</span><h2>Review the plan</h2></div><div id="plan-body"></div><p class="small">No provider calls have been made by this preview. Credits are estimates; MCP lifecycle traffic is additional.</p><button id="run" class="primary">Run selected operations</button></div>
-        <div class="panel run-panel"><div class="section-title"><span class="step">03</span><h2>Results &amp; evidence</h2><span id="run-status" class="badge subtle">Ready</span></div><div class="run-actions"><button id="cancel" class="quiet" hidden>Cancel pending work</button><button id="restore" class="quiet" hidden>Restore last run</button></div><div id="trace"></div><div id="cards"><div class="empty-state"><span class="empty-mark">↗</span><h3>A deliberate research workflow.</h3><p>Inspect a snapshot or preview a small overview. Results stay separated by provider and reporting context.</p><p class="small">No provider request runs when this page loads.</p></div></div></div>
+        <nav class="task-tabs" aria-label="Research task">
+          <button id="task-retrieve" type="button" data-task="retrieve" aria-pressed="false"><span class="tab-number">01</span> Retrieval <span class="tab-detail">Sources &amp; events</span></button>
+          <button id="task-financial" type="button" data-task="financial" aria-pressed="true"><span class="tab-number">02</span> Finance <span class="tab-detail">Calculate &amp; compare</span></button>
+        </nav>
+        <p tabindex="-1" id="task-context" class="small" role="status">Choose a company to begin.</p>
+        <div class="panel task-panel" id="financial-task" data-task-panel="financial">
+          <div class="panel-heading"><div><p class="eyebrow">FINANCE WORKSPACE</p><h2>Test a financial function</h2></div><span class="badge subtle">9 company workflows</span></div>
+          <p class="small">Uses the selected company. Choose the calculation and units, then review its source and cost before running.</p>
+          <label for="company-function">Financial function</label><select id="company-function"><option value="finance.company_data_readiness">Financial data readiness</option><option value="finance.company_profitability">Profitability margins</option><option value="finance.company_balance_sheet_metrics">Liquidity and borrowings</option><option value="finance.company_cash_conversion">Cash conversion and capex intensity</option><option value="finance.company_margins" selected>Net profit margin</option><option value="finance.company_cashflow_metrics">Operating cash flow minus capex + coverage</option><option value="finance.company_growth">Period growth</option><option value="finance.company_cagr">Annual endpoint CAGR</option><option value="finance.company_ttm">TTM · validated reporting intervals</option></select>
+          <div class="analysis-grid"><div><label for="company-period">Financial periods</label><select id="company-period"><option value="annual">Annual</option><option value="quarterly">Quarterly</option></select><label for="company-basis">Reporting basis</label><select id="company-basis"><option value="consolidated">Consolidated</option><option value="standalone">Standalone</option></select></div><div><label for="company-metric">Metric for growth / CAGR / TTM</label><select id="company-metric"><option value="revenue">Revenue</option><option value="net_profit">Net profit</option><option value="cash_flow_operating">Operating cash flow</option></select><label for="company-unit">Monetary unit policy</label><select id="company-unit"><option value="">Choose a unit policy</option><option value="auto">Auto · documented provider units</option><option value="INR">INR</option><option value="INR_thousand">INR thousands</option><option value="INR_lakh">INR lakh</option><option value="INR_crore">INR crore</option></select></div></div>
+          <p id="financial-readiness" class="small" role="status">Choose Auto for documented provider units, or explicitly declare a source scale. No missing values, dates or forecast assumptions are invented.</p>
+          <label><input type="checkbox" id="company-fetch" checked> Allow one financials request if no matching retained source exists</label>
+          <button id="company-preview" class="primary">Preview financial function</button>
+          <details id="manual-facts" class="analysis-details"><summary>Use individual financial facts</summary>
+          <div id="analysis-panel">
+      <label for="financial-source">Retained financial result</label><select id="financial-source"><option value="">No retained financials yet · fetch Annual or Quarterly financials above</option></select>
+      <button id="prepare-source" class="secondary">Load / refresh selected financial facts</button>
+      <p class="small">Uses the monetary scale chosen above. Source dates and basis stay visible in each fact.</p>
+      <p id="fact-note" class="small" role="status">Successful financial results load facts automatically. Select a retained result here to switch sources. Snapshot and valuation ratios do not contain the financial-row mapping.</p>
+      <div class="analysis-grid"><div><label id="fact-a-label" for="fact-a">A · previous period / profit / operating cash flow</label><select id="fact-a"><option value="">Choose a fact</option></select><label for="fact-a-start">A · known period start, if absent from source</label><input id="fact-a-start" type="date"></div><div><label id="fact-b-label" for="fact-b">B · current period / revenue / capex</label><select id="fact-b"><option value="">Choose a fact</option></select><label for="fact-b-start">B · known period start, if absent from source</label><input id="fact-b-start" type="date"></div></div>
+      <label for="pair-function">Calculation</label><select id="pair-function"><option value="finance.compare_periods">Period change · A → B</option><option value="finance.calculate_margins">Margin · A profit / B revenue</option><option value="finance.calculate_cashflow_metrics">Cash flow · A CFO minus B capex</option></select><button id="compare-facts" class="secondary">Preview selected-fact calculation</button>
+          </div></details>
+
+          <details id="local-tester" class="analysis-details"><summary>Local function tester <span class="summary-hint">15 calculations · explicit JSON inputs</span></summary>
+            <p class="small">Test any local calculation, including compatibility, unit conversion, CAGR, TTM and FCFF. Inputs are explicit and independent of the company selector. No provider requests.</p>
+            <button id="analysis-catalog" class="quiet">Refresh calculation catalog</button>
+            <label for="analysis-function">Local function</label><select id="analysis-function"><option value="">Choose a function</option></select>
+            <p id="analysis-function-note" class="small" role="status"></p>
+            <label for="analysis-arguments">Arguments · JSON</label><textarea id="analysis-arguments" rows="9" spellcheck="false">{}</textarea>
+            <button id="analysis-run" class="secondary">Preview local calculation</button>
+            <details class="contract-details"><summary>Selected function contract</summary><pre id="analysis-schema">Choose a function to inspect its inputs.</pre></details>
+          </details>
+        </div>
+        <div class="panel task-panel" id="retrieve-task" data-task-panel="retrieve" hidden>
+          <div class="panel-heading"><div><p class="eyebrow">RETRIEVAL WORKSPACE</p><h2>Choose your source data</h2></div><span class="badge subtle">13 operations</span></div><p class="small">Select only what you need. Drishti is required for news, announcements and earnings; financial functions use BharatStock.</p>
+        <fieldset><legend>Select a bundle · up to 8 operations</legend><div id="modules"></div><div id="access-note" role="note"></div></fieldset>
+        <details class="date-options"><summary>Price window</summary><label for="price-from">From</label><input type="date" id="price-from"><label for="price-to">To</label><input type="date" id="price-to"></details>
+        <button id="preview" class="primary wide">Preview retrieval plan <span aria-hidden="true">↗</span></button>
+        <details id="retrieval-tester" class="analysis-details"><summary>Individual operation tester <span class="summary-hint">All 13 retrieval operations</span></summary>
+          <p class="small">Inspect the contract and supply exact arguments for a single operation. JSON selectors determine the request; the company selector only helps build starter inputs. Held operations remain blocked.</p>
+          <label for="retrieval-function">Retrieval operation</label><select id="retrieval-function"><option value="">Choose an operation</option></select>
+          <p id="retrieval-function-note" class="small" role="status"></p>
+          <button id="retrieval-starter" class="quiet">Build starter inputs from listing</button>
+          <label for="retrieval-arguments">Arguments · JSON · review every selector</label><textarea id="retrieval-arguments" rows="9" spellcheck="false">{}</textarea>
+          <button id="retrieval-run" class="secondary">Preview single operation</button>
+          <details class="contract-details"><summary>Selected operation contract</summary><pre id="retrieval-schema">Choose an operation to inspect its inputs.</pre></details>
+        </details>
+
+        </div>
+        <details id="review-tester" class="panel analysis-details">
+          <summary>Citation and sentiment handoffs · local protocol tester</summary>
+          <p class="small">No model inference, document download or provider request runs here. Import retained news or register source locators and passages read by your agent. Results distinguish supplied text checks from host judgments; originals remain unverified.</p>
+          <button id="review-catalog" class="quiet">Load review functions</button>
+          <label for="review-function">Review function</label><select id="review-function"><option value="">Load functions first</option></select>
+          <button id="review-starter" class="quiet">Build input template · replace placeholder IDs</button>
+          <label for="review-arguments">Arguments · JSON</label><textarea id="review-arguments" rows="8" spellcheck="false">{}</textarea>
+          <button id="review-run" class="secondary">Run local review action</button>
+          <details><summary>Selected contract</summary><pre id="review-schema">Load functions to inspect schemas.</pre></details>
+          <pre id="review-result">No review action has run.</pre>
+        </details>
+        <div id="plan" class="panel" tabindex="-1" hidden><div class="section-title"><span class="step">02</span><h2>Review the plan</h2></div><p id="plan-context" class="plan-summary"></p><div id="plan-body"></div><p class="small">No provider calls have been made by this preview. Credits are estimates; MCP lifecycle traffic is additional.</p><button id="run" class="primary">Run selected operations</button></div>
+        <div class="panel run-panel" id="results-panel" tabindex="-1"><div class="section-title"><span class="step">↳</span><h2>Run output</h2><span id="run-status" class="badge subtle">Ready</span></div><div class="run-actions"><button id="cancel" class="quiet" hidden>Cancel pending work</button><button id="restore" class="quiet" hidden>Restore last run</button></div><p id="result-context" class="small"></p><label for="run-history">Recent runs · last 20 in this server session</label><select id="run-history"><option value="">No runs yet</option></select><details class="execution-details"><summary>Execution steps</summary><div id="trace"></div></details><div id="cards"><div class="empty-state"><span class="empty-mark">↗</span><h3>Your next result starts here.</h3><p>Choose a function, review the plan, then run. Tables, calculations and source receipts appear here.</p><p class="small">No provider request runs when this page loads.</p></div></div><span id="analysis-status" class="badge subtle" hidden>Ready</span><div id="analysis-values" hidden></div><pre id="analysis-result" hidden>No calculation has run.</pre></div>
       </section>
     </div>
     <footer>LOCAL DEVELOPMENT BUILD · NO INVESTMENT RECOMMENDATIONS · PROVIDER OUTPUT IS NOT INDEPENDENTLY VERIFIED</footer>

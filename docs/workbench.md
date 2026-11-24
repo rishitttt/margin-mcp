@@ -1,6 +1,12 @@
 # Core and local workbench guide
 
-This is the runnable guide for the first core/workbench build. [Implementation status](implementation.md#first-coreworkbench-build-checkpoint) owns validation evidence; [architecture](design/core-workbench.md) explains the boundaries; [source testing](api-testing.md) owns live-test budgets. Margin's own MCP server is not packaged yet.
+**24 November finance repair:** Finance now includes data readiness, profitability, cash conversion and balance-sheet metrics. Choose Auto under Monetary unit policy. TTM accepts eligible documented normal quarters, and company margins prefer separately reported continuing profit. See [finance data support](design/finance-data-support.md).
+
+**24 November:** the expandable Citation and sentiment handoffs tester exposes ten local review functions with schemas, JSON inputs and inspectable output. Successful news cards can import retained source text. No provider/model call is made by these actions; see [review workflows](review-workflows.md). Drishti readiness now updates catalog/preview/run guards and the UI after connection changes.
+
+The [agent interface](agent-interface.md) now adds `margin-agent` and a Codex skill over this **same running server**. A browser is optional; do not start a backend per command. `GET /api/analysis/company-functions` additionally returns company planning schemas/defaults. Ordinary usage still has no automatic provider calls or persistence.
+
+This is the runnable guide for the core/workbench. The [financial-analysis guide](financial-analysis.md) covers the 15 November fact/comparison/DCF additions. [Implementation status](implementation.md#first-coreworkbench-build-checkpoint) owns validation evidence; [architecture](design/core-workbench.md) explains the boundaries; [source testing](api-testing.md) owns live-test budgets. Margin's own MCP server is not packaged yet.
 
 ## Install and run
 
@@ -18,15 +24,19 @@ Install `'.[workbench]'` for the UI without development tools, or `'.'` for the 
 
 ## Try the workflow
 
-1. Keep fictional `SYNTHA` / NSE, or use Search directory to choose `SYNTHB` / BSE. These are fictional issuers, never actual Reliance/TCS records. Search itself requires preview/run; typing does not fetch anything.
-2. Select modules. Defaults are snapshot, quarterly financials, company news and announcements. Preview lists the exact operations and estimated credits without provider calls. Run explicitly executes that immutable plan.
-3. Add EOD prices to see a local line and table. The view shows up to twenty rows, with remaining bounded rows in the sanitized payload. No automatic second page is fetched.
-4. Add earnings discovery. Select “Inspect this earnings record” on a returned record to make an explicit detail run. Synthetic detail deliberately contains conflicting normalized/raw revenue and a credential-bearing URL sentinel; the UI must show the conflict and sanitized authorized-resolution locator.
-5. Open “Sanitized provider payload & receipt” to inspect retained data, warnings, coverage and accounting. Restore last run after a page reload reads existing local results; it never repeats a fetch. Expired/evicted results stay unavailable until a newly previewed explicit run.
+The charcoal/violet Function Lab has two task buttons: **Retrieval** and **Finance**, and one shared **preview → Run → result cards** path. See [financial analysis](financial-analysis.md) for exact functions, inputs and limitations.
 
-A plan contains 1–8 operations and expires after ten minutes. Repeated submission with the same key returns the same run; another plan cannot reuse that key. Separate new previews are deliberately new intent. No automatic enrichment, retries or page exhaustion occurs. Company identity, fiscal period, basis, null values and provider sentiment labels remain as supplied; chart/table formatting is not financial verification.
+1. Enter a ticker and exchange. Synthetic mode starts with fictional `SYNTHA` / NSE; use a real listing in live mode. Nothing fetches merely from typing or page load.
+2. **Finance:** choose a function, periods/basis and a caller-declared monetary scale, then preview. A matching retained response is reused; otherwise the checked source policy can include one financials request. Review costs before Run. Unknown units are caught in the UI before dispatch; Retrieve data remains available for inspection without a unit declaration.
+3. **Retrieval:** defaults to Snapshot only. Select other modules explicitly; preview, then Run. Directory search, snapshot shortcut and earnings detail also create a preview rather than executing immediately. Select a directory result to change the listing safely.
+4. Open **Individual operation tester** in Retrieval to inspect all thirteen registry operations, including identity/directory/category helpers. Choose an operation, optionally build starter inputs from the listing, complete blank fields and review the JSON selectors. The selected schema, enabled/held state and estimated credits are visible. JSON selectors determine this request; changing the sidebar listing does not silently rewrite the JSON. Preview shows the planned arguments before Run. In **Finance → Local function tester**, all eleven local calculations have selectable contracts and explicit JSON inputs. The dedicated DCF tab/form is removed for now; backend valuation functions remain available through this tester and the API.
+5. Successful financial results populate a scoped fact selector automatically. Open Use individual financial facts to inspect suggested/editable pairs or select a retained source. One monetary scale applies to the company function and those facts; changing it refreshes local facts without a fetch.
+6. Use Recent runs to revisit results. Reload restores the last compatible viewed run and listing/task/unit preferences locally. Company edits clear stale facts, results and previews. Editing inputs invalidates a preview; late preview responses cannot override that decision.
+7. Expand Execution steps or Sanitized provider payload & receipt for technical detail. Drishti connection is a collapsible sidebar section; process limits start expanded. Drishti is only needed for event operations; a known-not-ready Drishti run opens the connection controls and stops before dispatch.
 
-The initial overview bounds are four quarterly/two annual rows, up to 100 EOD rows in a default 90-day price window, five corporate actions, two news items/seven days, two announcements/30 days and two earnings summaries/365 days. These are request bounds, not completeness claims. The core permits larger reviewed limits (prices 300 rows/one year; quarterly eight rows) for explicit operations. Earnings detail is a separate action.
+A plan contains 1–8 operations and expires after ten minutes. Repeated submission with the same key returns the same run. Separate previews are new intent. Source results remain bounded/expiring; history retains at most twenty displayed control summaries and does not guarantee payload availability. Restarts clear in-memory data/counters, not account quota. No automatic retry, enrichment, fallback provider or page exhaustion occurs.
+
+The initial overview bounds are four quarterly/two annual rows, up to 100 EOD rows in a default 90-day price window, five corporate actions, two news items/seven days, two announcements/30 days and two earnings summaries/365 days. These are request bounds, not completeness claims. Price and quarterly history can use larger reviewed bounds through explicit core operations. Earnings detail is a separate previewed action.
 
 ## Synthetic scenarios
 
@@ -97,10 +107,10 @@ Financial display uses actual REST `period_end_date`, `fiscal_year`, `quarter`, 
 | Core operation | Upstream | New runtime's live state |
 | --- | --- | --- |
 | `bharatstock.search_stocks` | `GET /v1/search` | Explicit opt-in; untested live shape |
-| `bharatstock.get_stock_quote` | `GET /v1/stocks/{ticker}` | Historical route observed; new adapter live check pending |
-| `bharatstock.get_stock_fundamentals` | `GET /v1/stocks/{ticker}/ratios` | Historical route observed; new adapter live check pending |
-| `bharatstock.get_financials` | `GET /v1/stocks/{ticker}/financials` | Historical route observed; new adapter live check pending |
-| `bharatstock.get_stock_prices` | `GET /v1/stocks/{ticker}/prices` | Historical route observed; new adapter live check pending |
+| `bharatstock.get_stock_quote` | `GET /v1/stocks/{ticker}` | Selected live evidence exists; see dated implementation/source checkpoints |
+| `bharatstock.get_stock_fundamentals` | `GET /v1/stocks/{ticker}/ratios` | Selected live evidence exists; see dated implementation/source checkpoints |
+| `bharatstock.get_financials` | `GET /v1/stocks/{ticker}/financials` | Selected live evidence exists; see dated implementation/source checkpoints |
+| `bharatstock.get_stock_prices` | `GET /v1/stocks/{ticker}/prices` | Selected live evidence exists; see dated implementation/source checkpoints |
 | `bharatstock.get_corporate_actions` | `GET /v1/stocks/{ticker}/corporate-actions` | Explicit opt-in; untested live shape |
 | `drishti.resolve_symbols` | Native `execute_tool` → `resolve_symbols` | Explicit opt-in; schema observed only |
 | `drishti.get_symbols` | Native `execute_tool` → `get_symbols` | Explicit opt-in; schema observed only |
@@ -131,6 +141,10 @@ After a reviewed allowance/call plan, launch `.venv/bin/margin-workbench --mode 
 Live request pacing is at most two BharatStock attempts/second and nine Drishti attempts/minute, subject to stricter account limits. Drishti admission keeps two HTTP slots for cleanup; catalog/connect itself still needs enough headroom. Response/result caps are 2 MiB. No automatic retry, redirect-following or SSE resumption is enabled. An uncertain dispatched outcome retains its conservative estimate and holds further calls to that provider for reconciliation; cancellation is not an upstream refund.
 
 **The app does not currently query account usage, effective subscriptions or actual credit deltas.** Its local caps do not account for other clients, past sessions or provider-specific key limits. Restarting is not permission to spend a new daily allowance. Historical balance 986 on 9 October is labelled stale. Reconcile current dashboards/account diagnostics and set smaller ceilings under the [bounded source protocol](api-testing.md) before any live pass. No purchase is needed for synthetic work; current live access/prices need fresh checking before upgrading.
+
+## Local financial analysis
+
+See [financial analysis](financial-analysis.md) for automatic retained-result facts, fifteen local calculation functions, nine company financial workflows, result cards, the local JSON function tester and direct Python/HTTP interfaces. Use the **Finance** task to preview retained reuse or one data dependency; prior module/fact selection is unnecessary. Restart an older server and hard-refresh the page after updating. Source locators stay unverified; local citation/sentiment handoffs are available as documented in the review guide. The new analysis endpoints are local-only and share the existing nonce/origin/body protections. No provider/model call occurs on calculation or catalog access.
 
 ## Local HTTP and direct core use
 
@@ -180,6 +194,8 @@ Citations are locators extracted from provider output. A sanitized API locator i
 
 ## Verification
 
+Start a fresh **synthetic** server before each `scripts/smoke_workbench.py` run. The suite rejects live mode and nonempty simulated counters. It tests the full task/preview/run/history flow, stale company/preview isolation, missing prerequisites, explicit DCF, source expiry, errors, duplicate submission, event detail, redaction and all three mobile task layouts.
+
 ```sh
 .venv/bin/ruff check src tests scripts
 .venv/bin/ruff format --check src tests scripts
@@ -200,4 +216,4 @@ Optional browser acceptance, with the synthetic server running on port 8765 and 
 
 Use a fresh synthetic process for repeatable counters/headroom. The script verifies mode before data actions, blocks external page requests, uses a fresh headless profile and saves fictional screenshots only when requested. Playwright is a dev dependency; no browser binary is automatically downloaded by installation. Default executable selection requires an already installed Playwright browser if `--browser` is omitted.
 
-Known gaps: authenticated new-client compatibility/access/billing and measured live coverage; clean installation on other platforms; original-source/citation resolution; fuller output layouts; semantic transcript search; normalized comparisons; downstream Margin MCP and actual model-host evaluation. Complete the small live/source gate before expanding operations or claiming the initial pilot finished.
+Known gaps: authenticated new-client compatibility/access/billing and measured live coverage; clean installation on other platforms; original-source/citation resolution; fuller output layouts; semantic transcript search; broader source-backed financial mappings and automated valuation inputs; downstream Margin MCP and actual model-host evaluation. Complete the small live/source gate before expanding operations or claiming the initial pilot finished.

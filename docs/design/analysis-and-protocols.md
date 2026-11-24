@@ -1,8 +1,14 @@
 # Financial functions, research protocols and evidence verification
 
+**24 November implementation checkpoint:** the lightweight host-handoff subset is delivered in `margin.protocols`: source registration/retained news import, citation packets/assessments/render/audit/numeric comparison and sentiment packets/annotations/aggregation. See [operational contracts](../review-workflows.md). Server original resolution, PDF parsing, original authentication, model inference and MCP packaging remain absent. The fuller proposals below are a backlog, not all delivered functions.
+
 **Detailed implementation proposal — 29 October 2026. Planning only.**
 
-**7 November priority update:** retain these contracts as the product backlog. The [research-environment review](research-environment-review.md) and [delivery plan](../plan.md) supersede this document's first-release sequencing: capture/replay, fixed filing-grounded tasks and actual agent trajectories come first. General DCF, sentiment, the full host-LLM citation round trip and downstream MCP are not gates for that research release. The transient live workflow remains; a separately permissioned bounded research snapshot is a proposed exception to the earlier no-persistence boundary. Protocols/helpers supplied to agents must be explicit versioned experimental conditions. No capability below has become implemented through this planning update.
+**24 November active scope:** citation verification, content-sentiment protocols, thin MCP packaging and a separate cross-model benchmark are now planned under the [active build plan](../plan.md). Section 4.5 defines capability-based routes and honest incomplete outcomes. None of these proposed additions is delivered by this documentation change. Simple tool-call plus one-line `why` logging remains the chosen decision-trail scope.
+
+**Historical 15 November scope (superseded):** the [delivery plan](../plan.md) supersedes the 7 November research-first ordering below. Build the product's retrieval/fact/comparison/DCF workflow, then package stable interfaces. Citation verification and sentiment protocols are explicitly parked; their sections remain a deferred design reference. The professor's study belongs to a separate optional harness consuming public product contracts. No research snapshot, agent runner, gold store or source-verification service is a product prerequisite. Existing attribution/sanitization and independent calculation/source checks remain in scope.
+
+**Historical 7 November priority update (superseded above):** retain these contracts as the product backlog. The [research-environment review](research-environment-review.md) and [delivery plan](../plan.md) supersede this document's first-release sequencing: capture/replay, fixed filing-grounded tasks and actual agent trajectories come first. General DCF, sentiment, the full host-LLM citation round trip and downstream MCP are not gates for that research release. The transient live workflow remains; a separately permissioned bounded research snapshot is a proposed exception to the earlier no-persistence boundary. Protocols/helpers supplied to agents must be explicit versioned experimental conditions. No capability below has become implemented through this planning update.
 
 This document specifies proposed extensions to the existing core and workbench. Function names are proposed interfaces, not claims that they exist. It complements the [core architecture](core-workbench.md); [implementation status](../implementation.md) remains authoritative for delivered behavior. The [delivery plan](../plan.md) owns milestones.
 
@@ -174,6 +180,90 @@ Use a task/result round trip as the baseline. Before MCP packaging, the workbenc
 `required_output` above describes the intent; implementation supplies an actual versioned JSON Schema. Assessments without trustworthy host/model metadata are marked self-reported. The host may use its main model or a separately selected reviewer; neither choice creates independent ground truth automatically.
 
 MCP sampling can optionally request host-side model work when the client declares support and permits it. The portable design must not depend on sampling or require a Margin-owned LLM key. See the [official sampling contract](https://modelcontextprotocol.io/specification/2025-11-25/client/sampling).
+
+### 4.5 Capability routing and model limitations
+
+**Hard boundary clarified 24 November:** Margin runs no LLM inference and owns no
+verifier-model service. Host-side semantic work may use host browsing or a separate
+fetch/document MCP. Generic server-side HTML/PDF parsing is non-LLM processing and optional.
+The lightweight first route returns provider evidence, source locators and review guidance;
+without independent source access, Margin labels submitted checks as host-reported.
+
+
+**24 November proposal:** use a shared `citation_review@1` with explicit execution routes,
+not different truth criteria for different brands/models. MCP cannot determine whether a
+model is good at interpreting citations. Browser availability is a property of the host
+and tools, not an intrinsic ability established by a model name.
+
+Distinguish three kinds of metadata:
+
+- Negotiated MCP client features (for example sampling support).
+- Operator/runner-declared application abilities: host search/fetch, structured assessment
+  round trip, maximum usable packet size, and human review availability.
+- Observed outcomes of narrow format/availability probes. A successful schema probe does
+  not establish semantic accuracy or independent verification competence.
+
+Missing application profile fields default to unknown, not supported. Profiles are
+session/run metadata, not MCP-standard fields and not authority to change budgets or
+supply weaker evidence requirements. A model's self-declared abilities are labelled as
+self-reports. Host/model identity is recorded for provenance and experiments, not trusted
+as proof of capability. Tool names below are proposed additions, not implemented APIs:
+
+- `protocols.list_workflows`: list versions, prerequisites and currently available routes.
+- `protocols.prepare_workflow`: accept task, evidence references and optional declared
+  host profile; return steps, bounded packet format, missing prerequisites and next action.
+
+| Available route | Behavior | Result if prerequisites fail |
+| --- | --- | --- |
+| Server source resolution | Margin retrieves an approved original locator and extracts evidence; host browsing is unnecessary | Inaccessible/unresolved original, with retained provider attribution |
+| Host-assisted discovery | Host searches with its own tools and supplies candidate locators for server admission | No search result is treated as a retrieved original or verified claim |
+| Host assessment round trip | Return bounded claim/passage packet, accept model judgment, validate references/quotes/shape | Missing/malformed judgment stays not reviewed; return a repairable packet without refetch |
+| Deterministic-only | Return available numeric/context/quotation checks and citations | Semantic support remains not reviewed, even if every deterministic check passes |
+| Human review | Explicit human assessment attached to exact claim/evidence version | Not automatically called or inferred from model agreement |
+| Optional host-owned reviewer | The user’s host explicitly selects a reviewer under its own compute/access policy | No Margin-side inference; mark assisted runs separately |
+
+If the host has no browser but can assess supplied passages, use server resolution plus
+host assessment. If it cannot reliably submit an assessment, retain the deterministic
+checks and an incomplete semantic stage. If the original cannot be retrieved, the protocol
+can cite a labelled provider summary but cannot promote it to original-document support.
+No retry loop is introduced to make a weak model eventually say supported.
+
+Keep result axes separate rather than using one universal verified flag:
+
+```json
+{
+  "protocol": "citation_review@1",
+  "route": "deterministic_only",
+  "source_availability": "retrieved",
+  "quotation_check": "passed",
+  "context_check": "matched",
+  "numeric_check": "passed",
+  "semantic_review": "not_reviewed",
+  "reviewer_origin": null,
+  "limitations": ["No semantic assessment was supplied"]
+}
+```
+
+For semantic judgments, record host/model identity (or unknown), protocol/packet version,
+evidence hashes, quoted passages and verdict: supported, partial, contradicted or
+insufficient evidence. Label origin as host model, explicit external model or human.
+Schema/quote validation is deterministic; the semantic verdict remains an attributed
+judgment. Render exact fact-check scope alongside citations so a passed numeric check
+cannot be mistaken for independent verification of the entire prose claim.
+
+A protocol prompt does not force a host to execute it. Packet state and `audit_answer`
+check the submitted stages; skipped stages remain visible. Baseline operation uses ordinary
+tool return/submit calls. Use MCP sampling only when declared and tested; client sampling
+support does not mean general host browsing or citation competence. These distinctions
+follow the versioned [MCP lifecycle](https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle),
+[sampling](https://modelcontextprotocol.io/specification/2025-11-25/client/sampling) and
+[prompt](https://modelcontextprotocol.io/specification/2025-11-25/server/prompts) contracts.
+
+Research controls: use the same route/profile, evidence rules and short-explanation
+requirements across model comparisons where possible. If profiles differ, record that as
+an experimental condition. Capability-dependent chunking/repair policies must be fixed
+in advance, not tuned after test failures. Assisted separate-reviewer runs are a different
+condition. Independent gold stays outside this model-assessment workflow.
 
 ## 5. Sentiment protocol and deterministic aggregation
 

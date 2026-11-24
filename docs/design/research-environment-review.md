@@ -2,6 +2,8 @@
 
 **7 November 2026. Review and proposal only; no new runtime implementation or authenticated collection.**
 
+**15 November boundary update:** preserve this document as the research proposal/audit, not the active product sequence. The [current plan](../plan.md) puts retrieval/facts/calculations/DCF and packaging on the product track; citation verification and sentiment protocols are parked. Capture/replay, tasks/gold and model trajectories belong to a separate optional harness using public Margin contracts. In particular the `src/margin/research` layout and research-first priorities proposed below are superseded: prefer a separate top-level `research/` project, excluded from normal product packages. Independent answer keys/evaluation are required scientifically; complete separation as an unrelated product was not an explicit requirement in the professor's note.
+
 This reviews the current repository, the [29 October finance/protocol proposal](analysis-and-protocols.md), and Nikhil George's supplied **“Margin: The Research Vision and the First Public Release” (2 November)**. The note is a proposed research direction, not evidence that its capabilities already exist or authorization to purchase, collect, publish or contact providers. [Implementation status](../implementation.md) owns delivered behavior; [delivery plan](../plan.md) owns the revised sequence.
 
 ## 1. Recommendation and scope change

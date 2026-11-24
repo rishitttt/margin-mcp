@@ -36,6 +36,131 @@
       },
       "outputSchema": {
         "additionalProperties": true,
+        "properties": {
+          "error": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "status_code": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "units": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "notes": {
+            "default": null
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "not_found": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "expanded_indices": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "integer"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "prompt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
         "type": "object"
       }
     },
@@ -51,12 +176,218 @@
           "limit": {
             "default": 8,
             "type": "integer"
+          },
+          "cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
           }
         },
         "type": "object"
       },
       "outputSchema": {
         "additionalProperties": true,
+        "properties": {
+          "error": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "status_code": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "units": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "notes": {
+            "default": null
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "not_found": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "expanded_indices": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "integer"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "has_more": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "tools": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "annotations": {
+                  "properties": {
+                    "readOnlyHint": {
+                      "type": "boolean"
+                    },
+                    "destructiveHint": {
+                      "type": "boolean"
+                    },
+                    "idempotentHint": {
+                      "type": "boolean"
+                    },
+                    "openWorldHint": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "readOnlyHint",
+                    "destructiveHint",
+                    "idempotentHint",
+                    "openWorldHint"
+                  ],
+                  "type": "object"
+                },
+                "summary": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null
+                },
+                "matched_on": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null
+                }
+              },
+              "required": [
+                "name",
+                "title",
+                "annotations"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "tools"
+        ],
         "type": "object"
       }
     },
@@ -71,6 +402,7 @@
                 "items": {
                   "type": "string"
                 },
+                "maxItems": 12,
                 "type": "array"
               },
               {
@@ -86,6 +418,203 @@
       },
       "outputSchema": {
         "additionalProperties": true,
+        "properties": {
+          "error": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "status_code": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "units": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "notes": {
+            "default": null
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "not_found": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "expanded_indices": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "integer"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "tools": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "annotations": {
+                  "properties": {
+                    "readOnlyHint": {
+                      "type": "boolean"
+                    },
+                    "destructiveHint": {
+                      "type": "boolean"
+                    },
+                    "idempotentHint": {
+                      "type": "boolean"
+                    },
+                    "openWorldHint": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "readOnlyHint",
+                    "destructiveHint",
+                    "idempotentHint",
+                    "openWorldHint"
+                  ],
+                  "type": "object"
+                },
+                "summary": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null
+                },
+                "matched_on": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null
+                },
+                "description": {
+                  "type": "string"
+                },
+                "inputSchema": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "outputSchema": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "input_schema": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "_meta": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null
+                },
+                "next_step": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "title",
+                "annotations",
+                "description",
+                "inputSchema",
+                "outputSchema",
+                "input_schema",
+                "next_step"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "tools"
+        ],
         "type": "object"
       }
     },
@@ -115,7 +644,11 @@
         ],
         "type": "object"
       },
-      "outputSchema": null
+      "outputSchema": {
+        "additionalProperties": true,
+        "properties": {},
+        "type": "object"
+      }
     }
   ],
   "operations": [
@@ -366,8 +899,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Symbols"
+                "default": null
               },
               "scrip_codes": {
                 "anyOf": [
@@ -384,8 +916,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Scrip Codes"
+                "default": null
               },
               "sentiment": {
                 "anyOf": [
@@ -401,8 +932,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Sentiment"
+                "default": null
               },
               "from": {
                 "anyOf": [
@@ -413,8 +943,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "From"
+                "default": null
               },
               "to": {
                 "anyOf": [
@@ -425,8 +954,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "To"
+                "default": null
               },
               "page": {
                 "anyOf": [
@@ -437,8 +965,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Page"
+                "default": null
               },
               "limit": {
                 "anyOf": [
@@ -449,8 +976,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Limit"
+                "default": null
               },
               "ids": {
                 "anyOf": [
@@ -467,8 +993,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Ids"
+                "default": null
               },
               "lookback_days": {
                 "anyOf": [
@@ -480,11 +1005,9 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Lookback Days"
+                "default": null
               }
             },
-            "title": "NewsQueryParams",
             "type": "object"
           }
         },
@@ -505,11 +1028,9 @@
                 "type": "null"
               }
             ],
-            "default": null,
-            "title": "Query"
+            "default": null
           }
         },
-        "title": "Get_NewsInput",
         "type": "object"
       },
       "outputSchema": null,
@@ -521,8 +1042,10 @@
         1
       ],
       "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
-      "dataExecutionObserved": false,
-      "observedExecutionCredits": null
+      "dataExecutionObserved": true,
+      "observedExecutionCredits": null,
+      "inputSchemaObservedOn": "2026-11-15",
+      "dataExecutionObservedOn": "2026-11-15"
     },
     {
       "name": "get_symbols",
@@ -546,8 +1069,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Symbols"
+                "default": null
               },
               "scrip_codes": {
                 "anyOf": [
@@ -564,11 +1086,9 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Scrip Codes"
+                "default": null
               }
             },
-            "title": "SymbolMetadataQueryParams",
             "type": "object"
           }
         },
@@ -588,14 +1108,12 @@
               {
                 "type": "null"
               }
-            ],
-            "title": "Query"
+            ]
           }
         },
         "required": [
           "query"
         ],
-        "title": "Get_SymbolsInput",
         "type": "object"
       },
       "outputSchema": null,
@@ -608,7 +1126,8 @@
       ],
       "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
       "dataExecutionObserved": false,
-      "observedExecutionCredits": null
+      "observedExecutionCredits": null,
+      "inputSchemaObservedOn": "2026-11-15"
     },
     {
       "name": "resolve_symbols",
@@ -626,14 +1145,12 @@
               {
                 "type": "string"
               }
-            ],
-            "title": "Queries"
+            ]
           }
         },
         "required": [
           "queries"
         ],
-        "title": "Resolve_SymbolsInput",
         "type": "object"
       },
       "outputSchema": null,
@@ -644,7 +1161,8 @@
       ],
       "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
       "dataExecutionObserved": false,
-      "observedExecutionCredits": null
+      "observedExecutionCredits": null,
+      "inputSchemaObservedOn": "2026-11-15"
     },
     {
       "name": "get_daily_summary",
@@ -697,6 +1215,7 @@
       "inputSchema": {
         "$defs": {
           "AnnouncementsQueryParams": {
+            "description": "Query parameters for get_announcements.",
             "properties": {
               "symbols": {
                 "anyOf": [
@@ -714,6 +1233,7 @@
                   }
                 ],
                 "default": null,
+                "description": "Stock symbol or supported index filter. Accepts one value, a comma-separated string, or a list. Supported index aliases (available: NIFTY, BANKNIFTY, FINNIFTY, SENSEX) are expanded to constituent company symbols.",
                 "title": "Symbols"
               },
               "scrip_codes": {
@@ -732,6 +1252,7 @@
                   }
                 ],
                 "default": null,
+                "description": "Scrip-code filter. Accepts one scrip code, a comma-separated string, or a list of scrip codes.",
                 "title": "Scrip Codes"
               },
               "from": {
@@ -744,6 +1265,7 @@
                   }
                 ],
                 "default": null,
+                "description": "Inclusive range start (ISO-8601). Date-only values such as 2026-05-02 use start of day Asia/Kolkata (IST). Prefer lookback_days for relative windows (e.g. last 7 days). Use from/to only when an explicit calendar range is required. Do not combine lookback_days with from or to.",
                 "title": "From"
               },
               "to": {
@@ -756,6 +1278,7 @@
                   }
                 ],
                 "default": null,
+                "description": "Inclusive range end (ISO-8601). Date-only values such as 2026-05-02 use end of day Asia/Kolkata (IST). Prefer lookback_days for relative windows (e.g. last 7 days). Use from/to only when an explicit calendar range is required. Do not combine lookback_days with from or to.",
                 "title": "To"
               },
               "detailed": {
@@ -768,6 +1291,7 @@
                   }
                 ],
                 "default": null,
+                "description": "When true, include richer fields (long_summary, related_categories, descriptor, earnings_significant, etc.). Completed category extractions (`extracted_information`) and earnings tables (`earnings_table`) are included by default even when detailed is false. Announcements can omit extractions with include_extracted_information=false; extraction strings are capped for response size.",
                 "title": "Detailed"
               },
               "page": {
@@ -810,19 +1334,14 @@
                   }
                 ],
                 "default": null,
+                "description": "Announcement category filter. Accepts one category, a comma-separated string, or a list of categories. Use get_announcement_categories to get the list of categories.",
                 "title": "Categories"
               },
-              "important": {
-                "anyOf": [
-                  {
-                    "type": "boolean"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "default": null,
-                "title": "Important"
+              "include_extracted_information": {
+                "default": true,
+                "description": "Include completed category extractions. Strings are capped at 2,000 chars; detailed single-id fetches allow 20,000.",
+                "title": "Include Extracted Information",
+                "type": "boolean"
               },
               "ids": {
                 "anyOf": [
@@ -840,6 +1359,7 @@
                   }
                 ],
                 "default": null,
+                "description": "Optional record id filter from a prior list or search result (`id` field). Accepts one id, a comma-separated string, or a list of ids (max 20). When set, fetches those records directly and ignores symbol, scrip, date, and pagination filters.",
                 "title": "Ids"
               },
               "lookback_days": {
@@ -853,6 +1373,7 @@
                   }
                 ],
                 "default": null,
+                "description": "Relative day window ending now (UTC), inclusive. Prefer lookback_days for relative windows (e.g. last 7 days). Use from/to only when an explicit calendar range is required. Do not combine lookback_days with from or to.",
                 "title": "Lookback Days"
               }
             },
@@ -895,7 +1416,8 @@
       ],
       "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
       "dataExecutionObserved": false,
-      "observedExecutionCredits": null
+      "observedExecutionCredits": null,
+      "inputSchemaObservedOn": "2026-11-15"
     },
     {
       "name": "search_announcements",
@@ -961,7 +1483,6 @@
       "category": "filings",
       "inputSchema": {
         "properties": {},
-        "title": "Get_Announcement_CategoriesInput",
         "type": "object"
       },
       "outputSchema": null,
@@ -974,7 +1495,8 @@
       ],
       "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
       "dataExecutionObserved": false,
-      "observedExecutionCredits": null
+      "observedExecutionCredits": null,
+      "inputSchemaObservedOn": "2026-11-15"
     },
     {
       "name": "get_concalls",
@@ -1655,8 +2177,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Symbols"
+                "default": null
               },
               "scrip_codes": {
                 "anyOf": [
@@ -1673,8 +2194,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Scrip Codes"
+                "default": null
               },
               "from": {
                 "anyOf": [
@@ -1685,8 +2205,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "From"
+                "default": null
               },
               "to": {
                 "anyOf": [
@@ -1697,8 +2216,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "To"
+                "default": null
               },
               "detailed": {
                 "anyOf": [
@@ -1709,8 +2227,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Detailed"
+                "default": null
               },
               "page": {
                 "anyOf": [
@@ -1721,8 +2238,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Page"
+                "default": null
               },
               "limit": {
                 "anyOf": [
@@ -1733,8 +2249,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Limit"
+                "default": null
               },
               "ids": {
                 "anyOf": [
@@ -1751,8 +2266,7 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Ids"
+                "default": null
               },
               "lookback_days": {
                 "anyOf": [
@@ -1764,11 +2278,9 @@
                     "type": "null"
                   }
                 ],
-                "default": null,
-                "title": "Lookback Days"
+                "default": null
               }
             },
-            "title": "EarningsQueryParams",
             "type": "object"
           }
         },
@@ -1789,11 +2301,9 @@
                 "type": "null"
               }
             ],
-            "default": null,
-            "title": "Query"
+            "default": null
           }
         },
-        "title": "List_EarningsInput",
         "type": "object"
       },
       "outputSchema": null,
@@ -1806,8 +2316,10 @@
         3
       ],
       "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
-      "dataExecutionObserved": false,
-      "observedExecutionCredits": null
+      "dataExecutionObserved": true,
+      "observedExecutionCredits": null,
+      "inputSchemaObservedOn": "2026-11-15",
+      "dataExecutionObservedOn": "2026-11-15"
     },
     {
       "name": "get_earnings_filing",
@@ -1823,8 +2335,7 @@
                 "type": "null"
               }
             ],
-            "default": null,
-            "title": "Symbol"
+            "default": null
           },
           "quarter": {
             "anyOf": [
@@ -1835,8 +2346,7 @@
                 "type": "null"
               }
             ],
-            "default": null,
-            "title": "Quarter"
+            "default": null
           },
           "earnings_id": {
             "anyOf": [
@@ -1847,16 +2357,13 @@
                 "type": "null"
               }
             ],
-            "default": null,
-            "title": "Earnings Id"
+            "default": null
           },
           "detailed": {
             "default": false,
-            "title": "Detailed",
             "type": "boolean"
           }
         },
-        "title": "Get_Earnings_FilingInput",
         "type": "object"
       },
       "outputSchema": null,
@@ -1869,7 +2376,9 @@
       ],
       "publishedCreditsMeaning": "summary, then detailed when two entries; null means not established",
       "dataExecutionObserved": true,
-      "observedExecutionCredits": 3
+      "observedExecutionCredits": 3,
+      "inputSchemaObservedOn": "2026-11-15",
+      "dataExecutionObservedOn": "2026-11-15"
     },
     {
       "name": "get_price_and_volume_since",
@@ -2373,5 +2882,26 @@
       ],
       "relatedOperations": []
     }
-  ]
+  ],
+  "selectedRefresh": {
+    "observedOn": "2026-11-15",
+    "nativeTools": 4,
+    "nestedInputs": [
+      "get_announcement_categories",
+      "get_announcements",
+      "get_earnings_filing",
+      "get_news",
+      "get_symbols",
+      "list_earnings",
+      "resolve_symbols"
+    ],
+    "scope": "Only seven selected nested inputs refreshed; remaining operation schemas retain the October checkpoint. Announcements important filter removed by provider. Data execution is recorded separately."
+  },
+  "nativeCatalogObservation20261124": {
+    "additionalUnexposedTools": [
+      "report_issue"
+    ],
+    "reviewedRoutingSchemasUnchanged": true,
+    "policy": "Additional native tools remain unexposed and uncalled; required routers must remain present, unique and schema-matched. Nested get_announcements remains changed/held."
+  }
 }

@@ -1,6 +1,16 @@
 # Margin
 
+**24 November finance repair:** documented auto units, reporting-period eligibility, continuing-profit scope, data readiness, profitability, cash conversion and liquidity/borrowings groups are implemented. Summary announcements passed a reviewed-schema live check. See [finance scope/data support](docs/design/finance-data-support.md) and [current results](docs/reference/function-validation.md).
+
+**24 November core 0.2.0:** the first no-inference citation/content-sentiment handoffs are implemented through Python, HTTP, CLI and a workbench JSON tester. Drishti readiness/catalog handling is repaired. See [review workflows](docs/review-workflows.md) and [validation status](docs/implementation.md). Margin’s own MCP packaging remains behind the core-validation gate.
+
+**24 November build plan:** finish retrieval/finance validation, add capability-aware citation and content-sentiment workflows, package the stable core as MCP, and evaluate it through a separate cross-model harness with simple decision trails. See the [active plan](docs/plan.md). These additions are planned; the delivered runtime remains the core/workbench/CLI/skill described below. Older dated deferrals are superseded.
+
 A Python research core for Indian financial data, integrating **BharatStock REST + Drishti MCP**. Build and test the core through a temporary local browser workbench first; add Margin's own MCP interface later.
+
+**16 November agent interface:** reusable Python modules now also have a `margin-agent` JSON CLI and installed Codex skill, sharing the local backend without opening the browser. See [agent setup](docs/agent-interface.md). An optional private pilot recorder is separate from normal usage; frozen replay, independent grading and Margin's own MCP server remain unimplemented.
+
+The [portable local test bundle](docs/portable-agent-bundle.md) adds relocatable setup, the full function inventory, optional private trial credentials and visible decision-summary logging. These private artifacts stay outside Git.
 
 ## Current state
 
@@ -8,7 +18,9 @@ A Python research core for Indian financial data, integrating **BharatStock REST
 
 The earlier corpus/PDF implementation is preserved on the pushed [`d1` branch](https://github.com/rishitttt/margin-mcp/tree/d1) at `c77963d`. Old corpus commands do not apply to this runtime.
 
-**7 November planning update:** the [complete research review](docs/design/research-environment-review.md) and [revised plan](docs/plan.md) propose a bounded replayable environment, independent filing-based answers and recorded agent experiments over this core. They are not implemented. A permissioned frozen study snapshot is a specific exception to the transient live workflow; general DCF, sentiment and downstream MCP remain later/parallel work. The audit passed Ruff checks and all 50 offline tests; no new authenticated collection or model experiment was run.
+**15 November planning update:** the [active plan](docs/plan.md) now prioritizes retrieval repairs, stable fact/receipt contracts, deterministic analysis and DCF integration, then Python/MCP packaging. Citation verification and sentiment protocols are deferred. The professor's proposal is retained as a **separate optional research harness** consuming Margin's public interface; snapshots, answer keys and agent experiments are not product requirements or implemented features. The [7 November research review](docs/design/research-environment-review.md) preserves the earlier analysis, with its old priorities explicitly superseded.
+
+**15 November implementation:** typed financial facts, compatibility/unit checks, comparisons/margins/cash-flow/CAGR/TTM and explicit-input FCFF/DCF/sensitivity/scenarios are now implemented, with local workbench controls. News/earnings shapes and detail navigation were repaired after fresh provider probes; selected Drishti schemas were reviewed/refreshed. See [financial analysis](docs/financial-analysis.md). Financial results now populate fact selectors automatically. Five company financial workflows can reuse retained data or preview one financials request and return ordinary result cards. These calculations do not automatically populate a source-supported company valuation. The research harness, citation verification, sentiment protocols and downstream MCP remain deferred.
 
 ## Run locally
 
@@ -20,7 +32,7 @@ python3.12 -m venv .venv
 .venv/bin/margin-workbench --mode synthetic --port 8765
 ```
 
-Open [the local workbench](http://127.0.0.1:8765). Preview a plan for fictional `SYNTHA`, then run it. Add prices or earnings discovery explicitly; select a returned earnings record to inspect its detail. No keys or subscriptions are needed for synthetic mode. See the [workbench guide](docs/workbench.md) for scenarios, live-mode controls, API usage, retention and limitations.
+Open [the local workbench](http://127.0.0.1:8765). Choose a task for fictional `SYNTHA`: Finance or Retrieval. The redesigned function lab exposes all 13 retrieval operations, nine company workflows and the 15 local calculations; the dedicated DCF tab/form is temporarily removed. Preview its inputs/source/cost, then Run. Retrieval defaults to Snapshot only; earnings details also preview before running. No keys or subscriptions are needed for synthetic mode. See the [workbench guide](docs/workbench.md) for scenarios, live-mode controls, API usage, retention and limitations.
 
 ```sh
 .venv/bin/ruff check src tests scripts
@@ -38,6 +50,7 @@ Trial tests return financial, price, ownership and event data for RELIANCE/TCS. 
 
 - [Short handoff: repo map, documentation update and professor's new notes](HANDOFF.md)
 - [Workbench setup and usage](docs/workbench.md)
+- [Agent CLI, Codex skill and optional private pilot](docs/agent-interface.md)
 - [Active core/workbench architecture](docs/design/core-workbench.md)
 - [Later MCP interface design](docs/design/mcp-aggregation.md)
 - [Provider endpoints, costs and coverage research](docs/research/mcp-provider-feasibility.md)

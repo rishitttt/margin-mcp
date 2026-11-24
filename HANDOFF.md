@@ -1,6 +1,20 @@
 # Margin: quick handoff
 
+**25 November source checkpoint:** the core includes 37 retrieval/finance functions, ten local review functions, Python/CLI/skill access and the temporary workbench. Latest baseline: 192 tests; evaluator-key separation adds two checks. Plans/results and source limits are in [implementation status](docs/implementation.md) and [function validation](docs/reference/function-validation.md). Source-only publication excludes credentials, live captures, private bundles and the numerical evaluator key. Older push/local-status notes below are historical. The user has now authorized planning and building the MCP adapter after this checkpoint is pushed.
+
+**16 November portability update:** [private local bundles](docs/portable-agent-bundle.md) now ship the skill/runtime/setup helpers, complete function inventory and evaluation-session visible-summary commands. The user authorized trial keys inside the ignored bundle's separate private file; no source/Git keys or live captures were added. 117 tests and relocated fictional process checks pass. Actual host/model evaluation remains pending; nothing new has been pushed.
+
+**16 November local update:** [agent access](docs/agent-interface.md) now documents the Python package, new CLI/installed Codex skill and optional private pilot recorder. The CLI shares the workbench backend; the browser is optional. Full replay/evaluation and own MCP remain pending. These changes and the prior 15 November implementation are local, not a new push; the push summary below remains historical.
+
 **9 November 2026 — repository map, documentation update and next steps.**
+
+**15 November update:** the [active plan](docs/plan.md) now separates product development from the optional research harness. Product retrieval/facts/comparisons/DCF and later packaging come first; citation verification and sentiment protocols are parked. The push summary below remains the 9 November historical snapshot.
+
+**15 November implementation (local, not yet committed/pushed):** retained financial facts, eleven local comparison/FCFF/DCF/sensitivity/scenario functions and workbench controls now exist. Fresh probes used three BharatStock requests and six Drishti credits (975 → 969); see [current implementation](docs/implementation.md) and [financial analysis](docs/financial-analysis.md). The professor/research material stays separate and the historical push summary below still describes 9 November.
+
+**Later 15 November repair (also local):** automatic financial fact loading/source selection, five company financial workflows with previewed source reuse or one request, and standard result cards for financial calculations. A two-request real annual-financials browser pass and 94 offline tests cover the repair; see the latest implementation checkpoint. No new paid keys or Drishti calls were needed.
+
+**Latest UX repair:** the interface now has Financial functions / Retrieve data / DCF & advanced with a shared preview → Run path, one listing-scoped unit control, stale company/preview isolation and recent local run history. Validation is 95 offline tests plus expanded browser acceptance and one additional live BharatStock request (zero Drishti calls). See the current workbench guide before following historical UI steps below.
 
 ## What is on main
 
@@ -36,7 +50,7 @@ The supplied **“Margin: The Research Vision and the First Public Release” (N
 
 It requests bounded frozen responses, fixed ordinary financial questions, filing-grounded answers, genuine iterative tool-use decisions and reproducible records. Approximately six companies/four questions/two models would yield 48 trajectories; smaller credible studies are acceptable. A new MCP server and general DCF are not prerequisites. Public replay depends on data permissions. This section summarizes the supplied notes; it does not mean those requirements are implemented.
 
-## Our proposed response and existing product backlog
+## Our 9 November response and backlog (sequence superseded)
 
 Next: establish permissions and task feasibility -> add opt-in capture/offline replay -> fix a company/question roster and independently review filing answers -> run and record agents -> release permitted artifacts and reproducible analysis. Start with three release companies; expand only if coverage supports it.
 

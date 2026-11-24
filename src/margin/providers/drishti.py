@@ -103,6 +103,7 @@ class DrishtiAdapter:
         self.state = "disconnected"
         self.verified = set()
         self.changed = set()
+        self.unexposed_native = set()
         self.refreshed = 0.0
 
     def status(self):
@@ -110,6 +111,7 @@ class DrishtiAdapter:
             "state": self.state,
             "verified_operations": sorted(self.verified),
             "schema_changed_operations": sorted(self.changed),
+            "unexposed_native_tools": sorted(self.unexposed_native),
             "metadata_fresh": self.state == "connected"
             and time.monotonic() - self.refreshed <= self.settings.metadata_ttl,
             "live_access_verified": False,
@@ -182,10 +184,14 @@ class DrishtiAdapter:
         if catalog.next_cursor:
             raise DomainError("schema_changed", "Native catalog exceeds the reviewed bounded page.")
         tools = {t.name: t for t in catalog.tools}
-        if set(tools) != set(NATIVE):
+        if len(tools) != len(catalog.tools) or not set(NATIVE) <= set(tools):
             raise DomainError(
-                "schema_changed", "Native routing catalog changed; manual review required."
+                "schema_changed",
+                "A required native routing tool is missing or duplicated; manual review required.",
             )
+        # Additive tools are never exposed or called. Required routing contracts below
+        # must still match exactly; this does not approve any new native capability.
+        self.unexposed_native = set(tools) - set(NATIVE)
         for name, approved in NATIVE.items():
             live = tools[name]
             if schema_hash(live.input_schema) != schema_hash(

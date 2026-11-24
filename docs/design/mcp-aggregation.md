@@ -1,8 +1,10 @@
-# Later MCP interface adapter (deferred)
+# MCP interface adapter design
+
+**24 November planning update:** implement a thin adapter once shared contracts stabilize, per the [active build plan](../plan.md). Citation/sentiment workflows are now planned, with capability routing in [section 4.5](analysis-and-protocols.md#45-capability-routing-and-model-limitations). The adapter remains unimplemented; historical deferrals below do not supersede the new plan.
 
 **20 October 2026 scope update:** Phase 1 now builds reusable Python core services and a temporary local workbench. The [core/workbench architecture](core-workbench.md) is the active implementation design; [delivery plan](../plan.md) owns sequencing. This document preserves the **9 October downstream MCP design for a later phase**, not an instruction to package a Margin MCP server first. Its “first release” references below mean the later MCP release. Shared provider/admission/evidence principles remain relevant, but current lifecycle/result/UI contracts come from the core design.
 
-The core and local UI are now implemented; the Margin MCP server remains deferred. The [7 November research plan](research-environment-review.md) prioritizes bounded replay and agent experiments using ordinary Python tools before this adapter. First-release and in-memory-only statements below belong to the historical MCP proposal, not the new research-release scope. The [25-function reference](../reference/drishti-functions.md) and [provider research](../research/mcp-provider-feasibility.md) own source contracts/evidence; [implementation status](../implementation.md) owns delivered behavior.
+The core and local UI are now implemented; the Margin MCP server remains deferred. The [15 November delivery plan](../plan.md) schedules this adapter after stable product services, independently of the optional research harness; citation verification and sentiment protocols are deferred. First-release and in-memory-only statements below belong to the historical MCP proposal, not the new research-release scope. The [25-function reference](../reference/drishti-functions.md) and [provider research](../research/mcp-provider-feasibility.md) own source contracts/evidence; [implementation status](../implementation.md) owns delivered behavior.
 
 ## Decision and scope
 

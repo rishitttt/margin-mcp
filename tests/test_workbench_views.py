@@ -36,6 +36,7 @@ const context = vm.createContext({
     getElementById(id) { if(!ids.has(id)) ids.set(id,new Element('div')); return ids.get(id); },
     createElement(tag) { return new Element(tag); },
     createElementNS(ns,tag) { return new Element(tag); },
+    querySelectorAll() { return []; },
   },
   fetch(path) { fetches.push(path); return new Promise(()=>{}); },
 });
@@ -67,6 +68,22 @@ context.input.payload.data=[{unknown_amount:17}];
 vm.runInContext('appendResult(input)',context);
 assert.deepEqual(descendants(cards,'th').map(e=>e.textContent),['unknown_amount']);
 assert.deepEqual(descendants(cards,'td').map(e=>e.textContent),['17']);
+// Actual event-field variants; values/titles below are invented software fixtures.
+cards.replaceChildren();
+context.input = {operation:'drishti.get_news',provider:'drishti',mode:'live',status:'success',
+ payload_kind:'mcp_result',payload:{structuredContent:{data:[{title:'Example title',specific_title:'Specific example',summary:'Example summary',id:'news-1'}]}},
+ receipt:{retrieved_at:'test'},warnings:[],citations:[]};
+vm.runInContext('appendResult(input)',context);
+assert.equal(descendants(cards,'h4')[0].textContent,'Specific example');
+assert.equal(descendants(cards,'table').length,0);
+assert.equal(descendants(cards,'button').length,0); // A news ID must never become an earnings selector.
+cards.replaceChildren();
+context.input.operation='drishti.list_earnings';
+vm.runInContext('appendResult(input)',context);
+assert.equal(descendants(cards,'button')[0].textContent,'Inspect this earnings record');
+assert.equal(vm.runInContext("JSON.stringify(earningsArguments({id:'record-1',symbol:'EXAMPLE',quarter:'q2_27'}))",context),'{"earnings_id":"record-1","detailed":true}');
+assert.equal(vm.runInContext("JSON.stringify(earningsArguments({symbol:'EXAMPLE',quarter:'q2_27'}))",context),'{"symbol":"EXAMPLE","quarter":"q2_27","detailed":true}');
+assert.equal(vm.runInContext("earningsArguments({id:'bad/id',quarter:'Q2 2027'})",context),null);
 vm.runInContext(`
 capabilities = new Map([
  ['bharatstock.get_stock_quote',{enabled:true}],
@@ -94,6 +111,7 @@ console.log('Financial field rendering, null/zero fidelity, unknown shape fallba
   context.fetch=async(path,options)=>{
     fetches.push(path);
     if(path==='/api/status') return {ok:true,json:async()=>status()};
+    if(path==='/api/capabilities') return {ok:true,json:async()=>({operations:[{operation:'drishti.get_news',enabled:state==='connected',held_reason:state==='connected'?null:'Connect first',schema:{type:'object',properties:{}}}]})};
     if(path==='/api/provider-connections/drishti') {
       postCount++;
       assert.equal(options.headers['X-Margin-Action'],'fresh-local-nonce');

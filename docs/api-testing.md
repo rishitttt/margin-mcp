@@ -1,5 +1,60 @@
 # API and MCP testing protocol
 
+## Completed finance repair: 24 November 2026
+
+Budget: B2, D14 HTTP including lifecycle/cleanup, six estimated credits. Initial D12 was
+prospectively revised after the metadata-only session used D6. Actual: B2/D13 and one
+estimated data credit, no measured account debit. The announcement flag was reviewed
+before one successful summary request; extraction remained explicitly false. No data
+retries or automatic pagination. Public issuer/NSE downloads failed separately and are
+not authenticated provider calls.
+
+The maintained finance runner is explicit opt-in and refuses existing output paths:
+
+```sh
+# Historical executed live command; do not repeat without a fresh budget/path.
+.venv/bin/python scripts/check_finance_repairs.py --confirm-live \
+  --output reports/private/finance-repair-2026-11-24/financials
+
+# Reprocessing uses the same real responses and no additional provider requests.
+.venv/bin/python scripts/check_finance_repairs.py \
+  --saved-responses reports/private/finance-repair-2026-11-24/financials \
+  --output reports/private/finance-repair-2026-11-24/financials-final
+```
+
+The final scope-aware reprocessing produced 12 success/two partial/two incomplete cases
+and 32 independent arithmetic matches. See [function status](reference/function-validation.md)
+and [finance/data decisions](design/finance-data-support.md). The original fresh run is
+preserved separately. Private retention review remains 8 December; no ongoing corpus.
+
+## Completed HINDUNILVR function audit: 24 November 2026
+
+The explicit runner `scripts/audit_functions.py` made fresh real calls through one core
+service, reusing retained results for calculations. Bounds were seven BharatStock attempts,
+sixteen Drishti HTTP attempts including lifecycle and ten estimated credits. Actual usage:
+seven / twelve / eight estimated credits; actual account debit was not measured. No retries
+or automatic pagination. See the [per-function results](reference/function-validation.md).
+
+Executed once from the repository root:
+
+```sh
+.venv/bin/python scripts/audit_functions.py --confirm-live \
+  --ticker HINDUNILVR --company-name 'Hindustan Unilever Limited' \
+  --as-of 2026-11-24 \
+  --output reports/private/function-audit-HINDUNILVR-2026-11-24 \
+  --offline-results reports/private/function-audit-offline-2026-11-24.xml
+```
+
+This is execution evidence, not permission to repeat a consumed allowance. A future run
+needs a fresh bounded plan and new output path; the script refuses existing outputs. It
+reads credentials from local environment/ignored `.env` without placing keys in arguments.
+Private response retention is subject to manual review on 8 December; no automatic deletion
+or ongoing corpus is created. The returned packets/ZIP contain sanitized provider data,
+not credentials, and must stay private. Offline test fixtures remain separate from these
+company observations.
+
+**16 November agent-adapter check:** one explicitly capped BharatStock annual-financials request and zero Drishti calls verified the new CLI-process path and local calculation reuse; latest period returned was `2026-03-31`. Units were caller-declared, not independently verified. No provider payload was persistently captured. See [implementation status](implementation.md) and [agent commands](agent-interface.md). The dated planning/account figures below are historical; this check did not query current account usage or establish new subscriptions/rights.
+
 Protocol planning updated **20 October 2026**; last authenticated source checkpoint remains 8/9 October. The first authenticated RELIANCE/TCS trial and selected Drishti operation comparison are complete. This is the operational source-test protocol; the implemented synthetic workbench and checks are documented in the [workbench guide](workbench.md). [Trial results](research/mcp-provider-feasibility.md#authenticated-trial-results-8-october-2026) and [operation comparison](research/mcp-provider-feasibility.md#authenticated-operation-discovery-and-rest-comparison-9-october-2026) own measured source contracts; [implementation status](implementation.md) owns delivered/validated state.
 
 **Current phase:** reusable core and local workbench first, Margin MCP packaging later. Provider integration remains **BharatStock REST + Drishti MCP**; the upstream Drishti MCP client is still used. The source passes below are historical evidence; BharatStock native-MCP access is not a release gate. Use the focused prospective plans for future checks, not the completed trial budgets.

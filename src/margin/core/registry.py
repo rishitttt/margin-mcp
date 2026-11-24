@@ -19,10 +19,23 @@ NATIVE = {o["name"]: o for o in SNAPSHOT["nativeTools"]}
 
 
 def schema_hash(schema: dict) -> str:
-    def strip(x):
+    def strip(x, entries=False):
         if isinstance(x, dict):
             return {
-                k: strip(v) for k, v in x.items() if k not in {"description", "examples", "title"}
+                k: strip(
+                    v,
+                    k
+                    in {
+                        "properties",
+                        "patternProperties",
+                        "$defs",
+                        "definitions",
+                        "dependentSchemas",
+                        "dependentRequired",
+                    },
+                )
+                for k, v in x.items()
+                if entries or k not in {"description", "examples", "title"}
             }
         if isinstance(x, list):
             return [strip(v) for v in x]
@@ -135,6 +148,10 @@ def build_specs() -> dict[str, Spec]:
             schema["properties"]["query"] = {"$ref": ref}
             schema["required"] = ["query"]
             schema["$defs"][ref.split("/")[-1]]["additionalProperties"] = False
+            if name == "get_announcements":
+                schema["$defs"][ref.split("/")[-1]]["properties"][
+                    "include_extracted_information"
+                ] = {"const": False, "default": False}
         specs.append(
             Spec(
                 "drishti." + name,
@@ -178,6 +195,14 @@ class Registry:
 
     def validate(self, request: OperationRequest) -> Spec:
         spec = self.spec(request.operation)
+        if (
+            spec.key == "drishti.get_announcements"
+            and isinstance(request.arguments, dict)
+            and isinstance(request.arguments.get("query"), dict)
+        ):
+            # Provider default is true. Keep the explicit reviewed summary-only path
+            # in previews and receipts rather than silently opting into extraction.
+            request.arguments["query"].setdefault("include_extracted_information", False)
         if encoded_size(request.arguments) > 64 * 1024:
             raise DomainError("invalid_input", "Arguments exceed 64 KiB.")
         try:
@@ -216,7 +241,11 @@ class Registry:
                 ids_list = ids if isinstance(ids, list) else [ids]
                 if len(ids_list) != 1 or not str(ids_list[0]).strip() or "," in str(ids_list[0]):
                     raise DomainError("invalid_input", "Refetch exactly one explicit record ID.")
-                if any(v is not None for k, v in q.items() if k != "ids"):
+                if any(
+                    v is not None
+                    for k, v in q.items()
+                    if k not in {"ids", "include_extracted_information"}
+                ):
                     raise DomainError(
                         "invalid_input", "Record IDs override filters; use IDs alone."
                     )

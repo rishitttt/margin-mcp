@@ -52,3 +52,4 @@ class OperationResult:
     coverage: dict = field(default_factory=dict)
     receipt: dict = field(default_factory=dict)
     error: dict | None = None
+    contract_version: str = "1.1"

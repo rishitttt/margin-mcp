@@ -486,3 +486,61 @@ New public availability observation: the [BharatStock homepage](https://bharatst
 For the user's core-first request, evaluated a local FastAPI/static HTML/JS workbench, Streamlit and a separate React/TypeScript app. Primary references inspected: [FastAPI lifespan](https://fastapi.tiangolo.com/advanced/events/), [static files](https://fastapi.tiangolo.com/tutorial/static-files/), [Streamlit forms](https://docs.streamlit.io/develop/api-reference/execution-flow/st.form) and [caching/resource guidance](https://docs.streamlit.io/develop/concepts/architecture/caching). No framework was installed, benchmarked or implemented. FastAPI lifecycle can own shared app resources and serve local assets; Streamlit forms can batch input changes. Choosing the former is an engineering judgment for explicit request actions and async adapter/ledger ownership, not a claim that the latter cannot implement a safe UI.
 
 The active design separates core operations/records from HTTP and future MCP result objects. A temporary interface does not require a maintained financial server/corpus, model or public deployment. No provider/pricing/account refresh was performed; 9 October schemas, prices and the 986-credit snapshot stay dated evidence, not a current entitlement/remaining-budget guarantee. No authenticated data/credit spend or receipt retention change occurred.
+
+## Fresh payload inspection: 15 November 2026
+
+At the user's explicit request, inspected fresh responses **before implementing new financial functions**. Used the existing local trial keys; no purchase, provider contact, backfill, automatic pagination/retry, attachment download or raw-response archive. One company (RELIANCE/NSE) only. Credentials stayed in headers; temporary diagnostic code/metadata stayed outside Git and no licensed response rows were added to fixtures.
+
+| Provider | Bounded requests | Result |
+| --- | --- | --- |
+| BharatStock REST | Snapshot once; quarterly financials page 1/size 4; annual financials page 1/size 2 | Three HTTP attempts, all successful through the current core/REST adapter |
+| Drishti | Usage diagnostics, native/selected-schema review, then MCP news (7 days/limit 1), earnings discovery (365 days/limit 1) and one detail using its returned ID | 22 cumulative HTTP attempts within a 26-request ceiling; three data executions succeeded; published estimate six credits and measured balance 975 → 969 |
+
+The Drishti count includes the initial guarded schema rejection, subsequent explicit metadata review, lifecycle/cleanup and three usage reads. No data operation was automatically repeated. Balance deltas are observations for this sequence, not a durable account-wide spending guarantee; current allowance can change after the checkpoint. BharatStock's remaining daily allowance was not observable. The independent HTTP total across the two providers was 25, distinct from the October trial counts.
+
+### Contracts reviewed and guard behavior
+
+The first Drishti connection stopped before data execution because native schema hashes no longer matched. Its initial/final balance stayed 975. The native inventory remained `read_me`, `search_tools`, `describe_tools`, `execute_tool`. Review found nullable `search_tools.cursor`, a twelve-item cap for `describe_tools.names`, newly declared output fields/required properties and object-shaped executor output. Selected nested inputs matched except removal of the announcements `important` filter. Refreshed four native and seven selected nested schemas in both reference/runtime JSON; the other eighteen nested schemas retain their October dates. Data calls proceeded only after local review and a check against the approved snapshot. Current application transport is additionally exercised offline; the direct SDK probe is not a new end-to-end live UI demonstration.
+
+Schema hashing now ignores documentation annotations while preserving actual properties named `title`/`description`; changing a semantic property must not disappear from the hash. Native response typing required the offline fake descriptors to follow the observed descriptor contract rather than the old untyped envelope. Credential sanitization and strict nested selector/budget policies were retained.
+
+### What fresh data establishes
+
+- Snapshot contains additional nested coverage/metric fields, including share-count, tax and depreciation-related candidates. Field presence does not establish compatible valuation inputs or unit conventions; these were not automatically mapped into DCF.
+- Quarterly page returned four rows, latest period end **30 September 2026**, consolidated. Annual page returned two rows, latest period end **31 March 2026**. This is one company's bounded history, not a universe/freshness guarantee.
+- Annual CFO and capex were non-null; quarterly CFO/capex remained null. Separate group net profit and owners-attributable profit, reported/diluted EPS, adjusted EPS and a multiplier were present. Annual/quarterly row-level unit and start-date labels were absent.
+- The [current BharatStock reference](https://bharatstockapi.com/reference) describes capex as PPE/intangibles purchases and distinguishes as-filed EPS from bonus/split-adjusted EPS. These definitions informed separate metric paths, not a global field-name conversion. Provider documentation is not independent filing verification.
+- News returned `id`, `title`, `specific_title`, summaries, symbol, source/link/date and provider sentiment fields. Earnings discovery returned an `id` and fiscal `quarter`; detail returned a `data` object containing `earnings_table` with standalone/consolidated sections and reporting-period basis. Detail source locators stayed sanitized/unverified. No broad numeric mapping from the Drishti tables was inferred.
+- Latest observed Drishti earnings quarter was `q2_27`, consistent with the current numerical quarter in this selected sample; the earlier TCS freshness finding was not retested.
+
+A local cash-flow calculation using the newly observed annual CFO/capex succeeded with an **explicit INR scale declaration** and the shared source row as its alignment reference. It preserved the distinction between CFO-minus-capex and FCFF. No issuer filing was downloaded or independently checked in this pass, and no company DCF forecast/discount assumption was inferred. New financial functions were then implemented with conservative context checks and separate invented software-test examples.
+
+The existing keys sufficed for these calls; this is not a recommendation that trial rights cover public redistribution or model evaluation. The ordinary product/source and separate research permissions remain distinct. No further live probe is implicit in this checkpoint.
+
+### Additional bounded financial UI repair: 15 November 2026
+
+Two additional BharatStock annual-financials attempts, zero Drishti calls/credits. A real RELIANCE/NSE browser walkthrough loaded 24 facts and exercised company margin, cash-flow, growth and annual endpoint CAGR plus selected-fact margin, reuse and reload. Testing found retention/UI races, repaired with offline regressions. The two attempts were each process-capped at one; restarts were not account replenishments. INR was caller-declared for arithmetic testing; provider row units remain absent and broader filing verification/history/TTM are not established. No raw response was saved to the repo or actual remaining account allowance inferred.
+
+
+### Unit evidence audit: 24 November 2026
+
+This earlier investigation is superseded for runtime status by the completed [finance repair](../implementation.md#financedata-repair-completion-24-november-2026): documented auto units, normal-quarter eligibility and source-scope guards are now implemented. The original observations/packets below remain unchanged.
+
+Public documentation plus saved HINDUNILVR responses were inspected without further authenticated requests. [BharatStock's FAQ](https://bharatstockapi.com/) explicitly states monetary financial line items are absolute INR. This supplies documentation evidence supporting the functional run's INR declaration; receipts retain their actual caller-declared origin. [The reference](https://bharatstockapi.com/reference) documents crore market cap for screener metrics and lakh-scaled traded turnover. Its abbreviated financial example appears crore-sized despite the FAQ; illustrative magnitudes are not a unit contract.
+
+HUL root/ratios market cap is exactly 10,000,000 times nested `metrics.market_cap`, repeating the earlier two-company finding. Drishti's saved HUL monetary cells explicitly use `Rs in crores`; EPS uses `Rs/share`. Its [official structured examples](https://drishti.manasija.in/docs/use-cases/stock-brokers) also demonstrate `Rs. Lakhs`, and event-level `value_unit` plus `currency`. Read per-field labels; do not assume one unit for all Drishti issuers or all numbers in a statement.
+
+Eight saved-input consistency checks matched: two market-cap checks and three period pairs each for PAT and EPS. This is cross-provider consistency, not independent original-table verification. A narrow issuer-web check separately corroborated quarterly PAT of 2,796 crore and interim dividend of 19 rupees/share in [HUL's Q2 release](https://www.hul.co.in/news/press-releases/2026/results-for-the-quarter-ended-30th-september-2026/). The release's headline turnover is a separately named measure; no revenue equivalence was inferred.
+
+After conversion, BharatStock/Drishti revenue remains different: current quarter 18,226/18,037 crore, previous quarter 17,341/17,149 crore, and annual endpoint 64,468/63,636 crore. Unit conversion alone does not reconcile these. Definitions, continuing/discontinued scope and source extraction require original-statement review before comparison/substitution. No automatic mapping or correction was applied.
+
+Runtime unit origins remain response/caller/unknown; reviewed documentation-backed defaults and field-specific display labels are follow-up work. Preserve raw values, original units, evidence URL/date, conversion factor and any disagreement. Monetary scales cannot be applied to EPS, share counts or multiples; percentage-point outputs cannot be passed unchanged to fraction-based WACC/growth/tax inputs. ROE/ROCE wording is broad in the FAQ; do not derive scaling solely from field names or magnitudes.
+
+Private supplement: `reports/private/unit-audit-HINDUNILVR-2026-11-24/` contains a readable report, exact response paths/labels, eight checks, three unresolved differences and source hashes. Manual retention review is 8 December. Original function-audit files/ZIP are unchanged. No runtime change, purchase, commit or push occurred.
+
+
+### Finance repair source review: 24 November 2026
+
+The issuer/NSE Q2 PDF text distinguishes product sales from operating revenue. Services plus other operating revenue account for the three HUL differences recorded above; this is a metric-definition reconciliation, not an arithmetic correction or universal Drishti mapping. Annual total and continuing profit also differ, so the company margin now selects returned continuing profit and mixed-scope components are withheld. Source-download/visual failures limit this to selected textual review; see [finance scope](../design/finance-data-support.md).
+
+New Drishti metadata adds only `include_extracted_information:boolean` default true to announcements. The approved native schema was updated after review; Margin's narrower contract explicitly defaults it false and rejects true. One HUL summary execution succeeded. Repair usage B2/D13 HTTP and one estimated credit is separate from the earlier audit; actual debit unmeasured. Final financial checks reused the two fresh responses without further requests. Private evidence: `reports/private/finance-repair-2026-11-24/`.

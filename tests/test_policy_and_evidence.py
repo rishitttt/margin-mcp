@@ -131,8 +131,8 @@ def test_live_mode_does_not_equate_key_presence_with_untested_access():
     with pytest.raises(DomainError, match="untested"):
         registry.validate(
             OperationRequest(
-                "drishti.get_news",
-                {"query": {"symbols": ["RELIANCE"], "lookback_days": 7, "page": 1, "limit": 2}},
+                "drishti.get_symbols",
+                {"query": {"symbols": ["RELIANCE"]}},
             )
         )
     with pytest.raises(DomainError, match="Fictional"):
@@ -185,3 +185,28 @@ def test_secret_in_path_is_not_reintroduced_by_citation_creation():
 def test_opaque_binary_is_withheld():
     with pytest.raises(DomainError, match="binary"):
         Sanitizer().clean({"content": [{"type": "image", "data": "base64blob"}]})
+
+
+def test_source_classification_excludes_logos_but_keeps_scanned_citation_pages():
+    source = {
+        "logo_url": "https://example.invalid/logo",
+        "image_url": "https://example.invalid/banner.png",
+        "citation_url": "https://example.invalid/filing.pdf",
+        "page_citation_url": "https://example.invalid/page.png",
+    }
+    s = Sanitizer()
+    urls = {c["locator"] for c in s.citations(source, s.clean(source))}
+    assert urls == {"https://example.invalid/filing.pdf", "https://example.invalid/page.png"}
+    assert all(not c["verified"] for c in s.citations(source, s.clean(source)))
+    nested = {"content": [{"type": "text", "text": json.dumps(source)}]}
+    assert {c["locator"] for c in s.citations(nested, s.clean(nested))} == urls
+
+
+def test_schema_hash_ignores_annotations_but_preserves_properties_named_title():
+    from margin.core.registry import schema_hash
+
+    schema = {"type": "object", "properties": {"title": {"type": "string"}}, "description": "old"}
+    assert schema_hash(schema) == schema_hash(schema | {"description": "new"})
+    assert schema_hash(schema) != schema_hash(
+        {"type": "object", "properties": {"title": {"type": "integer"}}}
+    )

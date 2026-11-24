@@ -1,8 +1,18 @@
 # Drishti function map
 
+**24 November announcement repair:** reviewed one additive `include_extracted_information: boolean` input, provider default true. The native snapshot retains that contract; Margin’s narrower public schema defaults it explicitly to false and rejects true. Existing selector/date/limit/ID guards remain. A one-record HUL summary request succeeded: metadata/lifecycle six plus execution-session seven HTTP attempts, one estimated credit, actual debit unmeasured. This supersedes the held announcement status immediately below. No other new data tool or extraction branch was enabled.
+
+**24 November native-catalog observation:** tools/list now additionally advertises `report_issue`; all four reviewed native routing schemas were unchanged. Margin ignores/quarantines unexposed additions and still rejects missing/duplicated/changed required routing tools. `report_issue` is not exposed or executed. Nested `get_announcements` remains schema-changed/held; this observation does not approve a new data operation or replace the reviewed input snapshot.
+
 Snapshot: **9 October 2026**, hosted `drishti-mcp` **3.3.1**, MCP protocol **2025-11-25**. This reference maps four native tools and **25 confirmed underlying operations**, with live input schemas, public REST relationships, published costs and research uses. It is a contract reference, not implemented Margin handlers or an approved forwarding allowlist.
 
 The companion [JSON contract](drishti-functions.json) contains every observed input type, default, required field, enum and reference, plus reverse mappings for all thirty public REST paths. Provider description/example prose is omitted from that JSON; validation constraints are preserved. The [dated research](../research/mcp-provider-feasibility.md#drishti-function-mapping-checkpoint-9-october-2026) owns request accounting, artifact hashes and inspection method.
+
+## Selected refresh: 15 November 2026
+
+Four native schemas and the seven runtime-selected nested input schemas were inspected again before data execution. `search_tools` now accepts nullable `cursor`; `describe_tools.names` arrays are capped at twelve; native outputs are now explicitly typed. The selected announcements input removed `important`. The other six selected nested inputs matched. Both JSON reference and runtime resource were refreshed; the remaining eighteen nested schemas retain their October checkpoint. `selectedRefresh` and per-operation dates distinguish this partial refresh from the original inventory.
+
+Fresh SDK calls observed news, earnings discovery and earnings detail. Shapes include news `title`/`specific_title`, earnings `id`, and detail `data.earnings_table`. This does not validate all numeric fields or every application lifecycle path. The [source checkpoint](../research/mcp-provider-feasibility.md#fresh-payload-inspection-15-november-2026) owns the 22 HTTP attempts, six-credit debit and evidence limits. Cursor support supersedes the older no-cursor statement below; no broad pagination/discovery was performed.
 
 ## What complete means here
 
@@ -19,7 +29,7 @@ The server's native catalog is complete at four tools. Its underlying-operation 
 | `describe_tools` | Required `names`: string or string list | Load selected operation descriptions and JSON input schemas |
 | `execute_tool` | Required `name`; optional nullable `arguments` object | Execute an underlying operation; requires separate admission by its name/schema/bounds/cost |
 
-Three native helpers declare generic object output schemas; the executor has none. Described underlying operations supply input schemas but **no formal output schemas** in the returned descriptions. Result fields below are observed earnings fields or description-level expectations, not fully validated typed response contracts.
+At the original October checkpoint, three native helpers declared generic object output schemas and the executor had none. The 15 November selected refresh above supersedes those native output schemas. Described underlying operations supply input schemas but **no formal output schemas** in the returned descriptions. Result fields below are observed earnings fields or description-level expectations, not fully validated typed response contracts.
 
 Agents call the native executor, not an underlying name directly. For example, the following describes the input contract; it is not a local runnable command or implemented Margin tool:
 

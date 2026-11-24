@@ -136,3 +136,76 @@ def test_core_does_not_import_web_framework():
                 assert not (node.module or "").startswith(
                     ("fastapi", "starlette", "margin.interfaces")
                 )
+
+
+def test_local_finance_catalog_and_dcf_do_not_call_providers(client):
+    before = client.get("/api/status").json()["ledger"]
+    functions = client.get("/api/analysis/functions").json()["functions"]
+    assert len(functions) == 15 and all(not f["network"] for f in functions)
+    model = {
+        "forecast_fcff": ["10", "10"],
+        "wacc": "0.1",
+        "terminal_growth": "0",
+        "debt": "0",
+        "cash": "0",
+        "other_equity_adjustments": "0",
+        "diluted_shares": "10",
+        "amount_unit": "INR",
+        "valuation_date": "2026-11-15",
+        "company_type": "non_financial",
+    }
+    body = {"function": "finance.calculate_dcf", "arguments": model}
+    assert client.post("/api/analysis", json=body).status_code == 403
+    response = client.post("/api/analysis", headers=headers(client), json=body)
+    assert response.status_code == 200 and response.json()["status"] == "success"
+    from decimal import Decimal
+
+    assert abs(Decimal(response.json()["values"]["value_per_share_inr"]) - 10) < Decimal("1e-25")
+    assert client.get("/api/status").json()["ledger"] == before
+    bad = client.post(
+        "/api/analysis",
+        headers=headers(client),
+        json={"function": "finance.calculate_dcf", "arguments": model | {"wacc": True}},
+    )
+    assert bad.status_code == 400
+
+
+def test_fact_preparation_uses_retained_result_and_declares_units(client):
+    h = headers(client)
+    plan = client.post(
+        "/api/plans", headers=h, json={"symbol": "SYNTHA", "exchange": "NSE", "modules": ["annual"]}
+    ).json()
+    run = client.post(
+        "/api/runs",
+        headers=h,
+        json={"plan_id": plan["plan_id"], "idempotency_key": "prepare-facts-001"},
+    ).json()
+    run = wait(client, run["run_id"])
+    op = run["operations"][0]["operation_id"]
+    base = f"/api/runs/{run['run_id']}/operations/{op}"
+    before = client.get("/api/status").json()["ledger"]
+    response = client.get(base + "/facts?money_unit=unknown")
+    assert response.status_code == 200 and response.json()["facts"]
+    assert all(f["unit"] is None for f in response.json()["facts"])
+    declared = client.get(base + "/facts?money_unit=INR_crore").json()
+    revenue = next(f for f in declared["facts"] if f["metric"] == "revenue")
+    assert revenue["unit"] == "INR_crore" and revenue["unit_origin"] == "caller_declared"
+    raw = client.get(base).json()
+    assert "unit" not in raw["payload"]["data"][0]  # No rewrite of provider records.
+    assert client.get("/api/status").json()["ledger"] == before
+    assert client.get(base + "/facts?money_unit=guess").status_code == 400
+
+
+def test_calculation_credentials_are_rejected_without_echoing():
+    key = "private-local-finance-key-test-value"
+    with TestClient(create_app(Settings(bharatstock_key=key)), base_url="http://127.0.0.1") as c:
+        response = c.post(
+            "/api/analysis",
+            headers=headers(c),
+            json={"function": "finance.calculate_dcf", "arguments": {"forecast_fcff": [key]}},
+        )
+        assert response.status_code == 400 and key not in response.text
+        assert c.get("/api/status").json()["ledger"]["http_attempts"] == {
+            "bharatstock": 0,
+            "drishti": 0,
+        }

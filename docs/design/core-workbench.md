@@ -1,8 +1,12 @@
 # Phase 1: core research services and local workbench
 
+**16 November adapter extension:** [agent CLI and skill](../agent-interface.md) are implemented over this same local HTTP backend. Separate command processes share one service/ledger/result store. No browser is required. A separate opt-in `research/pilot.py` consumes the CLI's observation hook; product code never imports it. This is private pilot logging, not frozen replay, a model runner, independent gold or Margin MCP packaging.
+
 Architecture set on **20 October 2026**, implemented as the core/workbench slice, with selected live execution shown in the 21 October user export. Broader financial/source validation and Margin MCP packaging remain pending. This document describes the delivered core boundary; [delivery plan](../plan.md) owns milestones and [implementation status](../implementation.md) owns actual progress. The [MCP adapter design](mcp-aggregation.md) remains deferred.
 
 **7 November proposed extension:** the [research-environment review](research-environment-review.md) adds opt-in permissioned capture, immutable replay, independent answer keys and an agent runner beside this live workflow. They are not implemented. In-memory/TTL/no-agent statements below describe the existing workbench; they do not prohibit the separately scoped future research mode or authorize storing provider data now.
+
+**15 November scope update:** [product delivery](../plan.md) now prioritizes retrieval, fact/receipt contracts, deterministic finance and DCF/workbench integration before packaging. Citation verification and sentiment protocols are deferred. The research extension above is an optional separate harness; it does not add capture/replay/model dependencies to the product.
 
 ## Goal and scope
 
@@ -163,3 +167,16 @@ docs/                    current design, evidence, setup and status
 The first implementation includes `pyproject.toml`, tested development dependency constraints, Ruff/pytest and a default test suite blocking real sockets. Workbench dependencies are optional. The [implementation checkpoint](../implementation.md#first-coreworkbench-build-checkpoint) owns actual verification.
 
 Initial implementation limits: operations within each run execute sequentially, while separate runs can progress independently across provider locks. Plans contain explicit operations rather than an autonomous dependency graph. Output rendering recognizes reviewed paths; unknown layouts remain inspectable sanitized JSON. Live-held operations require explicit configuration in addition to schema refresh, and account balances/actual credit debits are not automatically queried. The result buffer is temporary diagnostic state, with no filesystem response cache. Synthetic scenario coverage and offline client tests do not prove current live entitlements, output shapes or financial accuracy.
+
+## Financial workflow extension: 15 November
+
+The shared core now plans five company financial functions over retained BharatStock financials or one explicitly previewed data dependency. Execution uses the existing immutable plans/runs/idempotency and bounded buffers. Local calculation nodes have zero provider cost and return the same operation-result envelope, with `payload_kind=analysis`, source references and safe incomplete states. All eleven explicit-input functions can use this result-card path. Active company nodes protect source runs from eviction; eviction otherwise prefers derived cards before financial sources. TTL/memory bounds still apply. Automatic fact loading and a local retained-source picker replace the hidden-button-only workflow. See [financial analysis](../financial-analysis.md) for exact endpoints and limitations.
+
+### Unified task flow
+
+The workbench now separates Financial functions, Retrieve data and DCF & advanced, sharing one preview/run path. The browser scopes facts/unit preferences to listing identity, invalidates edited drafts, ignores late preview responses and locks controls during execution. Local GET /api/runs returns at most twenty control summaries, without provider payloads or fetches; history and reload read retained output only. Loading facts never overwrites a displayed calculation. No provider call is initiated by task/source/history changes. See the current workbench/financial guides for UI details.
+
+
+### Function Lab frontend: 16 November
+
+The current frontend supersedes the three-task navigation above with Retrieval and Finance in a charcoal/violet console. DCF's dedicated tab/form is temporarily removed; its backend contracts stay intact. Retrieval includes the full thirteen-operation registry inspector and explicit single-operation JSON preview. Finance keeps five company workflows, scoped fact pairs and the eleven-function local JSON tester. Catalog/schema reads and starter generation are local only. Starters contain required schema fields and listing hints, never hidden dispatches; blank selectors require completion. The single-operation JSON controls remain explicit and do not silently follow subsequent company edits. Planned arguments are inspectable before the shared Run. Held operations, stale-preview rejection, idempotency, transient history and provider guards remain enforced.

@@ -276,3 +276,28 @@ async def test_shared_connect_failure_is_visible_and_retry_is_explicit():
         assert service._connection_task.done()
     finally:
         await service.close()
+
+
+async def test_receipts_preserve_nested_arguments_and_injected_clock_without_extra_calls():
+    stamp = "2026-11-15T08:00:00+00:00"
+    service = ResearchService(Settings(), clock=lambda: stamp)
+    arguments = {"query": {"symbols": ["SYNTHA"], "lookback_days": 7, "page": 1, "limit": 1}}
+    try:
+        result = await service.execute(OperationRequest("drishti.get_news", arguments))
+        assert result.contract_version == "1.1"
+        assert result.receipt["requested_at"] == result.receipt["retrieved_at"] == stamp
+        assert result.receipt["arguments"] == arguments
+        assert result.receipt["effective_arguments"] == arguments
+        arguments["query"]["symbols"][0] = "CHANGED"
+        assert result.receipt["arguments"]["query"]["symbols"] == ["SYNTHA"]
+        assert service.ledger.requests["drishti"] == 1
+    finally:
+        await service.close()
+
+
+def test_overview_uses_explicit_as_of_for_price_defaults():
+    from datetime import date
+
+    operations = overview_operations("SYNTHA", "NSE", ["prices"], as_of=date(2026, 11, 15))
+    assert operations[0]["arguments"]["to"] == "2026-11-15"
+    assert operations[0]["arguments"]["from"] == "2026-08-17"

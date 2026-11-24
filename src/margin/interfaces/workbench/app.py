@@ -14,9 +14,10 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
+from margin.analysis.company import planning_capabilities
 from margin.core.config import Settings
 from margin.core.contracts import DomainError
-from margin.core.service import ResearchService, overview_operations
+from margin.core.service import ResearchService
 
 
 def create_app(settings=None, service=None):
@@ -99,7 +100,7 @@ def create_app(settings=None, service=None):
                 raise ValueError
 
             value = json.loads(await request.body(), parse_constant=invalid_constant)
-        except ValueError:
+        except (ValueError, RecursionError):
             raise DomainError("invalid_input", "Invalid JSON action body.") from None
         if not isinstance(value, dict):
             raise DomainError("invalid_input", "JSON body must be an object.")
@@ -112,6 +113,71 @@ def create_app(settings=None, service=None):
     @app.get("/api/capabilities")
     async def capabilities(request: Request):
         return {"operations": request.app.state.service.capabilities()}
+
+    @app.get("/api/protocols")
+    async def review_functions(request: Request):
+        return {"functions": request.app.state.service.review_capabilities()}
+
+    @app.post("/api/protocols/invoke")
+    async def review_invoke(request: Request):
+        body = await json_body(request)
+        if set(body) != {"function", "arguments"} or not isinstance(body["arguments"], dict):
+            raise DomainError("invalid_input", "Supply a review function and arguments object.")
+        return request.app.state.service.review(body["function"], body["arguments"])
+
+    @app.post("/api/protocols/import-source")
+    async def review_import(request: Request):
+        body = await json_body(request)
+        if set(body) != {"run_id", "operation_id", "issuer"} or not all(
+            isinstance(v, str) for v in body.values()
+        ):
+            raise DomainError("invalid_input", "Supply run_id, operation_id and declared issuer.")
+        return request.app.state.service.import_review_sources(**body)
+
+    @app.get("/api/analysis/functions")
+    async def analysis_functions(request: Request):
+        return {"functions": request.app.state.service.calculation_capabilities()}
+
+    @app.get("/api/analysis/sources")
+    async def analysis_sources(request: Request):
+        return {"sources": request.app.state.service.financial_sources()}
+
+    @app.get("/api/analysis/company-functions")
+    async def company_functions():
+        return {"functions": planning_capabilities()}
+
+    @app.post("/api/analysis/plans")
+    async def financial_plan(request: Request):
+        body = await json_body(request)
+        allowed = {
+            "function",
+            "ticker",
+            "exchange",
+            "period_type",
+            "basis",
+            "money_unit",
+            "metric",
+            "source",
+            "fetch_missing",
+        }
+        if not {"function", "ticker", "exchange"} <= set(body) or not set(body) <= allowed:
+            raise DomainError(
+                "invalid_input", "Supply a company financial function and explicit source policy."
+            )
+        return request.app.state.service.plan_financial(**body)
+
+    @app.post("/api/analysis")
+    async def analysis(request: Request):
+        body = await json_body(request)
+        if set(body) != {"function", "arguments"} or not isinstance(body["arguments"], dict):
+            raise DomainError("invalid_input", "Supply a function and arguments object only.")
+        return request.app.state.service.calculate(body["function"], body["arguments"])
+
+    @app.get("/api/runs/{run_id}/operations/{operation_id}/facts")
+    async def financial_facts(
+        run_id: str, operation_id: str, request: Request, money_unit: str | None = "auto"
+    ):
+        return request.app.state.service.prepare_facts(run_id, operation_id, money_unit)
 
     @app.post("/api/provider-connections/drishti")
     async def connect(request: Request):
@@ -134,7 +200,7 @@ def create_app(settings=None, service=None):
                 or not all(isinstance(m, str) for m in body["modules"])
             ):
                 raise DomainError("invalid_input", "Invalid company or module selection.")
-            ops = overview_operations(
+            return request.app.state.service.plan_company(
                 body["symbol"],
                 body["exchange"],
                 body["modules"],
@@ -153,6 +219,10 @@ def create_app(settings=None, service=None):
         if set(body) != {"plan_id", "idempotency_key"} or not isinstance(body["plan_id"], str):
             raise DomainError("invalid_input", "Supply plan_id and idempotency_key only.")
         return await request.app.state.service.start_run(body["plan_id"], body["idempotency_key"])
+
+    @app.get("/api/runs")
+    async def recent_runs(request: Request):
+        return {"runs": request.app.state.service.recent_runs()}
 
     @app.get("/api/runs/{run_id}")
     async def run_status(run_id: str, request: Request):

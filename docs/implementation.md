@@ -1,6 +1,132 @@
 # Implementation and validation status
 
+## Finance/data repair completion: 24 November 2026
+
+Implemented documented auto units with evidence/provenance, explicit unknown mode, live conflicting-unit rejection, path-specific snapshot units, stock/flow fact separation and guarded calendar-quarter interval derivation. Raw provider values are preserved. TTM now accepts eligible HUL quarters; missing/longer/derived/basis-change periods remain held.
+
+Added four local functions (balance-sheet metrics, cash conversion, profitability and fact reconciliation) and four company wrappers including data readiness. Inventory is 13 retrieval + 15 local + nine company functions, plus ten separate review functions. The company margin prefers separately returned continuing profit. Group/owners margins and cash/profit conversion are withheld when the returned continuing/total profit scopes differ. No automatic company FCFF/DCF forecast is supplied. See [finance data support](design/finance-data-support.md).
+
+The added Drishti announcement flag was reviewed against metadata. Margin explicitly sends `include_extracted_information: false`; true remains outside the approved exposed contract. One bounded HUL summary execution succeeded. Required router/nested-schema drift guards remain.
+
+Validation: **192 offline tests passed**, Ruff lint/format, JavaScript syntax, updated source-skill validation, separate-command synthetic CLI/recorder acceptance (33 commands) and expanded synthetic Chrome desktop/mobile acceptance. The first browser attempt lacked Playwright’s cached binary; installed Chrome worked, then an outdated catalog-count assertion was updated before the successful acceptance run. Fictional browser ledger counts are not provider usage.
+
+Real usage for this repair: **B2/D13 HTTP** (Drishti metadata-only six plus reviewed execution/lifecycle seven), **one estimated credit**, actual debit unmeasured. The D ceiling was prospectively revised from 12 to 14 after observing lifecycle cost. No failed/uncertain paid call was retried. Initial fresh financial processing yielded 14 success/two incomplete; the later scope guard was checked by reprocessing the same responses without further calls, yielding **12 success/two partial/two incomplete** across 16 annual/quarterly company cases. **32 independent arithmetic checks matched** final outputs. Announcements, TTM and company/fact unit paths are now exercised successfully.
+
+The issuer/NSE PDF text explains product-sales versus operating-revenue differences. Local issuer download returned 403, NSE direct transfer failed, and the browser PDF remained blank; full visual/download verification was not achieved. Selected textual comparison is not a full filing audit. The older Reliance raw/normalized earnings discrepancy was not retested.
+
+Private evidence and hash manifest: `reports/private/finance-repair-2026-11-24/`. Old audit/evaluation ZIPs remain frozen. No provider purchase/contact, external model call, commit, push or downstream MCP implementation. Core financial definitions and acceptance still need user review before packaging.
+
+## New-ticker function audit: 24 November 2026
+
+Fresh HINDUNILVR/NSE calls exercised the public core and retained-data calculations.
+The [function matrix](reference/function-validation.md) covers all 13 retrieval operations,
+11 explicit-input local functions and five company wrappers. Outcomes: **22 success,
+two incomplete TTM paths, one schema-held announcements path, four valuation functions
+requiring explicit inputs**. Earnings detail now succeeded using a discovered real ID;
+the earlier budget-blocked detail gap below is closed. This is retrieval success, not
+independent validation of the provider's extracted earnings or original documents.
+
+**167 offline tests passed**, including 24 new parametrized orchestration checks. Thirteen
+independent Decimal recomputations matched returned-input arithmetic. Annual cash-flow
+data supported metrics; quarterly CFO/capex and quarter starts were absent. Monetary
+scale was caller-declared. FCFF/DCF/scenarios/sensitivity retain passing software reference
+tests; no company forecasts or valuation assumptions were fabricated for this audit.
+
+Actual attempts: **BharatStock 7, Drishti 12** including lifecycle/cleanup; eight estimated
+credits, actual debit unmeasured. No paid retries. Full sanitized cases, schemas, receipts,
+JUnit results, arithmetic checks and hash manifest are in the ignored private folder and
+ZIP `reports/private/function-audit-HINDUNILVR-2026-11-24`. The ten review functions retain
+separate offline/previous CLI/browser evidence; this was not a fresh semantic/model-host
+test. Announcements schema review, independent source review and approval of core
+acceptance remain gates before downstream MCP packaging. No purchase, commit or push.
+
+## Core review workflows and readiness: 24 November 2026
+
+Implemented core version **0.2.0**, without an LLM service, search/PDF engine, persistent
+financial corpus or downstream MCP server. Read [review workflows](review-workflows.md)
+for the ten delivered local functions, limits and actual Python/HTTP/CLI/UI contracts.
+
+- Added `margin.protocols` source registration, immutable expiring citation packets,
+  attributed host assessments, supplied-quote/reference checks, citation rendering,
+  structured final-claim auditing, numeric/context comparison, sentiment packets,
+  host annotations and deterministic source-count aggregation. Model capability profiles
+  are caller declarations; no brand routing or hidden model fallback occurs.
+- Added retained-news import with explicit issuer/operation/path provenance. Host-read
+  passages and provider summaries stay unverified originals. Mixed/unclear/unannotated
+  sentiment is separate; missing annotation is not neutral. Final prose is not automatically
+  parsed, and no successful action promotes host judgments into independent verification.
+- Added `/api/protocols`, `/api/protocols/invoke`, `/api/protocols/import-source`, CLI
+  `workflows`/`review`/`review-sources`, and a workbench JSON tester/news import action.
+  These share one backend and the existing optional --why recorder; successful review
+  receipts retain full supplied arguments without provider/model calls.
+- Drishti live catalog, preview and pre-submission checks now reflect actual metadata
+  readiness. UI capabilities update after connection-state changes. An additive native
+  `report_issue` appeared while all four approved routing schemas stayed unchanged; the
+  adapter leaves additions unexposed/uncalled and still rejects missing, duplicate or
+  changed required routing tools. Nested `get_announcements` remains held.
+- Financial fact references now explicitly name `decoded_provider_payload` as their
+  field-path root. Added successful reference coverage for all five company wrappers.
+  Existing eleven finance functions remain; this is not automatic company forecasting
+  or integration of Advait's code, which has not been supplied.
+
+Validation: **143 offline tests passed**, Ruff lint/format over all maintained code,
+JavaScript syntax, skill validation and documentation link/diff checks. Separate-command
+CLI acceptance passed with citation/sentiment round trips and visible summaries (33 log
+events); synthetic browser acceptance passed the complete existing workflows plus local
+review discovery, escaped source registration and no additional provider traffic. The
+first browser attempt used an incorrectly zero-Drishti fixture allowance; the corrected
+fixture setup passed. A 0.2.0 wheel builds, passes credential/research-data scans and imports
+from a separate installed target using existing dependencies. A clean dependency install
+on every target platform remains unverified. Old 16 November private ZIPs were not rebuilt.
+The installed global skill/reference was deliberately updated without changing connection
+or recording configuration. Skill validation used a temporary PyYAML install only; no new
+project dependency was added.
+
+Real functional acceptance, separately retained under ignored private reports:
+
+| Check | Actual observation |
+| --- | --- |
+| BharatStock | Ten HTTP attempts; all six implemented operation types succeeded across RELIANCE/TCS snapshots, annual/quarterly financials, directory, ratios, actions and prices |
+| Company workflows | Margins/cash-flow/growth/CAGR succeeded for both companies with zero extra provider attempts; real TTM remained incomplete because quarterly start dates were absent |
+| Drishti | Initial native catalog stopped before data dispatch; metadata-only audit identified the added unexposed tool; after the reviewed policy repair, categories/news/earnings-list succeeded |
+| Citation/sentiment | Two actual returned provider news records completed host-authored citation/sentiment handoffs; supplied quotes matched, original verification stayed false, and an unsupported independent-verification claim was flagged |
+| Remaining provider paths | Announcements held before preview for schema drift; earnings detail blocked before HTTP dispatch by cleanup reserve, with no retry |
+| Accounting | B10; D18 observed HTTP attempts across initial/diagnostic/repair passes, plus at most one initial cleanup attempt not captured by the first pre-close snapshot (conservative bound D19, below the announced D20 cap); three estimated data credits, actual account debit not measured |
+
+Monetary INR scales were explicitly caller-declared for functional calculations. No new
+original-filing verification or independent sentiment gold is claimed. The repair report's
+limits header accidentally retained first-pass defaults; its authoritative ledger correctly
+records B0/D10. The probe script and a separate private reconciliation record correct the
+reporting/reserve issue without overwriting original receipts or replaying paid calls.
+
+Private evidence: `reports/private/core-acceptance-2026-11-24/`,
+`reports/private/core-acceptance-2026-11-24-drishti-repair/` and
+`reports/private/core-browser-2026-11-24/`. No provider purchase/contact, external model API
+call, commit or push occurred. Host-authored functional annotations are not independent gold.
+
+**MCP gate remains open:** review changed announcement inputs, complete a separately
+budgeted live earnings-detail check using its real returned selector, independently review
+financial/source cases, and approve the core acceptance matrix. Optional server-side
+source resolution remains backlog. Downstream MCP packaging has not begun.
+
+
+**24 November planning-only checkpoint:** the [build plan](plan.md) and [capability routing](design/analysis-and-protocols.md#45-capability-routing-and-model-limitations) now cover citation/sentiment workflows, simple decision trails, MCP packaging and separate model comparisons. No runtime, dependency, provider/model call, purchase, commit or push was made. These proposed features remain unimplemented. Earlier executable checks below were not rerun for this documentation revision.
+
+
+### Function Lab frontend: 16 November 2026
+
+Saved the pre-redesign nonignored working source, Git status and SHA-256 manifest in the ignored local `reports/private/frontend-checkpoints/20261116-144155/`. The ZIP includes uncommitted code/docs as they existed before this frontend change; it excludes ignored credentials/private data. It is a recovery snapshot, not a commit or a replacement for subsequent work in the other chat.
+
+Redesigned the static workbench with charcoal navigation, violet accents, source-selection tiles, explicit process limits and two views: Retrieval and Finance. Removed the dedicated DCF tab/form; backend valuation implementations and their existing tests remain intact. All thirteen retrieval operations are inspectable/testable through the individual JSON operation tester, including directory/identity/categories. Five company workflows and scoped fact pairs remain, and all eleven local calculation contracts are available within Finance. Preview now exposes planned arguments before Run. Catalog reads/starter generation do not dispatch requests; held operations stay blocked. Old `valuation` session preferences fall back to Finance.
+
+Validation: **126 offline pytest checks passed** in the shared checkout; Ruff lint/format over `src tests scripts research skills packaging`, JavaScript syntax and `git diff --check` passed. Updated synthetic Chrome acceptance passed prerequisite checks, duplicate-submit protection, retained reuse, unit/company isolation, history/reload, expired-source behavior, stale-preview rejection, explicit FCFF, malformed JSON, old-tab migration, full catalog access, held-operation guard, retrieval/earnings detail, escaping/redaction and both mobile layouts. No JavaScript errors or external page requests. Desktop/mobile viewport screenshots were inspected; local images remain ignored under `reports/private/frontend-redesign-checks/`. These establish software behavior only. This frontend task made zero live provider calls, purchases, commits or pushes. The main chat's agent packaging/logging work is preserved; its separate private bundle is not rebuilt by this frontend task.
+
+
+16 November live-test checkpoint: separate 16-task RELIANCE/TCS runner and evaluator ZIPs are built locally; fresh live calls, DCF excluded, --why visible summaries and sanitized submission export. 126 offline tests and relocated synthetic package acceptance pass; first returned live agent pilot evaluated: 38/38 automatic checks with manual caveats (not an overall scientific score). See [live skill evaluation](live-skill-evaluation.md) for build/run instructions, actual preparation costs, source-key review status and limitations.
+
 Current state: **the first reusable Python core and temporary local workbench are implemented and validated with synthetic data.** Provider transport is BharatStock REST + Drishti MCP; Margin MCP packaging remains later. The user’s seven-page 21 October workbench export shows eight successful live RELIANCE calls across both providers, including Drishti news, announcements and earnings discovery. Broader operation coverage, actual account debit reconciliation and financial/source verification remain pending. Authenticated source evidence remains the dated 8/9 October tests. Earlier MCP-first architecture decisions below are historical and superseded by the 20 October planning checkpoint. This file owns delivered state; [active design](design/core-workbench.md) and [plan](plan.md) own future work.
+
+**15 November implementation checkpoint:** reviewed-path financial facts, eleven local calculation functions (including explicit-input FCFF/DCF, sensitivity and scenarios), complete sanitized argument receipts and workbench analysis controls are now implemented. Fresh bounded source inspection preceded these additions; the detailed checkpoint below separates real provider access from offline arithmetic/browser tests. No automatic source-backed DCF population, citation verifier, sentiment protocol, research harness or downstream MCP server is delivered.
 
 ## Branch transition
 
@@ -10,6 +136,78 @@ Current state: **the first reusable Python core and temporary local workbench ar
 - `main` now contains the installable `margin-research` core/workbench, synthetic tests and current documentation. No downstream Margin MCP server, universal financial normalization or claim verifier is implemented. The old corpus CLI commands are not supported on this branch.
 
 ## Validation
+
+### Portable local bundle and visible summaries: 16 November 2026
+
+Built a private portable ZIP containing the runtime wheel, constrained dependencies, skill/launcher, complete function reference, generated offline schemas, relocatable setup/backend helpers and optional recorder. At the user's explicit request it includes both supplied trial keys only in `private/providers.env`. The ZIP is created with 0600 permissions under ignored `reports/private/packages`; credentials are absent from source, SKILL.md, Git and logs. The builder checks plain files and compressed wheel contents, rejects credential-bearing non-ignored repo output, and refuses existing output paths. The archive includes no previous provider payloads, model conversations, gold or workstation-specific connection configuration.
+
+The standalone setup creates a new local runtime/skill path and optionally a labelled evaluation session from the actual question and retention date. It defaults to live mode; explicit backend startup defaults to one BharatStock attempt and zero Drishti calls. Separate agent copies still share account quota through the keys; local counters do not coordinate across machines. Source distributions now include the skill/packager/recorder helpers while excluding generated connection settings.
+
+The skill now links a reference naming all 29 delivered functions, facts, control commands and limitations. Evaluation-session `note` supports brief visible decision/observation/limitation summaries with optional run/operation links. Logs label these as agent self-reports and version the instrumentation; task/notes/results/final answers use configured provider-key redaction. Finish reports actual summary/tool counts and flags missing summaries. No hidden chain of thought or full host transcript is captured, and recording compliance/faithfulness is not inferred. Frozen replay, model runners, independent gold/grading, citation verification, sentiment and our MCP adapter remain pending.
+
+Validation: **117 offline tests passed**, plus Ruff lint/format over `src tests scripts research skills packaging` and the supplied skill validator. Tests cover safe credential-file parsing, keyless/private bundles, compressed-wheel spill rejection, output preservation, complete inventory coverage, summary linking/redaction/counting and previous functionality. A process test relocated the final archive into a new folder with spaces, configured a temporary workspace/session with an explicitly preinstalled runtime, started the fictional backend and recorded eight tool observations, two visible summaries and a final answer. Key redaction/idempotency/shared accounting passed; its private extraction was removed and backend stopped. The earlier sixteen-command fictional acceptance also still passed. The installed global skill/reference was updated while preserving its unrecorded connection configuration.
+
+This update made **zero live provider calls, zero paid/model calls and no new subscription/purchase, commit or push**. Portable testing used the explicit `--skip-install` path, so fresh internet dependency installation, cross-platform setup, native discovery in every host and actual model answer quality remain unverified. One final credential-bearing ZIP remains at `reports/private/packages/margin-agent-local-2026-11-16.zip`; superseded task-created copies were removed. See [portable setup and evaluation logging](portable-agent-bundle.md).
+
+### Pre-MCP agent interface: 16 November 2026
+
+Added the `margin-agent` JSON CLI over the existing loopback HTTP backend, repo-maintained `margin-research` Codex skill/launcher and installer. The functions remain reusable modules in one `margin-research` Python package; the browser is optional. Separate CLI invocations share the server's plans, ledger, provider lifecycle and retained results. Catalog discovery returns compact summaries or full selected schemas; company planning schemas/defaults are now discoverable. Runs require the preview's backend identity and an explicit idempotency key. Mode mismatch, expired results and uncertain transport errors never silently retry, reset allowances or fetch replacements. The launcher strips provider-key environment variables; the action nonce is never forwarded to the agent.
+
+Added separate optional `research/pilot.py`: private task/observation/final-answer recording, retention review date, 0700/0600 permissions, a POSIX session lock, bounded logs and backend pinning. Normal product/installed-skill use stays transient. Successful previews preserve validated arguments; raw CLI/rejected inputs are excluded. Recording failures preserve the real command result and report exit 3 without retry. This is not full host-message capture, exact request replay, frozen snapshots, independent filing gold, model runner or grading. No live pilot recording was initialized or retained. Citation verification/sentiment and downstream Margin MCP remain deferred.
+
+The new schema path exposed a sanitizer failure on JSON Schema's list-valued `type`; fixed without weakening binary/resource rejection. Malformed retained-source IDs now validate before lookup rather than raising an internal error.
+
+Validation: **111 offline tests passed**, including shared allowance exhaustion across command invocations, reuse/idempotency, DCF reference, catalog schemas, mode/backend changes, expired results, transport uncertainty, rejected-input privacy and recorder retention/finish behavior. Ruff lint/format passed over `src tests scripts research skills`. The supplied Skill Creator validator passed; its missing PyYAML dependency was installed only under a temporary directory, not added to project dependencies. The process acceptance script passed sixteen separate launcher commands against one fresh fictional backend, including recorded final answer and temporary-session cleanup; zero provider calls. The skill is installed at `/Users/rishit/.codex/skills/margin-research` with no recording configured. A neutral empty workspace was created outside the repo for the next fresh-chat pilot.
+
+A separate real CLI-process check made **one BharatStock `GET /v1/stocks/RELIANCE/financials` request, zero Drishti calls and no provider retry**, under a hard one-request process cap. Returned annual consolidated facts included 24 observations, latest period `2026-03-31`. Margin matched independent Decimal arithmetic over the returned profit/revenue facts. Company cash-flow, growth and CAGR succeeded using that retained response with zero further data calls. Duplicate submissions returned the original run. INR was explicitly caller-declared for arithmetic; source units and original filing accuracy were not verified. Provider payloads stayed in process memory, recording was disabled, and the temporary backend was stopped. No new subscription/purchase, external model call, fresh-chat model evaluation, commit or push occurred.
+
+Packaging: rebuilt the wheel with the agent modules/entry point and refreshed the editable install without dependency changes. Installed the wheel into an isolated target and verified imports resolve there, eleven calculation functions and both executable entry points using the existing dependencies. The installed global skill matches repo source and its launcher help works. Full clean dependency-resolution/cross-platform validation and an actual model choosing/using the tools remain separate pending gates. See [agent interface](agent-interface.md) for setup, commands, recorder limits and fresh-chat instructions.
+
+### Unified workbench flow: 15 November 2026
+
+Reproduced stale SYNTHA facts remaining after a ticker change, independent company/fact unit controls, lost visible results and inconsistent immediate-versus-preview execution. Replaced the stacked workflow with Financial functions / Retrieve data / DCF & advanced tasks sharing one preview/Run path. Snapshot/search/detail and explicit calculations now preview too. Retrieve data selects only Snapshot by default; event-provider setup and limits are collapsible.
+
+One listing-scoped declared scale feeds company calculations and retained facts. Missing units are caught before calculation dispatch in the UI; the lower-level API still supports explicit incomplete results. Company edits clear active facts/results/preview; schema-backed inputs stay editable before preview and lock during runs. Draft revisions discard late preview responses. Loading facts no longer overwrites a calculation. Compatible fact pairs are suggested but remain editable. Results show listing, period/basis, unit declaration and readable metric labels without duplicate warnings.
+
+Added local `GET /api/runs` for at most twenty safe control summaries. Recent runs restores older retained cards without fetching; reload restores the last compatible viewed run plus non-sensitive listing/task/unit preferences. Expired outputs remain unavailable. History preserves company labels even when payloads have been evicted. No corpus/cache or upstream retry was introduced.
+
+Validation: **95 offline tests passed**, including history scope after payload eviction without extra calls or payload leakage. Expanded Chrome acceptance covers prerequisites before spend, preview invalidation, duplicate submission, reuse, shared units/fact suggestions, history/reload, company switches, forbidden missing-source fetch, expired-source UI, delayed stale previews, DCF/domain errors, retrieval/detail previews, escaping/redaction, and all three mobile layouts. Browser failure data are explicitly fictional software tests.
+
+A separate live browser pass made **one BharatStock annual-financials request and zero Drishti calls**. RELIANCE/NSE returned 24 facts. The margin was checked against local decimal arithmetic; nine repeated cash-flow/growth/CAGR runs, further retained-only rechecks, history, company switches, reload and mobile geometry caused no additional provider requests. INR was caller-declared; source units/filings remain unverified. Direct in-app browser inspection also confirmed the live preview with zero provider operations and the resulting labelled margin card. Final checks also passed Ruff lint/format, JS syntax, all 77 HTML/JS target IDs, 160 local document paths, whitespace validation and credential scanning of 63 non-ignored files. Temporary browser/tab and test servers were closed. No new paid keys, model calls, purchase, commit or push.
+
+
+### Financial workflow repair and company operations: 15 November 2026
+
+Successful financial retrieval now automatically populates fact selectors; a visible retained-source picker restores sources after reload. Unit changes refresh facts locally. Concurrent preparation is deduplicated, stale loads cannot overwrite later selections, and preparation errors are visible. Asset URLs changed to help load the updated UI; an older Python server still requires restart.
+
+Added five company financial workflows: margins, cash-flow metrics, period growth, annual endpoint CAGR and TTM. They resolve retained financials or preview one missing financials request, followed by a local calculation. They share ordinary immutable plans, runs, idempotency, budgets, bounded result retention and result cards. All eleven explicit-input calculations can also use this result-card path. Missing context remains incomplete; there is no automatic forecast/DCF completion.
+
+Browser testing exposed and fixed an eviction bug: a new derived run could evict its own source when the five-run buffer filled. Active company runs now protect referenced source runs, without extending TTL or memory limits. A reduced two-run retention regression covers this case and repeated standalone calculations; eviction now prefers derived cards before financial source runs. Failed calculations now display safe incomplete/error output rather than a blank inspector.
+
+Two real BharatStock annual-financials attempts were made in this repair session, with zero Drishti HTTP/data calls. The first exposed the eviction failure during repeated calculations; the second verified the fix. Each temporary server was capped at one request; restarting did not replenish account quota. A real Chrome walkthrough using RELIANCE/NSE loaded 24 facts and passed company margin, selected-fact margin, cash-flow, growth and CAGR result cards, retained reuse, reload, mobile layout and no JS errors/external browser requests. INR was explicitly caller-declared for arithmetic testing; source units/filings remain unverified. TTM live success is not claimed because returned quarter starts/history remain insufficient. No raw provider payload was saved to the repo, purchase/commit/push performed, or Drishti refresh repeated.
+
+Offline validation: 94 tests pass, including source reuse, idempotency, eviction protection, missing units, expired/mismatched sources and standard local-function HTTP results. The final Chrome regression passed against the updated fictional server, including retained company-function result cards, retrieval/DCF/restore and mobile behavior. Ruff lint/format, JS syntax, diff whitespace, 159 local document paths and credential scanning of 63 non-ignored files passed. Temporary test servers were stopped. See the financial-analysis guide for the updated manual flow and endpoints.
+
+
+### Financial foundation and fresh-source checkpoint: 15 November 2026
+
+Implemented `margin.analysis` and `margin.finance`: retained-result fact preparation; compatibility/unit conversion; period comparisons, margins, CFO/capex, CAGR and TTM; explicit-input FCFF/DCF, bounded sensitivity and scenarios. The provider registry remains thirteen operations; `/api/analysis/functions` exposes eleven local schemas and fact preparation has its own retained-result route. New routes inherit nonce/origin/body controls. Calculations fetch no provider data, and unknown/contradictory context remains incomplete rather than being invented.
+
+Receipts/result contract is 1.1: full sanitized supplied/effective arguments, request/retrieval timestamps and requested scope; provider-side defaults/relative dates remain unknown, not frozen replay. Injected clocks support deterministic tests. Source classification excludes decorative images while retaining explicit source-page images, without verifying claims. Actual news title/earnings ID variants and detail `data.earnings_table` are handled; print styles wrap tables. Workbench controls prepare retained facts, compare selected observations, accept unfilled explicit DCF inputs, show values/intermediates and expose advanced JSON/schema inspection.
+
+Fresh real source calls: three BharatStock REST requests (snapshot, quarterly and annual financials), and 22 cumulative Drishti HTTP requests including schema review/lifecycle/usage and three SDK data calls. Measured Drishti debit six credits, balance 975 → 969. New native schemas initially triggered the guard; four native and seven selected nested inputs were reviewed/refreshed before data execution. One selected announcements filter was removed by the provider. All details/limits are in the [source checkpoint](research/mcp-provider-feasibility.md#fresh-payload-inspection-15-november-2026); the untested eighteen-operation remainder was not refreshed or enabled.
+
+Validation: 91 offline tests pass, Ruff lint/format and JS syntax pass. Independent calculation examples include a constant-cash-flow perpetuity, an explicit enterprise/equity/share bridge, CAGR and four-quarter totals; tests reject missing/mixed context, double-adjustment risks, stub periods, invalid/nonfinite inputs and excessive bounds. HTTP tests show preparation/calculation does not increase provider counters. Real API annual observations also passed a local CFO/capex arithmetic check with a declared unit, without independent filing verification. Chrome browser acceptance passed using clearly fictional fixtures, separately from real source access: retained fact preparation, comparisons and the explicit DCF form, readable values, no duplicate fetch on restore, no provider dispatch from calculations, no external page requests/JS errors and mobile layout. The temporary test server was stopped. Advait's implementation is not yet supplied; the current pure calculator provides a stable integration point.
+
+No raw provider responses, account payloads or source PDFs were added to Git. No purchase, external model call, commit or push occurred. Research capture/replay, citation verification and sentiment protocols remain outside this implementation. Source-backed forecasting/valuation input completeness and wider company/sector coverage remain open.
+
+Handoff checks: local wheel built successfully, installed to an isolated target directory and imported there using the existing dependency environment; eleven calculation functions, the DCF reference, schema resource and workbench assets passed. This is not a clean dependency-resolution or cross-platform/host test. Scanned all 61 tracked/new non-ignored files and wheel contents for supplied credentials/encoded variants; no matches or private-data members. Native/nested JSON schemas are structurally valid. All 17 Markdown files / 161 local links and anchors, JS syntax and `git diff --check` passed. Temporary live-probe scripts/metadata were removed; no test workbench remains running.
+
+### Product/research boundary planning: 15 November 2026
+
+Revised the active plan and contributor/context/design pointers per user direction: prioritize product retrieval/fact/financial/DCF integration and later packaging; defer citation verification and sentiment protocols; keep the professor's capture/replay/task/gold/agent proposal in a separate optional harness consuming public product interfaces. Independent answer keys/evaluation are an explicit scientific requirement; separating the harness from default product usage is our architecture decision, not a claim that the note demanded an unrelated product.
+
+Inspected current package/contracts and official Python packaging plus versioned MCP tools/transport references for the plan. No runtime implementation, dependency change, provider/model call, new test execution, purchase, commit or push occurred. Historical code/source evidence and the 9 November push remain unchanged. All 16 Markdown files and 149 local links/anchors passed; `git diff --check` passed. No runtime suite was rerun for these documentation-only edits.
 
 ### Documentation handoff: 9 November 2026
 

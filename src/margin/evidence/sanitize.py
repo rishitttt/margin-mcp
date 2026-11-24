@@ -50,7 +50,7 @@ class Sanitizer:
 
     def clean(self, value):
         if isinstance(value, dict):
-            if value.get("type") in {"image", "audio", "resource"}:
+            if value.get("type") in ("image", "audio", "resource"):
                 raise DomainError(
                     "unsafe_output",
                     "Embedded binary/resource output is not supported in this slice.",
@@ -95,17 +95,34 @@ class Sanitizer:
     def citations(self, original, safe) -> list[dict]:
         found = {}
 
-        def visit(item):
+        def visit(item, field=""):
             if isinstance(item, dict):
-                for v in item.values():
-                    visit(v)
+                for k, v in item.items():
+                    visit(v, str(k))
             elif isinstance(item, list):
                 for v in item:
-                    visit(v)
+                    visit(v, field)
             elif isinstance(item, str):
+                if item.lstrip().startswith(("{", "[")):
+                    try:
+                        decoded = json.loads(item)
+                        if isinstance(decoded, (dict, list)):
+                            visit(decoded, field)
+                            return
+                    except (ValueError, RecursionError):
+                        pass
+                if re.search(r"(^|_)(logo|icon|avatar|thumbnail)(_|$)", field, re.I):
+                    return
                 for match in URL.finditer(item):
                     url, private = self.url(match.group())
                     if url == REDACTED:
+                        continue
+                    path = urlsplit(url).path.lower()
+                    image = path.endswith(
+                        (".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico")
+                    )
+                    source_role = re.search(r"citation|source|attachment|document", field, re.I)
+                    if image and not source_role and "/citations/" not in path:
                         continue
                     requires = private or "developers.manasija.in" == urlsplit(url).hostname
                     old = found.get(url, {})
@@ -115,6 +132,9 @@ class Sanitizer:
                         "requires_resolution": requires,
                         "evidence_level": "source_locator",
                         "verified": False,
+                        "source_kind": "document"
+                        if path.endswith(".pdf") or "/citations/" in path
+                        else "page_locator",
                     }
 
         visit(original)
