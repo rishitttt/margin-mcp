@@ -1,9 +1,19 @@
 ---
 name: margin-research
-description: Retrieve Indian listed-company financial and event data, run deterministic calculations, and prepare citation and content-sentiment review handoffs through a running local Margin backend. Use for Margin company research or agent-interface testing; the host model supplies semantic judgments.
+description: Retrieve Indian listed-company financial and event data, run deterministic calculations, and prepare citation and content-sentiment review handoffs through a local Margin MCP server or existing backend. Use for Margin company research or agent-interface testing; the host model supplies semantic judgments.
 ---
 
 # Margin research
+
+## Choose the available interface
+
+Follow an interface explicitly requested by the user/task. Otherwise, if the host exposes Margin MCP tools, use those tools directly; do not start a second HTTP backend or invoke the CLI bridge. Discover their actual host-qualified names rather than inventing a namespace. If no Margin MCP tools are available, use the existing CLI bridge below. Never change allowances or host configuration to bypass missing setup.
+
+For MCP: start with `margin_status`, then `margin_catalog` (name/group plus `include_schemas: true` for exact inputs). Use `margin_company_preview` for company functions and `margin_preview` for other data operations. Review sources/costs, submit with `margin_run` using the returned session ID and an idempotency key, then inspect `margin_run_status` and `margin_result`. Repeating a lost submission uses the SAME plan/key. `margin_calculate` is local and never fetches missing inputs. `margin_review` exposes host-authored citation/sentiment handoffs; `protocols.list_workflows` gives their process. Schema/quote checks are not authenticated original verification.
+
+Include one brief visible `why` string (1–280 chars, no newlines) with MCP calls. It is a self-report, not hidden reasoning. Operator-configured MCP logs record requests/results with process/call IDs; check `recording_enabled` before claiming a saved trace. MCP recording does not capture the final prose or private model reasoning. Do not send MCP events to the separate CLI pilot recorder or mix handles between independently launched backends. Keep synthetic examples separate from real-company answers, preserve missing/partial/scope/unit caveats and respect held operations.
+
+## Existing CLI bridge
 
 Use the installed helper `scripts/margin.py` in this skill directory, via `python3 /absolute/path/to/this/skill/scripts/margin.py ...`. It connects to the operator's existing backend. Run `--help` for command syntax. No provider keys belong in prompts, commands or skill files. If setup is missing or the backend is unavailable, report that; do not start another backend or alter allowances.
 

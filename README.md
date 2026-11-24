@@ -1,5 +1,7 @@
 # Margin
 
+**25 November MCP alpha (0.3.0):** a local stdio MCP server now exposes the validated core through 14 workflow tools. No web backend or skill is required for MCP use. Read [MCP setup](docs/mcp.md) for installation/configuration, shared process state, logs and limitations. Core checkpoint `6b22f57` and the implementation plan `07b981a` were pushed before adapter work. The old dated notes below remain historical.
+
 **24 November finance repair:** documented auto units, reporting-period eligibility, continuing-profit scope, data readiness, profitability, cash conversion and liquidity/borrowings groups are implemented. Summary announcements passed a reviewed-schema live check. See [finance scope/data support](docs/design/finance-data-support.md) and [current results](docs/reference/function-validation.md).
 
 **24 November core 0.2.0:** the first no-inference citation/content-sentiment handoffs are implemented through Python, HTTP, CLI and a workbench JSON tester. Drishti readiness/catalog handling is repaired. See [review workflows](docs/review-workflows.md) and [validation status](docs/implementation.md). Margin’s own MCP packaging remains behind the core-validation gate.

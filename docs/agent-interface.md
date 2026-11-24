@@ -1,5 +1,7 @@
 # Agent access before MCP
 
+**25 November:** a separate local [MCP adapter](mcp.md) is now available without this HTTP/CLI bridge or a skill. Existing CLI/skill commands still use their configured persistent HTTP backend. Do not mix handles or reset allowances between independently running processes.
+
 **24 November finance extension:** catalog now has 13 retrieval operations, 15 local calculations and nine company workflows. Use `finance.company_data_readiness` and `money_unit: "auto"` to inspect support. See [finance data support](design/finance-data-support.md). Old evaluation bundles remain frozen.
 
 **24 November core 0.2.0:** ten local citation/sentiment review functions are exposed separately via `workflows`, `review` and `review-sources`. They share the same backend and existing optional --why recorder; no model inference or fetching occurs. See [review workflows](review-workflows.md). Existing retrieval/calculation catalog groups remain compatible.

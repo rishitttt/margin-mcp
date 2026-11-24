@@ -1,7 +1,7 @@
 # Margin MCP adapter architecture and implementation plan
 
-Planned **25 November 2026**, after core checkpoint `6b22f57` was pushed and validated
-with 194 tests. The user now authorizes MCP implementation. This replaces the historical
+Planned and implemented **25 November 2026**, after core checkpoint `6b22f57` was pushed and validated
+with 194 tests. The implementation plan was pushed as `07b981a` before runtime work. The tested alpha is package 0.3.0 with 14 tools, 220 offline tests and source/isolated-wheel SDK stdio acceptance. [MCP usage](../mcp.md) owns commands and host configuration. This replaces the historical
 proposal; its earlier text remains in Git history. [Core architecture](core-workbench.md),
 [finance contracts](../financial-analysis.md), [review workflows](../review-workflows.md)
 and [finance support](finance-data-support.md) remain authoritative for underlying behavior.
@@ -32,7 +32,7 @@ Expose a stable workflow surface rather than 47 largely overlapping flat tools. 
 ten review functions are separately discoverable in the same catalog. Nested names
 must match those reviewed allowlists. Never expose Drishti's generic native executor.
 
-## Planned public tool surface
+## Public tool surface
 
 | MCP tool | Core behavior | Provider calls |
 | --- | --- | --- |
@@ -62,7 +62,7 @@ values or transport failures. Pure calculations have no hidden source lookup.
 
 - Create one core service in MCP lifespan; close all tasks/providers on EOF/shutdown.
   Tool listing, initialization and status must not connect to providers.
-- Generate an opaque process/session ID. Preview returns it; run and Drishti connection
+- Generate an opaque process/session ID and a per-call ID for log correlation. Preview returns it; run and Drishti connection
   require it. A restarted process rejects old handles before paid dispatch.
 - Preserve core plan expiration, idempotency keys, shared concurrency/allowances and
   Drishti metadata checks. Run/status waiting is bounded to 30 seconds and shielded;
@@ -70,7 +70,7 @@ values or transport failures. Pure calculations have no hidden source lookup.
   Use `margin_cancel` for explicit run cancellation. Retry submission only with the same
   plan/key; uncertain upstream outcomes are not automatically retried.
 - Return both structured JSON and JSON text for older clients. The envelope contains
-  adapter contract version, process ID, mode, tool and data or safe error. Financial
+  adapter contract version, process/call IDs, mode, tool and data or safe error. Financial
   definitions, units, source paths, unverified labels, receipts and limits stay intact.
 - Validate tool schemas and 64-KiB input bounds before dispatch. Reject unknown keys,
   nonfinite numbers, arbitrary operation names and credential-bearing arguments.
@@ -126,3 +126,19 @@ Reference baseline: [MCP tools specification](https://modelcontextprotocol.io/sp
 and [official Python SDK](https://py.sdk.modelcontextprotocol.io/). The installed pinned
 SDK's constructor callbacks/lifespan/stdio APIs were inspected locally; do not copy v1
 decorator examples or silently upgrade dependencies for this adapter.
+
+
+## Alpha implementation result: 25 November
+
+The source adapter and isolated wheel each completed 27 actual stdio SDK calls across
+all 14 tools, with 54 private sanitized log events and matching text/structured results.
+Protocol negotiation was 2025-11-25. The catalog exposed 13/15/9/10 operations by group.
+Provider/model calls were zero: the acceptance companies and annotations are fictional
+software fixtures. Core financial/data guards remain covered separately, including
+previous real-source tests. Additional lifecycle/invalid-input/logging tests bring the
+suite to 220. Per-call IDs were added to the planned envelope for explicit log correlation.
+
+An isolated target import and console-script launch passed using existing pinned
+dependencies. Clean dependency installation on other platforms, real-model host behavior
+and a newly budgeted live MCP pass remain unverified. No host settings were changed.
+The wheel and source scans exclude credentials, private answers and provider captures.

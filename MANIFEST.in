@@ -10,3 +10,4 @@ recursive-exclude skills connection.json
 include scripts/check_core_live.py
 include scripts/audit_functions.py
 include scripts/check_finance_repairs.py
+include scripts/smoke_mcp.py

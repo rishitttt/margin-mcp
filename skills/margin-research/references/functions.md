@@ -47,7 +47,7 @@ These are approved **nested operations**, not Drishti's four native routing tool
 
 | Function | Behavior |
 | --- | --- |
-| `finance.company_margins` | Latest returned compatible period's net-profit margin |
+| `finance.company_margins` | Latest returned compatible continuing-profit margin when separately supplied; otherwise group profit with scope caveat |
 | `finance.company_cashflow_metrics` | Latest returned compatible CFO/capex metrics |
 | `finance.company_growth` | Latest two returned eligible observations for the selected metric |
 | `finance.company_cagr` | Two returned annual endpoints; duration from their dates, not a long-history backfill |
@@ -111,3 +111,20 @@ not proof of model capability or financial truth.
 Company-preview accepts `money_unit: "auto"` (default), explicit monetary scales or null for unknown. Fact preparation uses `--money-unit auto` by default. Amount units, source/period origins and conversion traces are separate from financial truth. Balance-sheet stocks use `period_type: "instant"`. Four ordinary calendar quarters are eligible for TTM only when explicit provider duration markers establish the reviewed normal-quarter branch; cumulative/derived/missing-marker cases remain incomplete.
 
 The announcement schema's added extraction flag was reviewed. Margin explicitly defaults `include_extracted_information` to false and holds true; no generic executor or extraction branch is newly enabled. Query preview/receipts show the default. The runtime catalog owns connection/schema holds.
+
+
+## MCP transport, package 0.3.0
+
+When available, use the host's Margin MCP tools rather than the separate HTTP helper.
+The function inventory above is discoverable through 14 stable workflow tools:
+`margin_status`, `margin_catalog`, `margin_preview`, `margin_company_preview`,
+`margin_run`, `margin_run_status`, `margin_result`, `margin_sources`, `margin_facts`,
+`margin_calculate`, `margin_cancel`, `margin_connect_drishti`, `margin_review` and
+`margin_review_sources`. Catalog group names are `retrieval`, `calculations`, `company`,
+`review` and `all`. `include_schemas: true` plus a name gets the exact nested contract.
+
+Run/connect require the process session ID; run also requires a previewed plan and stable
+idempotency key. Results contain call IDs for optional log correlation. There is no web
+backend requirement, automatic provider connection, hidden data lookup or Margin-side LLM.
+An explicit HTTP/CLI benchmark task still uses its configured bridge; do not silently switch
+transport or reuse old private evaluator task/gold assumptions for an MCP experiment.

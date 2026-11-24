@@ -1,5 +1,17 @@
 # Implementation and validation status
 
+## Local stdio MCP alpha: 25 November 2026
+
+Delivered package **0.3.0**, `margin-mcp` / `python -m margin.interfaces.mcp`. Fourteen workflow tools use one process-lifetime ResearchService, preserving the existing 37 retrieval/finance operations and ten review functions. The workbench/CLI/skill remain available independently; no HTTP backend is required for MCP. The [architecture](design/mcp-aggregation.md) was published before code as `07b981a`, after the tested source-only core checkpoint `6b22f57` was pushed. The user explicitly superseded the old no-MCP gate.
+
+Implemented catalog/schema discovery, preview/company preview, session-bound idempotent run submission, bounded waits, retained results/facts, direct calculation, explicit connection/cancellation and review/source-import handoffs. Mode, per-process/call IDs and caveats survive structured plus JSON-text results. Inputs/schemas, credentials, output bounds and safe errors are guarded. Stdout is protocol only; provider connections are never started by listing/status/preview. Optional private JSONL records sanitized tool requests/results and visible why summaries, not hidden reasoning. Pre-log failures stop dispatch; post-log failures preserve the available result and warn.
+
+Validation: **220 tests passed**, Ruff lint/format, JavaScript syntax and documentation links/diff checks. Source and isolated-wheel SDK stdio acceptance each exercised **all 14 tools in 27 calls**, negotiated **2025-11-25**, recorded **54 events**, and covered finance, idempotency, source reuse, news import and citation/sentiment round trips. Separate guards cover invalid/oversized/nonfinite input, wrong process, cancellation, EOF/lifespan cleanup, private log permissions/overwrite/write failure and live-mode zero-budget inspection. The first cancellation test mistakenly used the Drishti-only delay for a BharatStock call; an explicit in-process transport barrier fixed the test setup. These are fictional software fixtures, not live-company answers.
+
+The wheel builds, passes credential/private-data scans, imports from an isolated target and launches its console script outside the checkout using existing pinned dependencies. Clean dependency installs on every platform and real-model host behavior remain unverified. No authenticated provider/model call, purchase or host-configuration change occurred for the adapter. Private evidence: `reports/private/mcp-alpha-2026-11-25/`; usage/configuration in [MCP guide](mcp.md). The built wheel stays in ignored `dist/`; old evaluation ZIPs remain unchanged.
+
+Before publishing the core checkpoint, numerical evaluator inputs were moved from source into an ignored operator-supplied file; two new tests verify missing/mismatched keys fail before package creation. That checkpoint had 194 tests. Optional research remains separate and is not a product import. Next: a new-chat host trial and separately budgeted live MCP probe, then versioned model comparisons.
+
 ## Finance/data repair completion: 24 November 2026
 
 Implemented documented auto units with evidence/provenance, explicit unknown mode, live conflicting-unit rejection, path-specific snapshot units, stock/flow fact separation and guarded calendar-quarter interval derivation. Raw provider values are preserved. TTM now accepts eligible HUL quarters; missing/longer/derived/basis-change periods remain held.

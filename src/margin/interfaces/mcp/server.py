@@ -1,0 +1,368 @@
+"""A single-process stdio MCP adapter; no HTTP bridge or provider logic in handlers."""
+
+from __future__ import annotations
+
+import argparse
+import asyncio
+import copy
+import json
+import logging
+import sys
+import time
+from contextlib import asynccontextmanager
+from dataclasses import replace
+from urllib.parse import unquote
+from uuid import uuid4
+
+from jsonschema import Draft202012Validator, ValidationError
+from mcp import types
+from mcp.server import Server
+from mcp.server.stdio import stdio_server
+
+from margin.analysis.company import planning_capabilities
+from margin.core.config import Settings
+from margin.core.contracts import DomainError, encoded_size
+from margin.core.service import ResearchService
+from margin.interfaces.agent.client import BridgeError
+from margin.interfaces.agent.local_config import read_provider_env
+from margin.interfaces.mcp.recording import ToolRecorder
+from margin.interfaces.mcp.tools import CONTRACT, VERSION, definitions
+
+INSTRUCTIONS = """Margin provides Indian-company research tools over one process-local core.
+Start with margin_status, then margin_catalog for names and exact schemas. Synthetic mode
+contains fictional examples and must not answer real-company questions. Retrieval and
+company data dependencies require preview then margin_run. Respect holds, process IDs,
+budgets and idempotency; no automatic retries, source fallback or page exhaustion.
+Calculations/review tools are local and may return partial/incomplete results. Preserve
+units, periods, consolidation, continuing/total-profit scope and source caveats. DCF needs
+explicit assumptions. Citation/sentiment semantics come from the host, not a Margin LLM;
+supplied quotes and provider extracts are not authenticated originals. Optional why is a
+brief visible tool-choice explanation, not hidden reasoning. Logging is opt-in and private.
+"""
+
+
+class MarginMCP:
+    def __init__(self, service, recorder=None):
+        self.service = service
+        self.session_id = uuid4().hex
+        self.recorder = recorder or ToolRecorder()
+        self.tools = definitions()
+
+    def _envelope(self, name, why=None, call_id=None):
+        output = {
+            "contract_version": CONTRACT,
+            "session_id": self.session_id,
+            "call_id": call_id or uuid4().hex,
+            "mode": self.service.settings.mode,
+            "tool": self.service.sanitizer.text(name),
+        }
+        if why:
+            output["decision_summary"] = self.service.sanitizer.text(why)
+        return output
+
+    async def call(self, name, arguments):
+        base = self._envelope(
+            name if isinstance(name, str) and len(name) <= 100 else "invalid_tool"
+        )
+        event = None
+        request_logged = False
+        try:
+            if not isinstance(name, str) or name not in self.tools:
+                raise DomainError("unknown_tool", "Unknown Margin tool; discover tools/list first.")
+            if arguments is None:
+                arguments = {}
+            if not isinstance(arguments, dict) or encoded_size(arguments) > 64 * 1024:
+                raise DomainError("invalid_input", "Use a finite JSON object of at most 64 KiB.")
+            try:
+                Draft202012Validator(self.tools[name].input_schema).validate(arguments)
+            except ValidationError:
+                raise DomainError(
+                    "invalid_input", "Arguments do not match the selected MCP tool schema."
+                ) from None
+            why = arguments.get("why")
+            if why is not None and not why.strip():
+                raise DomainError(
+                    "invalid_input", "why must be a nonempty one-line visible summary."
+                )
+            base = self._envelope(name, why, base["call_id"])
+            raw = json.dumps(arguments, allow_nan=False)
+            for _ in range(3):
+                raw = unquote(raw)
+            if any(secret in raw for secret in self.service.sanitizer.secrets):
+                raise DomainError(
+                    "invalid_input", "Credentials cannot be supplied as tool arguments."
+                )
+            event = {
+                "call_id": base["call_id"],
+                "session_id": self.session_id,
+                "mode": self.service.settings.mode,
+                "tool": name,
+            }
+            self.recorder.append(
+                self.service.sanitizer.clean(
+                    event
+                    | {
+                        "phase": "request",
+                        "arguments": arguments,
+                        "explanation_kind": "visible_agent_self_report",
+                    }
+                )
+            )
+            request_logged = True
+            args = copy.deepcopy(arguments)
+            args.pop("why", None)
+            data = await self.dispatch(name, args)
+            body = self.service.sanitizer.clean(base | {"data": data})
+            if encoded_size(body) > self.service.settings.max_result_bytes + 64 * 1024:
+                raise DomainError(
+                    "oversize_output",
+                    "Tool output exceeded the adapter bound; retained data has not been refetched.",
+                )
+            error = False
+        except DomainError as exc:
+            body = self.service.sanitizer.clean(
+                base
+                | {
+                    "error": {
+                        "code": exc.code,
+                        "message": exc.message,
+                        "uncertain_outcome": exc.uncertain,
+                    }
+                }
+            )
+            error = True
+        except (ValueError, TypeError, RecursionError):
+            body = base | {
+                "error": {
+                    "code": "invalid_input",
+                    "message": "Use bounded finite JSON input; no implicit coercion.",
+                    "uncertain_outcome": False,
+                }
+            }
+            error = True
+        except asyncio.CancelledError:
+            if event:
+                try:
+                    self.recorder.append(
+                        event
+                        | {
+                            "phase": "waiter_cancelled",
+                            "note": "Submitted runs remain accessible by their existing plan/idempotency key; use explicit run cancellation.",
+                        }
+                    )
+                except DomainError:
+                    pass
+            raise
+        except Exception:
+            # SDK/provider exception text can contain credentials; never serialize it.
+            body = base | {
+                "error": {
+                    "code": "internal_error",
+                    "message": "The tool failed unexpectedly. Inspect run status before any new submission; raw diagnostics withheld.",
+                    "uncertain_outcome": True,
+                }
+            }
+            error = True
+        if event and request_logged:
+            try:
+                self.recorder.append(
+                    self.service.sanitizer.clean(
+                        event | {"phase": "response", "is_error": error, "result": body}
+                    )
+                )
+            except DomainError:
+                body.setdefault("warnings", []).append(
+                    "Post-action logging failed. This result is still returned; an action may already have executed. Do not resubmit with a new key."
+                )
+        return types.CallToolResult(
+            content=[
+                types.TextContent(
+                    type="text", text=json.dumps(body, ensure_ascii=False, allow_nan=False)
+                )
+            ],
+            structured_content=body,
+            is_error=error,
+        )
+
+    def catalog(self, group="all", name=None, include_schemas=False):
+        groups = {
+            "retrieval": self.service.capabilities,
+            "calculations": self.service.calculation_capabilities,
+            "company": planning_capabilities,
+            "review": self.service.review_capabilities,
+        }
+        selected = groups if group == "all" else {group: groups[group]}
+        result = {}
+        for kind, getter in selected.items():
+            rows = getter()
+            if name:
+                rows = [
+                    row
+                    for row in rows
+                    if name in (row.get("operation") or row.get("function") or "")
+                ]
+            if not include_schemas:
+                rows = [
+                    {
+                        key: value
+                        for key, value in row.items()
+                        if key not in {"schema", "planning_schema"}
+                    }
+                    for row in rows
+                ]
+            result[kind] = rows
+        if name and not any(result.values()):
+            raise DomainError(
+                "unknown_function", "No catalog entry matches the requested name/group."
+            )
+        return {
+            "groups": result,
+            "schema_lookup": "Use name/group plus include_schemas=true for exact nested arguments.",
+            "availability_is_not_source_verification": True,
+        }
+
+    def require_session(self, supplied):
+        if supplied != self.session_id:
+            raise DomainError(
+                "session_changed",
+                "The core process differs from the preview/status. Reconcile allowances and preview again before dispatch.",
+            )
+
+    async def wait(self, run_id, seconds=0):
+        deadline = time.monotonic() + seconds
+        state = self.service.get_run(run_id)
+        while state["status"] in {"queued", "running"} and time.monotonic() < deadline:
+            await asyncio.sleep(min(0.05, max(0, deadline - time.monotonic())))
+            state = self.service.get_run(run_id)
+        return state
+
+    async def dispatch(self, name, args):
+        if name == "margin_status":
+            return self.service.status() | {
+                "recording_enabled": self.recorder.path is not None,
+                "decision_trails": "Optional visible why summaries only; not hidden reasoning.",
+            }
+        if name == "margin_catalog":
+            return self.catalog(**args)
+        if name == "margin_preview":
+            return self.service.create_plan(args["operations"])
+        if name == "margin_company_preview":
+            return self.service.plan_financial(**args)
+        if name == "margin_run":
+            self.require_session(args["session_id"])
+            run = await self.service.start_run(args["plan_id"], args["idempotency_key"])
+            return await self.wait(run["run_id"], args.get("wait_seconds", 0))
+        if name == "margin_run_status":
+            return await self.wait(args["run_id"], args.get("wait_seconds", 0))
+        if name == "margin_result":
+            return self.service.get_result(**args)
+        if name == "margin_sources":
+            return {"sources": self.service.financial_sources()}
+        if name == "margin_facts":
+            return self.service.prepare_facts(**args)
+        if name == "margin_calculate":
+            return self.service.calculate(args["function"], args["arguments"])
+        if name == "margin_cancel":
+            return await self.service.cancel(args["run_id"])
+        if name == "margin_connect_drishti":
+            self.require_session(args["session_id"])
+            return await self.service.connect_drishti()
+        if name == "margin_review":
+            return self.service.review(args["function"], args["arguments"])
+        return self.service.import_review_sources(**args)
+
+
+def create_server(settings=None, *, service_factory=ResearchService, record_file=None):
+    settings = settings or Settings.from_env()
+
+    @asynccontextmanager
+    async def lifespan(_):
+        recorder = ToolRecorder(record_file)
+        service = None
+        try:
+            service = service_factory(settings)
+            yield MarginMCP(service, recorder)
+        finally:
+            try:
+                if service is not None:
+                    await service.close()
+            finally:
+                recorder.close()
+
+    async def list_tools(ctx, params):
+        if params and params.cursor:
+            raise ValueError("This bounded tool list has no continuation cursor.")
+        return types.ListToolsResult(tools=list(ctx.lifespan_context.tools.values()))
+
+    async def call_tool(ctx, params):
+        return await ctx.lifespan_context.call(params.name, params.arguments)
+
+    return Server(
+        "margin",
+        version=VERSION,
+        title="Margin Indian financial research",
+        instructions=INSTRUCTIONS,
+        lifespan=lifespan,
+        on_list_tools=list_tools,
+        on_call_tool=call_tool,
+    )
+
+
+async def serve(settings, record_file=None):
+    server = create_server(settings, record_file=record_file)
+    async with stdio_server() as (read, write):
+        await server.run(read, write, server.create_initialization_options())
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(
+        description="Run the local Margin MCP server over stdio; stdout is reserved for protocol messages."
+    )
+    parser.add_argument("--mode", choices=["synthetic", "live"])
+    parser.add_argument(
+        "--credentials-file",
+        help="Optional operator-owned provider env file; never pass key values as arguments",
+    )
+    parser.add_argument(
+        "--record-file", help="Optional NEW private JSONL file; logging is disabled by default"
+    )
+    args = parser.parse_args(argv)
+    # The SDK may log raw RPC data at debug/error levels; suppress those diagnostics.
+    for name in ("mcp", "httpx", "httpx2", "httpcore", "httpcore2"):
+        logger = logging.getLogger(name)
+        logger.addHandler(logging.NullHandler())
+        logger.propagate = False
+        logger.setLevel(logging.CRITICAL + 1)
+    try:
+        settings = Settings.from_env()
+        keys = read_provider_env(args.credentials_file) if args.credentials_file else {}
+        settings = replace(
+            settings,
+            mode=args.mode or settings.mode,
+            bharatstock_key=keys.get("BHARATSTOCK_API_KEY", settings.bharatstock_key),
+            drishti_key=keys.get("DRISHTI_API_KEY", settings.drishti_key),
+        )
+        print(
+            f"Margin MCP {VERSION}: {settings.mode.upper()} mode; process allowances are not account quotas.",
+            file=sys.stderr,
+        )
+        asyncio.run(serve(settings, args.record_file))
+        return 0
+    except (DomainError, BridgeError, OSError, ValueError):
+        print(
+            "Margin MCP could not start. Check local mode/configuration and a new writable recording path; private details withheld.",
+            file=sys.stderr,
+        )
+        return 2
+    except KeyboardInterrupt:
+        return 0
+    except Exception:
+        print(
+            "Margin MCP stopped unexpectedly; raw diagnostics withheld. Reconcile any earlier process allowance before restarting.",
+            file=sys.stderr,
+        )
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
