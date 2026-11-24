@@ -1,5 +1,7 @@
 # Margin build and evaluation plan
 
+**25 November authorized fidelity/reconnect pass:** implement the [financial fidelity and reconnect plan](design/mcp-aggregation.md#implementation-plan-financial-fidelity-and-reconnects-25-november): deterministic financial views, six strictly typed common calculation tools, and optional explicitly started Unix-socket shared backend. Preserve standalone mode and all spending/scope/state guards. Use offline and saved-response validation; no new authenticated provider/model calls are planned.
+
 **25 November host-feedback patch (0.3.1):** explicit catalog execution routes and protocol unknown-tool errors are implemented after the LM Studio/Qwen naming failure. The first host trial established status/catalog only. Repeat it in a fresh chat after upgrading and selecting a new recording filename; do not invent fact context. The patch passed 224 offline tests; latest-revision conformance, clean cross-platform installs and complete real-host/live acceptance remain separate gates.
 
 **25 November release research:** [distribution and standards evaluation](design/mcp-aggregation.md#distribution-and-live-release-evaluation-25-november) recommends a local Python/BYOK release first, followed by optional registry publication; hosted HTTP is a separate phase. Before release, repair unknown-tool protocol errors, test 2026-07-28 alongside legacy behavior, validate clean artifact installs and actual hosts, and run a bounded live pass. No hosting or public package publication has occurred.

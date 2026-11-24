@@ -291,3 +291,46 @@ aggregation before promising those uses. This public-page review does not establ
 account permissions. No plan purchase or provider contact was made.
 [BharatStock terms](https://bharatstockapi.com/terms),
 [Drishti terms](https://drishti.manasija.in/legal/terms-and-conditions).
+
+## Implementation plan: financial fidelity and reconnects, 25 November
+
+Authorized after the live HINDUNILVR review. Preserve the raw payload, financial guards,
+existing 14 workflow tools and historical evaluation archives. Initial implementation
+and saved-response checks make zero authenticated provider/model calls.
+
+1. Add a shared deterministic financial view to retained financial results: reviewed
+   statement INR versus EPS INR/share, exact crore conversion, stable metric labels,
+   period/basis/source paths, missing values and continuing/total-profit warnings. Never
+   infer a unit from magnitude, rename operating profit as PBT/EBIT or authenticate a
+   provider record by formatting it. Bound the view and retain raw data unchanged.
+2. Add six directly typed MCP tools for margins, unit conversion, period comparison,
+   cashflow metrics, profitability and balance-sheet metrics. Copy actual core schemas;
+   remove the function-selector/nested-arguments step for these tools. Keep generic
+   calculation/catalog access, exact validation and explicit input provenance. Measure
+   discovery schema size; this is not a decision to inline all review/provider schemas.
+3. Add optional local shared-backend mode: an explicitly started `margin-backend`
+   process owns one ResearchService, stable process ID, quotas, idempotency and TTL-bound
+   buffers. Short-lived stdio frontends connect over a private filesystem Unix socket.
+   Use no HTTP dependency/public listener, maintained corpus, automatic provider call or
+   automatic allowance reset. The backend owns credentials and optional sanitized logs;
+   proxy processes never receive keys. Socket-directory/socket permissions, framing and
+   request/output bounds, single-backend ownership and fail-closed version/epoch checks
+   are required. Do not retry an ambiguous local RPC. A backend restart still invalidates
+   handles and counters; filesystem persistence of licensed data/account-wide spending
+   is outside this change. Shared mode initially targets macOS/Linux; standalone stdio
+   remains available. No silent worker autostart/restart after a failure.
+4. Test exact schemas and financial guards; real SDK stdio; two successive frontends
+   using one backend for preview/submit/result/facts, source reuse and unchanged quota;
+   idempotent duplicate submission; backend restart/stale IDs; malformed framing,
+   unavailable backend, private logs and shutdown. Reprocess the saved real HUL response
+   separately from fictional regression data. No new paid request is necessary.
+5. Build and scan a new wheel, validate installed-package shared mode outside checkout,
+   update source/installed skill deliberately, docs and private evidence, push the
+   implementation. Start/configure the local mtest backend only with a zero-provider
+   startup and preserved credential/allowance settings; host/model acceptance is then
+   a distinct user retest. Keep the professor's evaluator independent.
+
+The backend is an application-state owner, not protocol-level MCP sessions or a public
+multi-user service. Do not weaken `session_changed` or bypass the preview/run boundary to
+work around LM Studio lifecycle behavior. This plan supersedes the earlier no-extra-
+backend assumption only for the explicitly requested optional local shared mode.

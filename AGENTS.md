@@ -1,5 +1,7 @@
 # Working on Margin
 
+**25 November fidelity/reconnect authorization:** follow the new plan in docs/design/mcp-aggregation.md before runtime edits. Six new typed tools and an optional explicit Unix-socket backend supersede the earlier fixed-14-tool/no-extra-backend constraints for this pass. Preserve raw results, unit/scope/missing-value guards, preview/idempotency/quotas, private logs and standalone mode. No new authenticated provider/model calls. Keep shared state in one backend's bounded memory; backend restart is not account-quota renewal. Do not silently autostart/restart the backend or ship credentials/captures in packages.
+
 **25 November 0.3.3 recording:** prefer --record-dir for host-managed launches; each process gets a unique private file. Preserve --record-file refusal, 0600 permissions and pre/post-action write semantics. No automatic log deletion, account-wide counter persistence or per-chat lifecycle guarantee is implied. Qwen local arithmetic task passed with one incomplete-to-success recovery; this is separate from provider acceptance.
 
 **25 November 0.3.2 schema feedback:** keep bounded schema-owned validation guidance and never echo caller values, arbitrary property names or dynamic keys. Do not drop unknown fields or invent financial metadata to rescue a model. The second Qwen trial used the correct tool but five invalid requests; exact catalog/runtime schemas agreed. The generic wrapper versus on-demand exact schema distinction is documented in docs/mcp.md. 230 offline tests passed; successful model recovery remains unverified.
