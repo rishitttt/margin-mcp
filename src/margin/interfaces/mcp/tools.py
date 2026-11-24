@@ -10,7 +10,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.3.2"
+VERSION = "0.3.3"
 CONTRACT = "margin.mcp.v1"
 ID = {"type": "string", "pattern": r"^[A-Za-z0-9_-]{1,100}$"}
 WAIT = {"type": "integer", "minimum": 0, "maximum": 30, "default": 0}

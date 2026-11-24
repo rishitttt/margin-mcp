@@ -1,6 +1,6 @@
 # Run Margin as a local MCP server
 
-Implemented **25 November 2026**, current package **0.3.2**. The stdio adapter exposes 14 workflow
+Implemented **25 November 2026**, current package **0.3.3**. The stdio adapter exposes 14 workflow
 tools over the same core used by the workbench and CLI. It makes 37 retrieval/finance
 functions and ten local review functions discoverable. The web server and skill are not
 required for MCP use. [Architecture](design/mcp-aggregation.md) records the plan published
@@ -70,7 +70,7 @@ be explicitly connected before its data operations; no npm install is needed.
 
 For an offline first connection use `--mode synthetic`, omit the credential-file args
 and keep the limits small. The host should see 14 tools named `margin_*` and server
-version 0.3.2. No host registration/settings were changed automatically by the build.
+version 0.3.3. No host registration/settings were changed automatically by the build.
 
 ## Tools and normal flow
 
@@ -143,15 +143,21 @@ there is no refund or automatic-retry claim. Results expire/evict without refetc
 
 Every tool accepts an optional `why`: one visible line of 1–280 characters. This is a
 self-reported explanation, not internal reasoning or evidence of a faithful explanation.
-For experiments, ask the model to include it and configure an explicit new log path:
+For experiments, ask the model to include it and configure a recording directory.
+Version 0.3.3 creates a unique timestamp/UUID JSONL file on each server launch, including
+when a host restarts the process for a new chat:
 
 ```sh
 .venv/bin/python -m margin.interfaces.mcp --mode synthetic \
-  --record-file reports/private/my-mcp-run-01.jsonl
+  --record-dir reports/private/my-mcp-run
 ```
 
-The parent directory must exist. Files are created 0600 and never overwritten; default
-logging is off. JSONL request/response events include a monotonically increasing sequence,
+The directory is created if absent (0700 for a newly created target directory). Files
+are created 0600 and never overwritten; default logging is off. There is no automatic
+log pruning or aggregation across processes. The alternative `--record-file NEW_PATH`
+still requires an existing parent directory and a previously unused filename. These
+options are mutually exclusive. Prefer `--record-dir` in persistent host configuration
+so repeated launches do not require editing filenames. JSONL request/response events include a monotonically increasing sequence,
 process/call IDs, sanitized arguments/results, mode and timestamp. `call_id` in tool output
 links to those events. Logs can contain licensed source text and must stay private.
 The 64-MiB process-log bound fails before another dispatch when reached. Pre-action write
@@ -255,3 +261,29 @@ After upgrading to 0.3.2, reconnect with a fresh recording filename (for example
 if unused), and start a new chat. Explain hypothetical status in `why` or fact `source`,
 not an undeclared flag inside function `arguments`. Retest actual model recovery; offline
 reproduction is not proof of a successful model conversation.
+
+
+## Repeated-chat startup repair: 0.3.3
+
+The LM Studio configuration reused `--record-file .../qwen3-8b-04.jsonl`, which already
+existed. Reproducing startup with that target failed while preserving its contents;
+LM Studio logs also showed repeated startup failures. This is a recording collision,
+not evidence that a model or financial calculation crashed the server. The fixed-file
+configuration was unsuitable for a host that can start a fresh process for a new chat.
+
+Use `--record-dir /Users/rishit/Desktop/mtest/logs` in the local test configuration in
+place of the fixed-file flag and filename. Each process generates its own new log;
+existing recordings remain untouched. Files correspond to process lifetimes, not a
+promise of one file per chat: hosts may reuse or restart server processes. Restarting
+still resets process-local counters and retained handles; it does not replenish upstream
+quota. No persistent financial corpus or account-wide budget store is added.
+
+Repeated source/installed stdio launches into the same recording directory must both
+initialize, write separately and preserve prior log hashes. Provider/model calls for this
+repair remain zero. Existing fixed-file refusal/0600/log-failure safeguards remain.
+
+The prior user test also established narrow model-host success: the fully specified call
+in qwen3-8b-03 succeeded once, and the independent-construction task in qwen3-8b-04 used
+one catalog call, received incomplete for missing starts, then supplied the declared
+starts and returned 15%. Record the latter as a pass with one recovery, not a first-try
+pass or a full real-provider/host compatibility evaluation.

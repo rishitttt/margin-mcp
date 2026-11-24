@@ -1,5 +1,7 @@
 # Working on Margin
 
+**25 November 0.3.3 recording:** prefer --record-dir for host-managed launches; each process gets a unique private file. Preserve --record-file refusal, 0600 permissions and pre/post-action write semantics. No automatic log deletion, account-wide counter persistence or per-chat lifecycle guarantee is implied. Qwen local arithmetic task passed with one incomplete-to-success recovery; this is separate from provider acceptance.
+
 **25 November 0.3.2 schema feedback:** keep bounded schema-owned validation guidance and never echo caller values, arbitrary property names or dynamic keys. Do not drop unknown fields or invent financial metadata to rescue a model. The second Qwen trial used the correct tool but five invalid requests; exact catalog/runtime schemas agreed. The generic wrapper versus on-demand exact schema distinction is documented in docs/mcp.md. 230 offline tests passed; successful model recovery remains unverified.
 
 These instructions apply to human contributors and coding agents.

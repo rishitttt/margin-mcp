@@ -579,6 +579,55 @@ async def test_post_action_log_failure_returns_existing_result_with_warning(adap
     assert any("Post-action" in w for w in result["warnings"])
 
 
+def test_directory_recording_generates_unique_private_files_without_overwrite(tmp_path):
+    folder = tmp_path / "private-logs"
+    for i in range(3):
+        recorder = ToolRecorder(directory=folder)
+        recorder.append({"phase": "test", "index": i})
+        recorder.close()
+    logs = sorted(folder.glob("margin-*.jsonl"))
+    assert len(logs) == 3
+    assert {json.loads(p.read_text())["index"] for p in logs} == {0, 1, 2}
+    assert all(stat.S_IMODE(p.stat().st_mode) == 0o600 for p in logs)
+    assert stat.S_IMODE(folder.stat().st_mode) == 0o700
+    with pytest.raises(ValueError):
+        ToolRecorder(tmp_path / "another.jsonl", directory=folder)
+    assert not (tmp_path / "another.jsonl").exists()
+
+
+def test_record_directory_cannot_be_an_existing_file(tmp_path):
+    path = tmp_path / "preserve"
+    path.write_text("existing-data")
+    with pytest.raises(FileExistsError):
+        ToolRecorder(directory=path)
+    assert path.read_text() == "existing-data"
+
+
+async def test_stdio_restarts_with_same_record_directory_preserve_prior_launch(tmp_path):
+    config = subprocess_config()
+    folder = tmp_path / "sessions"
+    config.args += ["--record-dir", str(folder)]
+    previous = {}
+    sessions = []
+    for _ in range(2):
+        with (tmp_path / "stderr.txt").open("a") as stderr:
+            async with stdio_client(config, errlog=stderr) as (read, write):
+                async with ClientSession(read, write) as client:
+                    await client.initialize()
+                    status = (await client.call_tool("margin_status", {})).structured_content
+                    assert status["data"]["recording_enabled"]
+                    assert not any(status["data"]["ledger"]["http_attempts"].values())
+                    sessions.append(status["session_id"])
+        for path, content in previous.items():
+            assert path.read_bytes() == content
+        previous = {path: path.read_bytes() for path in folder.glob("*.jsonl")}
+    assert len(previous) == 2 and len(set(sessions)) == 2
+    for content in previous.values():
+        events = [json.loads(line) for line in content.decode().splitlines()]
+        assert [e["sequence"] for e in events] == [1, 2]
+        assert [e["phase"] for e in events] == ["request", "response"]
+
+
 def subprocess_config():
     env = {
         k: v

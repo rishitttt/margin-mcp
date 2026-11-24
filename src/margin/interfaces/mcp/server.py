@@ -344,12 +344,14 @@ class MarginMCP:
         return self.service.import_review_sources(**args)
 
 
-def create_server(settings=None, *, service_factory=ResearchService, record_file=None):
+def create_server(
+    settings=None, *, service_factory=ResearchService, record_file=None, record_dir=None
+):
     settings = settings or Settings.from_env()
 
     @asynccontextmanager
     async def lifespan(_):
-        recorder = ToolRecorder(record_file)
+        recorder = ToolRecorder(record_file, directory=record_dir)
         service = None
         try:
             service = service_factory(settings)
@@ -380,8 +382,8 @@ def create_server(settings=None, *, service_factory=ResearchService, record_file
     )
 
 
-async def serve(settings, record_file=None):
-    server = create_server(settings, record_file=record_file)
+async def serve(settings, record_file=None, record_dir=None):
+    server = create_server(settings, record_file=record_file, record_dir=record_dir)
     async with stdio_server() as (read, write):
         await server.run(read, write, server.create_initialization_options())
 
@@ -395,8 +397,13 @@ def main(argv=None):
         "--credentials-file",
         help="Optional operator-owned provider env file; never pass key values as arguments",
     )
-    parser.add_argument(
+    recording = parser.add_mutually_exclusive_group()
+    recording.add_argument(
         "--record-file", help="Optional NEW private JSONL file; logging is disabled by default"
+    )
+    recording.add_argument(
+        "--record-dir",
+        help="Optional private directory; create a unique JSONL file on each process launch",
     )
     args = parser.parse_args(argv)
     # The SDK may log raw RPC data at debug/error levels; suppress those diagnostics.
@@ -418,7 +425,7 @@ def main(argv=None):
             f"Margin MCP {VERSION}: {settings.mode.upper()} mode; process allowances are not account quotas.",
             file=sys.stderr,
         )
-        asyncio.run(serve(settings, args.record_file))
+        asyncio.run(serve(settings, args.record_file, args.record_dir))
         return 0
     except (DomainError, BridgeError, OSError, ValueError):
         print(

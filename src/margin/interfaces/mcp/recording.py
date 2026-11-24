@@ -2,13 +2,22 @@
 
 import json
 import os
+from datetime import UTC, datetime
 from pathlib import Path
+from uuid import uuid4
 
 from margin.core.contracts import DomainError, now
 
 
 class ToolRecorder:
-    def __init__(self, path=None, *, maximum=64 * 1024 * 1024):
+    def __init__(self, path=None, *, directory=None, maximum=64 * 1024 * 1024):
+        if path is not None and directory is not None:
+            raise ValueError("Choose a recording file or directory, not both.")
+        if directory is not None:
+            folder = Path(directory)
+            folder.mkdir(parents=True, exist_ok=True, mode=0o700)
+            stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S%fZ")
+            path = folder / f"margin-{stamp}-{uuid4().hex}.jsonl"
         self.path = Path(path) if path else None
         self.maximum, self.sequence, self.size = maximum, 0, 0
         self.stream = None
