@@ -1,5 +1,7 @@
 # Margin build and evaluation plan
 
+**25 November host-feedback patch (0.3.1):** explicit catalog execution routes and protocol unknown-tool errors are implemented after the LM Studio/Qwen naming failure. The first host trial established status/catalog only. Repeat it in a fresh chat after upgrading and selecting a new recording filename; do not invent fact context. The patch passed 224 offline tests; latest-revision conformance, clean cross-platform installs and complete real-host/live acceptance remain separate gates.
+
 **25 November release research:** [distribution and standards evaluation](design/mcp-aggregation.md#distribution-and-live-release-evaluation-25-november) recommends a local Python/BYOK release first, followed by optional registry publication; hosted HTTP is a separate phase. Before release, repair unknown-tool protocol errors, test 2026-07-28 alongside legacy behavior, validate clean artifact installs and actual hosts, and run a bounded live pass. No hosting or public package publication has occurred.
 
 **25 November delivery checkpoint:** the planned stdio MCP alpha is implemented as package 0.3.0, with 14 workflow tools, 220 tests and source/isolated-wheel protocol acceptance. Core/data limits are preserved. [MCP usage](mcp.md) and [implementation](implementation.md) own delivered behavior/evidence. Next gates are a fresh-chat host trial, a separately budgeted live MCP probe and versioned model comparisons; no model-host result is inferred from SDK tests.

@@ -2,6 +2,8 @@
 
 These instructions apply to human contributors and coding agents.
 
+**25 November MCP routing patch (0.3.1):** catalog identifiers are not callable tools. Preserve per-entry `mcp_execution`, filtered schema guidance and unknown-tool JSON-RPC errors. Do not expose aliases or invent financial context to rescue a model. First LM Studio/Qwen evidence covers only status/catalog; 224 offline tests and SDK acceptance do not prove successful model completion. Read `docs/mcp.md` for the declared hypothetical test and fresh-log/reconnect steps.
+
 The optional two-ticker live pilot is documented in [live skill evaluation](docs/live-skill-evaluation.md). Keep runner/evaluator separate; never ship gold or preparation responses to tested agents. `--why` summaries are observable self-reports, not hidden reasoning. Latest validation: 220 tests including MCP transport/guard coverage and the earlier bounded HINDUNILVR finance repair; earlier synthetic CLI/browser acceptance remains separate. See the [function matrix](docs/reference/function-validation.md) and 24 November implementation checkpoints for outcomes and remaining gaps. New private bundles remain uncommitted.
 
 **25 November delivered MCP alpha:** package 0.3.0 adds `margin-mcp` and a 14-tool stdio adapter over one core per process. Read `docs/mcp.md` and the updated design. Keep discovery/preview local, explicit data execution, stale-process rejection, idempotency/cancellation/accounting, safe text+structured results, opt-in 0600 logs and optional visible why summaries. Add no host-brand routing or hidden inference. Source/wheel protocol acceptance is not model-host verification. Run `scripts/smoke_mcp.py` against fictional data; a new live probe requires a bounded plan. Keep SDK protocol stdout clean.

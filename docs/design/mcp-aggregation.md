@@ -188,7 +188,7 @@ assume every host supports the same revision. [Specification](https://modelconte
 | JSON-RPC framing, tool discovery, valid declared capabilities and revision behavior | Legacy stdio exercised; add modern discovery/request-envelope coverage and publish a compatibility matrix |
 | Protocol-only stdout; diagnostics on stderr | Implemented and transport-tested |
 | Input validation and structured output conforming to advertised schemas | Implemented at envelope/core level; schemas for nested results remain broad and should become more informative |
-| Protocol versus tool execution errors | Fix unknown tool names to return the specified JSON-RPC protocol error; current adapter returns `isError` with a domain code. Keep provider/business failures as tool errors |
+| Protocol versus tool execution errors | Unknown tool names now return JSON-RPC errors in patch 0.3.1, tested over stdio; provider/business failures remain tool errors |
 | Cancellation, expired handles, no duplicate paid dispatch | Existing tests cover key cases; repeat across supported protocol eras and actual hosts |
 | Tools versus optional resources, prompts and extensions | A tools-only server is valid; none of the optional features is mandatory for our release |
 | Python package release metadata and provenance | Add chosen code license, project URLs, support/changelog and release automation; confirm dependency license/security compatibility |

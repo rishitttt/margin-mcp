@@ -1,5 +1,25 @@
 # Implementation and validation status
 
+## MCP catalog-routing repair: 25 November 2026, 0.3.1
+
+The first LM Studio/Qwen3-8B user attempt reached status/catalog; its private log has two
+calls and no calculation/provider execution. The model then tried catalog identifiers as
+MCP tool names and fabricated missing fact context in its proposed retry. This establishes
+connection/discovery only, not a completed agent workflow. The earlier numbers-only test
+prompt was underspecified for the fact-based margin function.
+
+Every catalog entry now supplies `mcp_execution` (tool, binding and input location), and
+tool/server instructions distinguish identifiers from callable names, recommend filtered
+schema lookup and forbid invented financial context. Unknown tools produce JSON-RPC
+`-32602` errors with safe recovery guidance; no alias silently dispatches calculations.
+Core math and fact guards are unchanged. A declared hypothetical margin returns 15%; a
+missing period start remains incomplete, with zero provider requests in live mode with
+zero allowances. Actual SDK stdio tests confirm protocol errors and continued operation.
+Validation: **224 offline tests passed**, Ruff lint/format passed, and all-14-tool source
+acceptance passed (27 calls/54 events, fictional upstreams). Installed-wheel testing is
+recorded privately under `reports/private/mcp-routing-2026-11-25/`; successful Qwen workflow
+completion must still be retested. See [recovery prompt](mcp.md#lm-studio-catalog-routing-repair-031).
+
 ## Local stdio MCP alpha: 25 November 2026
 
 Delivered package **0.3.0**, `margin-mcp` / `python -m margin.interfaces.mcp`. Fourteen workflow tools use one process-lifetime ResearchService, preserving the existing 37 retrieval/finance operations and ten review functions. The workbench/CLI/skill remain available independently; no HTTP backend is required for MCP. The [architecture](design/mcp-aggregation.md) was published before code as `07b981a`, after the tested source-only core checkpoint `6b22f57` was pushed. The user explicitly superseded the old no-MCP gate.

@@ -13,13 +13,14 @@ import pytest
 from jsonschema import Draft202012Validator
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
+from mcp.shared.exceptions import MCPError
 
 from margin.core.config import Settings
 from margin.core.contracts import DomainError
 from margin.core.service import ResearchService
 from margin.interfaces.mcp.recording import ToolRecorder
 from margin.interfaces.mcp.server import MarginMCP, create_server
-from margin.interfaces.mcp.tools import CONTRACT, definitions
+from margin.interfaces.mcp.tools import CONTRACT, VERSION, definitions
 
 ROOT = Path(__file__).parents[1]
 
@@ -106,7 +107,6 @@ async def test_catalog_exposes_every_function_without_startup_or_listing_fetch(a
 @pytest.mark.parametrize(
     "name,args",
     [
-        ("not_a_tool", {}),
         ("margin_status", {"unexpected": True}),
         ("margin_status", {"why": "\n"}),
         ("margin_status", {"why": " "}),
@@ -135,6 +135,97 @@ async def test_invalid_inputs_cannot_dispatch(adapter, name, args):
     await invoke(adapter, name, args, error=True)
     assert adapter.service.ledger.snapshot() == before
     assert not adapter.service.runs
+
+
+@pytest.mark.parametrize(
+    "name", ["finance.calculate_margins", "finance_calculate_margins", "not_a_tool"]
+)
+async def test_catalog_identifiers_are_not_mcp_tools_and_unknown_is_protocol_error(adapter, name):
+    before = adapter.service.ledger.snapshot()
+    with pytest.raises(MCPError) as failure:
+        await adapter.call(name, {})
+    assert failure.value.error.code == -32602
+    assert "do not rename" in failure.value.error.message
+    if name == "finance.calculate_margins":
+        assert "margin_calculate" in failure.value.error.message
+    assert adapter.service.ledger.snapshot() == before and not adapter.service.runs
+
+
+async def test_every_catalog_entry_has_an_explicit_callable_mcp_route(adapter):
+    catalog = (await invoke(adapter, "margin_catalog"))["data"]
+    assert "not callable MCP tools" in catalog["routing_notice"]
+    for group, rows in catalog["groups"].items():
+        for row in rows:
+            route = row["mcp_execution"]
+            assert route["tool"] in adapter.tools
+            name = row.get("function") or row.get("operation")
+            assert name in route["bind"].values()
+            if group in {"calculations", "review"}:
+                assert route["inputs_at"] == "arguments" and "then" not in route
+            elif group == "company":
+                assert route["inputs_at"] == "top_level" and route["then"] == "margin_run"
+            else:
+                assert route["inputs_at"] == "operations[0].arguments"
+                assert route["then"] == "margin_run"
+
+
+async def test_declared_margin_example_routes_from_catalog_without_provider_calls():
+    # Explicit fictional context for a software test, never issuer/provider ground truth.
+    service = ResearchService(
+        Settings(mode="live", bharatstock_requests=0, drishti_requests=0, drishti_credits=0)
+    )
+    adapter = MarginMCP(service)
+    before = service.ledger.snapshot()
+    try:
+        entry = (
+            await invoke(
+                adapter,
+                "margin_catalog",
+                {
+                    "group": "calculations",
+                    "name": "finance.calculate_margins",
+                    "include_schemas": True,
+                },
+            )
+        )["data"]["groups"]["calculations"][0]
+        common = {
+            "issuer": "HYPOTHETICAL_USER_EXAMPLE",
+            "unit": "INR",
+            "period_type": "annual",
+            "period_start": "2025-04-01",
+            "period_end": "2026-03-31",
+            "basis": "standalone",
+            "source": {"kind": "user_declared_hypothetical"},
+        }
+        inputs = {
+            "profit": common
+            | {"metric": "net_profit", "definition": "User-declared net profit", "value": 150},
+            "revenue": common
+            | {"metric": "revenue", "definition": "User-declared revenue", "value": 1000},
+        }
+        Draft202012Validator(entry["schema"]).validate(inputs)
+        route = entry["mcp_execution"]
+        value = await invoke(
+            adapter,
+            route["tool"],
+            route["bind"]
+            | {
+                route["inputs_at"]: inputs,
+                "why": "Calculate a declared hypothetical margin without provider access.",
+            },
+        )
+        assert value["data"]["status"] == "success"
+        assert value["data"]["values"]["margin_percent"] == "15.00"
+        # Preserve the guard: missing start/context must not turn into a calculated fact.
+        for item in inputs.values():
+            item.pop("period_start")
+        partial = await invoke(adapter, route["tool"], route["bind"] | {"arguments": inputs})
+        assert partial["data"]["status"] == "incomplete"
+        assert "margin_percent" not in partial["data"]["values"]
+        assert any("period_start" in issue for issue in partial["data"]["issues"])
+        assert service.ledger.snapshot() == before
+    finally:
+        await service.close()
 
 
 async def test_company_preview_run_reuse_results_and_facts(adapter):
@@ -526,7 +617,7 @@ async def test_real_stdio_sdk_handshake_run_finance_and_shutdown(tmp_path):
                 initialized = await session.initialize()
                 assert (
                     initialized.server_info.name == "margin"
-                    and initialized.server_info.version == "0.3.0"
+                    and initialized.server_info.version == VERSION
                 )
                 tools = (await session.list_tools()).tools
                 assert len(tools) == 14
@@ -572,6 +663,11 @@ async def test_real_stdio_sdk_handshake_run_finance_and_shutdown(tmp_path):
                     "margin_calculate", {"function": "unknown", "arguments": {}}
                 )
                 assert invalid.is_error
+                with pytest.raises(MCPError) as missing:
+                    await session.call_tool("finance.calculate_margins", {})
+                assert missing.value.error.code == -32602
+                assert "margin_calculate" in missing.value.error.message
+                assert not (await session.call_tool("margin_status", {})).is_error
     assert "SYNTHETIC" in (tmp_path / "stderr.txt").read_text()
 
 

@@ -1,6 +1,6 @@
 # Run Margin as a local MCP server
 
-Implemented **25 November 2026**, package **0.3.0**. The stdio adapter exposes 14 workflow
+Implemented **25 November 2026**, current package **0.3.1**. The stdio adapter exposes 14 workflow
 tools over the same core used by the workbench and CLI. It makes 37 retrieval/finance
 functions and ten local review functions discoverable. The web server and skill are not
 required for MCP use. [Architecture](design/mcp-aggregation.md) records the plan published
@@ -70,7 +70,7 @@ be explicitly connected before its data operations; no npm install is needed.
 
 For an offline first connection use `--mode synthetic`, omit the credential-file args
 and keep the limits small. The host should see 14 tools named `margin_*` and server
-version 0.3.0. No host registration/settings were changed automatically by the build.
+version 0.3.1. No host registration/settings were changed automatically by the build.
 
 ## Tools and normal flow
 
@@ -185,3 +185,42 @@ separates local package publication, optional MCPB/registry discovery and later 
 hosting. It also records the untested 2026-07-28 protocol path, protocol-error repair,
 clean-install/host acceptance gates and provider-rights questions. Current SDK acceptance
 is not a claim of latest-revision conformance or readiness for multi-user hosting.
+
+
+## LM Studio catalog-routing repair: 0.3.1
+
+The first user-reported Qwen3-8B attempt reached status and catalog, then the host rejected
+`finance.calculate_margins` / `finance_calculate_margins` as unknown tools. The private log
+contains only those first two calls; no calculation or provider request reached Margin.
+This is an actual host observation, not a successful host workflow acceptance.
+
+Catalog names are function identifiers. Call **`margin_calculate`** with
+`{"function":"finance.calculate_margins","arguments":{"profit":...,"revenue":...}}`.
+Do not call or rename the function as a separate MCP tool. Version 0.3.1 adds an explicit
+`mcp_execution` route to every catalog entry, stronger tool/server instructions and safe
+JSON-RPC errors for unknown tool names. Request one named schema to avoid sending every
+financial schema to a small model. A host may reject an unknown tool before contacting
+Margin, so server error recovery cannot replace clear discovery instructions.
+
+The earlier suggested numbers-only margin prompt was underspecified for the fact-based
+calculation. Profit/revenue facts need matching units, issuer, reporting period and basis;
+missing period starts do not establish compatible flows. Never invent metadata to pass
+validation. For a **declared hypothetical software check**, paste:
+
+> Use only registered Margin MCP tools. Discover just finance.calculate_margins with
+> margin_catalog(group="calculations", name="finance.calculate_margins",
+> include_schemas=true). Then call margin_calculate with that function identifier and
+> nested arguments. This is explicitly a hypothetical example: issuer EXAMPLE_ONLY,
+> INR amounts, standalone annual period from 2025-04-01 through 2026-03-31, net profit
+> 150 and revenue 1000. Use those declared assumptions, label the output hypothetical,
+> make no provider calls, and include a brief top-level why with each tool call.
+
+Expected calculation: 15%, with zero provider usage. This example is not a real company's
+financial result. If using actual financial data, use retained prepared facts and their
+actual source context. If context is unavailable, report incomplete or request it.
+
+Install the new 0.3.1 wheel into the separate test environment, change the configured log
+path to a **new** filename before reconnecting, and start a fresh chat so cached schemas
+and failed-call history are cleared. Existing recordings are never overwritten. The
+patched source and installed-package SDK checks do not prove that Qwen now completes the
+workflow; repeat the LM Studio chat test and retain its new log separately.

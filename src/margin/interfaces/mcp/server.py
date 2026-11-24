@@ -18,6 +18,7 @@ from jsonschema import Draft202012Validator, ValidationError
 from mcp import types
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
+from mcp.shared.exceptions import MCPError
 
 from margin.analysis.company import planning_capabilities
 from margin.core.config import Settings
@@ -29,7 +30,16 @@ from margin.interfaces.mcp.recording import ToolRecorder
 from margin.interfaces.mcp.tools import CONTRACT, VERSION, definitions
 
 INSTRUCTIONS = """Margin provides Indian-company research tools over one process-local core.
-Start with margin_status, then margin_catalog for names and exact schemas. Synthetic mode
+Only tools/list names are callable MCP tools. Catalog entries such as
+finance.calculate_margins are function identifiers, NOT tools. To calculate, call
+margin_calculate with {"function":"finance.calculate_margins","arguments":{...}}.
+Never replace dots with underscores or call a catalog function directly. Every catalog
+entry includes mcp_execution with its tool, argument binding and input location.
+Request one exact function's schema, not all schemas, when the function is known.
+Never invent fact metadata to make a calculation succeed. If units, period, issuer or
+basis are missing, ask for context or return the explicit incomplete result. An example
+must be declared hypothetical with its assumptions, never presented as retrieved facts.
+Start with margin_status, then margin_catalog for routes and exact schemas. Synthetic mode
 contains fictional examples and must not answer real-company questions. Retrieval and
 company data dependencies require preview then margin_run. Respect holds, process IDs,
 budgets and idempotency; no automatic retries, source fallback or page exhaustion.
@@ -61,14 +71,22 @@ class MarginMCP:
         return output
 
     async def call(self, name, arguments):
+        if not isinstance(name, str) or name not in self.tools:
+            route = self.function_route(name)
+            message = "Unknown MCP tool. Only tools/list names can be called; do not rename catalog functions."
+            if route:
+                message += " Use " + json.dumps(route, ensure_ascii=False) + "."
+            else:
+                message += (
+                    " Use margin_catalog to discover the function and its mcp_execution route."
+                )
+            raise MCPError(code=-32602, message=message)
         base = self._envelope(
             name if isinstance(name, str) and len(name) <= 100 else "invalid_tool"
         )
         event = None
         request_logged = False
         try:
-            if not isinstance(name, str) or name not in self.tools:
-                raise DomainError("unknown_tool", "Unknown Margin tool; discover tools/list first.")
             if arguments is None:
                 arguments = {}
             if not isinstance(arguments, dict) or encoded_size(arguments) > 64 * 1024:
@@ -184,6 +202,52 @@ class MarginMCP:
             is_error=error,
         )
 
+    @staticmethod
+    def execution_route(group, name):
+        if group == "calculations":
+            return {
+                "tool": "margin_calculate",
+                "bind": {"function": name},
+                "inputs_at": "arguments",
+            }
+        if group == "review":
+            return {
+                "tool": "margin_review",
+                "bind": {"function": name},
+                "inputs_at": "arguments",
+            }
+        if group == "company":
+            return {
+                "tool": "margin_company_preview",
+                "bind": {"function": name},
+                "inputs_at": "top_level",
+                "then": "margin_run",
+            }
+        return {
+            "tool": "margin_preview",
+            "bind": {"operations[0].operation": name},
+            "inputs_at": "operations[0].arguments",
+            "then": "margin_run",
+        }
+
+    def function_route(self, name):
+        if not isinstance(name, str):
+            return None
+        for kind, names in (
+            (
+                "calculations",
+                self.tools["margin_calculate"].input_schema["properties"]["function"]["enum"],
+            ),
+            ("review", self.tools["margin_review"].input_schema["properties"]["function"]["enum"]),
+            (
+                "company",
+                self.tools["margin_company_preview"].input_schema["properties"]["function"]["enum"],
+            ),
+        ):
+            if name in names:
+                return self.execution_route(kind, name)
+        return None
+
     def catalog(self, group="all", name=None, include_schemas=False):
         groups = {
             "retrieval": self.service.capabilities,
@@ -194,13 +258,16 @@ class MarginMCP:
         selected = groups if group == "all" else {group: groups[group]}
         result = {}
         for kind, getter in selected.items():
-            rows = getter()
+            rows = copy.deepcopy(getter())
             if name:
                 rows = [
                     row
                     for row in rows
                     if name in (row.get("operation") or row.get("function") or "")
                 ]
+            for row in rows:
+                identifier = row.get("operation") or row.get("function")
+                row["mcp_execution"] = self.execution_route(kind, identifier)
             if not include_schemas:
                 rows = [
                     {
@@ -217,7 +284,8 @@ class MarginMCP:
             )
         return {
             "groups": result,
-            "schema_lookup": "Use name/group plus include_schemas=true for exact nested arguments.",
+            "routing_notice": "Catalog function identifiers are not callable MCP tools. Use each entry's mcp_execution.tool and bind; place inputs at inputs_at. Never replace dots with underscores. why is a top-level MCP argument.",
+            "schema_lookup": "Request one name/group with include_schemas=true for exact inputs. Unknown financial context must stay unknown; do not fabricate metadata.",
             "availability_is_not_source_verification": True,
         }
 

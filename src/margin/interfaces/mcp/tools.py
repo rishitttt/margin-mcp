@@ -10,7 +10,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.3.0"
+VERSION = "0.3.1"
 CONTRACT = "margin.mcp.v1"
 ID = {"type": "string", "pattern": r"^[A-Za-z0-9_-]{1,100}$"}
 WAIT = {"type": "integer", "minimum": 0, "maximum": 30, "default": 0}
@@ -61,7 +61,7 @@ def definitions():
         ),
         (
             "margin_catalog",
-            "Discover all 37 retrieval/finance and ten review functions. Default summaries omit bulky schemas; filter by name/group with include_schemas=true for exact arguments. No provider calls.",
+            "Discover function identifiers and their mcp_execution routes. Catalog functions are NOT callable MCP tool names: finance.calculate_margins must be passed to margin_calculate. Never rename dots to underscores. Request one function by name/group with include_schemas=true to avoid loading every schema. No provider calls.",
             schema(
                 {
                     "group": {
@@ -170,7 +170,7 @@ def definitions():
         ),
         (
             "margin_calculate",
-            "Run a whitelisted explicit-input financial calculation locally. Discover exact schema using margin_catalog(group=calculations,name=...). No provider calls. DCF requires explicit forecasts/assumptions; partial/incomplete outputs are valid, and arithmetic does not verify source facts.",
+            'Call this MCP tool for catalog calculation functions. Example argument structure: {"function":"finance.calculate_margins","arguments":{"profit":<fact object>,"revenue":<fact object>}}. Discover the exact fact schema with margin_catalog(group="calculations",name="finance.calculate_margins",include_schemas=true). Fact objects require reporting context; never invent issuer, units, dates or basis. Put why outside arguments. No provider calls; incomplete outputs are valid. DCF needs explicit assumptions.',
             schema(
                 {"function": {"enum": sorted(SPECS)}, "arguments": ARGS}, ["function", "arguments"]
             ),
@@ -196,7 +196,7 @@ def definitions():
         ),
         (
             "margin_review",
-            "Invoke one local citation/sentiment workflow discovered in margin_catalog(group=review). Host supplies passages and semantic judgments. Margin checks supplied quotes/references/numbers and aggregates; no browsing, PDF fetch, LLM inference or independent original verification.",
+            "Call this MCP tool for a review catalog function: pass its exact identifier as function and its inputs as arguments. The catalog function is NOT a separate MCP tool. Host supplies passages and semantic judgments. Margin checks supplied quotes/references/numbers and aggregates; no browsing, PDF fetch, LLM inference or independent original verification.",
             schema(
                 {"function": {"enum": sorted(SCHEMAS)}, "arguments": ARGS},
                 ["function", "arguments"],
