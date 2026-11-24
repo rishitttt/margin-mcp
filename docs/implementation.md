@@ -1,5 +1,29 @@
 # Implementation and validation status
 
+## LM Studio live financial retrieval: 25 November 2026
+
+Qwen completed status, a fresh preview, run, status and result in one turn. The actual
+receipt confirms one successful BharatStock HTTP attempt (1,513 ms), one annual
+consolidated row and two total items in pagination; no Drishti operation was logged.
+Score retrieval as passed and final-answer fidelity as failed: the narrative overstated
+most crore values tenfold, replaced operating profit with the PBT field, expanded EBITDA
+incorrectly and omitted the total-versus-continuing-profit scope caveat. The returned
+payload itself remained raw INR with an explicit units warning. Provider documentation
+was publicly rechecked; statement amounts are absolute INR, not crore. This is not an
+independent validation of issuer financial statements.
+
+The saved response was reprocessed through actual auto fact preparation, unit conversion,
+company readiness, margins, profitability and cashflow functions, with zero new
+authenticated provider/model calls. Unit evidence and continuing-profit guards survived:
+readiness and the continuing-profit margin succeed, profitability is partial with mixed
+scope components held, and growth/CAGR remain incomplete with only one annual row.
+These core checks are separate from the observed model path, which did not call fact
+preparation or calculation tools. Private corrections/outputs and receipt/hash references
+are in `reports/private/lmstudio-live-2026-11-25/`. Prefer deterministic unit/metric
+summaries and exact common-tool schemas next; resolve per-process state across host
+restarts before promising multi-turn source reuse. Do not fetch extra pages to repeat
+this review or relax financial scope checks.
+
 ## Repeated host launches and recording: 25 November 2026, 0.3.3
 
 The active LM Studio configuration pointed --record-file at an existing log. Startup refusal was reproduced without modifying the file; app logs show corresponding repeated failures. The new mutually exclusive --record-dir option creates a unique timestamp/UUID 0600 JSONL on every launch and preserves earlier logs. New target directories are created 0700; existing directory permissions and retention are not silently changed. Fixed-file no-overwrite and write-failure safeguards remain. Source/installed repeated stdio launch tests validate recovery without provider/model calls. Validation: 233 offline tests and Ruff lint/format passed; two installed launches preserved prior logs. The mtest package and only its Margin recording configuration were updated after a private configuration backup.

@@ -287,3 +287,22 @@ in qwen3-8b-03 succeeded once, and the independent-construction task in qwen3-8b
 one catalog call, received incomplete for missing starts, then supplied the declared
 starts and returned 15%. Record the latter as a pass with one recovery, not a first-try
 pass or a full real-provider/host compatibility evaluation.
+
+## Real retrieval versus answer accuracy
+
+The subsequent HINDUNILVR annual one-row request completed in one model turn with one
+BharatStock HTTP attempt. The model's final prose nevertheless contained tenfold crore
+conversion errors and mixed up operating profit and PBT. The raw result included the
+correct documented-INR warning; the model did not use fact preparation/unit conversion.
+Treat transport success, data interpretation, arithmetic and source verification as
+separate evaluation dimensions. Reprocessing this same saved response through the local
+financial core preserved the unit/scope guards without further provider calls. See the
+25 November live-review checkpoint in [implementation](implementation.md).
+
+For financial statements, `margin_facts` prepares retained typed facts and unit evidence.
+`facts.convert_units`, invoked through `margin_calculate`, performs the actual conversion.
+Neither authenticates issuer filings. Conversion to crore divides absolute INR by
+10,000,000; EPS remains INR per share. Never silently rename total profit as continuing
+profit or operating profit as EBIT/PBT. More pages remain explicit data work and are not
+authorized by a provider's pagination count. After a process restart, expired source
+handles must not silently trigger a replacement request.
