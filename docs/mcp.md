@@ -179,3 +179,9 @@ reasoning evaluation. No authenticated provider/model request was used to build/
 adapter. Existing real core tests remain separately documented. A fresh-chat model-host
 trial, a separately budgeted live MCP pass and cross-model benchmarking are next steps;
 the professor's evaluation harness remains independent of product installation.
+
+The [25 November distribution/release evaluation](design/mcp-aggregation.md#distribution-and-live-release-evaluation-25-november)
+separates local package publication, optional MCPB/registry discovery and later HTTP
+hosting. It also records the untested 2026-07-28 protocol path, protocol-error repair,
+clean-install/host acceptance gates and provider-rights questions. Current SDK acceptance
+is not a claim of latest-revision conformance or readiness for multi-user hosting.

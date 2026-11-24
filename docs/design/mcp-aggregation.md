@@ -142,3 +142,152 @@ An isolated target import and console-script launch passed using existing pinned
 dependencies. Clean dependency installation on other platforms, real-model host behavior
 and a newly budgeted live MCP pass remain unverified. No host settings were changed.
 The wheel and source scans exclude credentials, private answers and provider captures.
+
+## Distribution and live-release evaluation: 25 November
+
+This section is researched planning, not a new release, hosting deployment or conformance
+claim. Public standards and provider terms were checked on 25 November 2026. The current
+0.3.0 alpha remains a local stdio application with 2025-11-25 transport acceptance.
+
+### Recommended distribution
+
+Release the local Python application first, using separately supplied provider credentials.
+Publish a tagged, scanned wheel and source distribution through GitHub Releases, then
+PyPI after clean installation and host acceptance. Users install the application and
+configure a stdio-capable host to launch `margin-mcp`. No Margin-operated financial data
+server, mandatory skill, npm rewrite, or public service is needed for that release.
+
+| Form | What users receive | Evaluation for Margin |
+| --- | --- | --- |
+| Python wheel / source distribution | Installable application, dependency metadata and console launcher | Primary distribution; already has a wheel, release pipeline still needed |
+| MCPB desktop bundle | ZIP-based `.mcpb` plus `manifest.json`, runtime/dependency setup and configuration | Optional later convenience for supporting desktop hosts; test Python/platform support |
+| OCI/container image | Reproducible runtime launching stdio or a separately implemented HTTP adapter | Optional deployment artifact; containerization alone adds no remote MCP endpoint |
+| Hosted Streamable HTTP | An HTTPS URL configured in a compatible host | Later service offering; requires authenticated user isolation and operational controls |
+| MCP Registry entry | Versioned discovery metadata pointing to a package or remote endpoint | Optional discoverability step; does not deploy or host Margin |
+
+MCPB is a desktop distribution format, not a prerequisite for MCP interoperability. Its
+manifest supports Python servers and sensitive user configuration. Bundled dependency and
+Python availability still need platform validation. See the [MCPB specification](https://github.com/modelcontextprotocol/mcpb/blob/main/MANIFEST.md).
+The [Python publishing guide](https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/)
+describes tagged wheel/source releases and PyPI Trusted Publishing without a long-lived
+publishing token. No package-name availability, PyPI ownership or registry namespace has
+been established for Margin.
+
+### Standards and measured gaps
+
+The current dated MCP specification is **2026-07-28**. It uses `server/discover` and
+per-request metadata rather than the older initialization handshake. Inspection of the
+installed Python SDK 2.2.0 found modern and legacy implementation paths; our tests use
+`ClientSession.initialize()` and demonstrate only the legacy negotiated version. Test
+both eras before advertising compatibility; do not upgrade dependencies blindly or
+assume every host supports the same revision. [Specification](https://modelcontextprotocol.io/specification/2026-07-28),
+[SDK version negotiation](https://py.sdk.modelcontextprotocol.io/protocol-versions/).
+
+| Requirement or practice | Margin assessment / action |
+| --- | --- |
+| JSON-RPC framing, tool discovery, valid declared capabilities and revision behavior | Legacy stdio exercised; add modern discovery/request-envelope coverage and publish a compatibility matrix |
+| Protocol-only stdout; diagnostics on stderr | Implemented and transport-tested |
+| Input validation and structured output conforming to advertised schemas | Implemented at envelope/core level; schemas for nested results remain broad and should become more informative |
+| Protocol versus tool execution errors | Fix unknown tool names to return the specified JSON-RPC protocol error; current adapter returns `isError` with a domain code. Keep provider/business failures as tool errors |
+| Cancellation, expired handles, no duplicate paid dispatch | Existing tests cover key cases; repeat across supported protocol eras and actual hosts |
+| Tools versus optional resources, prompts and extensions | A tools-only server is valid; none of the optional features is mandatory for our release |
+| Python package release metadata and provenance | Add chosen code license, project URLs, support/changelog and release automation; confirm dependency license/security compatibility |
+| Honest product semantics | Preserve missing-data/unit/scope caveats and host-reported citation/sentiment labels; packaging does not authenticate original sources |
+
+The [tools specification](https://modelcontextprotocol.io/specification/2026-07-28/server/tools)
+distinguishes unknown-tool/malformed-request protocol errors from actionable execution
+errors. An advertised output schema must match structured results. Richer per-tool output
+schemas and simpler high-frequency financial tools are usability improvements, not a
+requirement to flatten all 47 nested functions. Test small-model discovery first.
+The [stdio binding](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/stdio)
+requires clean newline-delimited JSON-RPC on stdout.
+
+### Release sequence and acceptance
+
+1. **Standards repair:** correct protocol error mapping; exercise modern and legacy
+   discovery/list/call/cancel/shutdown and malformed-input wire behavior. Record supported
+   revisions and exact SDK/test-tool versions. Keep initial tests offline.
+2. **Releasable artifact:** choose the code license with the project owners; complete
+   metadata/changelog, build wheel and source distribution, scan both for credentials,
+   provider captures, private logs and evaluator answers. Install from the artifacts on
+   clean macOS/Linux/Windows environments with supported Python versions. Existing
+   isolated-target acceptance reused dependencies and does not satisfy this gate.
+3. **Independent clients and real data:** test with MCP Inspector, then at least two
+   actual target hosts. Use a separately recorded one-company live plan and explicit
+   provider HTTP/credit bounds. Verify source units, financial results and data reuse,
+   quota/access failures, cancellation and duplicate submission behavior. Never charge
+   production credentials during broad conformance/fault scenarios.
+4. **Private beta and evaluation:** distribute the versioned artifact to the team;
+   collect setup failures and workflow traces. Compare catalog-based versus simpler
+   discovery if smaller models struggle. Run matched with/without-Margin tasks with
+   independent answers; log tool inputs/outputs and visible one-line self-reports,
+   not hidden reasoning. The optional professor harness remains separate.
+5. **Public local release:** after the gates, tag and publish artifacts, verify a fresh
+   installation, then publish registry metadata if desired. Hosted deployment follows
+   its own gates below; public software distribution and data-serving rights differ.
+
+[MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector) provides interactive
+and CLI clients. The [official conformance framework](https://github.com/modelcontextprotocol/conformance)
+provides revision-filtered wire/schema checks; select applicable tools-only scenarios.
+Its documented server target is an HTTP URL, so do not assume its full server suite can
+run against our current stdio launcher unchanged. Inspector and our SDK subprocess tests
+can cover stdio while HTTP-specific conformance follows the HTTP adapter.
+
+### Hosted service: separate architecture gate
+
+Use a new Streamable HTTP adapter over the same core, exposed behind TLS at an endpoint
+such as `https://<chosen-domain>/mcp`. The modern revision accepts POST and removes the
+standalone GET stream and protocol sessions. Legacy-compatible serving must retain the
+older revision's behavior when that revision is negotiated. Do not copy an old SSE-only
+deployment recipe. The SDK should implement wire behavior; validate it at the deployed
+proxy as well. [HTTP transport specification](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http).
+
+For a restricted service that spends provider credits, implement interoperable OAuth
+authorization, protected-resource discovery and token audience/issuer/expiry/scope checks.
+Authorization is optional in MCP generally; it is our service requirement, not a universal
+condition for a local server. Stdio instead takes operator credentials locally.
+Authenticate users independently of provider keys and opaque run handles. Never forward
+a Margin access token upstream as a provider credential.
+[Authorization specification](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization).
+
+Before exposing the endpoint, add:
+
+- Identity-scoped core/run/review state and authorization on every handle lookup; never
+  share today's one process-wide service and result buffers across arbitrary users.
+- Atomic provider-account and user allowances across processes/restarts, plus bounded
+  concurrency and idempotency. A small operational ledger/store is not a financial corpus.
+- Explicit provider-key ownership model: user credentials stored as protected secrets,
+  or Margin-owned subscriptions with applicable end-user/re-exposure rights. Local BYOK
+  reduces shared-secret hosting work but does not waive provider restrictions.
+- Host/Origin allowlists, applicable CORS, request/time/output bounds, abuse protection,
+  sanitized metrics, opt-in private recording, retention/deletion, health/readiness checks
+  and controlled shutdown/rollback. Treat provider narratives as untrusted source text.
+- Tenant-isolation, wrong-audience, expired-token, quota-race, restart, proxy-streaming and
+  sustained-load tests using fictional upstreams before a bounded real acceptance pass.
+
+Modern MCP transport statelessness does not remove application state: our retained plans,
+results, review packets and cost accounting still need ownership, TTL and routing/storage.
+Start with a controlled single instance or explicit workspace routing; add workers only
+after state and ledger behavior are defined. See [SDK deployment guidance](https://py.sdk.modelcontextprotocol.io/run/deploy/)
+and [MCP security guidance](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices).
+
+### Registry and provider permissions
+
+The official registry accepts local-package or remote metadata through `server.json` and
+`mcp-publisher`. A candidate GitHub namespace is `io.github.rishitttt/margin`, subject to
+ownership authentication and availability. PyPI entries require the package README's
+`mcp-name:` marker to match the registry server name. Registry schema versions are
+independent of MCP wire revisions; generate against the publishing schema current at
+release time. Registration is optional for using a configured server and is not evidence
+of financial accuracy or host compatibility. [Publishing guide](https://github.com/modelcontextprotocol/registry/blob/main/docs/modelcontextprotocol-io/quickstart.mdx),
+[package ownership requirements](https://github.com/modelcontextprotocol/registry/blob/main/docs/modelcontextprotocol-io/package-types.mdx).
+
+Published provider terms distinguish ordinary querying, internal model evaluation and
+third-party serving. BharatStock lists internal model evaluation on Developer/Pro and
+separate conditions for distributed/productized uses. Drishti distinguishes internal
+use, permitted display/programmatic re-exposure and redistribution; its platform/order
+agreement may govern. Confirm the actual agreements for our benchmark and any hosted
+aggregation before promising those uses. This public-page review does not establish our
+account permissions. No plan purchase or provider contact was made.
+[BharatStock terms](https://bharatstockapi.com/terms),
+[Drishti terms](https://drishti.manasija.in/legal/terms-and-conditions).

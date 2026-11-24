@@ -1,5 +1,7 @@
 # Margin build and evaluation plan
 
+**25 November release research:** [distribution and standards evaluation](design/mcp-aggregation.md#distribution-and-live-release-evaluation-25-november) recommends a local Python/BYOK release first, followed by optional registry publication; hosted HTTP is a separate phase. Before release, repair unknown-tool protocol errors, test 2026-07-28 alongside legacy behavior, validate clean artifact installs and actual hosts, and run a bounded live pass. No hosting or public package publication has occurred.
+
 **25 November delivery checkpoint:** the planned stdio MCP alpha is implemented as package 0.3.0, with 14 workflow tools, 220 tests and source/isolated-wheel protocol acceptance. Core/data limits are preserved. [MCP usage](mcp.md) and [implementation](implementation.md) own delivered behavior/evidence. Next gates are a fresh-chat host trial, a separately budgeted live MCP probe and versioned model comparisons; no model-host result is inferred from SDK tests.
 
 **25 November MCP implementation plan:** core checkpoint `6b22f57` was pushed after 194 tests and a source/private-data review. The user authorizes the local stdio MCP alpha. [MCP architecture and acceptance](design/mcp-aggregation.md) now owns the 14-tool mapping, lifespan, state/budget/logging boundaries and sequence. This planning revision precedes runtime implementation; no provider/model requests are planned for initial protocol checks.
