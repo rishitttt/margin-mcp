@@ -113,7 +113,16 @@ Company-preview accepts `money_unit: "auto"` (default), explicit monetary scales
 The announcement schema's added extraction flag was reviewed. Margin explicitly defaults `include_extracted_information` to false and holds true; no generic executor or extraction branch is newly enabled. Query preview/receipts show the default. The runtime catalog owns connection/schema holds.
 
 
-## MCP transport, package 0.3.0
+## MCP transport, package 0.4.0
+
+The MCP exposes twenty tools: the fourteen workflows below plus six directly typed tools.
+Direct tools reuse exact core schemas at the top level: `margin_calculate_margins`,
+`margin_convert_units`, `margin_compare_periods`, `margin_calculate_cashflow_metrics`,
+`margin_calculate_profitability`, `margin_calculate_balance_sheet_metrics`. Use catalog
+`mcp_execution` for routing. The generic calculator remains available. Financial results
+include deterministic `financial_view` values, labels, units and scope warnings alongside
+the raw payload. Optional shared mode keeps state in one explicit local backend across
+frontend lifetimes; it does not persist a financial corpus or reset account quotas.
 
 When available, use the host's Margin MCP tools rather than the separate HTTP helper.
 The function inventory above is discoverable through 14 stable workflow tools:

@@ -15,12 +15,13 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 from mcp.shared.exceptions import MCPError
 
+from margin.analysis.service import SPECS
 from margin.core.config import Settings
 from margin.core.contracts import DomainError
 from margin.core.service import ResearchService
 from margin.interfaces.mcp.recording import ToolRecorder
 from margin.interfaces.mcp.server import MarginMCP, create_server
-from margin.interfaces.mcp.tools import CONTRACT, VERSION, definitions
+from margin.interfaces.mcp.tools import CONTRACT, DIRECT_FUNCTIONS, VERSION, definitions
 
 ROOT = Path(__file__).parents[1]
 
@@ -60,9 +61,9 @@ def fcff():
     }
 
 
-def test_static_catalog_has_14_tools_and_accurate_annotations():
+def test_static_catalog_has_20_tools_and_accurate_annotations():
     tools = definitions()
-    assert len(tools) == 14
+    assert len(tools) == 20
     for tool in tools.values():
         Draft202012Validator.check_schema(tool.input_schema)
         Draft202012Validator.check_schema(tool.output_schema)
@@ -159,9 +160,9 @@ async def test_every_catalog_entry_has_an_explicit_callable_mcp_route(adapter):
             route = row["mcp_execution"]
             assert route["tool"] in adapter.tools
             name = row.get("function") or row.get("operation")
-            assert name in route["bind"].values()
+            assert name in route["bind"].values() or DIRECT_FUNCTIONS.get(route["tool"]) == name
             if group in {"calculations", "review"}:
-                assert route["inputs_at"] == "arguments" and "then" not in route
+                assert route["inputs_at"] in {"arguments", "top_level"} and "then" not in route
             elif group == "company":
                 assert route["inputs_at"] == "top_level" and route["then"] == "margin_run"
             else:
@@ -208,18 +209,14 @@ async def test_declared_margin_example_routes_from_catalog_without_provider_call
         value = await invoke(
             adapter,
             route["tool"],
-            route["bind"]
-            | {
-                route["inputs_at"]: inputs,
-                "why": "Calculate a declared hypothetical margin without provider access.",
-            },
+            inputs | {"why": "Calculate a declared hypothetical margin without provider access."},
         )
         assert value["data"]["status"] == "success"
         assert value["data"]["values"]["margin_percent"] == "15.00"
         # Preserve the guard: missing start/context must not turn into a calculated fact.
         for item in inputs.values():
             item.pop("period_start")
-        partial = await invoke(adapter, route["tool"], route["bind"] | {"arguments": inputs})
+        partial = await invoke(adapter, route["tool"], inputs)
         assert partial["data"]["status"] == "incomplete"
         assert "margin_percent" not in partial["data"]["values"]
         assert any("period_start" in issue for issue in partial["data"]["issues"])
@@ -261,6 +258,62 @@ async def test_reported_extra_flag_error_guides_recovery_without_changing_contex
     assert result["data"]["status"] == "success"
     assert result["data"]["values"]["margin_percent"] == "15.00"
     assert adapter.service.ledger.snapshot() == before
+
+
+async def test_direct_typed_margins_validate_without_wrapper_and_preserve_period_guards(adapter):
+    common = {
+        "issuer": "EXAMPLE_ONLY",
+        "unit": "INR",
+        "period_type": "annual",
+        "period_start": "2025-04-01",
+        "period_end": "2026-03-31",
+        "basis": "standalone",
+    }
+    inputs = {
+        "profit": common
+        | {"metric": "net_profit", "definition": "Hypothetical net profit", "value": 150},
+        "revenue": common
+        | {"metric": "revenue", "definition": "Hypothetical revenue", "value": 1000},
+    }
+    before = adapter.service.ledger.snapshot()
+    answer = await invoke(adapter, "margin_calculate_margins", inputs)
+    assert answer["data"]["values"]["margin_percent"] == "15.00"
+    extra = await invoke(
+        adapter, "margin_calculate_margins", inputs | {"hypothetical": True}, error=True
+    )
+    assert "allowed fields: profit, revenue, why" in extra["error"]["message"]
+    inputs["profit"]["period_type"] = "quarterly"
+    inputs["profit"]["period_start"] = "2026-01-01"
+    held = await invoke(adapter, "margin_calculate_margins", inputs)
+    assert held["data"]["status"] == "incomplete" and held["data"]["values"] == {}
+    assert adapter.service.ledger.snapshot() == before
+    for name, function in DIRECT_FUNCTIONS.items():
+        schema = adapter.tools[name].input_schema
+        assert set(schema["properties"]) == set(SPECS[function][1]["properties"]) | {"why"}
+        assert "arguments" not in schema["properties"] and "function" not in schema["properties"]
+
+
+async def test_direct_conversion_preserves_exact_value_and_rejects_eps_conversion(adapter):
+    fact = {
+        "issuer": "EXAMPLE_ONLY",
+        "metric": "revenue",
+        "definition": "Hypothetical revenue",
+        "value": "12345678900",
+        "unit": "INR",
+        "period_type": "annual",
+        "period_end": "2026-03-31",
+        "basis": "standalone",
+    }
+    answer = await invoke(
+        adapter, "margin_convert_units", {"value": fact, "target_unit": "INR_crore"}
+    )
+    assert answer["data"]["fact"]["value"] == "1234.56789"
+    assert fact["unit"] == "INR"
+    fact.update(metric="eps", unit="INR_per_share")
+    held = await invoke(
+        adapter, "margin_convert_units", {"value": fact, "target_unit": "INR_crore"}, error=True
+    )
+    assert held["error"]["code"] == "incompatible_units"
 
 
 async def test_company_preview_run_reuse_results_and_facts(adapter):
@@ -704,7 +757,7 @@ async def test_real_stdio_sdk_handshake_run_finance_and_shutdown(tmp_path):
                     and initialized.server_info.version == VERSION
                 )
                 tools = (await session.list_tools()).tools
-                assert len(tools) == 14
+                assert len(tools) == 20
                 status = (await session.call_tool("margin_status", {})).structured_content
                 assert status["mode"] == "synthetic" and status["data"]["ledger"][
                     "http_attempts"

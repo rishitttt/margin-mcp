@@ -1,5 +1,7 @@
 # Margin MCP adapter architecture and implementation plan
 
+**0.4.0 fidelity/reconnect implementation:** twenty tools now include six directly typed common functions, and retained financial results include deterministic financial_view output. Optional shared mode routes short-lived stdio frontends through bounded owner-only Unix IPC to one explicitly started backend. That backend owns the unchanged core, credentials, ledger, results and optional journal. Standalone mode remains. This supersedes the earlier fixed-fourteen-tool/direct-only boundary for the authorized pass; historical design/results below are preserved. [Current operations guide](../mcp.md) owns setup/lifecycle.
+
 Planned and implemented **25 November 2026**, after core checkpoint `6b22f57` was pushed and validated
 with 194 tests. The implementation plan was pushed as `07b981a` before runtime work. The tested alpha is package 0.3.0 with 14 tools, 220 offline tests and source/isolated-wheel SDK stdio acceptance. [MCP usage](../mcp.md) owns commands and host configuration. This replaces the historical
 proposal; its earlier text remains in Git history. [Core architecture](core-workbench.md),

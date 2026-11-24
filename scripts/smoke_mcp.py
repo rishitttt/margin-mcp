@@ -57,7 +57,7 @@ async def main(args):
             async with ClientSession(read, write) as session:
                 initialized = await session.initialize()
                 tools = {tool.name: tool for tool in (await session.list_tools()).tools}
-                assert len(tools) == 14
+                assert len(tools) == 20
                 status = await call(session, "margin_status")
                 assert not any(status["data"]["ledger"]["http_attempts"].values())
                 session_id = status["session_id"]
@@ -135,6 +135,48 @@ async def main(args):
                     )
                 )["data"]["facts"]
                 assert all(f["unit_origin"] == "provider_documentation" for f in facts)
+                latest = max(f["period_end"] for f in facts if f["period_end"])
+                current = {f["metric"]: f for f in facts if f["period_end"] == latest}
+                revenue = current["revenue"]
+                await call(
+                    session, "margin_convert_units", {"value": revenue, "target_unit": "INR_crore"}
+                )
+                await call(
+                    session,
+                    "margin_calculate_margins",
+                    {"profit": current["net_profit"], "revenue": revenue},
+                )
+                await call(
+                    session,
+                    "margin_calculate_cashflow_metrics",
+                    {
+                        "cfo": current["cash_flow_operating"],
+                        "capex": current.get(
+                            "capex",
+                            revenue
+                            | {
+                                "metric": "capex",
+                                "value": None,
+                                "definition": "Capex absent in this fictional software fixture",
+                                "source": {"kind": "software_fixture_missing_field"},
+                            },
+                        ),
+                    },
+                )
+                await call(
+                    session, "margin_calculate_profitability", {"facts": list(current.values())}
+                )
+                await call(
+                    session,
+                    "margin_calculate_balance_sheet_metrics",
+                    {"facts": list(current.values())},
+                )
+                previous = next(
+                    f for f in facts if f["metric"] == "revenue" and f["period_end"] != latest
+                )
+                await call(
+                    session, "margin_compare_periods", {"previous": previous, "current": revenue}
+                )
                 metric = (
                     await call(
                         session,

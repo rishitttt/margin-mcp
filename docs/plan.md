@@ -1,5 +1,7 @@
 # Margin build and evaluation plan
 
+**25 November 0.4.0 delivery:** implement the planned financial views, six strict direct financial tools and optional Unix-socket state owner. Code, 252 offline checks, source/installed protocol checks and local shared configuration are complete; evidence and limitations are recorded in implementation status. The next user-facing gate is a fresh LM Studio retest of schema construction, two-turn preview/execute, source reuse and financial reporting. No provider/model calls are implicitly authorized by these release checks.
+
 **25 November authorized fidelity/reconnect pass:** implement the [financial fidelity and reconnect plan](design/mcp-aggregation.md#implementation-plan-financial-fidelity-and-reconnects-25-november): deterministic financial views, six strictly typed common calculation tools, and optional explicitly started Unix-socket shared backend. Preserve standalone mode and all spending/scope/state guards. Use offline and saved-response validation; no new authenticated provider/model calls are planned.
 
 **25 November host-feedback patch (0.3.1):** explicit catalog execution routes and protocol unknown-tool errors are implemented after the LM Studio/Qwen naming failure. The first host trial established status/catalog only. Repeat it in a fresh chat after upgrading and selecting a new recording filename; do not invent fact context. The patch passed 224 offline tests; latest-revision conformance, clean cross-platform installs and complete real-host/live acceptance remain separate gates.

@@ -1,5 +1,62 @@
 # Implementation and validation status
 
+## Financial fidelity and shared local state: 25 November 2026, 0.4.0
+
+Plan `65c4901` was pushed before implementation. Retained financial results now include
+`financial_view`: exact documented-INR to crore conversion, rounded displays, EPS per
+share, separate operating-profit/PBT/EBITDA/total/continuing/owners labels, raw values,
+source paths, reporting basis/dates, stock/flow kind, null/invalid distinctions and scope
+warnings. Segments are converted separately. The view is bounded to eight rows and twenty
+entries per segment array; raw payloads are unchanged. This is presentation/provenance,
+not issuer-filing verification or a new financial database.
+
+Six common local calculations have direct strict schemas: margins, unit conversion,
+period comparison, cashflow metrics, profitability and balance-sheet metrics. They route
+to the existing core without extra provider calls. The fourteen workflow tools/generic
+calculator remain; total MCP tool count is twenty, underlying registry counts unchanged.
+Source and installed skill references were synchronized; local connection settings stayed
+unchanged. Measured serialized SDK tool definitions are about 41 KiB; this is not an LM
+Studio tokenizer/context measurement or a model-performance result.
+
+Optional `margin-backend` owns one core and journal behind an owner-only Unix socket.
+Short-lived stdio proxies do not load provider keys or create another core. Private
+framing/size/concurrency bounds, exclusive ownership, mode/version/epoch checks and safe
+errors apply; lost replies are never automatically retried. Frontend disconnects preserve
+active work, plans/results, idempotency and quotas. Source TTL/eviction still applies.
+Backend shutdown/restart loses state and requires allowance reconciliation; this does not
+provide durable account-wide accounting. Shared mode initially targets macOS/Linux;
+standalone mode remains. No public HTTP or multi-user service is introduced.
+
+Validation: **252 offline tests passed**, including private IPC guards, backend-restart
+rejection, malformed frames, lost replies, no credential reflection, native schemas,
+unit/label/null correctness and in-flight work surviving frontend exit. The sandbox
+blocked Unix binding in the first test attempt; authorized local-socket runs passed with
+external TCP blocked by the fixtures. Ruff lint/format, frontend JavaScript syntax, skill
+validation and documentation links passed. Source and installed standalone acceptance
+exercised all twenty tools in 33 calls/66 events with fictional data. Source and installed
+shared acceptance exercised three separate frontends, nine calls/eighteen events, stable
+identity, retained facts and duplicate submission with only one simulated provider attempt.
+The installed wheel ran outside the checkout using existing pinned dependencies; clean
+cross-platform dependency installation remains unverified. SDK negotiation was 2025-11-25,
+not a claim of 2026-07-28 conformance.
+
+The saved real HUL response was reprocessed locally to verify exact crore displays,
+EPS, separate metrics, segments and continuing-profit warnings without another fetch.
+A local LIVE-mode shared backend is explicitly running for mtest. Two installed status-only
+frontends confirmed the same state owner and **zero B/D HTTP attempts**. Initial B allowance
+was reduced from two to **one remaining local test request** after the earlier observed
+request; D ceilings stay twelve HTTP/four estimated credits, not account balances. Only
+Margin's host entry was switched to the socket after a private config backup; other
+servers, keys and previous logs were preserved. The journal's initial readiness calls are
+operator observations, not model results. No authenticated provider/model request or
+purchase was made during implementation. Full evidence is private in
+`reports/private/mcp-fidelity-2026-11-25/`.
+
+Next: reconnect LM Studio and retest direct-schema construction, two-turn preview/execute,
+retained-source calculations and final answer fidelity. Successful SDK/core tests do not
+establish that Qwen now reports the financial values correctly. Broader host/model/rights
+and public-release gates remain. [Current setup](mcp.md) owns commands and stop/start rules.
+
 ## LM Studio live financial retrieval: 25 November 2026
 
 Qwen completed status, a fresh preview, run, status and result in one turn. The actual

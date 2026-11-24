@@ -10,8 +10,16 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.3.3"
+VERSION = "0.4.0"
 CONTRACT = "margin.mcp.v1"
+DIRECT_FUNCTIONS = {
+    "margin_calculate_margins": "finance.calculate_margins",
+    "margin_convert_units": "facts.convert_units",
+    "margin_compare_periods": "finance.compare_periods",
+    "margin_calculate_cashflow_metrics": "finance.calculate_cashflow_metrics",
+    "margin_calculate_profitability": "finance.calculate_profitability",
+    "margin_calculate_balance_sheet_metrics": "finance.calculate_balance_sheet_metrics",
+}
 ID = {"type": "string", "pattern": r"^[A-Za-z0-9_-]{1,100}$"}
 WAIT = {"type": "integer", "minimum": 0, "maximum": 30, "default": 0}
 WHY = {
@@ -128,7 +136,7 @@ def definitions():
         ),
         (
             "margin_result",
-            "Read one retained sanitized operation result, receipts, source context and partial/incomplete reasons. Expired/evicted results stay unavailable; this tool never refetches.",
+            "Read one retained sanitized operation result and receipt. For financials, financial_view supplies deterministic exact crore values, ready-to-report displays, EPS per share, metric labels and scope warnings: use it for reporting without rescaling or renaming metrics. Raw provider payload remains for inspection. Expired/evicted results stay unavailable; never refetches.",
             schema({"run_id": ID, "operation_id": ID}, ["run_id", "operation_id"]),
             True,
             True,
@@ -170,7 +178,7 @@ def definitions():
         ),
         (
             "margin_calculate",
-            'Call this MCP tool for catalog calculation functions. Example argument structure: {"function":"finance.calculate_margins","arguments":{"profit":<fact object>,"revenue":<fact object>}}. Discover the exact fact schema with margin_catalog(group="calculations",name="finance.calculate_margins",include_schemas=true). Use only the declared fields; no hypothetical/why flags inside arguments. Label examples in top-level why or fact.source. Fact objects require reporting context; never invent issuer, units, dates or basis. Numeric strings are supported. No provider calls; incomplete outputs are valid. DCF needs explicit assumptions.',
+            'Generic calculator for functions without a preferred direct tool. Prefer margin_calculate_margins for margins and margin_convert_units for conversions; the catalog identifies other direct tools. Otherwise pass {"function":"<catalog identifier>","arguments":{...}} after requesting that exact schema. Use only declared fields; put why outside arguments. Never invent context or insert hypothetical flags. Numeric strings are supported. No provider calls; incomplete outputs are valid. DCF needs explicit assumptions.',
             schema(
                 {"function": {"enum": sorted(SPECS)}, "arguments": ARGS}, ["function", "arguments"]
             ),
@@ -221,6 +229,19 @@ def definitions():
             False,
         ),
     ]
+    for name, function in DIRECT_FUNCTIONS.items():
+        inputs = deepcopy(SPECS[function][1])
+        inputs["properties"]["why"] = WHY
+        rows.append(
+            (
+                name,
+                f"Direct strictly typed {function} calculation. Supply these schema fields at the top level; no function selector or arguments wrapper. Local arithmetic only, no provider calls. Preserve supplied fact provenance, units, periods and basis; never invent context. Missing/incompatible facts remain incomplete; source validity is not independently verified.",
+                inputs,
+                True,
+                True,
+                False,
+            )
+        )
     return {
         name: types.Tool(
             name=name,

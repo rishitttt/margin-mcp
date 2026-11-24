@@ -27,9 +27,15 @@ from margin.core.validation import validation_summary
 from margin.interfaces.agent.client import BridgeError
 from margin.interfaces.agent.local_config import read_provider_env
 from margin.interfaces.mcp.recording import ToolRecorder
-from margin.interfaces.mcp.tools import CONTRACT, VERSION, definitions
+from margin.interfaces.mcp.tools import CONTRACT, DIRECT_FUNCTIONS, VERSION, definitions
 
 INSTRUCTIONS = """Margin provides Indian-company research tools over one process-local core.
+Prefer the directly typed margin_calculate_margins, margin_convert_units,
+margin_compare_periods, margin_calculate_cashflow_metrics, margin_calculate_profitability
+and margin_calculate_balance_sheet_metrics tools when applicable. Their inputs are
+top-level fields, not a nested arguments object. Use financial_view labels/displays from
+financial results; do not manually rescale crore displays or relabel operating profit
+as PBT/EBIT. Total, owners and continuing profit have distinct scopes.
 Only tools/list names are callable MCP tools. Catalog entries such as
 finance.calculate_margins are function identifiers, NOT tools. To calculate, call
 margin_calculate with {"function":"finance.calculate_margins","arguments":{...}}.
@@ -56,11 +62,12 @@ brief visible tool-choice explanation, not hidden reasoning. Logging is opt-in a
 
 
 class MarginMCP:
-    def __init__(self, service, recorder=None):
+    def __init__(self, service, recorder=None, *, state_owner="stdio_process"):
         self.service = service
         self.session_id = uuid4().hex
         self.recorder = recorder or ToolRecorder()
         self.tools = definitions()
+        self.state_owner = state_owner
 
     def _envelope(self, name, why=None, call_id=None):
         output = {
@@ -208,6 +215,11 @@ class MarginMCP:
 
     @staticmethod
     def execution_route(group, name):
+        direct = next(
+            (tool for tool, function in DIRECT_FUNCTIONS.items() if function == name), None
+        )
+        if group == "calculations" and direct:
+            return {"tool": direct, "bind": {}, "inputs_at": "top_level"}
         if group == "calculations":
             return {
                 "tool": "margin_calculate",
@@ -309,8 +321,12 @@ class MarginMCP:
         return state
 
     async def dispatch(self, name, args):
+        if name in DIRECT_FUNCTIONS:
+            return self.service.calculate(DIRECT_FUNCTIONS[name], args)
         if name == "margin_status":
             return self.service.status() | {
+                "state_owner": self.state_owner,
+                "state_lifetime": "Source TTL/eviction applies; stopping the state owner invalidates handles and does not renew upstream quota.",
                 "recording_enabled": self.recorder.path is not None,
                 "decision_trails": "Optional visible why summaries only; not hidden reasoning.",
             }
@@ -345,12 +361,26 @@ class MarginMCP:
 
 
 def create_server(
-    settings=None, *, service_factory=ResearchService, record_file=None, record_dir=None
+    settings=None,
+    *,
+    service_factory=ResearchService,
+    record_file=None,
+    record_dir=None,
+    backend_socket=None,
+    expected_mode=None,
 ):
-    settings = settings or Settings.from_env()
+    if not backend_socket:
+        settings = settings or Settings.from_env()
 
     @asynccontextmanager
     async def lifespan(_):
+        if backend_socket:
+            from margin.interfaces.mcp.bridge import RemoteMCP
+
+            if record_file or record_dir:
+                raise ValueError("Shared-mode recording belongs to the backend.")
+            yield await RemoteMCP.connect(backend_socket, expected_mode)
+            return
         recorder = ToolRecorder(record_file, directory=record_dir)
         service = None
         try:
@@ -382,8 +412,16 @@ def create_server(
     )
 
 
-async def serve(settings, record_file=None, record_dir=None):
-    server = create_server(settings, record_file=record_file, record_dir=record_dir)
+async def serve(
+    settings, record_file=None, record_dir=None, backend_socket=None, expected_mode=None
+):
+    server = create_server(
+        settings,
+        record_file=record_file,
+        record_dir=record_dir,
+        backend_socket=backend_socket,
+        expected_mode=expected_mode,
+    )
     async with stdio_server() as (read, write):
         await server.run(read, write, server.create_initialization_options())
 
@@ -393,6 +431,10 @@ def main(argv=None):
         description="Run the local Margin MCP server over stdio; stdout is reserved for protocol messages."
     )
     parser.add_argument("--mode", choices=["synthetic", "live"])
+    parser.add_argument(
+        "--backend-socket",
+        help="Connect to an explicitly started private local backend; never autostart or retry",
+    )
     parser.add_argument(
         "--credentials-file",
         help="Optional operator-owned provider env file; never pass key values as arguments",
@@ -413,6 +455,11 @@ def main(argv=None):
         logger.propagate = False
         logger.setLevel(logging.CRITICAL + 1)
     try:
+        if args.backend_socket:
+            if args.credentials_file or args.record_file or args.record_dir:
+                raise ValueError("Configure credentials and recording on the shared backend only.")
+            asyncio.run(serve(None, backend_socket=args.backend_socket, expected_mode=args.mode))
+            return 0
         settings = Settings.from_env()
         keys = read_provider_env(args.credentials_file) if args.credentials_file else {}
         settings = replace(

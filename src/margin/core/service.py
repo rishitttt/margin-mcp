@@ -17,6 +17,7 @@ from jsonschema import Draft202012Validator, FormatChecker, ValidationError
 
 from margin.analysis import company
 from margin.analysis.facts import prepare_financial_facts
+from margin.analysis.presentation import financial_view
 from margin.analysis.service import SPECS, calculate
 from margin.analysis.service import capabilities as analysis_capabilities
 from margin.core.config import Settings
@@ -622,7 +623,11 @@ class ResearchService:
                 "result_unavailable",
                 "Result is not ready or has expired/been evicted. It has not been refetched.",
             )
-        return copy.deepcopy(stored[1])
+        result = copy.deepcopy(stored[1])
+        display = financial_view(result)
+        if display is not None:
+            result["financial_view"] = display
+        return result
 
     async def cancel(self, run_id):
         self.get_run(run_id)

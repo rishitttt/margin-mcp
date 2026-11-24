@@ -1,5 +1,7 @@
 # Agent access before MCP
 
+**0.4.0 interface note:** retained financial result JSON now includes deterministic financial_view displays. Optional shared MCP mode uses a separate explicitly started Unix-socket backend; this HTTP/CLI bridge still connects to its own existing workbench backend. Do not mix backend IDs or source handles between them. The agent skill prefers available native MCP tools and directly typed common calculations. See [MCP setup](mcp.md).
+
 **25 November:** a separate local [MCP adapter](mcp.md) is now available without this HTTP/CLI bridge or a skill. Existing CLI/skill commands still use their configured persistent HTTP backend. Do not mix handles or reset allowances between independently running processes.
 
 **24 November finance extension:** catalog now has 13 retrieval operations, 15 local calculations and nine company workflows. Use `finance.company_data_readiness` and `money_unit: "auto"` to inspect support. See [finance data support](design/finance-data-support.md). Old evaluation bundles remain frozen.

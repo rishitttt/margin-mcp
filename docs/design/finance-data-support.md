@@ -3,7 +3,7 @@
 Reviewed 24 November 2026. This is the finance capability decision and data-requirements
 map; [financial analysis](../financial-analysis.md) owns usage and [implementation status](../implementation.md)
 owns measured checks. The active scope uses BharatStock REST and Drishti MCP, with no
-maintained corpus, Margin-side LLM or downstream Margin MCP server.
+maintained corpus or Margin-side LLM. Margin now has standalone/shared local MCP adapters; see [current MCP setup](../mcp.md).
 
 ## What a finance MCP should provide
 

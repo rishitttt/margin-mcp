@@ -1,197 +1,207 @@
 # Run Margin as a local MCP server
 
-Implemented **25 November 2026**, current package **0.3.3**. The stdio adapter exposes 14 workflow
-tools over the same core used by the workbench and CLI. It makes 37 retrieval/finance
-functions and ten local review functions discoverable. The web server and skill are not
-required for MCP use. [Architecture](design/mcp-aggregation.md) records the plan published
-before implementation; [function validation](reference/function-validation.md) and
-[finance support](design/finance-data-support.md) describe actual data limits.
+Current release **0.4.0**, 25 November 2026. Twenty MCP tools expose the existing
+37 retrieval/finance and ten review functions. Six common calculations now have directly
+advertised strict schemas. The core, CLI and workbench remain available independently.
+The [architecture](design/mcp-aggregation.md) owns the plan published before this change;
+[implementation](implementation.md) owns evidence and limitations.
 
-## Install and launch
+## Install
 
-From the checkout, install into your Python >=3.12 environment:
+Python >=3.12. Install the versioned wheel into a dedicated environment, or install the
+checkout for development with `.venv/bin/python -m pip install -c requirements-dev.lock -e .`.
+Console commands are `margin-mcp`, `margin-backend`, and the existing `margin-agent` and
+optional `margin-workbench`. No new package dependency is required for shared mode.
+The package is not yet published to PyPI; use the local wheel or checkout.
+
+A stdio process waits for protocol messages, not typed company questions. Configure an
+MCP host to launch it. Stdout is reserved for JSON-RPC; diagnostics use stderr. The web
+interface and skill are not prerequisites. No provider is connected at discovery/startup.
+
+## Choose the state owner
+
+| Mode | Configuration | State lifetime |
+| --- | --- | --- |
+| Standalone | `margin-mcp --mode synthetic` or explicit live credentials | One stdio process; a host restart loses its plans/results/counters |
+| Shared, recommended for LM Studio | Explicitly start `margin-backend`; frontend uses `--backend-socket` | Backend survives frontend/new-chat restarts; existing TTL/memory limits apply |
+
+Shared mode is **local single-user macOS/Linux Unix IPC**, not a hosted HTTP service or
+protocol-level session store. Standalone remains available on other systems; clean
+cross-platform installation is still a separate release gate. Backend and frontends must
+run the same package version and OS user. No automatic backend start/restart/retry occurs.
+
+## Shared backend: start once
+
+Choose an absolute socket path below 100 encoded bytes in a private directory. A missing
+target directory is created 0700; an existing directory must already be owned by you and
+0700. Socket permissions are 0600. Do not point the socket path at a regular file.
+
+Example, after deciding a fresh **remaining test allowance**, not an account balance:
 
 ```sh
-.venv/bin/python -m pip install -c requirements-dev.lock -e .
-.venv/bin/python -m margin.interfaces.mcp --mode synthetic
-# Equivalent installed console entry point:
-.venv/bin/margin-mcp --mode synthetic
+MARGIN_BHARATSTOCK_REQUESTS=1 \
+MARGIN_DRISHTI_REQUESTS=12 \
+MARGIN_DRISHTI_CREDITS=4 \
+MARGIN_ENABLE_OPERATIONS=bharatstock.get_financials,drishti.get_news \
+/absolute/venv/bin/margin-backend \
+  --socket /absolute/private-dir/core.sock \
+  --mode live \
+  --credentials-file /absolute/private/providers.env \
+  --record-dir /absolute/private/logs
 ```
 
-The process waits for JSON-RPC on stdin; it is not a terminal chat or a website. Add it to
-your MCP host instead of typing company questions into that terminal. Stdout is protocol
-only; a short startup/mode message goes to stderr. Closing the host/stdio connection
-closes the core and provider tasks. No data is fetched at startup, discovery or preview.
+Keep that process running. It alone loads provider credentials, owns HTTP clients and
+Drishti lifecycle, and records sanitized tool calls. The credential file is parsed as
+data, supplies provider keys only and is not automatically loaded. Configure mode and
+budgets through the explicit flags/environment. No keys belong in tool arguments or Git.
+For a first offline check use `--mode synthetic` and omit the credential file; resulting
+companies/values are fictional and cannot answer real-company questions.
 
-Synthetic mode contains fictional software examples. It can test integration without
-keys but cannot answer a real-company question. Live mode uses actual providers and the
-existing process limits. Export provider keys locally or explicitly supply an ignored
-provider env file:
+Use these operator commands to inspect/stop it; neither makes a provider request:
 
 ```sh
-.venv/bin/python -m margin.interfaces.mcp --mode live --credentials-file .env
+/absolute/venv/bin/margin-backend --socket /absolute/private-dir/core.sock --status
+/absolute/venv/bin/margin-backend --socket /absolute/private-dir/core.sock --stop
 ```
 
-The credential file is parsed as data; no shell code is executed. It supplies provider
-keys only. Set mode, allowances and enabled operations explicitly in the environment or
-host config. There is no automatic `.env` loading. Avoid keys in tool arguments, URLs,
-logs, source or config committed to Git. There is no public remote server or HTTP port.
+Stopping the backend cancels work/shuts upstream clients and loses in-memory state.
+Dispatched requests may already be billed. Reconcile allowance before a later restart;
+this is not durable daily/account-wide quota enforcement. A lock prevents two cooperative
+backends owning the same address. A stale socket may be removed only after acquiring that
+lock and establishing no active listener; unrelated files are never overwritten.
 
-## Host-neutral configuration
+## LM Studio / host configuration
 
-Adapt this common `mcpServers` form to your host's configuration UI/format. Use absolute
-paths; a GUI host may not inherit your shell's virtual-environment PATH. Hosts supporting
-stdio can launch this process; browser-only remote connectors need a later HTTP transport.
+Adapt this `mcpServers` form in the host's config editor. In LM Studio use Program >
+Install > Edit mcp.json. Launch the frontend with absolute paths:
 
 ```json
 {
   "mcpServers": {
     "margin": {
-      "command": "/absolute/path/to/margin-mcp/.venv/bin/python",
+      "command": "/absolute/venv/bin/margin-mcp",
       "args": [
-        "-m", "margin.interfaces.mcp", "--mode", "live",
-        "--credentials-file", "/absolute/path/to/margin-mcp/.env"
-      ],
-      "env": {
-        "MARGIN_BHARATSTOCK_REQUESTS": "2",
-        "MARGIN_DRISHTI_REQUESTS": "12",
-        "MARGIN_DRISHTI_CREDITS": "4",
-        "MARGIN_ENABLE_OPERATIONS": "bharatstock.get_financials,drishti.get_news"
-      }
+        "--backend-socket", "/absolute/private-dir/core.sock",
+        "--mode", "live"
+      ]
     }
   }
 }
 ```
 
-These are example **process ceilings**, not measured account balances or permission to
-reset consumed quota. Choose a fresh bounded allowance for your experiment. Key access
-does not remove operation opt-ins or changed/expired-schema holds. Drishti metadata must
-be explicitly connected before its data operations; no npm install is needed.
+Credentials, allowances and `--record-dir` belong on the **backend**, not this frontend.
+The frontend's `--mode` is an optional expectation check; a mismatch fails closed.
+Configuring backend credentials or recording on the proxy is rejected. Frontend disconnect
+or cancellation does not close the backend or cancel an already submitted run. Use the
+explicit cancellation tool to cancel a run. Shared mode retains one identity across
+frontends; restarting the backend invalidates old handles rather than reusing them.
 
-For an offline first connection use `--mode synthetic`, omit the credential-file args
-and keep the limits small. The host should see 14 tools named `margin_*` and server
-version 0.3.3. No host registration/settings were changed automatically by the build.
+For the local mtest setup the socket is `/Users/rishit/Desktop/mtest/shared/core.sock` and
+the executable is `/Users/rishit/Desktop/mtest/.venv/bin/margin-mcp`. After a wheel upgrade,
+restart the backend deliberately and reconnect the host; never silently replenish spent
+allowances. The existing `.env` and logs remain private, outside the package.
 
-## Tools and normal flow
+## Tools and financial output
 
-| Tool | Use |
+The original workflow tools remain: `margin_status`, `margin_catalog`, `margin_preview`,
+`margin_company_preview`, `margin_run`, `margin_run_status`, `margin_result`,
+`margin_sources`, `margin_facts`, `margin_calculate`, `margin_cancel`,
+`margin_connect_drishti`, `margin_review`, `margin_review_sources`.
+
+Six **direct** tools take the financial fields at the top level, without a `function`
+selector or nested `arguments` wrapper. Their JSON Schemas are advertised in tools/list:
+
+| Tool | Core function / inputs |
 | --- | --- |
-| `margin_status` | Read mode, process/session ID, provider readiness, local ledger and recording status |
-| `margin_catalog` | Summaries or exact schemas; groups `retrieval`, `calculations`, `company`, `review` or `all` |
-| `margin_preview` | Validate one to eight whitelisted retrieval/calculation operations without executing |
-| `margin_company_preview` | Preview company calculation/source reuse or one explicitly allowed financial request |
-| `margin_run` | Submit a plan using its session ID and idempotency key; optional 0–30 second wait |
-| `margin_run_status` | Inspect/wait without starting extra work |
-| `margin_result` | Read one retained operation's payload, receipt and limitations; never refetch |
-| `margin_sources` | Retained financial-source handles |
-| `margin_facts` | Prepare typed facts using `auto`, explicit units or unknown/null |
-| `margin_calculate` | Execute one explicit-input deterministic calculation without data calls |
-| `margin_cancel` | Explicit run cancellation, preserving already dispatched/uncertain accounting |
-| `margin_connect_drishti` | Explicit metadata connection/refresh; requires current process ID and HTTP allowance |
-| `margin_review` | Local citation/sentiment functions, schemas discovered through catalog |
-| `margin_review_sources` | Import retained news text; no browsing or source fetch |
+| `margin_calculate_margins` | `finance.calculate_margins`: profit and revenue facts |
+| `margin_convert_units` | `facts.convert_units`: value fact and target_unit |
+| `margin_compare_periods` | `finance.compare_periods`: previous and current facts |
+| `margin_calculate_cashflow_metrics` | `finance.calculate_cashflow_metrics`: cfo and capex facts |
+| `margin_calculate_profitability` | `finance.calculate_profitability`: facts array |
+| `margin_calculate_balance_sheet_metrics` | `finance.calculate_balance_sheet_metrics`: facts array |
 
-Start with `margin_status`. Then request exact schemas, for example:
+Catalog entries identify their actual `mcp_execution` route. Use exact schema lookup for
+other functions. Catalog identifiers such as `finance.calculate_margins` are not tool
+names and must not be renamed heuristically. Generic `margin_calculate` remains supported
+for all fifteen functions, with its original `function` + `arguments` shape.
 
-```json
-{"group":"company","name":"finance.company_data_readiness","include_schemas":true}
-```
+Financial results now include `financial_view` alongside the unchanged raw payload.
+It deterministically converts reviewed statement fields/segments from INR to INR crore,
+keeps EPS in INR/share, names operating profit/PBT/EBITDA separately and shows exact
+values, rounded displays, raw values, source paths, basis and dates. The view covers at
+most eight rows and twenty entries per segment array, with omission counts. It is a
+selected view, not a claim that all financial data/periods were returned. Read its labels
+and display strings; do not scale a formatted crore amount again. Null is not zero.
+The continuing/total-profit warning and financial scope guards remain. Formatting or
+schema validation does not independently authenticate issuer figures.
 
-Pass this to `margin_company_preview` for a real listing only in live mode:
+`margin_facts` prepares retained typed inputs with `auto` documented units; direct
+`margin_convert_units` performs explicit further conversion. Company workflows default
+to `fetch_missing: false`; explicit true may preview one missing financials dependency.
+Pure calculations never fetch. Use company readiness before assuming a metric is
+supported. Preserve starts/ends, stocks versus flows, units, basis and profit definitions;
+missing/incompatible facts produce valid incomplete/partial outcomes, not fabricated data.
+DCF continues to require explicit forecasts/assumptions. See [financial analysis](financial-analysis.md).
 
-```json
-{"function":"finance.company_data_readiness","ticker":"HINDUNILVR","exchange":"NSE","period_type":"annual","money_unit":"auto","fetch_missing":true,"why":"Inspect which annual financial calculations the returned fields support."}
-```
+## Normal workflow and guards
 
-Inspect the preview's operations and estimated costs. Run only wanted data work using
-the returned `session_id`, `data.plan_id` and a new 8–100 character idempotency key.
-Read the run's operation IDs, then call `margin_result`. Reusing the same plan/key returns
-the same run. After an ambiguous response, use that same key or inspect status; do not
-create another submission to force a retry. Old process IDs are rejected after restart.
+Start with status. Preview an explicit bounded operation or company workflow, inspect its
+costs/holds, then submit with the returned session ID, plan ID and one idempotency key.
+Repeat a lost submission only with the SAME plan/key. Plans expire after ten minutes;
+results are TTL/eviction bounded (default thirty minutes, five retained runs, twenty MiB).
+After an unknown/expired source, stop; never silently fetch a replacement. Shared mode
+preserves these handles across frontend restarts only while that backend and retention
+remain valid. Read result payloads explicitly; a run summary is not a result.
 
-Company workflows default to `fetch_missing: false`; explicit true allows one financials
-request only when a matching retained source is absent. Missing fields in an existing
-source do not trigger replacement calls or extra pages. `margin_calculate` never fills
-inputs automatically. Use [financial analysis](financial-analysis.md) for units, stock/flow
-separation, eligible TTM periods, continuing-profit scope and explicit-input valuation.
+Tool results include mode, contract version, backend/process session ID and per-call ID,
+matching JSON text and structured JSON. Valid partial/incomplete results are not necessarily
+MCP errors. Unknown tools are protocol errors. Schema feedback is bounded, identifies
+allowed/missing fields and does not echo caller values or arbitrary keys. Input is capped
+at 64 KiB. Private local RPC has bounded framing and up to sixteen simultaneous handlers;
+failed/lost replies never trigger automatic replay. No public listener or multi-user
+authorization service is introduced. Known credentials are rejected/redacted by the core.
 
-Citation/sentiment workflows are reached through `margin_review`; invoke
-`protocols.list_workflows` with empty arguments for the process, then inspect exact
-review schemas. Host passages/judgments remain attributed. Quote matches and numerical
-checks do not authenticate a website or original filing; unsupported hosts retain an
-unreviewed/incomplete result rather than receiving hidden Margin-side model inference.
+Drishti connection/metadata refresh is explicit and counts HTTP allowance. Its schema
+presence does not establish live entitlement. Neither a backend restart nor a zero-credit
+estimate proves upstream quota was restored or a BharatStock request is free.
 
-## Results, errors and cancellation
+## Recording and review handoffs
 
-Each call returns matching JSON text and structured JSON with `contract_version`,
-`session_id`, `call_id`, `mode`, `tool` and `data` or a safe `error`. Optional submitted
-`why` appears as `decision_summary`. Preserve nested provider payloads, source paths,
-units, bases, dates, warnings and receipts. A local calculation's `partial`, `incomplete`
-or `not_meaningful` is a valid domain result, not necessarily MCP `isError=true`.
+Logging is off by default. Use backend `--record-dir` for shared mode; one unique private
+JSONL is created per backend lifetime, spanning frontend sessions. Standalone also supports
+`--record-dir`, or legacy `--record-file NEW_PATH` with no overwrite. New directories are
+0700 and files 0600. No automatic pruning is enabled; keep licensed traces private and
+apply the applicable retention policy. The 64-MiB log bound stops another dispatch when
+full. Pre-write failure prevents dispatch; post-action failure returns the available
+result with a warning, never a hidden retry.
 
-Tool/schema/access failures return `isError=true` with a stable domain code; raw provider
-exceptions and headers are withheld. Inputs are bounded to 64 KiB, outputs are bounded,
-and known credentials are rejected/redacted. Available schemas do not prove live product
-entitlement or financial truth. Tool annotations are hints, not authorization controls.
+Every tool accepts a one-line `why` self-report. Logs capture sanitized requests/results
+and call IDs, not final prose, host conversations or hidden reasoning. Citation/sentiment
+semantics remain host assessments through `margin_review`; workflow discovery is local.
+Margin runs no LLM and cannot invoke other host tools merely because they are installed.
 
-Run/status waits are bounded to 30 seconds. Cancelling that waiter leaves an already
-submitted core run active and recoverable by its existing key/ID. Use `margin_cancel`
-to cancel the run itself. A cancelled upstream request may already have been billed;
-there is no refund or automatic-retry claim. Results expire/evict without refetch.
-
-## Optional decision and observation logs
-
-Every tool accepts an optional `why`: one visible line of 1–280 characters. This is a
-self-reported explanation, not internal reasoning or evidence of a faithful explanation.
-For experiments, ask the model to include it and configure a recording directory.
-Version 0.3.3 creates a unique timestamp/UUID JSONL file on each server launch, including
-when a host restarts the process for a new chat:
-
-```sh
-.venv/bin/python -m margin.interfaces.mcp --mode synthetic \
-  --record-dir reports/private/my-mcp-run
-```
-
-The directory is created if absent (0700 for a newly created target directory). Files
-are created 0600 and never overwritten; default logging is off. There is no automatic
-log pruning or aggregation across processes. The alternative `--record-file NEW_PATH`
-still requires an existing parent directory and a previously unused filename. These
-options are mutually exclusive. Prefer `--record-dir` in persistent host configuration
-so repeated launches do not require editing filenames. JSONL request/response events include a monotonically increasing sequence,
-process/call IDs, sanitized arguments/results, mode and timestamp. `call_id` in tool output
-links to those events. Logs can contain licensed source text and must stay private.
-The 64-MiB process-log bound fails before another dispatch when reached. Pre-action write
-failure stops dispatch; a post-action failure returns the existing result with a warning,
-not a hidden retry. Optional logs are not complete host conversations, hidden reasoning,
-a frozen-data replay engine or an independent benchmark. The old skill/pilot logger stays
-separate. Do not compare old and new task versions without freezing their contracts.
-
-## Validation and remaining gates
+## Validation and limitations
 
 ```sh
 .venv/bin/pytest -q
-.venv/bin/python scripts/smoke_mcp.py --output reports/private/my-mcp-smoke
+.venv/bin/python scripts/smoke_mcp.py --output reports/private/new-standalone-check
+.venv/bin/python scripts/smoke_mcp_shared.py --package-root src --output reports/private/new-shared-check
 ```
 
-The smoke runner uses actual SDK stdio messages but **fictional company data**. It refuses
-non-synthetic results, exercises all 14 tools, records 27 calls/54 sanitized events, and
-checks discovery, preview/run, idempotency, finance, source import and citation/sentiment
-handoffs. Its counters are simulated and must not be reported as provider usage.
+Unix-socket tests require local socket-binding permission; the test fixtures prohibit
+external TCP/provider requests. The standalone runner exercises all twenty tools in 33
+calls/66 events using fictional data. The shared runner exercises three separate frontends,
+retained results/facts and duplicate submission without duplicate dispatch. Saved real HUL
+responses are checked separately without fetching again. These are software/transport
+checks, not proof of model answer accuracy. The latest-revision protocol conformance,
+clean cross-platform installs, larger-model comparisons, source accuracy and remote hosting
+remain separate release gates. Existing SDK acceptance negotiated 2025-11-25; do not
+infer 2026-07-28 conformance. [Distribution evaluation](design/mcp-aggregation.md#distribution-and-live-release-evaluation-25-november).
 
-Source and isolated-wheel stdio acceptance passed with protocol 2025-11-25. The wheel was
-installed into a separate target and launched outside the checkout using existing pinned
-dependencies. This is not a clean dependency install on all operating systems or a model
-reasoning evaluation. No authenticated provider/model request was used to build/test this
-adapter. Existing real core tests remain separately documented. A fresh-chat model-host
-trial, a separately budgeted live MCP pass and cross-model benchmarking are next steps;
-the professor's evaluation harness remains independent of product installation.
+## Historical host-debug observations
 
-The [25 November distribution/release evaluation](design/mcp-aggregation.md#distribution-and-live-release-evaluation-25-november)
-separates local package publication, optional MCPB/registry discovery and later HTTP
-hosting. It also records the untested 2026-07-28 protocol path, protocol-error repair,
-clean-install/host acceptance gates and provider-rights questions. Current SDK acceptance
-is not a claim of latest-revision conformance or readiness for multi-user hosting.
-
+The dated notes below describe earlier releases. Their fixed-file, fourteen-tool and
+standalone state constraints are superseded by the current setup above where noted.
 
 ## LM Studio catalog-routing repair: 0.3.1
 
