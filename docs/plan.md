@@ -1,5 +1,7 @@
 # Margin build and evaluation plan
 
+**25 November MCP implementation plan:** core checkpoint `6b22f57` was pushed after 194 tests and a source/private-data review. The user authorizes the local stdio MCP alpha. [MCP architecture and acceptance](design/mcp-aggregation.md) now owns the 14-tool mapping, lifespan, state/budget/logging boundaries and sequence. This planning revision precedes runtime implementation; no provider/model requests are planned for initial protocol checks.
+
 ## Active repair pass: 24 November 2026
 
 **Completed core pass:** documented units, normal-quarter eligibility, continuing-profit guards, eight additional finance interfaces, reviewed summary announcements and tests are delivered. See [implementation](implementation.md), [current function matrix](reference/function-validation.md) and [finance decisions](design/finance-data-support.md). Missing quarterly CFO/capex, automatic forecasts and full original-source validation remain limits. The numbered plan below records the agreed implementation sequence.
