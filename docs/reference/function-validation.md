@@ -1,5 +1,13 @@
 # Function validation status
 
+**26 November 0.7.0 user-led acceptance:** typed announcement preview, one actual
+INFY summary execution/result/import and the intentional generic missing-query error
+all pass. Same-session read-only status confirms B0/D6 HTTP and one estimated credit
+used out of one allocated; 12 is an HTTP limit, not credits. No measured account debit,
+original document authentication or model citation/sentiment completion. Private user
+events and separate operator status are preserved; no runtime patch or extra fetch.
+See [current validation](../implementation.md).
+
 **0.7.0 typed preview checkpoint:** four event preview tools project reviewed
 Registry contracts and call the same planner. 360 offline tests pass: direct/generic
 plan equivalence, zero-fetch previews, strict nesting/field diagnostics, extraction/

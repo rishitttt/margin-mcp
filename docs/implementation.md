@@ -1,5 +1,38 @@
 # Implementation and validation status
 
+## User-led 0.7.0 retrieval acceptance: 26 November 2026 IST
+
+Recorded user calls confirm package_version 0.7.0, successful metadata connection,
+typed announcement preview, explicit execution with the preview's actual session/
+plan/key, successful result read, source import and the expected malformed generic
+preview rejection. Seven user calls/14 events: six successful responses and one
+deliberate invalid_input identifying missing query/allowed fields. Generic rejection
+is the expected negative test, not an upstream error. Typed input was wrapped into
+arguments.query by Margin; extraction remained false.
+
+One INFY summary announcement was returned/imported as retained_provider with unknown
+publication timing, original unverified and requires_resolution=true retained. The
+source is supplied summary text, not downloaded PDF contents. Read-only operator MCP
+status confirms same session c527a681dc9d4e28b2b2483be3deac73, B0/D6 HTTP so far,
+one Drishti logical/data call and one completed estimated credit out of one allocated.
+The other five HTTP attempts are metadata/lifecycle overhead; final cleanup is not
+included while the backend remains active. No account balance/debit was remeasured.
+
+Model prose incorrectly called 12 available credits: it is the HTTP limit; estimated
+credit allowance is one and is now spent. Preview made no data call, but the preceding
+connect did make HTTP attempts. The negative test's suggested symbols-only query would
+still need the core's required discovery window/page/limit. These are reporting limits,
+not evidence of another runtime defect. No patch/reinstall/restart/refetch is needed.
+
+Private user capture/review is reports/private/lmstudio-070-live-2026-11-26/. The single
+operator status request is saved separately from the original 14 user events. Visible
+why summaries are present on preview/run/result/import/negative-test calls, absent on
+the user's status/connect calls; no hidden reasoning or final prose is recorded. Host
+model identity/context are not established by these logs. This is guided retrieval
+acceptance, not a benchmark or completed citation/sentiment model test. Next: local
+review of the same source without another connect/data call; source/packet TTL still
+applies. Operator made zero provider/model API calls and changed no runtime or budgets.
+
 ## Typed event previews and schema feedback: 25 November 2026, 0.7.0
 
 Evaluated plan `df45376` preceded runtime edits. Four generated typed previews add

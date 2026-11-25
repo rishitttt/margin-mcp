@@ -1,5 +1,15 @@
 # Project context and handoff
 
+**26 November active 0.7.0:** user upgraded/restarted. Typed INFY announcement preview,
+one explicit successful execution/result/import and deliberate generic nesting error
+pass in recorded calls. Session c527a681dc9d4e28b2b2483be3deac73, B0/D6 HTTP, estimated
+credit allowance one/used one; no further data fetch or restart needed. Provider summary
+remains unverified, unknown publication, protected locator. Correct model prose: 12 is
+HTTP limit, not credits. Next is local citation/sentiment using the same source within
+its TTL, no metadata refresh or provider calls. User events/operator status are separate
+private captures; model/context identity and semantic-host completion remain unknown.
+Older active-0.6.2 notes below are dated history.
+
 **Latest source 0.7.0:** plan df45376 preceded four typed event previews, bounded
 retrieval diagnostics and MCP status.package_version. 25 tools; underlying operations
 unchanged. Exact typed input is host-advertised tools/list schema; generic calls must

@@ -1,5 +1,15 @@
 # Working on Margin
 
+**26 November user-led 0.7.0 acceptance:** active backend is now 0.7.0, same session
+c527a681dc9d4e28b2b2483be3deac73. Typed announcement preview, one INFY data execution/
+result/import and expected generic missing-query error passed. Current B0/D6 HTTP,
+one estimated credit used out of one allocated; 12 is HTTP allowance, not credits.
+Preserve private lmstudio-070-live evidence; operator status is separate from user
+events. No new runtime defect, reinstall, restart, data call or quota reset is needed.
+Next is local citation/sentiment within source TTL, without metadata refresh/fetch.
+Host/model/context identity and semantic completion remain unverified. Older active-
+0.6.2 notes below describe prior checkpoints; no new provider call is authorized here.
+
 **0.7.0 implementation checkpoint:** plan df45376 preceded four generated typed
 Drishti event previews (25 MCP tools), bounded retrieval diagnostics and explicit
 MCP status.package_version. Generic operation schemas/routes remain compatible;

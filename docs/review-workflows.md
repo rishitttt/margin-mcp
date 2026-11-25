@@ -78,8 +78,8 @@ available on successful announcement, earnings-list and earnings-detail cards in
 ## Small-model acceptance after activation
 
 Use a deliberately version-matched 0.7.0 backend/frontend with an explicitly
-reconciled Drishti allowance. The active finance backend has Drishti zero; do not
-reset/restart it just to bypass that condition. Installing a wheel alone does not
+reconciled Drishti allowance. Historical finance-only profiles have Drishti zero; do not
+reset/restart an active process just to bypass that condition. Installing a wheel alone does not
 update a running process. Existing keys were sufficient for the measured live pass.
 
 Test one source first, in a new chat. Discover one exact review schema at a time;
@@ -113,7 +113,15 @@ an acceptance target, and Margin supplies no hidden fallback model.
 Save tool events and the final answer separately. Why summaries are self-reports,
 not hidden reasoning. Check quote/claim attribution, protected URLs, date/relevance,
 aggregate denominator and actual provider attempts. Operator acceptance exercised
-these paths with real saved text; a particular LM Studio model remains untested.
+these paths with real saved text. The 26 November user-led typed retrieval/import and
+negative error test passed; model citation/sentiment completion remains untested.
+
+The current guided run spent its one estimated data credit; 12 is HTTP allowance,
+not credits. Continue citation/sentiment locally using the imported summary; neither
+requires a fresh Drishti connection or resolving the protected attachment. If a source
+expires, stop without fetching or resetting allowance. Already returned text/actual
+locators can be deliberately registered as host-supplied evidence, preserving unknown
+publication and unverified origin; do not invent URLs or silently claim retained origin.
 
 ### First 0.6.2 host preview finding
 
