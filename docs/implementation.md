@@ -1,5 +1,58 @@
 # Implementation and validation status
 
+## Drishti-to-review repair: 25 November 2026, 0.6.2
+
+Plan `2c1c91b` preceded one isolated INFY live pass; `78dc2b2` recorded measured
+failures and the repair plan before runtime edits. Existing live 0.6.1 mtest and its
+B1/D0 ledger were not restarted, installed over or given new limits.
+
+All four upstream data operations succeeded: news (two items), summary announcement
+(one, extraction=false), earnings discovery (one), and detail selected from its
+returned ID. Actual **B0/D10 MCP HTTP attempts including lifecycle/cleanup**, four
+logical operations, seven estimated credits; two separate free account GETs observed
+943→936. This is an account-wide delta, not protection against concurrent activity.
+Existing key/access was sufficient; no subscription purchase or additional API key.
+
+The overall initial checker stopped after successful retrieval: earnings detail uses
+`data: object`, causing KeyError in the list-only source importer. Announcement and
+earnings sources were also empty because their attachment URL fields were ignored.
+0.6.2 fixes the four reviewed projections through the same Python/HTTP/CLI/MCP core.
+It preserves summary/locator paths, reported row symbols, unknown publication dates,
+unverified origin and protected-locator flags from the original sanitized receipt.
+Explicit mismatched rows are skipped; unknown operations/shapes stay incomplete.
+No attachment extraction, generic upstream executor, model inference or new tool.
+The workbench exposes the local import action on all four supported result cards.
+
+Saved real responses were reprocessed offline: five source records (two news, one
+announcement, list/detail versions of one filing). Citation round trip exercised
+host-written supported/contradicted/insufficient verdicts, fabricated-quote rejection,
+citation rendering, overclaim audit and inventory-only capability rejection. Sentiment
+excluded all unknown-publication records in published-date mode; deliberate record-date
+mode deduplicated the filing, retained four sources and kept missing/unclear annotations
+outside its balance denominator. Operator labels are not independent gold or a new
+LM Studio/model-host benchmark. No paid refetch occurred after the failure.
+
+Separately, the host searched/read the matching [issuer press release](https://www.infosys.com/newsroom/press-releases/2026/worlds-first-organization-ai-maturity-level5.html)
+and registered a short passage in a reader-enabled packet. Exact quote/citation and
+published-date inclusion passed. The host read the website; Margin performed no web
+request and still labels the semantic assessment host_reported/original unverified.
+The provider phrase about sampling is not a substitute for the issuer's precise scope.
+
+Validation: **342 offline tests pass**, Ruff/format (91 Python files), JavaScript syntax
+and skill validation. Official SDK acceptance passes with 21 tools, 37 calls/74 events
+standalone and four frontends/12 calls/24 events shared, over fictional fixtures only.
+Installed-wheel checks reuse pinned dependencies, not a fresh OS installation. Fixed
+the standalone acceptance helper's relative package-root resolution so an isolated
+wheel check cannot silently fall back to the editable checkout after changing cwd.
+The 0.6.2 wheel/checksum is saved separately from the immutable 0.6.1 artifact.
+Private evidence and packaging checks are under
+`reports/private/drishti-review-2026-11-25/`. Original
+`live/summary.json` remains failed overall; it must not be overwritten by an offline
+success. The new patch is not installed into the user's active environment. Next:
+controlled version-matched activation, one-source small-model review test, then freeze
+a benchmark profile. Concall/search admission and host-enforced final prose remain
+separate future work; no claim of full native Drishti coverage or source authentication.
+
 ## Versioned wheel committed: 25 November 2026
 
 At the user's request, the existing tested 0.6.1 wheel is saved under

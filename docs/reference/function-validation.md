@@ -1,5 +1,25 @@
 # Function validation status
 
+## Drishti/review stage: 25 November 2026, 0.6.2
+
+| Function/path | Current evidence | Remaining limit |
+| --- | --- | --- |
+| drishti.get_news | Fresh INFY two-row success | Multi-company results need host relevance; provider dates are not established publication dates |
+| drishti.get_announcements | Fresh INFY one-row summary success, extraction=false | Attachment is a protected locator, not read text |
+| drishti.list_earnings | Fresh INFY one-row success | Bounded response is not complete filing coverage |
+| drishti.get_earnings_filing | Fresh discovered-ID success | Table accuracy/original authentication not established; this filing's raw/normalized revenue agrees |
+| margin_review_sources | Real saved-response reprocessing of all four shapes passes after object/URL/protection-flag fixes | Zero new fetch; missing/unknown/mismatched sources remain incomplete |
+| evidence.register_sources / prepare_verification / submit_assessment / render_citations / audit_answer | Real-summary host round trip; fabricated quote and verification overclaim rejected/flagged; host-read issuer-page passage also checked | Host judgments, no automatic original authentication or arbitrary final-prose audit |
+| sentiment.prepare_analysis / submit_annotations / aggregate | Real-summary record-date scope, duplicate exclusion, unclear/missing labels and exact balance checked | Retrieved content only; unknown publication dates excluded in published mode |
+| evidence.check_numeric_claim | Existing offline scale/context regression coverage retained | Not re-run against an independent issuer numeric answer in this pass |
+| Drishti symbols / symbol resolution / categories | Earlier evidence retained | Not called in this INFY pass |
+
+All four data calls succeeded; the original overall checker failed during subsequent
+source import. The fixed projection was verified **offline**, not by repeating those
+paid calls. Actual B0/D10 MCP HTTP including cleanup, seven estimated/observed account
+credits, plus two free account GETs. See [implementation](../implementation.md) and
+[test procedure](../api-testing.md). No new model-host completion is claimed.
+
 ## Patched live acceptance: 25 November 2026
 
 HUL's cached all-rows retest now preserves profit, revenue and margin in final prose.

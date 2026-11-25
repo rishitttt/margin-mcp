@@ -23,7 +23,7 @@ async def main(args):
         if not key.startswith("MARGIN_") and key not in {"BHARATSTOCK_API_KEY", "DRISHTI_API_KEY"}
     }
     env.update(
-        PYTHONPATH=str(args.package_root or root / "src"),
+        PYTHONPATH=str((args.package_root or root / "src").resolve()),
         MARGIN_BHARATSTOCK_REQUESTS="2",
         MARGIN_DRISHTI_REQUESTS="12",
         MARGIN_DRISHTI_CREDITS="6",
@@ -388,7 +388,7 @@ async def main(args):
         "model_calls": 0,
         "fictional_ledger": final["ledger"],
         "entrypoint": str(args.entrypoint) if args.entrypoint else "source module",
-        "isolated_package_root": str(args.package_root) if args.package_root else None,
+        "isolated_package_root": str(args.package_root.resolve()) if args.package_root else None,
     }
     for name, value in [("observations.json", observations), ("summary.json", summary)]:
         path = args.output / name

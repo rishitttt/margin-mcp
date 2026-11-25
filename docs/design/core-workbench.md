@@ -1,5 +1,12 @@
 # Phase 1: core research services and local workbench
 
+**0.6.2 review-source projection:** ResearchService.import_review_sources supports
+reviewed Drishti news/announcement/earnings list/detail shapes. The evidence helper
+projects supplied summaries and attachment/citation locators; ReviewService validates
+atomic registration and stores per-row provenance with original protected-link flags.
+No PDF reader, fetcher, database or LLM is added. All interfaces share this path;
+see [review contracts](../review-workflows.md) and [current evidence](../implementation.md).
+
 The 0.5.0 core additionally exposes async `ResearchService.company_finance(**arguments)`:
 fresh bounded financials and existing company calculations in one request, without the
 run/source buffers. The new MCP tool calls it directly; legacy workbench/CLI routes

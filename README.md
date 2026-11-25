@@ -1,5 +1,14 @@
 # Margin
 
+**Current source release: 0.6.2 (25 November).** Fresh INFY Drishti news, announcement
+and earnings list/detail calls passed. The review importer now handles all four shapes
+and preserves protected links, row identity and source limitations. Citation/sentiment
+checks over saved real responses passed; judgments come from the host, without a
+Margin LLM. [Status/evidence](docs/implementation.md), [next host test](docs/review-workflows.md#small-model-acceptance-after-activation),
+[0.6.2 wheel](releases/0.6.2/margin_research-0.6.2-py3-none-any.whl),
+[checksum](releases/0.6.2/SHA256SUMS). The active user's 0.6.1 instance is unchanged.
+Older dated release notes below are historical.
+
 The tested **0.6.1 wheel is committed in Git**: [download/install wheel](releases/0.6.1/margin_research-0.6.1-py3-none-any.whl), [SHA-256 checksum](releases/0.6.1/SHA256SUMS). See [installation](docs/mcp.md#install) for verification and setup. Provider keys are supplied separately; installing the artifact does not change an already-running backend.
 
 **25 November release 0.6.1:** fixes formula metadata for calculated report rows, including absolute versus percentage change and CAGR's years input. Numeric math/units and the rows-only contract are unchanged. See [validation and live findings](docs/implementation.md) and [MCP usage](docs/mcp.md). The user subsequently activated 0.6.1 and confirmed live formula outputs; see validation for remaining model raw-unit reporting limits. Earlier release checkpoints below are historical.
@@ -10,7 +19,7 @@ The tested **0.6.1 wheel is committed in Git**: [download/install wheel](release
 
 **25 November release 0.4.0:** financial results now include deterministic crore/EPS displays, metric labels and scope warnings. Six common financial functions have direct strict MCP schemas (twenty tools total). An optional explicitly started local Unix-socket backend retains plans, results and quotas across LM Studio frontend restarts. Standalone mode remains available. Read [current setup](docs/mcp.md) and [architecture](docs/design/mcp-aggregation.md). No new authenticated data/model calls were used to implement this release; earlier dated checkpoints below are historical.
 
-**25 November recording patch (0.3.3):** `--record-dir` generates a unique private log per server launch, avoiding LM Studio new-chat startup collisions. Existing logs remain unchanged; `--record-file` retains its no-overwrite behavior. [Recording setup](docs/mcp.md#optional-decision-and-observation-logs).
+**25 November recording patch (0.3.3):** `--record-dir` generates a unique private log per server launch, avoiding LM Studio new-chat startup collisions. Existing logs remain unchanged; `--record-file` retains its no-overwrite behavior. [Recording setup](docs/mcp.md#recording-and-review-handoffs).
 
 **25 November schema-feedback patch (0.3.2):** the second Qwen trial reached calculations but added an unsupported input flag. Exact catalog/runtime schemas agree. Bounded validation errors now identify locations and allowed/missing fields, preserving strict financial guards. See [input diagnostics](docs/mcp.md#financial-input-diagnostics-032).
 
@@ -24,7 +33,7 @@ The tested **0.6.1 wheel is committed in Git**: [download/install wheel](release
 
 **24 November build plan:** finish retrieval/finance validation, add capability-aware citation and content-sentiment workflows, package the stable core as MCP, and evaluate it through a separate cross-model harness with simple decision trails. See the [active plan](docs/plan.md). These additions are planned; the delivered runtime remains the core/workbench/CLI/skill described below. Older dated deferrals are superseded.
 
-A Python research core for Indian financial data, integrating **BharatStock REST + Drishti MCP**. Build and test the core through a temporary local browser workbench first; add Margin's own MCP interface later.
+A Python research core for Indian financial data, integrating **BharatStock REST + Drishti MCP**, with its own local stdio MCP interface, Python/CLI access and a temporary browser workbench.
 
 **16 November agent interface:** reusable Python modules now also have a `margin-agent` JSON CLI and installed Codex skill, sharing the local backend without opening the browser. See [agent setup](docs/agent-interface.md). An optional private pilot recorder is separate from normal usage; frozen replay, independent grading and Margin's own MCP server remain unimplemented.
 
@@ -32,7 +41,12 @@ The [portable local test bundle](docs/portable-agent-bundle.md) adds relocatable
 
 ## Current state
 
-`main` now has an installable Python core, BharatStock REST and Drishti MCP adapters, and a temporary local browser workbench. Synthetic mode is the default: fictional companies and data, no provider network. The adapters passed offline integration tests. The user’s 21 October page-export evidence shows a successful eight-call RELIANCE run: snapshot, quarterly/annual financials, ratios and EOD prices through BharatStock, plus Drishti news, announcements and earnings discovery. Broader coverage, actual credit reconciliation, source accuracy and several live presentation paths remain pending. Margin's own MCP server is deferred.
+`main` has an installable core, two upstream adapters, 21 local MCP tools, deterministic
+finance and ten citation/content-sentiment review functions. Synthetic mode defaults
+to fictional software fixtures. Explicit live checks and user-led finance tests are
+documented separately from offline transport tests. Broad issuer accuracy, source
+authentication and cross-model benchmarking remain unverified. Current implementation
+status supersedes the historical milestones below.
 
 The earlier corpus/PDF implementation is preserved on the pushed [`d1` branch](https://github.com/rishitttt/margin-mcp/tree/d1) at `c77963d`. Old corpus commands do not apply to this runtime.
 

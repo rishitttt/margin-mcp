@@ -72,6 +72,11 @@ units, periods, consolidation, continuing/total-profit scope and source caveats.
 explicit assumptions. Citation/sentiment semantics come from the host, not a Margin LLM;
 supplied quotes and provider extracts are not authenticated originals. Optional why is a
 brief visible tool-choice explanation, not hidden reasoning. Logging is opt-in and private.
+For review material, margin_review_sources imports successful retained Drishti news,
+announcements and earnings summaries/locators. It does not read attachments. Inspect
+reported symbols and relevance in multi-company text; unknown publication dates stay
+unknown. Host-read originals can be registered through margin_review. Obtain only the
+needed review schema and retain the packet ID/hash; no automatic provider refetch.
 """
 
 

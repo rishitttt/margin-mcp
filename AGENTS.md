@@ -1,5 +1,17 @@
 # Working on Margin
 
+**25 November 0.6.2 delivered:** bounded INFY Drishti pass used B0/D10 MCP HTTP,
+seven credits and two separate free account checks. All four data calls succeeded;
+the original overall checker failed after fetching at source import. Preserve that
+capture. Source projection now handles news/announcement/list/detail, protects row
+identity, bounds reported symbols and carries sanitized locator protection forward.
+Saved real citation/sentiment and host-read issuer-page handoffs passed; assessments
+are host reports, not independent gold or an LM Studio benchmark. 342 offline tests,
+SDK/wheel/skill checks own software evidence. Active mtest remains 0.6.1/B1 spent/D0;
+do not upgrade/restart/reset it automatically. No further authenticated calls in this
+repair. Read implementation and review-workflows for activation/next host test; source
+and 0.6.2 versioned wheel are separate from 0.6.1's immutable artifact.
+
 **25 November Drishti/review stage authorized:** the user asked to proceed with the
 remaining work. Follow the new bounded pass in docs/api-testing.md before calls or
 runtime edits. Use an isolated service: BharatStock zero, Drishti at most 16 MCP HTTP

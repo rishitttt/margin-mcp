@@ -1,5 +1,17 @@
 # Margin: quick handoff
 
+**Latest, 25 November: 0.6.2 source/review patch.** Fresh INFY Drishti news,
+announcement and earnings list/detail succeeded (B0/D10 HTTP, seven credits).
+Fixed source import for single-record earnings and attachment links; summaries,
+row symbols/paths, unknown dates and protected-link state are preserved. Real saved
+response citation/sentiment checks and a host-read issuer-page handoff pass. No LLM
+runs inside Margin. See [current status](docs/implementation.md), [function map](docs/reference/function-validation.md)
+and [next host test](docs/review-workflows.md#small-model-acceptance-after-activation).
+The active user's 0.6.1 setup remains untouched; its wheel remains in Git. No paid
+upgrade is required for this small slice. Next: activate a matching patch backend/
+frontend deliberately, test one concise source in LM Studio, then freeze the research
+profile; wider Drishti admission and benchmark runs follow separately.
+
 **Wheel in Git:** the exact tested 0.6.1 artifact and checksum are under
 [`releases/0.6.1/`](releases/0.6.1/). Runtime source matches `36d10b7`; generated dist
 outputs stay ignored. Read [installation](docs/mcp.md#install) for checksum/setup.

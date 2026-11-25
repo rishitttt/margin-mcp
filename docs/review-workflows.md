@@ -1,11 +1,13 @@
 # Citation and sentiment handoffs
 
 Implemented **24 November 2026**, core version 0.2.0, and exposed through Margin's
-MCP since 0.3.0. Current package 0.6.1 retains all ten functions plus Python/HTTP/CLI
+MCP since 0.3.0. Current package 0.6.2 retains all ten functions plus Python/HTTP/CLI
 and the temporary workbench tester. Historical interface statements below are dated;
 [MCP usage](mcp.md) and [implementation](implementation.md) own current setup/evidence.
 The core performs no LLM inference, web search, document download or PDF extraction.
-The user's host supplies passages/judgments or imports just-retained provider news text.
+The user's host supplies passages/judgments or imports just-retained provider summaries.
+Since **0.6.2**, import supports Drishti news, summary announcements, earnings-list
+and single earnings-detail records. Attachment contents are never fetched by import.
 
 ## What is checked, and what is not
 
@@ -26,7 +28,7 @@ For a native MCP host, use `margin_catalog` with group `review` and one function
 plus include_schemas=true, then `margin_review` with that function identifier and its
 arguments. `protocols.list_workflows` is itself a function called through margin_review,
 not a separate callable MCP tool. `margin_review_sources` imports a successful retained
-news result using run_id/operation_id and issuer attribution. Use one shared backend;
+Drishti news/announcement/earnings result using run_id/operation_id and issuer attribution. Use one shared backend;
 do not mix CLI/workbench/MCP handles from different state owners. The fresh numerical
 company-finance response is not a retained news result and cannot use this importer.
 All review actions are local, without provider/model calls. Drishti retrieval/metadata
@@ -64,13 +66,50 @@ HTTP (all POSTs use the existing action nonce/JSON/same-origin protections):
 | --- | --- |
 | GET `/api/protocols` | Ten local function schemas; zero network/inference |
 | POST `/api/protocols/invoke` | Function + arguments object |
-| POST `/api/protocols/import-source` | run_id, operation_id, declared issuer; retained news only |
+| POST `/api/protocols/import-source` | run_id, operation_id, declared issuer; four reviewed Drishti result shapes |
 
 The workbench has an expandable **Citation and sentiment handoffs** JSON tester below
 the retrieval/finance panels. Load functions, inspect a schema, optionally build a template,
 replace placeholder IDs with actual returned IDs, and run the local action. Results stay
 inspectable JSON. Successful news cards also offer an explicit retained-text import action.
-There is no automatic semantic assessment in the UI.
+There is no automatic semantic assessment in the UI. The local import button is also
+available on successful announcement, earnings-list and earnings-detail cards in 0.6.2.
+
+## Small-model acceptance after activation
+
+Use a deliberately version-matched 0.6.2 backend/frontend with an explicitly
+reconciled Drishti allowance. The active finance backend has Drishti zero; do not
+reset/restart it just to bypass that condition. Installing a wheel alone does not
+update a running process. Existing keys were sufficient for the measured live pass.
+
+Test one source first, in a new chat. Discover one exact review schema at a time;
+packets and tool definitions can exceed small context windows. A 4K context is not
+an acceptance target, and Margin supplies no hidden fallback model.
+
+1. **Preview only:** ask the model to inspect status, explicitly connect Drishti if
+   permitted, then preview one INFY summary announcement: query symbols=[INFY],
+   from=2026-11-10, to=2026-11-25, page=1, limit=1,
+   include_extracted_information=false. Stop before margin_run. No BharatStock calls.
+   Give a brief why with each action. Expect metadata HTTP only, no data execution.
+2. **Retrieve/import:** authorize that one plan; use actual session/plan IDs and a
+   stable idempotency key. Read margin_result, then margin_review_sources using its
+   actual run_id/operation_id and issuer=NSE:INFY. Expect supplied summary, source
+   IDs, protected locator state and unknown publication timing; no attachment reading.
+3. **Citation:** use this source for one atomic claim attributed to the summary.
+   Prepare verification, assess against an exact passage quote, submit, render
+   citations and audit the claim manifest. Preserve packet ID/hash and actual source/
+   passage IDs. No further provider calls or independent-original claim. An incapable
+   host returns inventory/not reviewed instead. An altered quote must be rejected.
+4. **Sentiment:** review the same source for Infosys AI positioning, explicitly
+   choosing record_date for the same window because publication timing is unknown.
+   Prepare, quote/annotate in the host, then aggregate. Preserve unclear/missing
+   counts and retrieved-content scope. Published-date mode should exclude the source
+   unless separate publication evidence is supplied. No further provider calls.
+
+Save tool events and the final answer separately. Why summaries are self-reports,
+not hidden reasoning. Check quote/claim attribution, protected URLs, date/relevance,
+aggregate denominator and actual provider attempts. Operator acceptance exercised
+these paths with real saved text; a particular LM Studio model remains untested.
 
 ## Citation round trip
 
@@ -83,7 +122,12 @@ There is no automatic semantic assessment in the UI.
    reviewed source-bearing rows with `retained_provider` origin and run/operation/path
    provenance. Long summaries are bounded at 6,000 characters; provider prose is not an
    original article. Unknown dates remain unknown. Wrong selected issuer filters and
-   expired results fail without fetching. Financial JSON uses `facts`, not this importer.
+   expired results fail without fetching. Announcement/earnings imports use supplied
+   attachment or citation locators with the original requires_resolution flag. They
+   import summary text, not PDF contents or tables. Row paths and reported symbols
+   remain in provenance; a matching multi-company symbol is not a relevance verdict.
+   Unsupported shapes/other-company rows stay incomplete/skipped. Financial JSON uses
+   `facts`, not this importer.
 3. Submit up to eight atomic claims to `evidence.prepare_verification`, each with a unique
    claim_id, exact claim text and allowed source_ids. The packet supplies instructions,
    source snapshots and an actual response schema. Retain its packet_id and packet_hash.

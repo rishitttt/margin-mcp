@@ -1,6 +1,17 @@
 # Project context and handoff
 
-**Next stage proposed, 25 November:** Drishti retrieval/live MCP acceptance, then
+**25 November 0.6.2 Drishti/review delivery:** isolated INFY news, summary announcement,
+earnings list/detail all succeeded, B0/D10 MCP HTTP, seven credits, two separate free
+account checks (943→936). Existing key is sufficient. Initial post-fetch source import
+failed on object-shaped detail and omitted attachment URLs. Four reviewed projections
+are repaired, including row identity/provenance and preserved protected-link status.
+Saved real-response citation/sentiment round trips pass; one host-read issuer webpage
+also exercised reader-enabled handoff. No original authenticity or small-model success
+is implied. [Implementation](implementation.md) owns evidence; [review guide](review-workflows.md)
+owns the next one-source host test. Active mtest remains 0.6.1/B1 spent/D0; no restart,
+allowance reset or automatic upgrade. 0.6.1's Git wheel stays immutable.
+
+**Earlier proposal, superseded by the delivered stage above:** Drishti retrieval/live MCP acceptance, then
 source-backed citation handoffs, then content sentiment, followed by the separate
 model benchmark. These are existing adapters/protocols needing current end-to-end
 coverage, not an unbuilt MCP. The review guide's stale pre-MCP statement is corrected.

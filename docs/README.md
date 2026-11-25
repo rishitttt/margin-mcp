@@ -31,6 +31,11 @@
 
 ## What to document and where
 
+The 0.6.2 Drishti/review checkpoint is in implementation, the function-validation map,
+review-workflows and api-testing. The new opt-in diagnostic is
+`scripts/check_drishti_review.py`; its original failed post-import capture and corrected
+offline projections stay private. No native operation schema changed in this patch.
+
 The person or agent changing a component owns its documentation update in the same change. Code/observed outputs establish behavior; documents must distinguish proposed, delivered, measured, unverified and historical states.
 
 | Change | Update |

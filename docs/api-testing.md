@@ -2,6 +2,13 @@
 
 ## Drishti and review acceptance: 25 November 2026
 
+Explicit diagnostic (fixed dated INFY window; **already executed once**, do not repeat
+as a repair): `.venv/bin/python scripts/check_drishti_review.py --confirm-live --output
+reports/private/NEW-UNUSED-DIRECTORY`. Uses the ignored repo .env unless --env-file
+is specified, refuses existing output directories, saves sanitized 0600 evidence and
+does not alter another process. Saved-response reprocessing—not another live run—
+verified the 0.6.2 fixes. Actual results are in implementation.
+
 The user authorized proceeding with the remaining stage. First publish this plan,
 then run one isolated process; leave the active finance backend/venv unchanged.
 Limits: **BharatStock 0; Drishti 16 MCP HTTP attempts total including lifecycle and

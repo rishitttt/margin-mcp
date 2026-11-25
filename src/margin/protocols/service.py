@@ -232,9 +232,14 @@ class ReviewService:
             "routing": "Declared application profile, not model brand or inferred reasoning ability.",
         }
 
-    def register_sources(self, sources, *, origin="host_supplied", provenance=None):
+    def register_sources(
+        self, sources, *, origin="host_supplied", provenance=None, record_provenance=None
+    ):
+        # Per-row provenance is an internal retained-result projection, not a host schema field.
+        if record_provenance is not None and len(record_provenance) != len(sources):
+            raise DomainError("unsupported_mapping", "Source provenance must match its records.")
         pending, records = {}, []
-        for supplied in sources:
+        for index, supplied in enumerate(sources):
             item = copy.deepcopy(supplied)
             url, protected = self.sanitizer.url(item["url"])
             if url == REDACTED:
@@ -251,9 +256,18 @@ class ReviewService:
             unique([v["passage_id"] for v in item["passages"]])
             item.update(
                 origin=origin,
-                provenance=copy.deepcopy(provenance),
+                provenance=copy.deepcopy(
+                    (provenance or {}) | record_provenance[index]
+                    if record_provenance is not None
+                    else provenance
+                ),
                 original_document_verified=False,
-                requires_resolution=protected or urlsplit(url).hostname == "developers.manasija.in",
+                requires_resolution=protected
+                or urlsplit(url).hostname == "developers.manasija.in"
+                or bool(
+                    record_provenance is not None
+                    and record_provenance[index].get("source_locator_requires_resolution")
+                ),
                 passage_check_scope="supplied_text_only",
             )
             key = "src_" + digest(item)[:24]

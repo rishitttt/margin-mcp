@@ -349,7 +349,7 @@ function appendResult(result, runId = null) {
     }));
     card.append(prepare);
   }
-  if (runId && result.operation === "drishti.get_news" && result.status === "success") {
+  if (runId && ["drishti.get_news", "drishti.get_announcements", "drishti.list_earnings", "drishti.get_earnings_filing"].includes(result.operation) && result.status === "success") {
     const importButton = node("button", "Import retained text for citation / sentiment · local only", "quiet");
     importButton.addEventListener("click", action(async () => {
       const c = company();

@@ -1,5 +1,14 @@
 # Margin build and evaluation plan
 
+**25 November stage delivered, 0.6.2:** the user authorized the bounded Drishti pass.
+All four INFY data calls worked; source-import defects were repaired and saved real
+response citation/content-sentiment handoffs tested. A host-read issuer webpage
+separately checked the reader-enabled route. See [implementation](implementation.md).
+Next: controlled activation and one-source LM Studio acceptance, then freeze the
+product/tool profile for the separate benchmark. Wider native operations (concall/
+search), independent numeric gold and model comparisons remain future work. The
+following proposal is retained as the plan preceding these results.
+
 ## Next validation stage: Drishti → citations → sentiment, 25 November 2026
 
 Treat 0.6.1 finance as a baseline with known model raw-unit/prose limitations; avoid

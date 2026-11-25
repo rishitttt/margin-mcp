@@ -24,7 +24,8 @@ from margin.core.company_finance import CompanyFinance
 from margin.core.config import Settings
 from margin.core.contracts import DomainError, OperationRequest, OperationResult, encoded_size, now
 from margin.core.registry import Registry, schema_hash
-from margin.evidence.results import data_payload, inspect_result
+from margin.evidence.results import inspect_result
+from margin.evidence.review_sources import project_sources
 from margin.evidence.sanitize import Sanitizer
 from margin.policy.ledger import Ledger
 from margin.protocols.service import ReviewService
@@ -173,48 +174,12 @@ class ResearchService:
                 "sources": [],
                 "note": "Use reviewed financial facts for numeric checks; no original-document locator was supplied by this result.",
             }
-        native = data_payload(result["payload"], result["payload_kind"])
-        rows = native.get("data", []) if isinstance(native, dict) else []
-        sources = []
-        for index, row in enumerate(rows[:12]):
-            if not isinstance(row, dict):
-                continue
-            url = row.get("link") or row.get("url") or row.get("source_url")
-            if not isinstance(url, str):
-                continue
-            title = (
-                row.get("title")
-                or row.get("headline")
-                or row.get("specific_title")
-                or "Provider record"
-            )
-            passages = [
-                {"passage_id": key, "text": row[key][:6000], "locator": f"data[{index}].{key}"}
-                for key in ("summary", "long_summary")
-                if isinstance(row.get(key), str) and row[key].strip()
-            ]
-            date_value = row.get("published_at") or row.get("date")
-            record_date = str(date_value)[:10] if date_value else None
-            try:
-                if record_date:
-                    date.fromisoformat(record_date)
-            except ValueError:
-                record_date = None
-            sources.append(
-                {
-                    "issuer": issuer,
-                    "title": str(title)[:400],
-                    "url": url,
-                    "kind": "provider_summary",
-                    "date": record_date,
-                    "date_kind": "published" if row.get("published_at") else "unknown",
-                    "passages": passages,
-                }
-            )
+        sources, record_provenance, skipped = project_sources(result, issuer)
         if not sources:
             return {
-                "status": "empty",
+                "status": "incomplete" if skipped else "empty",
                 "sources": [],
+                "skipped": skipped,
                 "note": "No supported source-bearing rows; no fetch was attempted.",
             }
         # Same schema validation as host registration, with provider origin assigned internally.
@@ -230,17 +195,28 @@ class ResearchService:
             raise DomainError(
                 "unsupported_mapping", "Provider rows do not fit the source handoff contract."
             ) from None
-        return self.reviews.register_sources(
+        imported = self.reviews.register_sources(
             sources,
             origin="retained_provider",
+            record_provenance=record_provenance,
             provenance={
                 "run_id": run_id,
                 "operation_id": operation_id,
                 "path_root": "decoded_provider_payload",
                 "issuer_origin": "caller_declared_filter_target",
                 "mode": result["mode"],
+                "operation": result["operation"],
             },
         )
+        imported["skipped"] = skipped
+        imported["warnings"] = [
+            "Imported text is a provider summary, not extracted attachment contents or original-source verification.",
+            "Issuer attribution follows the declared target; multi-company text still requires host relevance review.",
+            "Provider date is not treated as publication date without an explicit published_at field.",
+        ]
+        if skipped:
+            imported["status"] = "partial"
+        return imported
 
     def calculation_capabilities(self):
         return analysis_capabilities()

@@ -11,7 +11,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.6.1"
+VERSION = "0.6.2"
 CONTRACT = "margin.mcp.v1"
 DIRECT_FUNCTIONS = {
     "margin_calculate_margins": "finance.calculate_margins",
@@ -226,7 +226,7 @@ def definitions():
         ),
         (
             "margin_review_sources",
-            "Import a successful retained provider news result into the local review store with explicit issuer attribution. No source fetch; provider text is not authenticated original evidence.",
+            "Import retained Drishti news, summary announcements, earnings-list or earnings-detail sources with explicit issuer attribution. Returns supplied summaries and locators, not attachment contents. No source fetch; publication/relevance/original authenticity remain unverified. Unknown shapes stay incomplete.",
             schema(
                 {
                     "run_id": ID,

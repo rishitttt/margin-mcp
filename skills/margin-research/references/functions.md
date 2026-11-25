@@ -85,7 +85,12 @@ provider preview and do not reset or spend upstream allowances. Every call can u
 | `sentiment.submit_annotations` | Host relevance/tone annotations with supplied-passage references |
 | `sentiment.aggregate` | Versioned distinct-source counts/balance; mixed/unclear/missing are separate |
 
-`review-sources RUN OP --issuer NSE:SYMBOL` imports retained news with provider origin.
+`review-sources RUN OP --issuer NSE:SYMBOL` / MCP `margin_review_sources` imports retained
+Drishti news, summary announcements, earnings-list and earnings-detail records with
+provider origin (0.6.2). It retains supplied summary passages, row/URL paths and
+reported symbols; attachments are locators, not downloaded text. Unknown/mismatched
+rows remain incomplete/skipped. Multi-company relevance and publication dates are
+not established by the query filter. No refetch, model call or original verification.
 It is a control command, not a live retrieval. Unknown/expired results never refetch.
 A host may use its own browser or a separate MCP to read originals and then register
 passages. A registered passage's quote match does not prove it came from that original.
@@ -113,7 +118,7 @@ Company-preview accepts `money_unit: "auto"` (default), explicit monetary scales
 The announcement schema's added extraction flag was reviewed. Margin explicitly defaults `include_extracted_information` to false and holds true; no generic executor or extraction branch is newly enabled. Query preview/receipts show the default. The runtime catalog owns connection/schema holds.
 
 
-## MCP transport, package 0.6.1
+## MCP transport, package 0.6.2
 
 0.6.1 fixes per-metric formula metadata: use each report row's formula; raw comparison
 `values.formulas` maps absolute/percentage changes separately. Legacy `values.formula`

@@ -1,6 +1,6 @@
 # Run Margin as a local MCP server
 
-Current release **0.6.1**, 25 November 2026. Twenty-one MCP tools expose the existing
+Current release **0.6.2**, 25 November 2026. Twenty-one MCP tools expose the existing
 37 retrieval/finance and ten review functions. Six common calculations now have directly
 advertised strict schemas. The core, CLI and workbench remain available independently.
 The [architecture](design/mcp-aggregation.md) owns the plan published before this change;
@@ -115,23 +115,22 @@ Console commands are `margin-mcp`, `margin-backend`, and the existing `margin-ag
 optional `margin-workbench`. No new package dependency is required for shared mode.
 The package is not yet published to PyPI; use the local wheel or checkout.
 
-The exact tested 0.6.1 wheel is also committed at
-[`releases/0.6.1/margin_research-0.6.1-py3-none-any.whl`](../releases/0.6.1/margin_research-0.6.1-py3-none-any.whl),
-with [`SHA256SUMS`](../releases/0.6.1/SHA256SUMS). It matches the runtime Python source
-from commit `36d10b7` and the previously tested build; later documentation-only edits
-do not rebuild or replace it. Keep versioned release artifacts immutable and publish
+The current tested 0.6.2 wheel is committed at
+[`releases/0.6.2/margin_research-0.6.2-py3-none-any.whl`](../releases/0.6.2/margin_research-0.6.2-py3-none-any.whl),
+with [`SHA256SUMS`](../releases/0.6.2/SHA256SUMS). The earlier tested 0.6.1 artifact
+remains under releases/0.6.1/ with its original checksum. Keep release artifacts immutable and publish
 a new package version for later runtime changes. Generated `dist/` outputs remain
 ignored; only deliberately reviewed versioned release files belong in Git.
 
 From the repository root, verify the committed artifact before installation:
 
 ```sh
-(cd releases/0.6.1 && shasum -a 256 -c SHA256SUMS)
+(cd releases/0.6.2 && shasum -a 256 -c SHA256SUMS)
 ```
 
 The wheel contains no provider keys or private captures. Credentials/configuration
-remain separate. It reuses the existing 0.6.1 validation evidence; saving a byte-identical
-artifact to Git does not establish a new cross-platform or model acceptance result.
+remain separate. Offline regression and installed-wheel SDK acceptance are separate
+from a clean cross-platform installation or real model-host acceptance.
 
 A stdio process waits for protocol messages, not typed company questions. Configure an
 MCP host to launch it. Stdout is reserved for JSON-RPC; diagnostics use stderr. The web
@@ -220,19 +219,19 @@ the executable is `/Users/rishit/Desktop/mtest/.venv/bin/margin-mcp`. After a wh
 restart the backend deliberately and reconnect the host; never silently replenish spent
 allowances. The existing `.env` and logs remain private, outside the package.
 
-For a controlled upgrade to 0.6.1, inspect/save the old ledger and logs, stop the
+For a controlled upgrade to 0.6.2, inspect/save the old ledger and logs, stop the
 old backend with its existing executable, then install the new wheel into that venv:
 
 ```sh
 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
-/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.6.1/margin_research-0.6.1-py3-none-any.whl
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.6.2/margin_research-0.6.2-py3-none-any.whl
 ```
 
 These are manual instructions, not actions performed during this build. Existing pinned
 existing pinned dependencies are reused. Restart explicitly using the backend command above only
 after setting reconciled remaining provider allowances; do not copy the old allowance
 as if nothing was spent. With no confirmed requests remaining, set the BharatStock
-allowance to zero and test local preview only. Both backend and frontend must be 0.6.1;
+allowance to zero and test local preview only. Both backend and frontend must be 0.6.2;
 reconnect the host after the version-matched restart. No provider key belongs in commands.
 
 ## Tools and financial output
@@ -316,6 +315,13 @@ Every tool accepts a one-line `why` self-report. Logs capture sanitized requests
 and call IDs, not final prose, host conversations or hidden reasoning. Citation/sentiment
 semantics remain host assessments through `margin_review`; workflow discovery is local.
 Margin runs no LLM and cannot invoke other host tools merely because they are installed.
+
+0.6.2 expands `margin_review_sources` to four retained Drishti shapes: news, summary
+announcements, earnings discovery and single earnings detail. It imports supplied
+summaries/attachment locators, preserving original protected-link flags and row-symbol/
+path provenance. It never reads attachments or infers publication dates/relevance.
+Unknown shapes/explicit issuer mismatches remain incomplete/skipped. See the
+[one-source host test](review-workflows.md#small-model-acceptance-after-activation).
 
 ## Validation and limitations
 
