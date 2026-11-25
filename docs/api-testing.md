@@ -1,5 +1,36 @@
 # API and MCP testing protocol
 
+## Drishti and review acceptance: 25 November 2026
+
+The user authorized proceeding with the remaining stage. First publish this plan,
+then run one isolated process; leave the active finance backend/venv unchanged.
+Limits: **BharatStock 0; Drishti 16 MCP HTTP attempts total including lifecycle and
+cleanup; eight estimated credits; two separate non-billable account GETs**. Check
+`GET https://developers.manasija.in/v1/account` before and after using X-API-Key.
+Record only sanitized private account evidence; compare balance changes without
+claiming concurrent account activity is attributable to this pass.
+
+Refresh metadata first. Use INFY with a 10–25 November news/announcement window,
+news limit two (one estimated credit), summary announcement limit one (one credit,
+extraction explicitly false), September–25 November earnings list limit one (two
+credits), and one detailed filing using an actual returned selector (three credits).
+No symbol discovery, extra pages, automatic retries, broad backfill or purchase.
+Stop on insufficient balance, unavailable access, changed schemas or uncertain
+dispatch. Missing rows/selectors remain incomplete. Preserve cleanup headroom.
+
+Inspect real payloads before changing their mapping. Exercise citation registration/
+import, immutable packets, host-written assessment, quote/reference rejection,
+citation rendering/audit, capability fallback and content-sentiment aggregation
+using these same passages, without another fetch. Label operator/host judgments
+separately from deterministic checks and original-source verification. Investigate
+compact source/import usability gaps only when this evidence reproduces them.
+Run offline regression and SDK checks for runtime changes; record actual calls,
+credits, results and remaining real-host acceptance in implementation/function maps.
+Provider captures remain ignored. A new runtime version must not overwrite 0.6.1.
+
+References checked: [MCP guide](https://drishti.manasija.in/docs/guides/drishti-mcp),
+[account inspection](https://drishti.manasija.in/docs/api-reference/account).
+
 ## 0.6.0 live audit and 0.6.1 patch gate, 25 November 2026
 
 The user completed one INFY growth execution, same-key replay, same-key raw details,

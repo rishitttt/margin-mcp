@@ -1,5 +1,17 @@
 # Working on Margin
 
+**25 November Drishti/review stage authorized:** the user asked to proceed with the
+remaining work. Follow the new bounded pass in docs/api-testing.md before calls or
+runtime edits. Use an isolated service: BharatStock zero, Drishti at most 16 MCP HTTP
+attempts including lifecycle/cleanup and eight estimated credits; two non-billable
+account GETs separately (before/after). INFY only: news two, summary announcement one
+with extraction=false, earnings list one, detail from its actual returned selector.
+Stop on access/schema/uncertain failures; no retry or pagination. Do not restart the
+active 0.6.1 backend, reset its limits or overwrite its immutable wheel. Local review
+uses returned passages; host assessments are not independent truth or hidden inference.
+This narrow authorization supersedes earlier build-specific no-live-call notes only
+for this pass. Save sanitized captures privately; publish outcomes and measured gaps.
+
 **25 November versioned wheel:** the user explicitly authorized committing the current tested 0.6.1 wheel under releases/0.6.1/ with SHA256SUMS. Generated dist/build outputs stay ignored. Treat versioned artifacts as immutable snapshots; later runtime changes need a new version, not a silent replacement. Check archive contents/credential exclusion and checksum before publication; keys/private captures never belong in release files. No live install, restart or renewed quota follows from committing a wheel.
 
 **25 November latest live state:** the user activated 0.6.1. B1/D0 current-process usage, local B1 spent; HUL cached all-rows retest and INFY formula/amounts pass. Same-key details projection returns raw INR correctly, but model prose omitted the requested raw/report pairs. No new runtime defect: do not trigger another patch/fetch/restart just to repair that answer. Latest user calls omitted optional why; never infer hidden reasoning. Read docs/implementation.md and the private lmstudio-061-live audit; earlier active-version notes below are dated history.
