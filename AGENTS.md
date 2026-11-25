@@ -1,5 +1,14 @@
 # Working on Margin
 
+**26 November active 0.8.0 preparation trial:** four user calls (status, typed real-
+text registration, citation/sentiment preparation) succeeded. Review frontend is
+configured, provider budgets zero. Actual packet refs/next typed submission tools
+match. Previously returned INFY text is host_supplied evidence, not fresh retrieval;
+unverified/protected/unknown-publication labels remain. Preserve private
+lmstudio-080-preparation events. Submissions/render/audit/aggregate are pending host
+tests, not yet success. No runtime patch, install/restart, refetch or quota reset is
+needed; older active-0.7.0 notes below are history. Why is absent on the two prepares.
+
 **0.8.0 implementation checkpoint:** plan e5e97d0 preceded ten generated typed review
 tools, classified safe errors and next_steps using actual packet refs/required host
 fields outside frozen hashes. Full 35 tools; optional frontend review view 14 local

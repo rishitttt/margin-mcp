@@ -1,5 +1,28 @@
 # Implementation and validation status
 
+## User-led 0.8.0 preparation acceptance: 26 November 2026 IST
+
+Four recorded calls succeeded: status, typed source registration, citation preparation
+and sentiment preparation. Package version 0.8.0; initial B0/D0 with zero HTTP/credit
+limits, followed only by local review calls. The configured LM Studio frontend profile
+is review; its status projection is not in underlying backend logs. Source registration
+used previously returned real INFY text and a sanitized unresolved provider locator,
+with host_supplied origin, provider_summary kind, unknown publication and original
+unverified/protected-link labels preserved. This is not a fresh provider retrieval.
+
+Citation and sentiment packets have separate real IDs/hashes. Both next_steps bind the
+exact returned refs and point to the correct typed submission tool, with reviewer plus
+assessments or annotations still required. No function-name-as-tool error, guessed
+schema or fabricated packet ref appears in these four admitted calls. Submissions,
+quote checks, citation render/audit and sentiment aggregate remain the next host tests.
+This is guided preparation success, not proof of general or causal model improvement.
+
+Eight original events/review are private under
+reports/private/lmstudio-080-preparation-2026-11-26/. Visible why exists on status/
+registration, not the two preparation calls; model/context identity is not recorded.
+No operator provider/model API call, runtime patch, restart or allowance change.
+Current user backend is now 0.8.0; older active-0.7.0 statements are dated history.
+
 ## Typed review and focused profile: 26 November 2026, 0.8.0
 
 Evaluated plan e5e97d0 preceded runtime edits. Ten typed review tools are generated

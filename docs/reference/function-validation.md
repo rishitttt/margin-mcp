@@ -1,5 +1,12 @@
 # Function validation status
 
+**26 November 0.8.0 guided host preparation:** status, typed registration of real
+previously returned INFY text, margin_prepare_verification and margin_prepare_sentiment
+all succeed in four recorded calls. Actual packet refs and correct typed next steps
+are preserved; zero-budget local session, no fresh retrieval. Semantic submissions,
+render/audit and aggregation remain untested in this host run. No runtime defect or
+new build is needed; original private events remain separate from software tests.
+
 **0.8.0 review repair:** all ten review functions have generated typed MCP tools.
 Both typed workflows, actual next-step refs, strict quote/hash/capability/expiry guards,
 classified diagnostics and 14-tool profile restrictions pass offline/SDK checks.

@@ -1,5 +1,15 @@
 # Project context and handoff
 
+**Latest 26 November host check:** user activated 0.8.0, review profile configured,
+zero provider allowances. Status, typed registration of already returned real INFY
+text and both typed packet preparations pass. Source origin is host_supplied, not a
+new provider call; unknown publication/protected locator/original unverified preserved.
+Real citation/sentiment refs route to margin_submit_assessment/submit_annotations.
+Next are separate host submissions then render/audit/aggregate, within packet TTL.
+No runtime patch/reinstall/refetch/reset needed. Evidence is private in the
+lmstudio-080-preparation audit; model/context settings and complete semantic success
+remain unestablished. Older active-0.7.0 notes below describe earlier checkpoints.
+
 **Latest source 0.8.0:** plan e5e97d0 preceded typed schemas for all ten review tools,
 distinct safe diagnostics and next_steps with real packet refs/required host fields.
 35 tools full, 14 local tools in optional frontend --tool-profile review. Shared
