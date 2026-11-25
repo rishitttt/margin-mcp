@@ -60,7 +60,8 @@ backend restart in this build. Publish this plan before runtime changes, release
 with a new immutable wheel/checksum after tests, and preserve 0.6.1/0.6.2 artifacts.
 Update owning docs/function guide/skill and deliberate installed instructions without
 changing connection settings. A later user-led model acceptance remains necessary;
-software tests do not establish improved model behavior. Final-prose enforcement,+wider native Drishti admission and the separate benchmark remain outside this patch.
+software tests do not establish improved model behavior. Final-prose enforcement,
+wider native Drishti admission and the separate benchmark remain outside this patch.
 
 **0.6.1 metadata patch:** per-metric formulas replace inherited report formulas;
 comparison details add an explicit mapping while preserving the legacy percentage

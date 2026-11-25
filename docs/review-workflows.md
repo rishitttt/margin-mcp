@@ -1,7 +1,7 @@
 # Citation and sentiment handoffs
 
 Implemented **24 November 2026**, core version 0.2.0, and exposed through Margin's
-MCP since 0.3.0. Current package 0.6.2 retains all ten functions plus Python/HTTP/CLI
+MCP since 0.3.0. Current package 0.7.0 retains all ten functions plus Python/HTTP/CLI
 and the temporary workbench tester. Historical interface statements below are dated;
 [MCP usage](mcp.md) and [implementation](implementation.md) own current setup/evidence.
 The core performs no LLM inference, web search, document download or PDF extraction.
@@ -77,7 +77,7 @@ available on successful announcement, earnings-list and earnings-detail cards in
 
 ## Small-model acceptance after activation
 
-Use a deliberately version-matched 0.6.2 backend/frontend with an explicitly
+Use a deliberately version-matched 0.7.0 backend/frontend with an explicitly
 reconciled Drishti allowance. The active finance backend has Drishti zero; do not
 reset/restart it just to bypass that condition. Installing a wheel alone does not
 update a running process. Existing keys were sufficient for the measured live pass.
@@ -86,11 +86,15 @@ Test one source first, in a new chat. Discover one exact review schema at a time
 packets and tool definitions can exceed small context windows. A 4K context is not
 an acceptance target, and Margin supplies no hidden fallback model.
 
-1. **Preview only:** ask the model to inspect status, explicitly connect Drishti if
-   permitted, then preview one INFY summary announcement: query symbols=[INFY],
+1. **Preview only:** ask the model to inspect status (package_version versus
+   contract_version), explicitly connect Drishti if permitted, then call
+   margin_preview_announcements using its exact tools/list inputSchema. Supply
+   top-level symbols=[INFY],
    from=2026-11-10, to=2026-11-25, page=1, limit=1,
    include_extracted_information=false. Stop before margin_run. No BharatStock calls.
-   Give a brief why with each action. Expect metadata HTTP only, no data execution.
+   Give a brief why with each action. No query/arguments/operations wrapper on this
+   typed tool. Expect metadata HTTP only, no data execution. Generic margin_preview
+   remains available but requires the catalog operation schema and nested query.
 2. **Retrieve/import:** authorize that one plan; use actual session/plan IDs and a
    stable idempotency key. Read margin_result, then margin_review_sources using its
    actual run_id/operation_id and issuer=NSE:INFY. Expect supplied summary, source
@@ -142,14 +146,16 @@ Use this exact margin_preview input after an explicit metadata refresh if stale:
 }
 ```
 
-margin_status currently returns the protocol contract margin.mcp.v1, not the package
-version. Do not label that as a package version. Local installed metadata and the
+In 0.6.2 margin_status returned the protocol contract margin.mcp.v1, not the package
+version; 0.7.0 adds data.package_version separately. Do not relabel the contract.
+For that original trial, local installed metadata and the
 existing backend's read-only operator status both confirmed 0.6.2. The zero BharatStock
 HTTP limit is an explicit disabled allowance, not an unspecified limit. Visible why
 summaries were recorded; hidden reasoning/final prose are not captured by the MCP log.
 No runtime patch, reinstallation, backend restart or new operator provider call was
-needed. Better retrieval-validation feedback is a possible later usability repair;
-it is separate from this confirmed host argument error.
+needed for the original trial. The subsequent 0.7.0 typed-preview/diagnostic repair
+addresses the interface weakness; it does not turn this original failed model trial
+into successful acceptance. Keep its private capture unchanged.
 
 ## Citation round trip
 

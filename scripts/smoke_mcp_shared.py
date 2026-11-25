@@ -80,12 +80,12 @@ async def main(args):
                     cwd=temp,
                 )
 
-                async def call(client, name, values=None):
+                async def call(client, name, values=None, expect_error=False):
                     values = (values or {}) | {
                         "why": "Test fictional shared-state acceptance without real provider calls."
                     }
                     response = await client.call_tool(name, values)
-                    assert not response.is_error, response.content
+                    assert response.is_error is expect_error, response.content
                     body = response.structured_content
                     assert body["mode"] == "synthetic"
                     observations.append({"tool": name, "arguments": values, "result": body})
@@ -94,10 +94,29 @@ async def main(args):
                 async with stdio_client(params, errlog=stderr) as (read, write):
                     async with ClientSession(read, write) as client:
                         initialized = await client.initialize()
-                        assert len((await client.list_tools()).tools) == 21
+                        assert len((await client.list_tools()).tools) == 25
                         status = await call(client, "margin_status")
                         assert status["data"]["state_owner"] == "shared_backend_process"
                         assert not any(status["data"]["ledger"]["http_attempts"].values())
+                        assert status["data"]["package_version"] == initialized.server_info.version
+                        for tool in (
+                            "margin_preview_news",
+                            "margin_preview_announcements",
+                            "margin_preview_earnings",
+                            "margin_preview_earnings_filing",
+                        ):
+                            preview_arguments = (
+                                {"earnings_id": "fictional-filing-001", "detailed": True}
+                                if tool.endswith("filing")
+                                else {
+                                    "symbols": ["SYNTHA"],
+                                    "lookback_days": 7,
+                                    "page": 1,
+                                    "limit": 1,
+                                }
+                            )
+                            held = await call(client, tool, preview_arguments, expect_error=True)
+                            assert held["error"]["code"] == "credit_budget"
                         preview = await call(
                             client,
                             "margin_preview",
@@ -212,7 +231,7 @@ async def main(args):
         "version": initialized.server_info.version,
         "protocol": initialized.protocol_version,
         "stdio_frontends": 4,
-        "tools": 21,
+        "tools": 25,
         "calls": len(observations),
         "recorded_events": len(events),
         "stable_backend_identity": True,

@@ -27,7 +27,13 @@ from margin.core.validation import validation_summary
 from margin.interfaces.agent.client import BridgeError
 from margin.interfaces.agent.local_config import read_provider_env
 from margin.interfaces.mcp.recording import ToolRecorder
-from margin.interfaces.mcp.tools import CONTRACT, DIRECT_FUNCTIONS, VERSION, definitions
+from margin.interfaces.mcp.tools import (
+    CONTRACT,
+    DIRECT_FUNCTIONS,
+    DIRECT_PREVIEWS,
+    VERSION,
+    definitions,
+)
 
 INSTRUCTIONS = """Margin provides Indian-company research tools over one process-local core.
 For company finance questions, prefer margin_company_finance: ticker plus a company
@@ -77,6 +83,18 @@ announcements and earnings summaries/locators. It does not read attachments. Ins
 reported symbols and relevance in multi-company text; unknown publication dates stay
 unknown. Host-read originals can be registered through margin_review. Obtain only the
 needed review schema and retain the packet ID/hash; no automatic provider refetch.
+Prefer margin_preview_news, margin_preview_announcements, margin_preview_earnings and
+margin_preview_earnings_filing for event retrieval planning. Use the selected tool's
+EXACT tools/list inputSchema: fields go at top level, without query/arguments/operations.
+The host already advertises these typed schemas; tools/list is protocol discovery,
+not another callable Margin tool. Do not invent a tools/list tool call.
+Margin builds the core binding; these tools preview only, then use margin_run.
+For generic margin_preview/margin_calculate/margin_review, obtain the selected exact
+function schema from margin_catalog(include_schemas=true) before constructing inputs.
+Preserve its required nesting; do not infer schemas from memory or provider docs.
+Catalog direct_preview is an alternative flat tool route, not the generic operation
+schema. Unknown/changed upstream contracts remain held. Status data.package_version
+is the software version; envelope.contract_version names the protocol contract.
 """
 
 
@@ -303,6 +321,24 @@ class MarginMCP:
             for row in rows:
                 identifier = row.get("operation") or row.get("function")
                 row["mcp_execution"] = self.execution_route(kind, identifier)
+                direct_preview = next(
+                    (
+                        tool
+                        for tool, operation in DIRECT_PREVIEWS.items()
+                        if operation == identifier
+                    ),
+                    None,
+                )
+                if kind == "retrieval" and direct_preview:
+                    row["direct_preview"] = {
+                        "tool": direct_preview,
+                        "inputs_at": "top_level",
+                        "schema_source": "Use this tool's exact MCP tools/list inputSchema; it is a flat projection, not this entry's nested operation schema.",
+                        "core_inputs_at": "arguments.query"
+                        if "query" in self.service.registry.spec(identifier).schema["properties"]
+                        else "arguments",
+                        "then": "margin_run",
+                    }
                 if kind == "company":
                     row["fresh_mcp_execution"] = {
                         "tool": "margin_company_finance",
@@ -327,7 +363,7 @@ class MarginMCP:
         return {
             "groups": result,
             "routing_notice": "Catalog function identifiers are not callable MCP tools. Use each entry's mcp_execution.tool and bind; place inputs at inputs_at. Never replace dots with underscores. why is a top-level MCP argument.",
-            "schema_lookup": "Request one name/group with include_schemas=true for exact inputs. Unknown financial context must stay unknown; do not fabricate metadata.",
+            "schema_lookup": "Generic calls MUST request one name/group with include_schemas=true and preserve that exact operation/function schema and nesting. Typed direct calls use their own MCP tools/list inputSchema, not the generic nested schema. Both originate from reviewed core contracts; do not guess from examples/provider docs. Unknown context stays unknown.",
             "availability_is_not_source_verification": True,
         }
 
@@ -347,10 +383,19 @@ class MarginMCP:
         return state
 
     async def dispatch(self, name, args):
+        if name in DIRECT_PREVIEWS:
+            operation = DIRECT_PREVIEWS[name]
+            arguments = (
+                {"query": args}
+                if "query" in self.service.registry.spec(operation).schema["properties"]
+                else args
+            )
+            return self.service.create_plan([{"operation": operation, "arguments": arguments}])
         if name in DIRECT_FUNCTIONS:
             return self.service.calculate(DIRECT_FUNCTIONS[name], args)
         if name == "margin_status":
             return self.service.status() | {
+                "package_version": VERSION,
                 "state_owner": self.state_owner,
                 "state_lifetime": "Source TTL/eviction applies; stopping the state owner invalidates handles and does not renew upstream quota.",
                 "recording_enabled": self.recorder.path is not None,

@@ -1,5 +1,13 @@
 # Margin build and evaluation plan
 
+**0.7.0 usability repair:** evaluated plan df45376 adds four generated typed event
+previews, precise retrieval errors and explicit status version. Generic contracts
+remain compatible and exact schema sources are documented. Software validation
+does not establish model improvement; next is the one-source typed-preview host
+test after deliberate activation. No additional paid API calls or active restart
+are part of this build. [Architecture/evaluation](design/mcp-aggregation.md#070-typed-retrieval-preview-plan-and-evaluation-25-november-2026)
+and [implementation](implementation.md) own details.
+
 **25 November stage delivered, 0.6.2:** the user authorized the bounded Drishti pass.
 All four INFY data calls worked; source-import defects were repaired and saved real
 response citation/content-sentiment handoffs tested. A host-read issuer webpage

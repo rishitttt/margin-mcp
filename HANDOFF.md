@@ -1,5 +1,15 @@
 # Margin: quick handoff
 
+**Latest source 0.7.0:** four typed Drishti previews generate their exact schemas from
+reviewed Registry contracts and construct query wrappers internally. Generic calls
+remain; obtain their exact schema from margin_catalog. Typed calls use the actual
+host-advertised inputSchema. Missing-field diagnostics and explicit package_version
+address the latest model failure. 25 tools, 360 offline tests; no new live/model call.
+See [MCP guide](docs/mcp.md#typed-retrieval-previews-and-exact-schema-authority),
+[plan/evaluation](docs/design/mcp-aggregation.md#070-typed-retrieval-preview-plan-and-evaluation-25-november-2026)
+and [validation](docs/implementation.md). Active mtest is still 0.6.2; deliberate
+version-matched activation/one-source host acceptance is next. Older notes are history.
+
 **Latest, 25 November: 0.6.2 source/review patch.** Fresh INFY Drishti news,
 announcement and earnings list/detail succeeded (B0/D10 HTTP, seven credits).
 Fixed source import for single-record earnings and attachment links; summaries,

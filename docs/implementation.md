@@ -1,5 +1,47 @@
 # Implementation and validation status
 
+## Typed event previews and schema feedback: 25 November 2026, 0.7.0
+
+Evaluated plan `df45376` preceded runtime edits. Four generated typed previews add
+margin_preview_news, margin_preview_announcements, margin_preview_earnings and
+margin_preview_earnings_filing: **25 MCP tools**, unchanged underlying 13 retrieval,
+15 local calculations, nine company functions and ten review functions. Discovery
+query fields are top-level; the adapter constructs the reviewed core query wrapper.
+Filing detail retains discovered-ID OR symbol/quarter selection. All paths call the
+existing create_plan; no preview/GET/discovery causes provider connection or fetching.
+Generic margin_preview and its catalog route remain compatible. Catalog direct_preview
+names the flat alternative and its own host-advertised schema; the nested operation
+schema is not its flat input schema. Exact schema authority is explicit in tools,
+server instructions, catalog, guides and skill: advertised tool inputSchema for typed
+calls, selected margin_catalog(include_schemas=true) for generic calls, generated from
+reviewed core contracts rather than remembered examples or upstream docs. New native
+contracts still require review; schema quarantine remains unchanged.
+
+Retrieval validation now uses the existing bounded schema-owned diagnostics. The
+logged flat query failure identifies missing required query and allowed fields;
+unknown caller keys/values are not echoed. MCP status adds data.package_version,
+separate from contract_version. Pure math, financial displays, source/quote semantics,
+budgets, idempotency, provider transports and in-memory retention are unchanged.
+
+**360 offline tests pass**, including generated-contract parity/isolation, typed versus
+generic plan equivalence, wrapper/unknown-field rejection, protected diagnostics,
+extraction/detail/readiness guards, explicit run/import and version distinction.
+Official SDK source and installed-wheel acceptance cover all 25 tools: standalone
+41 calls/82 recorded events; shared four frontends, 16 calls/32 events including four
+typed-preview credit-budget holds. These use fictional providers, with no real API or
+external model call. Installed checks reuse pinned dependencies, not a fresh OS setup.
+Ruff/format, skill validation, links and credential/wheel checks accompany private
+evidence under reports/private/typed-previews-2026-11-25/.
+
+tools/list grew from 47,721 to 59,853 uncompressed JSON bytes (+25.42%). This measures
+schema-advertisement cost, not model tokenizer usage. Typed calls remove a translation
+step but do not prove small-model improvement or a 4K context fit. No new model-host
+acceptance is claimed. The original 0.6.2 failed host trial remains unchanged/private.
+Active mtest stays 0.6.2, with no installation, restart, quota reset or provider calls
+by this build. The new versioned 0.7.0 wheel is separate from immutable older wheels.
+Next: a controlled version-matched upgrade and one-source typed-preview host test,
+followed by existing run/import/citation/sentiment steps without extra retrieval.
+
 ## First user-led 0.6.2 preview: 25 November 2026
 
 Read-only operator status confirms the running backend and installed venv are 0.6.2,

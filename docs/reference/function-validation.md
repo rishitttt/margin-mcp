@@ -1,5 +1,13 @@
 # Function validation status
 
+**0.7.0 typed preview checkpoint:** four event preview tools project reviewed
+Registry contracts and call the same planner. 360 offline tests pass: direct/generic
+plan equivalence, zero-fetch previews, strict nesting/field diagnostics, extraction/
+selector/readiness guards, explicit run/import and package-versus-contract version.
+SDK software acceptance covers 25 tools in standalone/shared modes. Generic operation
+inventory and live data outcomes below are unchanged; no fresh provider/model call or
+claim of improved host behavior. See [schema authority](../mcp.md#typed-retrieval-previews-and-exact-schema-authority).
+
 **25 November first 0.6.2 model preview:** Drishti connection/schema refresh passed.
 Three announcement previews failed locally because the host omitted arguments.query;
 no data execution. Flat failure/nested acceptance reproduced offline. This is a host

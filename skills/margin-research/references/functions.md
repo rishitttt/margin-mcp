@@ -118,7 +118,21 @@ Company-preview accepts `money_unit: "auto"` (default), explicit monetary scales
 The announcement schema's added extraction flag was reviewed. Margin explicitly defaults `include_extracted_information` to false and holds true; no generic executor or extraction branch is newly enabled. Query preview/receipts show the default. The runtime catalog owns connection/schema holds.
 
 
-## MCP transport, package 0.6.2
+## MCP transport, package 0.7.0
+
+25 callable tools, unchanged 37 retrieval/finance operations and ten review functions.
+Four typed local previews map to reviewed Drishti operations: margin_preview_news →
+get_news, margin_preview_announcements → get_announcements, margin_preview_earnings →
+list_earnings, margin_preview_earnings_filing → get_earnings_filing. Use each tool's
+actual tools/list inputSchema and top-level fields; Margin constructs query internally.
+Execution remains a separate margin_run. Existing readiness/selector/window/credit
+guards still apply; no preview triggers connection or data calls.
+
+For generic calls obtain the exact selected schema from margin_catalog with name and
+include_schemas=true, preserving nested query/arguments. Catalog mcp_execution remains
+generic; direct_preview names the flat alternative and its schema source. Both are
+generated from reviewed Registry contracts; examples/provider docs are not runtime
+input authority. Status data.package_version is software; contract_version is protocol.
 
 0.6.1 fixes per-metric formula metadata: use each report row's formula; raw comparison
 `values.formulas` maps absolute/percentage changes separately. Legacy `values.formula`

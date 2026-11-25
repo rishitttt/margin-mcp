@@ -1,5 +1,16 @@
 # Working on Margin
 
+**0.7.0 implementation checkpoint:** plan df45376 preceded four generated typed
+Drishti event previews (25 MCP tools), bounded retrieval diagnostics and explicit
+MCP status.package_version. Generic operation schemas/routes remain compatible;
+typed fields use actual advertised tool schemas and no query/arguments wrapper.
+Both derive from reviewed Registry contracts; do not hand-maintain a provider schema
+copy or auto-approve upstream drift. 360 offline tests and SDK acceptance own software
+evidence; tools/list bytes grew 25.42%, with no tokenizer/host-success guarantee.
+Active mtest is still 0.6.2; do not install/restart/reset allowances automatically or
+make new authenticated calls. Preserve immutable 0.6.1/0.6.2 wheels and private original
+model failure. See current implementation and MCP/review guide for deliberate upgrade.
+
 **25 November typed-preview authorization:** follow the evaluated 0.7.0 plan in
 docs/design/mcp-aggregation.md before implementation. Four generated typed Drishti
 event previews (25 total MCP tools) plus bounded retrieval diagnostics and explicit

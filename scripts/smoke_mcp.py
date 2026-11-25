@@ -57,7 +57,7 @@ async def main(args):
             async with ClientSession(read, write) as session:
                 initialized = await session.initialize()
                 tools = {tool.name: tool for tool in (await session.list_tools()).tools}
-                assert len(tools) == 21
+                assert len(tools) == 25
                 status = await call(session, "margin_status")
                 assert not any(status["data"]["ledger"]["http_attempts"].values())
                 session_id = status["session_id"]
@@ -208,6 +208,20 @@ async def main(args):
                 await call(session, "margin_cancel", {"run_id": run_state["run_id"]})
 
                 await call(session, "margin_connect_drishti", {"session_id": session_id})
+                for tool in (
+                    "margin_preview_news",
+                    "margin_preview_announcements",
+                    "margin_preview_earnings",
+                    "margin_preview_earnings_filing",
+                ):
+                    preview_arguments = (
+                        {"earnings_id": "fictional-filing-001", "detailed": True}
+                        if tool.endswith("filing")
+                        else {"symbols": ["SYNTHA"], "lookback_days": 7, "page": 1, "limit": 1}
+                    )
+                    typed_plan = (await call(session, tool, preview_arguments))["data"]
+                    assert typed_plan["data_operations"] == {"bharatstock": 0, "drishti": 1}
+                    assert typed_plan["plan_id"]
                 plan = (
                     await call(
                         session,

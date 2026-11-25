@@ -1,5 +1,6 @@
 """Stable workflow tools; underlying financial/provider contracts stay in the core."""
 
+import json
 from copy import deepcopy
 
 from mcp import types
@@ -11,7 +12,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.6.2"
+VERSION = "0.7.0"
 CONTRACT = "margin.mcp.v1"
 DIRECT_FUNCTIONS = {
     "margin_calculate_margins": "finance.calculate_margins",
@@ -20,6 +21,12 @@ DIRECT_FUNCTIONS = {
     "margin_calculate_cashflow_metrics": "finance.calculate_cashflow_metrics",
     "margin_calculate_profitability": "finance.calculate_profitability",
     "margin_calculate_balance_sheet_metrics": "finance.calculate_balance_sheet_metrics",
+}
+DIRECT_PREVIEWS = {
+    "margin_preview_news": "drishti.get_news",
+    "margin_preview_announcements": "drishti.get_announcements",
+    "margin_preview_earnings": "drishti.list_earnings",
+    "margin_preview_earnings_filing": "drishti.get_earnings_filing",
 }
 ID = {"type": "string", "pattern": r"^[A-Za-z0-9_-]{1,100}$"}
 WAIT = {"type": "integer", "minimum": 0, "maximum": 30, "default": 0}
@@ -54,8 +61,27 @@ def schema(properties=None, required=()):
     return obj((properties or {}) | {"why": WHY}, list(required))
 
 
+def preview_schema(operation, registry):
+    """Project the reviewed core schema; never maintain a parallel provider contract."""
+    exact = deepcopy(registry.spec(operation).schema)
+    if "query" in exact["properties"]:
+        query = exact["properties"]["query"]
+        reference = query.get("$ref", "")
+        if not reference.startswith("#/$defs/"):
+            raise ValueError("Review the typed preview projection for the changed query contract.")
+        inputs = deepcopy(exact["$defs"][reference.removeprefix("#/$defs/")])
+        if '"$ref"' in json.dumps(inputs):
+            inputs["$defs"] = deepcopy(exact["$defs"])
+    else:
+        inputs = exact
+    inputs["additionalProperties"] = False
+    inputs["properties"]["why"] = deepcopy(WHY)
+    return inputs
+
+
 def definitions():
-    operations = sorted(set(Registry(Settings()).specs) | set(SPECS))
+    registry = Registry(Settings())
+    operations = sorted(set(registry.specs) | set(SPECS))
     company = deepcopy(planning_capabilities()[0]["planning_schema"])
     company["properties"]["function"] = {"enum": sorted(FUNCTIONS)}
     company["properties"]["why"] = WHY
@@ -64,7 +90,7 @@ def definitions():
     rows = [
         (
             "margin_status",
-            "Inspect mode, process/session ID, provider readiness and remaining process allowances. No connection or provider calls. Read this first; process counters are not account-wide balances.",
+            "Inspect package_version (software, distinct from contract_version), mode, process/session ID, provider readiness and remaining process allowances. No connection or provider calls. Read this first; process counters are not account-wide balances.",
             schema(),
             True,
             True,
@@ -89,7 +115,7 @@ def definitions():
         ),
         (
             "margin_preview",
-            "Validate and preview one to eight whitelisted retrieval/calculation operations, costs and holds. Executes nothing. Discover nested argument schemas with margin_catalog. Submit the returned plan through margin_run only when its data work is wanted.",
+            "Generic preview of one to eight operations; executes nothing. You MUST obtain the selected exact operation schema from margin_catalog with include_schemas=true and preserve its nesting, including arguments.query where required. Do not infer fields from examples or upstream docs. Prefer typed margin_preview_news/announcements/earnings/earnings_filing when available; those take top-level fields. Submit the returned plan through margin_run only when wanted.",
             schema(
                 {
                     "operations": {
@@ -240,6 +266,24 @@ def definitions():
             False,
         ),
     ]
+    for name, operation in DIRECT_PREVIEWS.items():
+        policy = (
+            "Use an actual discovered earnings_id OR symbol plus discovered quarter."
+            if operation.endswith("get_earnings_filing")
+            else "Select one company. Use bounded lookback_days OR from/to, with page and limit; record ids override filters, so use ids alone."
+        )
+        if operation.endswith("get_announcements"):
+            policy += " include_extracted_information must remain false."
+        rows.append(
+            (
+                name,
+                f"Typed local preview for {operation}; exact inputs are THIS tool's MCP tools/list inputSchema, generated from reviewed Registry contracts. Supply top-level fields, without query/arguments/operations wrappers; Margin constructs the binding. {policy} No connect, fetch or automatic refresh; readiness/holds apply. Execute the plan separately with margin_run. Never guess schemas from memory or provider documentation.",
+                preview_schema(operation, registry),
+                False,
+                False,
+                False,
+            )
+        )
     for name, function in DIRECT_FUNCTIONS.items():
         inputs = deepcopy(SPECS[function][1])
         inputs["properties"]["why"] = WHY

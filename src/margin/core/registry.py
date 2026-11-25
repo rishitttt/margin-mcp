@@ -8,10 +8,9 @@ from dataclasses import dataclass
 from datetime import date
 from importlib.resources import files
 
-from jsonschema import Draft202012Validator, FormatChecker, ValidationError
-
 from margin.core.config import Settings
 from margin.core.contracts import DomainError, OperationRequest, encoded_size
+from margin.core.validation import validation_summary
 
 SNAPSHOT = json.loads(files("margin.resources").joinpath("drishti-contracts.json").read_text())
 DRISHTI = {o["name"]: o for o in SNAPSHOT["operations"]}
@@ -205,15 +204,14 @@ class Registry:
             request.arguments["query"].setdefault("include_extracted_information", False)
         if encoded_size(request.arguments) > 64 * 1024:
             raise DomainError("invalid_input", "Arguments exceed 64 KiB.")
-        try:
-            Draft202012Validator(spec.schema, format_checker=FormatChecker()).validate(
-                request.arguments
-            )
-        except ValidationError as e:
-            path = ".".join(str(p) for p in e.absolute_path) or "arguments"
+        problem = validation_summary(spec.schema, request.arguments)
+        if problem:
             raise DomainError(
-                "invalid_input", f"Invalid {path}; check the reviewed operation schema."
-            ) from None
+                "invalid_input",
+                "Arguments do not match the reviewed operation schema. "
+                "Obtain its exact schema from margin_catalog(include_schemas=true) and preserve nesting. "
+                + problem,
+            )
         reason = self.held_reason(spec)
         if reason:
             raise DomainError("held_operation", reason)

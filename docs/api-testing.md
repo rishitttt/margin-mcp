@@ -1,5 +1,22 @@
 # API and MCP testing protocol
 
+## 0.7.0 typed-preview host acceptance
+
+This build adds no authenticated calls. Upgrade backend/frontend together only after
+preserving old logs and reconciling unused allowance. Current user backend is 0.6.2;
+publishing/installing another wheel does not update a running process or renew quota.
+For the next host test, inspect status.package_version=0.7.0, explicitly refresh
+Drishti metadata if needed, then use margin_preview_announcements with top-level
+fields from its actual advertised schema. Do not call protocol tools/list as a tool.
+Generic fallback uses its exact margin_catalog schema, including nested query.
+Use the [one-source sequence](review-workflows.md#small-model-acceptance-after-activation):
+one summary announcement, extraction=false, then local import/review/sentiment. At most
+one estimated data credit, no BharatStock; metadata/cleanup HTTP needs its own bounded
+headroom. Stop on holds/uncertainty and do not retry with a new key. Exact per-provider
+remaining allowance must be inspected, not copied from an old process. Record actual
+calls/errors and final prose separately; no new model result is established by build
+tests. No purchase or account-balance query is required for offline validation.
+
 ## Drishti and review acceptance: 25 November 2026
 
 Explicit diagnostic (fixed dated INFY window; **already executed once**, do not repeat

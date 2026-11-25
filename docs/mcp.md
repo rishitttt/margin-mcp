@@ -1,10 +1,64 @@
 # Run Margin as a local MCP server
 
-Current release **0.6.2**, 25 November 2026. Twenty-one MCP tools expose the existing
+Current release **0.7.0**, 25 November 2026. Twenty-five MCP tools expose the existing
 37 retrieval/finance and ten review functions. Six common calculations now have directly
 advertised strict schemas. The core, CLI and workbench remain available independently.
 The [architecture](design/mcp-aggregation.md) owns the plan published before this change;
 [implementation](implementation.md) owns evidence and limitations.
+
+## Typed retrieval previews and exact schema authority
+
+Prefer these local planning tools for the common event paths:
+
+| Tool | Reviewed core operation | Inputs |
+| --- | --- | --- |
+| margin_preview_news | drishti.get_news | Query fields at tool top level |
+| margin_preview_announcements | drishti.get_announcements | Query fields at top level; extraction=false |
+| margin_preview_earnings | drishti.list_earnings | Query fields at tool top level |
+| margin_preview_earnings_filing | drishti.get_earnings_filing | Actual earnings_id OR symbol + discovered quarter |
+
+**Use the exact schema supplied by the server.** Typed calls use that tool's
+`tools/list` inputSchema: do not add query, arguments or operations wrappers. Schemas
+are already advertised by the host; tools/list is protocol discovery, not an additional
+callable Margin tool. Schemas
+are generated from reviewed `Registry.specs`, sourced from the packaged Drishti
+contract snapshot with Margin's admission restrictions. The adapter constructs the
+core query wrapper. All selector/window/page/limit, readiness, cost and schema guards
+remain; preview never connects, refreshes or fetches automatically.
+
+Generic `margin_preview` remains compatible. Before constructing one, obtain the
+selected exact operation schema through `margin_catalog` with its name and
+include_schemas=true. Preserve that schema's nesting, including arguments.query
+where required. Reuse an already inspected current schema; do not load every schema,
+guess from examples/memory, or substitute the upstream provider's broader input rules.
+Catalog `mcp_execution` still describes generic binding; `direct_preview` identifies
+the flat alternative and its own tools/list schema authority. Live metadata changes
+cannot silently replace reviewed contracts; changed operations stay held.
+
+Example typed local preview (after explicit connection if needed):
+
+```json
+{
+  "symbols": ["INFY"],
+  "from": "2026-11-10",
+  "to": "2026-11-25",
+  "page": 1,
+  "limit": 1,
+  "include_extracted_information": false,
+  "why": "Preview one summary announcement without fetching data."
+}
+```
+
+Pass it to `margin_preview_announcements`; execute only the resulting plan through
+the existing margin_run/session/idempotency workflow. Unknown fields remain rejected.
+Retrieval errors now name schema-owned missing/allowed fields (such as missing query)
+without echoing unknown caller names/values. `margin_status.data.package_version`
+identifies software (0.7.0); envelope.contract_version remains margin.mcp.v1.
+
+Tradeoff: tools/list measured 59,853 JSON bytes versus 47,721 for 0.6.2 (+25.42%).
+These are uncompressed byte counts, not host-tokenizer/context guarantees. Smaller
+models still need sufficient context; actual behavioral improvement needs a new
+user-led host test. No live install/restart is performed by publishing this patch.
 
 ## Company finance without previous results
 
@@ -115,17 +169,17 @@ Console commands are `margin-mcp`, `margin-backend`, and the existing `margin-ag
 optional `margin-workbench`. No new package dependency is required for shared mode.
 The package is not yet published to PyPI; use the local wheel or checkout.
 
-The current tested 0.6.2 wheel is committed at
-[`releases/0.6.2/margin_research-0.6.2-py3-none-any.whl`](../releases/0.6.2/margin_research-0.6.2-py3-none-any.whl),
-with [`SHA256SUMS`](../releases/0.6.2/SHA256SUMS). The earlier tested 0.6.1 artifact
-remains under releases/0.6.1/ with its original checksum. Keep release artifacts immutable and publish
+The current tested 0.7.0 wheel is committed at
+[`releases/0.7.0/margin_research-0.7.0-py3-none-any.whl`](../releases/0.7.0/margin_research-0.7.0-py3-none-any.whl),
+with [`SHA256SUMS`](../releases/0.7.0/SHA256SUMS). Earlier tested 0.6.1/0.6.2 artifacts
+remain in their versioned directories with original checksums. Keep release artifacts immutable and publish
 a new package version for later runtime changes. Generated `dist/` outputs remain
 ignored; only deliberately reviewed versioned release files belong in Git.
 
 From the repository root, verify the committed artifact before installation:
 
 ```sh
-(cd releases/0.6.2 && shasum -a 256 -c SHA256SUMS)
+(cd releases/0.7.0 && shasum -a 256 -c SHA256SUMS)
 ```
 
 The wheel contains no provider keys or private captures. Credentials/configuration
@@ -219,19 +273,19 @@ the executable is `/Users/rishit/Desktop/mtest/.venv/bin/margin-mcp`. After a wh
 restart the backend deliberately and reconnect the host; never silently replenish spent
 allowances. The existing `.env` and logs remain private, outside the package.
 
-For a controlled upgrade to 0.6.2, inspect/save the old ledger and logs, stop the
+For a controlled upgrade to 0.7.0, inspect/save the old ledger and logs, stop the
 old backend with its existing executable, then install the new wheel into that venv:
 
 ```sh
 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
-/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.6.2/margin_research-0.6.2-py3-none-any.whl
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.7.0/margin_research-0.7.0-py3-none-any.whl
 ```
 
 These are manual instructions, not actions performed during this build. Existing pinned
-existing pinned dependencies are reused. Restart explicitly using the backend command above only
+dependencies are reused. Restart explicitly using the backend command above only
 after setting reconciled remaining provider allowances; do not copy the old allowance
 as if nothing was spent. With no confirmed requests remaining, set the BharatStock
-allowance to zero and test local preview only. Both backend and frontend must be 0.6.2;
+allowance to zero and test local preview only. Both backend and frontend must be 0.7.0;
 reconnect the host after the version-matched restart. No provider key belongs in commands.
 
 ## Tools and financial output

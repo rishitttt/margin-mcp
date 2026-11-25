@@ -1,5 +1,14 @@
 # Project context and handoff
 
+**Latest source 0.7.0:** plan df45376 preceded four typed event previews, bounded
+retrieval diagnostics and MCP status.package_version. 25 tools; underlying operations
+unchanged. Exact typed input is host-advertised tools/list schema; generic calls must
+use the selected margin_catalog schema and nesting. Both derive from reviewed Registry
+contracts. Typed query fields go top-level and are wrapped internally; previews still
+require a separate run to fetch. 360 tests and SDK acceptance pass; docs/skill own next
+typed host test. Tool definition bytes +25.42%, no tokenizer/model-success claim.
+Active user backend remains 0.6.2; no upgrade/restart/quota reset/new provider call.
+
 **Latest user-led 0.6.2 preview:** the user upgraded/restarted; operator status confirms
 active 0.6.2, session 366a40cde7964091a21aaa9387eeb8ad. Drishti metadata approved all
 seven reviewed schemas. Three previews failed locally because operation.arguments.query

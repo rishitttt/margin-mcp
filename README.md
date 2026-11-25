@@ -1,5 +1,14 @@
 # Margin
 
+**Current source release: 0.7.0.** Four typed Drishti previews remove the query-wrapper
+translation from common event calls; exact schemas are generated from reviewed core
+contracts. Generic catalog routing remains compatible. Retrieval errors identify missing/
+allowed fields, and status exposes package_version separately from contract_version.
+[Usage/schema authority](docs/mcp.md#typed-retrieval-previews-and-exact-schema-authority),
+[validation](docs/implementation.md), [wheel](releases/0.7.0/margin_research-0.7.0-py3-none-any.whl)
+and [checksum](releases/0.7.0/SHA256SUMS). Active mtest remains 0.6.2; no live restart
+or allowance reset. Older dated source-release notes below are history.
+
 **Current source release: 0.6.2 (25 November).** Fresh INFY Drishti news, announcement
 and earnings list/detail calls passed. The review importer now handles all four shapes
 and preserves protected links, row identity and source limitations. Citation/sentiment
@@ -41,7 +50,7 @@ The [portable local test bundle](docs/portable-agent-bundle.md) adds relocatable
 
 ## Current state
 
-`main` has an installable core, two upstream adapters, 21 local MCP tools, deterministic
+`main` has an installable core, two upstream adapters, 25 local MCP tools, deterministic
 finance and ten citation/content-sentiment review functions. Synthetic mode defaults
 to fictional software fixtures. Explicit live checks and user-led finance tests are
 documented separately from offline transport tests. Broad issuer accuracy, source
