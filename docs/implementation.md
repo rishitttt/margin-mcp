@@ -2,6 +2,20 @@
 
 ## User-led 0.7.0 review failure: 26 November 2026 IST
 
+The user subsequently supplied the model's generated thinking text for sentiment.
+It recites the valid enum/function names, guesses schemas instead of a recorded lookup,
+initially calls the function as a tool, then recognizes margin_review as the router.
+It mixes citation submission with sentiment annotations, guesses text/window fields,
+and treats original_document_verified=false as evidence that a source is not expired.
+That flag concerns source verification, not TTL. These are observable self-report/call
+patterns; the text is not a faithful hidden-reasoning measurement or proof of context
+overflow. The supplied trace and coded review are private in the same audit directory.
+Actual sentiment sequence is prepare_analysis → submit_annotations → aggregate, using
+source_ids, explicit from/to and returned packet references. Routing recognition alone
+does not establish correct arguments or successful completion. Typed review schemas,
+focused tool exposure and clearer review diagnostics remain proposed usability work;
+no new runtime/provider call follows from reviewing this trace.
+
 The next recorded action is one margin_review call with function
 evidence.prepare_verification. That function exists in both the enum and review
 registry; rejection came from invalid arguments before packet/source lookup. It
