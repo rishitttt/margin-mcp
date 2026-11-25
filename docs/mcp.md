@@ -237,6 +237,34 @@ Console commands are `margin-mcp`, `margin-backend`, and the existing `margin-ag
 optional `margin-workbench`. No new package dependency is required for shared mode.
 The package is not yet published to PyPI; use the local wheel or checkout.
 
+### Package distribution and hosting
+
+Recommendation checked 26 November 2026: **PyPI first for this Python implementation**,
+using the existing wheel/console entry points; uvx provides an isolated launcher for
+MCP hosts. Package name and command name differ, so use --from. After publishing our
+release under a confirmed available name, the proposed launcher is:
+
+```sh
+uvx --python 3.12 --from 'margin-research==0.8.0' margin-mcp --tool-profile review
+```
+
+This is a future publication example, not a claim that our package/name is available
+on PyPI now. Keep full/shared installations version-matched. For repeatable local
+state-owning backend use a pinned persistent installation as documented above; a
+launcher does not automatically start/retain the shared backend or configure keys.
+
+npm/npx would suit a JavaScript implementation or a deliberately maintained launcher
+wrapper. For Margin it would add a second packaging/runtime layer around the existing
+Python code; defer it unless users need npx specifically. Package distribution and a
+future hosted MCP endpoint are separate delivery options and can coexist.
+
+Before public publication, confirm package ownership/name/metadata/license, validate
+clean installs, rehearse on TestPyPI, then publish the selected version to PyPI. No
+registry upload/account action is performed by this recommendation. References:
+[Python packaging/publishing](https://packaging.python.org/en/latest/tutorials/packaging-projects/),
+[uv tool execution/version pinning](https://docs.astral.sh/uv/guides/tools/),
+[npx behavior](https://docs.npmjs.com/cli/v11/commands/npx/).
+
 The current tested 0.8.0 wheel is committed at
 [`releases/0.8.0/margin_research-0.8.0-py3-none-any.whl`](../releases/0.8.0/margin_research-0.8.0-py3-none-any.whl),
 with [`SHA256SUMS`](../releases/0.8.0/SHA256SUMS). Earlier tested 0.6.1/0.6.2/0.7.0 artifacts
