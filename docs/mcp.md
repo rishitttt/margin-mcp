@@ -58,9 +58,9 @@ INR 1,500/month before tax, with internal model evaluation and full history. Ord
 on-demand querying is permitted on any plan within entitlements; Free's advertised
 60/day does not establish this older 25/day key's quota. No Drishti purchase is needed
 for this tool. See the dated [plan and subscription sources](design/fetch-and-calculate.md).
-No new paid/live run was made for this patch. The user's `mtest` live backend was
-upgraded to 0.6.0 for the latest B2/D0 pass and is left untouched by this 0.6.1 build.
-Its local B2 allowance is spent. Follow the version-matched upgrade guidance below
+The user has now activated 0.6.1: the latest INFY execution/details read used B1/D0
+and confirmed the formula patch. The backend's local B1 allowance is spent. This
+validation made no extra operator fetch; source facts remain unverified. Follow the version-matched upgrade guidance below
 and reconcile remaining allowances before any controlled cutover.
 
 ## Reporting contract v2 and migration

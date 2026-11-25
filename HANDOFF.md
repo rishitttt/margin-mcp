@@ -1,5 +1,11 @@
 # Margin: quick handoff
 
+**Latest user-led check, 25 November:** live mtest now runs 0.6.1; B1/D0 used and
+local B1 spent. HUL completeness, INFY formulas/amounts and backend details projection
+pass. Raw-versus-report prose is still incomplete despite the fields being returned.
+No new runtime defect or release; no operator fetch/restart. See
+[current validation](docs/implementation.md) before following older activation notes.
+
 **25 November 0.6.1:** corrects per-metric formula metadata exposed by the live
 0.6.0 retest. Values/units/arithmetic are unchanged. INFY numeric reporting improved;
 HUL output omitted rows in the model answer, while all rows were present in the tool.

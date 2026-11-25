@@ -1,5 +1,14 @@
 # Function validation status
 
+## Patched live acceptance: 25 November 2026
+
+HUL's cached all-rows retest now preserves profit, revenue and margin in final prose.
+0.6.1 INFY money/formula reporting and same-key raw-details projection pass, with
+one current-process BharatStock attempt and no Drishti. Raw-unit final-answer coverage
+remains incomplete: tool details contain INR, but the model repeated canonical crore
+rows. This is separate from correct backend projection; no new runtime defect was
+found. Source figures remain provider-unverified. See [implementation](../implementation.md).
+
 ## Live rows and formula metadata: 25 November 2026, 0.6.1
 
 The 0.6.0 INFY numeric rows, same-key repeat and details projection passed with B2/D0

@@ -1,5 +1,30 @@
 # Implementation and validation status
 
+## User-led 0.6.1 acceptance: 25 November 2026
+
+The no-fetch HUL retest on the previous 0.6.0 backend returned identical data/request
+ID and the pasted model answer now includes profit, revenue and the margin result.
+After the user's 0.6.1 upgrade, INFY growth returned the correct amounts and distinct
+absolute/percentage formulas. Same-key include_details retained report/request ID
+and exposed raw INR inputs. Read-only status confirms the active 0.6.1 backend used
+**B1/D0**, zero estimated Drishti credits and one request control. No extra operator
+provider/model calls were made. The active B1 local allowance is now spent.
+
+Core projection passes; the raw-versus-reporting final-answer task remains incomplete:
+the model received raw details but printed report rows instead of the requested raw
+value/unit pairs. It also said all values used crore despite percent/raw-INR fields
+and named details.formulas instead of details.values.formulas. Clarify attribution:
+BharatStock statement inputs are documented INR; Margin calculates growth/formulas
+and normalizes reporting rows to crore. No new backend arithmetic/format defect was
+found. Original issuer facts remain unverified.
+
+These are guided checks with supplied arguments, not a general model benchmark or
+context-overflow diagnosis. Latest calls omitted optional why; logs record tool
+actions/results, not hidden reasoning or final prose. Original events/review are in
+`reports/private/lmstudio-061-live-2026-11-25/`. No runtime change/new release is needed
+for this audit. A same-key four-field extraction test can check raw-unit prose without
+a new fetch or restart. Earlier installation-state notes below are historical.
+
 ## 0.6.0 live findings and 0.6.1 formula patch: 25 November 2026
 
 The user-led 0.6.0 run contains one INFY growth execution, its identical-key replay,

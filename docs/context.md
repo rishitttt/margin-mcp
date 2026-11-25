@@ -1,5 +1,14 @@
 # Project context and handoff
 
+**25 November user-led 0.6.1 validation:** current live mtest backend is now 0.6.1,
+B1/D0 spent. HUL's old-key all-rows answer passed before the upgrade. INFY amounts
+and corrected formulas pass; include_details reuses the same request/report and
+returns raw INR. The model still did not print the requested raw/report value-unit
+pairs and misstated some attribution/field paths. No new code change is needed;
+same-key explicit extraction can be retested without fetching/restarting. Evidence
+is in implementation and private lmstudio-061-live audit. Older source-versus-active
+version notes below apply to their dated checkpoints.
+
 **25 November 0.6.1 patch:** user-led 0.6.0 rows tests confirm correct INFY money/
 growth and duplicate/details behavior; status B2/D0, local B2 spent. HUL supplied all
 three rows, but the model omitted profit/margin. A Margin-side inherited-formula bug
