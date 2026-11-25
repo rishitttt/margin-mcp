@@ -1,5 +1,10 @@
 # Function validation status
 
+**26 November explicit-instruction retry:** user confirms the actual task/text was
+omitted. Reference, quote and packet-kind guards reject three invented/mismatched
+calls; audit remains incomplete/not_reviewed. No sentiment packet exists. This is a
+missing-input/caller behavior test; no Infosys workflow completion or new core defect.
+
 **26 November first 0.8.1 unguided trial:** setup status succeeds; no citation or
 sentiment review call reaches the backend. The model directly answers supplied text.
 Classify as tool-use omission, not protocol success or evidence of runtime failure.

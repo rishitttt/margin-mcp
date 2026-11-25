@@ -1,5 +1,12 @@
 # Margin build and evaluation plan
 
+**26 November instruction-delivery review:** the explicit retry omitted the actual
+task/source (user confirmed) and invented a different task. Preserve it as a missing-
+input case; next use the complete one-file real Infosys prompt and record model/context.
+Then compare MCP-only, a compact host preset and the existing skill on a supporting
+host, keeping settings fixed. See [review](design/mcp-aggregation.md#instruction-delivery-review-26-november-2026).
+No runtime repair, skill install, API call or active backend change in this review.
+
 **26 November first 0.8.1 unguided outcome:** the host answered supplied text without
 admitted review calls; setup status passed. Preserve this omission and separately test
 a goal requiring actual Margin review records/audit/aggregate outputs, without naming

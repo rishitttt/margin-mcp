@@ -1,5 +1,12 @@
 # Margin: quick handoff
 
+**Latest 26 November retry:** the user omitted the actual task/text, supplying only
+the MCP instruction. The model called tools with invented data; guards left citation
+unreviewed and rejected sentiment's wrong packet kind. Use the complete private Infosys
+prompt for the next actual task test. Optional skill/LM Studio preset approaches are
+[reviewed](docs/design/mcp-aggregation.md#instruction-delivery-review-26-november-2026);
+no new runtime release, installation, configuration change or provider call.
+
 **Latest host trial, 26 November:** user activated 0.8.1. Status works, but the first
 unguided answer bypassed admitted review tools; do not count it as workflow acceptance.
 No runtime defect is established. Preserve the original result, then test a separately

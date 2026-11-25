@@ -80,6 +80,13 @@ This specifies an outcome without naming functions. It tests interface execution
 do not treat unavailable Margin record IDs in a without-Margin condition as an answer-
 quality failure or overwrite the original unguided outcome. Host parser failures and
 per-chat tool enablement require caller-side evidence; backend logs alone omit them.
+The subsequent user retry included only that general instruction, omitting the task
+and source text. It is therefore a missing-input test: the model should ask for them,
+not invent an example. Guarded errors and incomplete results are recorded separately
+in implementation status. The ignored local file
+reports/private/lmstudio-081-missing-task-2026-11-26/complete-infy-prompt.txt now contains
+the complete real-text prompt in one block, without expected answers or credentials.
+Use the whole file for the next actual task trial; no restart or API request is needed.
 
 1. **Supplied text, zero-provider budget, review or full profile.** Prompt: "This is a
    fictional software test. ExampleCo's supplied announcement says: 'Demand improved,

@@ -1,5 +1,58 @@
 # Margin MCP adapter architecture and implementation plan
 
+## Instruction delivery review: 26 November 2026
+
+After the enabled-but-unused trial, an explicit MCP instruction elicited calls but the
+user confirms the actual Infosys task/text was omitted. The model should request missing
+input. Instead it invented another task/locator/quote; existing reference/quote/kind guards
+rejected three calls and left review incomplete. Do not diagnose context overflow, missing
+MCP connectivity or schema drift from this evidence. No runtime repair or new package is
+implemented in this review; preserve the failed caller trajectory separately.
+
+### Observed external approaches
+
+- MCP initialization includes optional server instructions, which clients may place in
+  the model prompt; this is advisory guidance, not a guaranteed system-prompt injection.
+  [Specification](https://modelcontextprotocol.io/specification/2025-11-25/schema#initializeresult)
+- Standard MCP prompts are discoverable, parameterized, user-controlled templates.
+  They do not automatically become startup instructions. Margin currently exposes tools
+  and initialization instructions, not a prompts/list/get interface.
+  [MCP prompts](https://modelcontextprotocol.io/specification/2025-11-25/server/prompts)
+- GitHub's current official server documents optional bundled workflow skills under
+  --features=skills/Insiders, disabled by default and filtered by available tools. Its
+  toolset configuration also narrows the tool surface/context. This is a concrete
+  project-specific delivery choice, not a universally implemented MCP skills primitive.
+  [GitHub MCP](https://github.com/github/github-mcp-server#mcp-skills)
+- Microsoft's Playwright project documents MCP and CLI+SKILLS alternatives, recommending
+  the latter for coding-agent cases where context efficiency matters. That does not prove
+  adding a full skill alongside all MCP schemas reduces context in LM Studio.
+  [Playwright](https://github.com/microsoft/playwright-mcp#playwright-mcp-vs-playwright-cli)
+- Agent Skills defines workflow folders loaded by compatible agents. A skill is not
+  installed/loaded merely because an MCP connects or a user attaches an arbitrary ZIP.
+  [Skills overview](https://agentskills.io/home)
+- LM Studio documents reusable presets containing system prompts and generation settings.
+  That supports a compact preset experiment; its inspected MCP/preset docs do not establish
+  native Agent Skills auto-loading or what this particular model actually received.
+  [Presets](https://lmstudio.ai/docs/app/presets)
+
+### Margin recommendation and experiment conditions
+
+Keep the portable MCP's schemas, task triggers and next-step bindings; strengthen missing-
+input/completion wording in a later separately planned runtime change if evidence warrants
+it. Use the existing repo skill for skills-compatible hosts, with detailed references
+loaded only as needed. For LM Studio offer the short system-prompt text in the MCP guide;
+do not paste the entire 18-KiB skill plus all tools into a small context by default.
+No host configuration/global skill is changed by this review.
+
+Compare MCP-only, MCP+short host preset and MCP+skill (on a host supporting skills), with
+the same complete task, model/settings/context and available tools. Record exact prompt/
+skill/version hashes, host capabilities and first attempts. A missing-task case separately
+expects clarification with no invented inputs or source access. An artifact-required
+task measures workflow execution; a natural answer task permits optional tool selection.
+Do not attribute benefits of added workflow instructions solely to MCP transport, or
+penalize without-Margin answers for lacking Margin-specific IDs. No hidden reasoning is
+required: preserve calls/results, visible summaries, final answer and observed recovery.
+
 ## 0.8.1 optional citation protocol plan and evaluation: 26 November 2026
 
 The user asks whether to remove citation verification or retain a protocol for hosts

@@ -1,5 +1,13 @@
 # Project context and handoff
 
+**Latest host clarification, 26 November:** user supplied only the general MCP
+instruction on retry, omitting the Infosys task/text. Tools were used, but another
+task/source/quote was invented; guards rejected handles/quote/wrong packet kind, and
+no semantic assessment/sentiment completed. Preserve the private missing-task capture;
+complete-infy-prompt.txt there now contains all real input without expected answers.
+MCP/skill/short-preset comparison is documented, not installed or proven effective.
+No patch/restart/provider call. Missing-task clarification should precede tool dispatch.
+
 **Latest 26 November host observation:** active backend is now 0.8.1, live/recorded,
 B0/D0. User reports review/14-tool profile. Only the setup status call is recorded;
 the first unguided supplied-text answer used no admitted review calls. This is a

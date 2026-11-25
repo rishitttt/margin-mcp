@@ -1,5 +1,13 @@
 # Working on Margin
 
+**26 November missing-task clarification:** the explicit MCP retry omitted the actual
+Infosys task/text (user confirmed). Nine admitted calls invented another task/source/
+quote; three guards rejected handles, quote and wrong packet kind, leaving no accepted
+assessment/sentiment. Preserve private lmstudio-081-missing-task records. This is a
+missing-input behavior failure, not a full Infosys test or evidence of source fetching.
+Complete prompt and optional preset/research guidance are documented; no runtime,
+global skill, model configuration, active backend or allowance change in this audit.
+
 **26 November latest host 0.8.1:** user upgraded; status-only log has two events,
 live/recorded B0/D0. The first unguided supplied-text answer bypassed admitted review
 tools. Preserve private lmstudio-081-unguided-nonuse evidence; do not call it workflow

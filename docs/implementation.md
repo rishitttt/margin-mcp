@@ -1,5 +1,35 @@
 # Implementation and validation status
 
+## User-led 0.8.1 missing-task trial: 26 November 2026 IST
+
+The user confirms the fresh chat contained only the general MCP instruction, without
+the Infosys summary/claims. It is a missing-input behavior test, not a completed or
+failed execution of the full Infosys task. After the earlier setup status, nine more
+calls reached the same backend: status/catalog, verification with invented handles,
+metadata-only source registration, verification with the returned handle, assessment
+submission, audit, sentiment aggregation and citation rendering. Eight calls supplied
+optional why; reviewer model metadata is caller-authored and does not identify the
+actual model/context setting.
+
+The model invented a different revenue task, unsupported report locator/date and a
+480-crore quote. Invented handles were rejected with source_unavailable. The registered
+source has no passages; the quote submission was rejected with quote_mismatch. Audit
+correctly returns incomplete/not_reviewed=1. No sentiment packet or annotations were
+created; aggregating the citation packet was rejected with packet_mismatch. Render
+keeps not_reviewed and original_document_verified=false. The final answer's completed
+workflow, accepted assessment and registered financial content claims are unsupported.
+Valid host-supplied locator registration checks schema, not document existence or
+authenticity; these guards do not establish that host-supplied text itself is genuine.
+
+Preserved twenty-event snapshot and review are private under
+reports/private/lmstudio-081-missing-task-2026-11-26/; the earlier two-event nonuse
+capture remains unchanged. No operator provider/model call, runtime patch, restart,
+allowance reset or new release. Next supply the complete task/material in one prompt
+and evaluate missing-input refusal separately. Skills/presets are proposed instruction
+delivery conditions, not proof that they fix this model. The research review is in
+[MCP architecture](design/mcp-aggregation.md#instruction-delivery-review-26-november-2026)
+and [host guidance](mcp.md#skills-and-host-system-prompts).
+
 ## User-led 0.8.1 first unguided attempt: 26 November 2026 IST
 
 The user activated 0.8.1. Latest backend log has two events: one successful setup

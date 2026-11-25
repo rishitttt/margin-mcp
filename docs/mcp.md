@@ -20,6 +20,39 @@ original passages and prepare a new packet. Margin does not fetch, run an LLM or
 independently authenticate originals. See [protocol/fallbacks](review-workflows.md#optional-citation-protocol-and-host-capability)
 and [goal-only host tests](review-workflows.md#next-tests-and-unguided-acceptance).
 
+## Skills and host system prompts
+
+The repo's [Margin skill](../skills/margin-research/SKILL.md) supplies procedural guidance
+for hosts supporting skills; the MCP remains the callable interface. Connecting an MCP
+does not automatically install/load that skill. Attaching a Markdown file supplies text
+only if the host actually includes it; do not assume native skill discovery in every app.
+The existing skill also has a CLI bridge for compatible coding agents, which is a
+different execution condition from directly using the MCP tools.
+
+For LM Studio, a compact reusable system-prompt preset is an optional alternative.
+[LM Studio presets](https://lmstudio.ai/docs/app/presets) can bundle system text and
+generation settings. Append this guidance to the host's existing instructions rather
+than replacing its unrelated rules:
+
+```text
+Margin MCP is available for Indian financial research and auditable review tasks.
+Choose its tools from the user's goal and their current advertised schemas.
+If the task, issuer, claims, source text or required context is missing, ask for it;
+do not invent a sample task, source URL, financial value, quote or record identifier.
+For requested Margin review records, follow returned workflow guidance and use actual
+tool references. Report completion only after successful results confirm it.
+Preserve incomplete/error outcomes, units, dates and source-verification limitations.
+Keep citation review optional for ordinary retrieval/math. Make provider calls only
+within the user's authorized scope and configured allowance. Use brief action summaries.
+```
+
+This is a proposed preset, not an installed configuration or tested improvement. Keep
+the complete user task/source material in the test prompt; a system instruction cannot
+supply missing research input. Record MCP-only, preset and skill conditions separately.
+Source/quote checks validate supplied material; they cannot authenticate invented host
+text. Consult the [delivery review](design/mcp-aggregation.md#instruction-delivery-review-26-november-2026)
+for observed primary-source examples and evaluation limits.
+
 ## Typed review tools, profiles and packet handoffs
 
 Use each tool's exact host-advertised inputSchema at the top level. No function/
