@@ -31,6 +31,26 @@ Provider captures remain ignored. A new runtime version must not overwrite 0.6.1
 References checked: [MCP guide](https://drishti.manasija.in/docs/guides/drishti-mcp),
 [account inspection](https://drishti.manasija.in/docs/api-reference/account).
 
+### Measured repair plan, before runtime edits
+
+The isolated pass completed all four data calls: B0/D10 HTTP including lifecycle,
+seven estimated credits, observed account balance 943→936; two account GETs separate.
+The overall checker stopped afterward with KeyError in the existing source importer:
+earnings detail is `data: object`, whereas the importer slices data as a list.
+Announcement/earnings attachments are also omitted because it only recognizes news
+URL fields. Preserve this original failed capture; do not rerun the paid pass.
+
+Implement a small reviewed projection for news, announcement, earnings-list and
+earnings-detail shapes. Map supplied summaries and attachment/citation locators,
+keep row paths and reported symbols in internal provenance, reject other-company
+rows, preserve unknown publication dates and mark provider text unverified. Unknown
+operations/shapes return incomplete rather than being generically imported. Validate
+all sources before atomic registration; keep the public review schemas/tools and
+TTL/quote checks unchanged. Reprocess these saved sanitized responses offline, then
+complete host-written citation/sentiment round trips and negative capability/quote
+cases. Ship a new patch version only after regression/SDK checks; leave active
+0.6.1 and its immutable wheel unchanged. No further authenticated calls in this repair.
+
 ## 0.6.0 live audit and 0.6.1 patch gate, 25 November 2026
 
 The user completed one INFY growth execution, same-key replay, same-key raw details,
