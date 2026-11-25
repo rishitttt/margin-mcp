@@ -1,6 +1,6 @@
 # Run Margin as a local MCP server
 
-Current release **0.6.0**, 25 November 2026. Twenty-one MCP tools expose the existing
+Current release **0.6.1**, 25 November 2026. Twenty-one MCP tools expose the existing
 37 retrieval/finance and ten review functions. Six common calculations now have directly
 advertised strict schemas. The core, CLI and workbench remain available independently.
 The [architecture](design/mcp-aggregation.md) owns the plan published before this change;
@@ -58,12 +58,21 @@ INR 1,500/month before tax, with internal model evaluation and full history. Ord
 on-demand querying is permitted on any plan within entitlements; Free's advertised
 60/day does not establish this older 25/day key's quota. No Drishti purchase is needed
 for this tool. See the dated [plan and subscription sources](design/fetch-and-calculate.md).
-No new paid/live run was made for this release. The user's `mtest` live backend was
-upgraded to 0.5.0 for the previous B2/D0 pass and is left untouched by this 0.6.0 build.
+No new paid/live run was made for this patch. The user's `mtest` live backend was
+upgraded to 0.6.0 for the latest B2/D0 pass and is left untouched by this 0.6.1 build.
 Its local B2 allowance is spent. Follow the version-matched upgrade guidance below
 and reconcile remaining allowances before any controlled cutover.
 
 ## Reporting contract v2 and migration
+
+**0.6.1 formula correction:** read each row's own `formula`. Absolute change is
+`current - previous`; percentage change is `(current - previous) / previous * 100`.
+Raw comparison `details.values.formulas` maps each metric explicitly. The legacy
+`details.values.formula` is retained as the percentage formula for compatibility;
+do not apply it to every output. CAGR's elapsed-years row has no CAGR result formula.
+Other standalone/grouped results use their own reviewed formulas. No arithmetic/unit
+change or new fetch is involved. Cached answers in an already-running 0.6.0 backend
+remain unchanged; this patch requires a deliberate version-matched upgrade.
 
 Package 0.6.0 changes only the company convenience response shape, now explicitly
 `response_version: margin.company_finance.v2`. The outer MCP envelope remains v1;
@@ -193,19 +202,19 @@ the executable is `/Users/rishit/Desktop/mtest/.venv/bin/margin-mcp`. After a wh
 restart the backend deliberately and reconnect the host; never silently replenish spent
 allowances. The existing `.env` and logs remain private, outside the package.
 
-For a controlled 0.5.0 to 0.6.0 upgrade, inspect/save the old ledger and logs, stop the
+For a controlled upgrade to 0.6.1, inspect/save the old ledger and logs, stop the
 old backend with its existing executable, then install the new wheel into that venv:
 
 ```sh
 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
-/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/dist/margin_research-0.6.0-py3-none-any.whl
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/dist/margin_research-0.6.1-py3-none-any.whl
 ```
 
 These are manual instructions, not actions performed during this build. Existing pinned
-0.5.0 dependencies are reused. Restart explicitly using the backend command above only
+existing pinned dependencies are reused. Restart explicitly using the backend command above only
 after setting reconciled remaining provider allowances; do not copy the old allowance
 as if nothing was spent. With no confirmed requests remaining, set the BharatStock
-allowance to zero and test local preview only. Both backend and frontend must be 0.6.0;
+allowance to zero and test local preview only. Both backend and frontend must be 0.6.1;
 reconnect the host after the version-matched restart. No provider key belongs in commands.
 
 ## Tools and financial output

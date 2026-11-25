@@ -1,5 +1,13 @@
 # Margin: quick handoff
 
+**25 November 0.6.1:** corrects per-metric formula metadata exposed by the live
+0.6.0 retest. Values/units/arithmetic are unchanged. INFY numeric reporting improved;
+HUL output omitted rows in the model answer, while all rows were present in the tool.
+[Implementation](docs/implementation.md) records attribution, tests and private evidence;
+[MCP guide](docs/mcp.md) owns formula contracts and version-matched upgrades. The
+running live backend remains 0.6.0 with B2 spent. Do not reset or silently replace it.
+For future work, follow the [documentation ownership map](docs/README.md).
+
 **25 November 0.6.0:** [reporting contract v2](docs/mcp.md#reporting-contract-v2-and-migration)
 separates canonical crore/per-share/percent/ratio rows from optional raw calculation
 details. Rows include deterministic displays for calculated amounts; same-key

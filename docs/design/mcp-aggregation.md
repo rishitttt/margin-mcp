@@ -1,5 +1,12 @@
 # Margin MCP adapter architecture and implementation plan
 
+**0.6.1 metadata patch:** per-metric formulas replace inherited report formulas;
+comparison details add an explicit mapping while preserving the legacy percentage
+formula field. Math, units, tools and response versions are unchanged. The latest
+live audit separates tool metadata defects from model prose/omissions; see
+[implementation](../implementation.md) and the [focused plan](fetch-and-calculate.md).
+No final-answer verifier or new data access is added.
+
 **0.6.0 reporting:** company response v2 adds a deterministic report projection,
 consistent reporting units and matching row values/displays. Raw calculation fields are
 opt-in details; the same request key projects them without fetching again. The

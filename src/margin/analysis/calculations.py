@@ -43,6 +43,10 @@ def compare_periods(previous, current):
             "percentage_change": percent,
             "unit": a["unit"],
             "formula": "(current - previous) / previous * 100",
+            "formulas": {
+                "absolute_change": "current - previous",
+                "percentage_change": "(current - previous) / previous * 100",
+            },
         },
         issues=["Percentage growth is not meaningful for a nonpositive baseline."]
         if percent is None

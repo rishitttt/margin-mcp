@@ -1,5 +1,11 @@
 # Financial facts and local calculations
 
+**0.6.1 metadata:** `finance.compare_periods` now includes per-metric `values.formulas`
+for absolute and percentage change; legacy `values.formula` remains the percentage
+formula. Arithmetic is unchanged. Company report rows carry the applicable formula,
+not one blanket formula for all outputs; elapsed CAGR years remains an input duration.
+See [current MCP contract](mcp.md#reporting-contract-v2-and-migration).
+
 **0.5.0 company entrypoint:** `margin_company_finance` can explicitly fetch fresh
 financials and return any of the nine company calculations directly, without an earlier
 result handle. Pure explicit-input calculations still never fetch. The new path uses

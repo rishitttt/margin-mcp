@@ -1,5 +1,13 @@
 # Margin build and evaluation plan
 
+**25 November 0.6.1 metadata repair:** plan `bf43c96` owns the confirmed inherited-
+formula defect. Per-result formulas are corrected without changing numeric math,
+units or data access. Latest user-led test evidence separates backend metadata from
+model omissions/raw-unit prose. Next useful no-fetch test: existing HUL key, every
+report row including the calculated margin. A new patched live process/acceptance
+is a separate deliberate activation with reconciled allowance. No budget reset,
+new data fetch or final-answer verifier is part of this patch.
+
 **25 November 0.6.0 reporting repair:** the [plan](design/fetch-and-calculate.md)
 published as `1ffec64` now delivers canonical structured rows and
 opt-in raw details. No generated summary or Markdown table. Software and saved HUL/INFY presentation checks precede a new

@@ -1,5 +1,45 @@
 # Implementation and validation status
 
+## 0.6.0 live findings and 0.6.1 formula patch: 25 November 2026
+
+The user-led 0.6.0 run contains one INFY growth execution, its identical-key replay,
+its raw-details projection and one HUL margin execution. Original eight user tool
+events are preserved privately. Read-only status confirms B2/D0 total, zero estimated
+Drishti credits and two request controls. Same request ID/data for the INFY repeat;
+details adds raw INR inputs without changing canonical crore rows or fetching again.
+Exact growth arithmetic matches the returned inputs. HUL returned profit, revenue
+and margin rows; the model's revenue-only final answer omitted two available rows.
+
+**Margin defect:** the report builder copied a function-wide percentage-change
+formula onto the absolute-change row. The model repeated incorrect metadata supplied
+by Margin; the numeric amount/percent were correct. The same generic pattern attached
+CAGR's formula to its input-years row. These are metadata defects, not bad API data
+or arithmetic failures. Model-side errors remain separate: normalized crore values
+mislabelled as raw provenance, a claim of no conversion despite Margin's normalization,
+and an invalid margin_result/request_id follow-up. Context overflow is unproven.
+
+Plan `bf43c96` preceded the 0.6.1 fix. Comparisons now add `values.formulas` by metric;
+legacy `values.formula` remains the percentage formula for compatibility. The report
+uses per-metric formulas/reviewed mappings, never a blanket function-wide formula.
+Absolute change uses current-minus-previous; percentages use change/previous times
+100. CAGR's elapsed years has no derived CAGR formula; CFO difference/coverage,
+margins, TTM and grouped components retain their own formulas. Arithmetic, units,
+data dependencies, response v2/rows-only shape and tool inventory are unchanged.
+
+Regression checks first reproduced the faulty growth/CAGR metadata, then passed the
+repair. **321 offline tests passed**. Source/installed-wheel SDK checks, lint/format,
+documentation links and credential/package scans are recorded under
+`reports/private/formula-metadata-2026-11-25/`. Live original events, review and an
+offline corrected INFY projection are under `reports/private/lmstudio-060-live-2026-11-25/`.
+Do not overwrite the original defective result or count an offline correction as
+another live/model success. No original-issuer verification is implied.
+
+The installed live backend remains 0.6.0 with its B2 local allowance spent. No agent
+provider/model calls, purchase, live venv changes or backend restart were made. The
+0.6.1 source/wheel fix does not mutate that process's cached replies. HUL can be
+retested with its existing key, requesting every row including kind=result, without
+another fetch. Point 4 (host-enforced final-answer validation) remains deferred.
+
 ## Canonical structured rows: 25 November 2026, 0.6.0
 
 Plan `1ffec64` and the user-requested rows-only refinement `7281893` were published

@@ -8,6 +8,15 @@ from margin.analysis.facts import MONEY_UNITS
 from margin.analysis.presentation import LABELS
 
 REPORT_VERSION = "margin.company_report.v1"
+RESULT_FORMULAS = {
+    "absolute_change": "current - previous",
+    "percentage_change": "(current - previous) / previous * 100",
+    "margin_percent": "profit / revenue * 100",
+    "cagr_percent": "((current / previous) ** (1 / years) - 1) * 100",
+    "cfo_minus_capex": "cfo - capex",
+    "capex_coverage": "cfo / capex",
+    "total": "sum of four non-overlapping quarterly flows",
+}
 RESULT_LABELS = {
     "margin_percent": "Profit margin (using the selected profit definition)",
     "absolute_change": "Absolute change",
@@ -145,6 +154,7 @@ def company_report(output, details):
     metadata = {
         "profit_definition",
         "formula",
+        "formulas",
         "unit",
         "definition",
         "period_start",
@@ -167,8 +177,10 @@ def company_report(output, details):
             for k in ("formula", "issue", "missing_fields", "requires_positive")
             if k in component
         }
-        if not component and values.get("formula"):
-            extra["formula"] = values["formula"]
+        if not component:
+            formula = values.get("formulas", {}).get(metric, RESULT_FORMULAS.get(metric))
+            if formula:
+                extra["formula"] = formula
         if metric == "margin_percent" and values.get("profit_definition"):
             extra["profit_definition"] = values["profit_definition"]
             label = "Margin using " + values["profit_definition"]

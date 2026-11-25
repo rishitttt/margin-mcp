@@ -113,7 +113,12 @@ Company-preview accepts `money_unit: "auto"` (default), explicit monetary scales
 The announcement schema's added extraction flag was reviewed. Margin explicitly defaults `include_extracted_information` to false and holds true; no generic executor or extraction branch is newly enabled. Query preview/receipts show the default. The runtime catalog owns connection/schema holds.
 
 
-## MCP transport, package 0.6.0
+## MCP transport, package 0.6.1
+
+0.6.1 fixes per-metric formula metadata: use each report row's formula; raw comparison
+`values.formulas` maps absolute/percentage changes separately. Legacy `values.formula`
+remains the percentage formula, not a formula for every result. CAGR's elapsed-years
+row has no CAGR result formula. Numerical calculations are unchanged.
 
 Company responses now use `margin.company_finance.v2`. Default `report.rows` contains
 matching exact values/units/displays. Use the supplied displays without rescaling;

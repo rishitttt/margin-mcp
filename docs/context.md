@@ -1,5 +1,14 @@
 # Project context and handoff
 
+**25 November 0.6.1 patch:** user-led 0.6.0 rows tests confirm correct INFY money/
+growth and duplicate/details behavior; status B2/D0, local B2 spent. HUL supplied all
+three rows, but the model omitted profit/margin. A Margin-side inherited-formula bug
+was found and fixed in source: per-metric comparison/report formulas, no CAGR formula
+on years, arithmetic unchanged. See [implementation](implementation.md) and
+[MCP contract](mcp.md). The 0.6.1 wheel does not update the active 0.6.0 process;
+do not reset allowances or claim its cached replies were patched. Existing HUL key
+supports a no-fetch all-rows retest. Raw captures stay private; point 4 stays deferred.
+
 **25 November 0.6.0 reporting repair:** default company response v2 now supplies
 canonical rows with consistent units and formatted
 calculated amounts. Raw calculation fields moved into opt-in details; same-key

@@ -97,6 +97,8 @@ def test_growth_report_scales_absolute_change_and_preserves_comparison_dates():
     change = indexed["absolute_change"]
     assert Decimal(change["value"]) == Decimal("10000") and change["unit"] == "INR_crore"
     assert change["display"] == "₹10,000.00 crore"
+    assert change["formula"] == "current - previous"
+    assert indexed["percentage_change"]["formula"] == "(current - previous) / previous * 100"
     assert change["comparison_period_ends"] == ["2025-03-31", "2026-03-31"]
     assert change["period_start"] is None and change["period_end"] is None
     assert indexed["percentage_change"]["display"] == "10.00%"
@@ -189,8 +191,26 @@ def test_cfo_minus_capex_is_an_amount_and_coverage_is_a_ratio():
     )
     amount, coverage = report["rows"]
     assert amount["display"] == "₹12.00 crore" and amount["unit"] == "INR_crore"
+    assert amount["formula"] == "cfo - capex"
+    assert coverage["formula"] == "cfo / capex"
     assert "not FCFF" in amount["label"]
     assert coverage["value"] is None and coverage["unit"] == "ratio"
+
+
+def test_cagr_formula_is_not_attached_to_its_elapsed_years_input():
+    report = company_report(
+        output("cagr"),
+        {
+            "values": {
+                "cagr_percent": "10",
+                "years": "2",
+                "formula": "((current / previous) ** (1 / years) - 1) * 100",
+            }
+        },
+    )
+    indexed = {row["metric"]: row for row in report["rows"]}
+    assert indexed["cagr_percent"]["formula"] == "((current / previous) ** (1 / years) - 1) * 100"
+    assert "formula" not in indexed["years"]
 
 
 def test_ttm_uses_only_the_core_established_interval_and_unit():

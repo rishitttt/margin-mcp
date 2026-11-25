@@ -1,5 +1,15 @@
 # Function validation status
 
+## Live rows and formula metadata: 25 November 2026, 0.6.1
+
+The 0.6.0 INFY numeric rows, same-key repeat and details projection passed with B2/D0
+total including HUL. HUL returned all three expected rows; the model reported revenue
+only. Raw-detail prose and an invented margin_result lookup also failed fidelity.
+Absolute-change formula metadata was incorrect in Margin itself, despite correct
+numbers. 0.6.1 fixes per-result formulas and excludes CAGR's formula from input years;
+321 offline tests pass, including regressions. [Implementation](../implementation.md)
+owns attribution/evidence. No new live fetch/model acceptance or changed math is claimed.
+
 ## Reporting contract v2: 25 November 2026, 0.6.0
 
 All nine company workflows retain their existing mathematics/data requirements and

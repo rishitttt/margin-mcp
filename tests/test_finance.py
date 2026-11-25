@@ -188,6 +188,19 @@ def test_margin_cashflow_reference_and_missing_start_do_not_become_zero():
     assert calculate_margins(profit | {"period_start": None}, revenue)["status"] == "incomplete"
 
 
+def test_comparison_formulas_are_specific_to_their_output_metric():
+    previous = observation("100", period_end="2025-03-31", period_start="2024-04-01")
+    current = observation("125", period_end="2026-03-31", period_start="2025-04-01")
+    values = compare_periods(previous, current)["values"]
+    assert values["absolute_change"] == "25"
+    assert values["percentage_change"] == "25.00"
+    assert values["formulas"] == {
+        "absolute_change": "current - previous",
+        "percentage_change": "(current - previous) / previous * 100",
+    }
+    assert values["formula"] == values["formulas"]["percentage_change"]
+
+
 def test_cagr_and_ttm_reference_and_overlap_rejection():
     a = observation("100", period_end="2024-03-31", period_start="2023-04-01")
     b = observation("121", period_end="2026-03-31", period_start="2025-04-01")

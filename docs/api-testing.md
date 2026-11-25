@@ -1,5 +1,22 @@
 # API and MCP testing protocol
 
+## 0.6.0 live audit and 0.6.1 patch gate, 25 November 2026
+
+The user completed one INFY growth execution, same-key replay, same-key raw details,
+and one HUL margin on the 0.6.0 backend: B2/D0 total. Numeric rows/replay/details
+passed. Margin supplied a wrong absolute-change formula; 0.6.1 corrects metadata
+offline without changing math. HUL supplied three rows, but final prose omitted
+profit/margin. Raw INR was also described incorrectly in model prose. See
+[implementation](implementation.md) for attribution and private evidence.
+
+No-fetch follow-up: keep the current backend running; repeat the existing HUL key
+and explicitly request every report row, including kind=result. Do not filter by
+selection.metric or invent margin_result/request_id lookups. Reading include_details
+with the same key changes projection only. The active 0.6.0 cache retains original
+formula metadata; a source fix does not mutate it. A new patched live process/test
+requires a deliberate version-matched upgrade and reconciled remaining allowance.
+This patch build makes zero new provider/model requests. Preserve old logs as evidence.
+
 ## 0.5.0 fresh-finance acceptance gate, 25 November 2026
 
 [Current MCP usage](mcp.md#company-finance-without-previous-results) and the
