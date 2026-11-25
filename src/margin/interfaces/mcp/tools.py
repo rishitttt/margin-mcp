@@ -11,7 +11,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.5.0"
+VERSION = "0.6.0"
 CONTRACT = "margin.mcp.v1"
 DIRECT_FUNCTIONS = {
     "margin_calculate_margins": "finance.calculate_margins",
@@ -107,7 +107,7 @@ def definitions():
         ),
         (
             "margin_company_finance",
-            "Preferred for company finance from a ticker: fetch fresh BharatStock financials and calculate internally, without previous results or copying fact objects. Supports nine company functions, not automatic DCF. Default execute=false previews locally. Set execute=true plus a stable idempotency_key to perform at most ONE API request and return the answer directly (wait up to 30s). Repeat the SAME inputs/key to wait/read; a new key means a new charged fetch. Never change keys after a lost/uncertain reply. Read values, selected-input displays, units, scope and incomplete components; never fabricate dates or rescale displays. Zero Drishti calls/credits; keys survive only in this core process.",
+            "Preferred for ticker-based finance: one fresh BharatStock request plus deterministic math, no previous facts/handles. Default execute=false previews; execute=true requires a stable idempotency_key. Supports nine company functions, no automatic DCF. Response v2 report.rows has matching value/unit/display: money INR_crore, EPS INR_per_share, percent/ratios distinct. Use report.rows[].display VERBATIM; do not rescale or invent facts/dates. Raw calculation fields are absent by default; include_details=true adds separate audit details using the SAME key, without another fetch. Repeat the SAME financial inputs/key to wait/read a pending/lost reply (30s max); new keys fetch again. Preserve holds and source caveats. Zero Drishti calls/credits. No margin_result/run_id is provided. Duplicate protection lasts only in this core process.",
             fresh_company,
             False,
             True,

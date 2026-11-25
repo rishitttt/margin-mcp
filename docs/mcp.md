@@ -1,6 +1,6 @@
 # Run Margin as a local MCP server
 
-Current release **0.5.0**, 25 November 2026. Twenty-one MCP tools expose the existing
+Current release **0.6.0**, 25 November 2026. Twenty-one MCP tools expose the existing
 37 retrieval/finance and ten review functions. Six common calculations now have directly
 advertised strict schemas. The core, CLI and workbench remain available independently.
 The [architecture](design/mcp-aggregation.md) owns the plan published before this change;
@@ -38,12 +38,12 @@ other retained financial sources exist. Basis is selected locally; more pages ar
 fetched to resolve insufficient history, mixed bases or missing cash flows. Growth/CAGR
 need two eligible endpoints; TTM needs four comparable quarterly flows and established
 duration. Read partial components and scope holds; a subscription cannot create absent
-issuer fields. The returned `values`, compact `inputs` with ready-to-report `display`
-strings, definitions/periods/units/source paths, source timestamps and `usage` are the
-answer. No raw provider payload is returned or added to retained financial buffers.
+issuer fields. The returned `report` contains canonical structured rows; source timestamps, caveats and `usage` remain. Raw calculation details
+are optional as described below. No full provider payload is returned or added to
+retained financial buffers.
 
 The call waits at most 30 seconds. If `status` is `running`, repeat the SAME financial
-inputs and key to wait/read; only `wait_seconds` may be changed. If a reply was lost,
+inputs and key to wait/read; `wait_seconds` and `include_details` may be changed. If a reply was lost,
 also reuse that key. A new key means a new request, not a recovery. Conflicting inputs
 are rejected. Up to 200 compact responses/control records (or smaller `max_records`)
 remain in memory, each at most 32 KiB; keys never silently expire into a new fetch.
@@ -58,9 +58,45 @@ INR 1,500/month before tax, with internal model evaluation and full history. Ord
 on-demand querying is permitted on any plan within entitlements; Free's advertised
 60/day does not establish this older 25/day key's quota. No Drishti purchase is needed
 for this tool. See the dated [plan and subscription sources](design/fetch-and-calculate.md).
-No new paid/live run was made for this release. The existing `mtest` 0.4.0 live backend
-is deliberately not upgraded/restarted by building this wheel; follow the version-matched
-upgrade guidance below and reconcile remaining allowances before a controlled cutover.
+No new paid/live run was made for this release. The user's `mtest` live backend was
+upgraded to 0.5.0 for the previous B2/D0 pass and is left untouched by this 0.6.0 build.
+Its local B2 allowance is spent. Follow the version-matched upgrade guidance below
+and reconcile remaining allowances before any controlled cutover.
+
+## Reporting contract v2 and migration
+
+Package 0.6.0 changes only the company convenience response shape, now explicitly
+`response_version: margin.company_finance.v2`. The outer MCP envelope remains v1;
+there are still 21 tools and no new dependency or model inference. The pure explicit-
+input calculations and legacy retrieval/retained-source workflows are unchanged.
+
+- Default: `report.rows`, explicit period/readiness metadata. Scale guidance lives in
+  tool descriptions rather than repeated result prose.
+  No generated summary or Markdown table.
+  Row `value` is an exact decimal string in the SAME `unit` as its `display`.
+  Statement amounts and calculated money use INR_crore, per-share amounts
+  INR_per_share, percentages percent, ratios ratio, elapsed years years. Display
+  rounding uses Decimal ROUND_HALF_EVEN, two decimals (six for elapsed years).
+- Growth includes a ready-formatted absolute change; CFO-minus-capex, borrowings,
+  working capital and TTM are formatted by reviewed units too. Missing/unknown units
+  stay unavailable; zero is not missing. Partial/scope-held components remain visible.
+  Comparison endpoints are labelled as period ends, never fabricated fiscal starts.
+- Use the row displays without rescaling, preserving warnings, definitions,
+  basis and dates. Unknown starts remain unknown; source figures remain unverified.
+- For inspection add `include_details: true` to the SAME financial inputs/key. Raw
+  `inputs`, exact calculation `values`, components, formulas and precision are now
+  under `details`. This is a response projection and consumes no additional request.
+  Consumers of old top-level values must migrate to `details.values` explicitly or
+  use the canonical reporting rows. Never mix raw-INR detail values with crore rows.
+- The bounded request record stores report plus compact details, at most 32 KiB.
+  It still does not retain the full provider response. Reports contain structured rows only, without duplicated rendered prose/table.
+  Payload size is measured in the private saved-response checks; byte counts do not
+  establish a host tokenizer/context guarantee.
+
+Point 4, host-enforced final-claim validation/direct rendering, is deferred. It is not
+needed to use this repair. A host/model can still rewrite a correct report; there is
+no automatic final-prose interception or hidden verifier. Original-source verification
+is also separate. See [plan and boundaries](design/fetch-and-calculate.md).
 
 ## Install
 
@@ -157,19 +193,19 @@ the executable is `/Users/rishit/Desktop/mtest/.venv/bin/margin-mcp`. After a wh
 restart the backend deliberately and reconnect the host; never silently replenish spent
 allowances. The existing `.env` and logs remain private, outside the package.
 
-For a controlled 0.4.0 to 0.5.0 upgrade, inspect/save the old ledger and logs, stop the
+For a controlled 0.5.0 to 0.6.0 upgrade, inspect/save the old ledger and logs, stop the
 old backend with its existing executable, then install the new wheel into that venv:
 
 ```sh
 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
-/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/dist/margin_research-0.5.0-py3-none-any.whl
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/dist/margin_research-0.6.0-py3-none-any.whl
 ```
 
 These are manual instructions, not actions performed during this build. Existing pinned
-0.4.0 dependencies are reused. Restart explicitly using the backend command above only
+0.5.0 dependencies are reused. Restart explicitly using the backend command above only
 after setting reconciled remaining provider allowances; do not copy the old allowance
 as if nothing was spent. With no confirmed requests remaining, set the BharatStock
-allowance to zero and test local preview only. Both backend and frontend must be 0.5.0;
+allowance to zero and test local preview only. Both backend and frontend must be 0.6.0;
 reconnect the host after the version-matched restart. No provider key belongs in commands.
 
 ## Tools and financial output

@@ -35,7 +35,13 @@ function, execute=true and a stable idempotency_key fetch fresh data and return 
 calculation internally. No prior result/fact handles are needed. Default execute=false
 previews locally. At most one BharatStock request, zero Drishti calls/credits. Repeat
 the SAME financial inputs/key to wait/read a pending/lost reply; never substitute a
-new key. Use returned input displays/units and explicit incomplete outcomes.
+new key. Company response v2 uses report.rows with matching value/unit/display;
+use report.rows[].display verbatim. Amounts are INR_crore,
+EPS INR_per_share, percentages and ratios distinct. Do not rescale these rows or
+invent unsupported facts/dates. Raw inputs/values appear only with include_details=true
+under separate details; it changes projection only and the SAME key makes no new fetch.
+No run_id/margin_result path exists for this convenience response. Report copying
+does not independently verify originals or guarantee the host's final prose.
 Prefer the directly typed margin_calculate_margins, margin_convert_units,
 margin_compare_periods, margin_calculate_cashflow_metrics, margin_calculate_profitability
 and margin_calculate_balance_sheet_metrics tools when applicable. Their inputs are

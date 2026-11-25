@@ -1,5 +1,13 @@
 # Margin: quick handoff
 
+**25 November 0.6.0:** [reporting contract v2](docs/mcp.md#reporting-contract-v2-and-migration)
+separates canonical crore/per-share/percent/ratio rows from optional raw calculation
+details. Rows include deterministic displays for calculated amounts; same-key
+detail inspection makes no new fetch. Existing functions/guards remain. See
+[implementation](docs/implementation.md) for tests and saved-response checks.
+Point 4, host-enforced final-answer validation, stays deferred. The local 0.5.0 live
+backend remains untouched; no new provider/model calls in this build.
+
 **25 November 0.5.0:** [fresh-fetch finance](docs/design/fetch-and-calculate.md) is the new company-finance path: one typed MCP call can fetch and calculate without earlier financial source handles. Old retrieval, fact, calculation and review tools remain; 21 tools total. No database, Margin LLM or new provider/model calls. [MCP guide](docs/mcp.md) owns usage, version-matched upgrades and bounded request keys; [implementation](docs/implementation.md) owns validation. The running local 0.4.0 live installation is unchanged. BharatStock Developer is the current published internal model-evaluation option; no purchase was made.
 
 **25 November 0.4.0:** current package adds deterministic financial views, six direct typed calculation tools (twenty total), and optional local shared state across stdio frontends. [MCP guide](docs/mcp.md) explains starting/stopping the state owner and configuring the host; [implementation](docs/implementation.md) separates software/transport evidence from actual model results. Plans/results stay in bounded memory and provider keys are not packaged. The older dated notes below are historical.

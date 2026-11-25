@@ -90,6 +90,7 @@ def args(function="margins", **more):
         "function": "finance.company_" + function,
         "ticker": "SYNTHA",
         "execute": True,
+        "include_details": True,
         "idempotency_key": "fresh-test-" + function,
         **more,
     }
@@ -100,6 +101,20 @@ async def test_all_nine_fresh_workflows_use_one_page_no_buffers(fresh_service, f
     service, observed = fresh_service
     result = await service.company_finance(**args(function.removeprefix("finance.company_")))
     assert result["status"] == "success", result
+    report = result["report"]
+    assert "summary" not in report and "table_markdown" not in report
+    if function.endswith("_data_readiness"):
+        assert report["readiness"] and not report["rows"]
+    else:
+        calculated = [row for row in report["rows"] if row["kind"] == "result"]
+        assert calculated and all(
+            row["status"] == "success" and row["value"] is not None for row in calculated
+        )
+        assert all(row["display"] for row in calculated)
+        assert all(
+            row["unit"] in {"INR_crore", "INR_per_share", "percent", "ratio", "years"}
+            for row in report["rows"]
+        )
     assert len(observed) == 1
     assert result["usage"] == {
         "bharatstock_http_attempts": 1,
@@ -124,8 +139,8 @@ def encoded_result(result):
 async def test_direct_answer_preserves_same_row_and_exact_units_without_dates(fresh_service):
     service, _ = fresh_service
     output = await service.company_finance(**args())
-    assert output["values"]["margin_percent"] == "15.00"
-    profit, revenue = output["inputs"]
+    assert output["details"]["values"]["margin_percent"] == "15.00"
+    profit, revenue = output["details"]["inputs"]
     assert profit["period_start"] is None and revenue["period_start"] is None
     assert profit["row_reference"] == revenue["row_reference"]
     assert revenue["unit"] == "INR" and revenue["value"] == "1000000000"
@@ -142,6 +157,23 @@ async def test_default_preview_is_local_and_normalizes_defaults(fresh_service):
     assert result["selection"]["ticker"] == "SYNTHA"
     assert result["maximum_provider_requests"] == {"bharatstock": 1, "drishti": 0}
     assert not observed and not service.company_finance_workflow.requests
+
+
+async def test_default_report_and_optional_details_share_one_request(fresh_service):
+    service, observed = fresh_service
+    default = await service.company_finance(**args(include_details=False))
+    assert default["response_version"] == "margin.company_finance.v2"
+    assert "details" not in default and "inputs" not in default and "values" not in default
+    revenue = next(row for row in default["report"]["rows"] if row["metric"] == "revenue")
+    assert revenue["unit"] == "INR_crore" and Decimal(revenue["value"]) == 100
+    assert revenue["display"] == "₹100.00 crore"
+    inspected = await service.company_finance(**args(include_details=True))
+    assert inspected["request_id"] == default["request_id"]
+    assert inspected["report"] == default["report"]
+    assert inspected["details"]["inputs"][1]["unit"] == "INR"
+    assert inspected["details"]["values"]["margin_percent"] == "15.00"
+    assert await service.company_finance(**args(include_details=False)) == default
+    assert len(observed) == 1
 
 
 async def test_provider_source_locators_are_preserved_without_verification(fresh_service):
@@ -200,8 +232,8 @@ async def test_fresh_requests_ignore_retained_sources_and_duplicate_keys_join(fr
         )
     )
     assert first == third and len(observed) == 2
-    third["values"].clear()
-    assert (await service.company_finance(**args()))["values"]
+    third["details"]["values"].clear()
+    assert (await service.company_finance(**args()))["details"]["values"]
     assert service._buffers == existing_buffers
     await service.company_finance(**args(idempotency_key="fresh-second-key"))
     assert len(observed) == 3
@@ -255,7 +287,7 @@ async def test_empty_basis_and_null_remain_incomplete_without_extra_pages(fresh_
     service.providers["bharatstock"].client._transport = httpx.MockTransport(respond)
     result = await service.company_finance(**args("cashflow_metrics"))
     assert result["status"] == "incomplete" and result["issues"]
-    assert len(observed) == 1 and not result["values"]
+    assert len(observed) == 1 and not result["details"]["values"]
 
 
 async def test_continuing_profit_and_component_scope_holds_survive(fresh_service):
@@ -267,12 +299,15 @@ async def test_continuing_profit_and_component_scope_holds_survive(fresh_service
         )
     )
     margin = await service.company_finance(**args())
-    assert Decimal(margin["values"]["margin_percent"]) == Decimal("10")
-    assert margin["inputs"][0]["metric"] == "profit_from_continuing_operations"
+    assert Decimal(margin["details"]["values"]["margin_percent"]) == Decimal("10")
+    assert margin["details"]["inputs"][0]["metric"] == "profit_from_continuing_operations"
     group = await service.company_finance(**args("profitability"))
     assert group["status"] == "partial"
-    assert group["components"]["net_profit_margin_percent"]["status"] == "needs_scope_review"
-    assert "net_profit_margin_percent" not in group["values"]
+    assert (
+        group["details"]["components"]["net_profit_margin_percent"]["status"]
+        == "needs_scope_review"
+    )
+    assert "net_profit_margin_percent" not in group["details"]["values"]
 
 
 async def test_waiter_cancellation_and_pending_rejoin_do_not_duplicate(fresh_service):
@@ -347,6 +382,26 @@ async def test_compact_limit_withholds_oversize_without_retry(fresh_service, mon
     assert await service.company_finance(**args()) == result and len(observed) == 1
 
 
+async def test_formatter_failure_is_bounded_cached_and_does_not_retain_exception(
+    fresh_service, monkeypatch
+):
+    service, observed = fresh_service
+
+    def broken(*_):
+        raise RuntimeError("fictional-private-diagnostic")
+
+    monkeypatch.setattr("margin.core.company_finance.company_report", broken)
+    first = await service.company_finance(**args())
+    assert first["status"] == "failed" and first["error"]["code"] == "reporting_error"
+    assert "fictional-private-diagnostic" not in json.dumps(first)
+    assert "details" not in first and "report" not in first
+    assert await service.company_finance(**args()) == first and len(observed) == 1
+    assert all(
+        record["task"].exception() is None
+        for record in service.company_finance_workflow.requests.values()
+    )
+
+
 async def test_mcp_exact_schema_execution_and_private_recording(fresh_service, tmp_path):
     service, observed = fresh_service
     recorder = ToolRecorder(directory=tmp_path)
@@ -362,7 +417,7 @@ async def test_mcp_exact_schema_execution_and_private_recording(fresh_service, t
             args() | {"why": "Compute the company's margin from one fresh financials response."},
         )
         assert not result.is_error
-        assert result.structured_content["data"]["values"]["margin_percent"] == "15.00"
+        assert result.structured_content["data"]["details"]["values"]["margin_percent"] == "15.00"
         preview = await adapter.call(
             "margin_company_finance", {"function": "finance.company_margins", "ticker": "SYNTHA"}
         )

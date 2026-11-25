@@ -171,6 +171,13 @@ async def main(args):
                         await client.initialize()
                         duplicate = await call(client, "margin_company_finance", fresh_inputs)
                         assert duplicate["data"] == fresh["data"]
+                        inspected = await call(
+                            client,
+                            "margin_company_finance",
+                            fresh_inputs | {"include_details": True},
+                        )
+                        assert inspected["data"]["report"] == fresh["data"]["report"]
+                        assert "details" in inspected["data"] and "details" not in fresh["data"]
                         final = await call(client, "margin_status")
                         assert final["session_id"] == status["session_id"]
                         assert final["data"]["ledger"]["http_attempts"] == {

@@ -12,12 +12,14 @@ from uuid import uuid4
 from margin.analysis import company
 from margin.analysis.facts import FIELDS
 from margin.analysis.presentation import metric_entry
+from margin.analysis.reporting import company_report
 from margin.analysis.service import obj
 from margin.core.contracts import DomainError, OperationRequest, encoded_size
 from margin.core.validation import validation_summary
 from margin.evidence.results import data_payload
 
 RESPONSE_LIMIT = 32 * 1024
+RESPONSE_VERSION = "margin.company_finance.v2"
 KEY = {"type": "string", "pattern": r"^[A-Za-z0-9_-]{8,100}$"}
 SCHEMA = obj(
     {
@@ -30,6 +32,11 @@ SCHEMA = obj(
         "execute": {"type": "boolean", "default": False},
         "idempotency_key": KEY,
         "wait_seconds": {"type": "integer", "minimum": 0, "maximum": 30, "default": 30},
+        "include_details": {
+            "type": "boolean",
+            "default": False,
+            "description": "Return raw-unit calculation inputs/values separately from the canonical report; same inputs/key do not fetch again.",
+        },
     },
     ["function", "ticker"],
 )
@@ -119,6 +126,7 @@ class CompanyFinance:
 
     def preview(self, args, request):
         return {
+            "response_version": RESPONSE_VERSION,
             "status": "preview",
             "function": args["function"],
             "selection": {
@@ -171,13 +179,17 @@ class CompanyFinance:
                 self._execute(args, request, existing["request_id"]), name="margin-company-finance"
             )
         try:
-            return copy.deepcopy(
+            response = copy.deepcopy(
                 await asyncio.wait_for(
                     asyncio.shield(existing["task"]), arguments.get("wait_seconds", 30)
                 )
             )
+            if not arguments.get("include_details", False):
+                response.pop("details", None)
+            return response
         except TimeoutError:
             return {
+                "response_version": RESPONSE_VERSION,
                 "status": "running",
                 "request_id": existing["request_id"],
                 "function": args["function"],
@@ -286,9 +298,53 @@ class CompanyFinance:
             "uncertain_outcome": receipt.get("uncertain_outcome", False),
         }
         output = self.service.sanitizer.clean(output)
+        details = {
+            key: output.pop(key)
+            for key in (
+                "values",
+                "inputs",
+                "components",
+                "amount_unit",
+                "precision",
+                "calculation_function",
+                "function_version",
+            )
+            if key in output
+        }
+        output["response_version"] = RESPONSE_VERSION
+        try:
+            output["report"] = company_report(output, details)
+        except Exception:
+            # Complete the task with a bounded answer, not an exception traceback
+            # retaining local provider data or inviting another charged request.
+            return {
+                **{
+                    key: output[key]
+                    for key in (
+                        "response_version",
+                        "request_id",
+                        "function",
+                        "usage",
+                        "idempotency_scope",
+                    )
+                },
+                "status": "failed",
+                "error": {
+                    "code": "reporting_error",
+                    "message": "Report formatting failed; unsafe diagnostics withheld. The provider request may already have been charged. Reuse the same key; do not fetch again to repair reporting.",
+                },
+            }
+        output["details"] = details
         if encoded_size(output) > RESPONSE_LIMIT:
             output = {
-                k: output[k] for k in ("request_id", "function", "usage", "idempotency_scope")
+                k: output[k]
+                for k in (
+                    "response_version",
+                    "request_id",
+                    "function",
+                    "usage",
+                    "idempotency_scope",
+                )
             }
             output.update(
                 status="failed",

@@ -354,7 +354,16 @@ async def main(args):
                 assert fresh["data"]["status"] == "success"
                 duplicate = await call(session, "margin_company_finance", fresh_inputs)
                 assert duplicate["data"] == fresh["data"]
-                assert len(fresh["data"]["inputs"]) == 2
+                assert (
+                    len([row for row in fresh["data"]["report"]["rows"] if row["kind"] == "input"])
+                    == 2
+                )
+                assert "details" not in fresh["data"]
+                inspected = await call(
+                    session, "margin_company_finance", fresh_inputs | {"include_details": True}
+                )
+                assert inspected["data"]["report"] == fresh["data"]["report"]
+                assert inspected["data"]["details"]["inputs"][1]["unit"] == "INR"
                 final = (await call(session, "margin_status"))["data"]
                 assert final["ledger"]["http_attempts"]["bharatstock"] == 2
                 assert {o["tool"] for o in observations} == set(tools)

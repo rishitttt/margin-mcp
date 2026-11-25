@@ -1,5 +1,15 @@
 # Project context and handoff
 
+**25 November 0.6.0 reporting repair:** default company response v2 now supplies
+canonical rows with consistent units and formatted
+calculated amounts. Raw calculation fields moved into opt-in details; same-key
+projection does not fetch again. Existing math/holds and 21 tools remain. Point 4
+(host-enforced final prose) is deferred. [MCP migration](mcp.md#reporting-contract-v2-and-migration)
+and [implementation](implementation.md) own behavior/evidence. Saved HUL/INFY reports
+were reformatted offline; no new model success is claimed. The live mtest backend
+remains 0.5.0 with B2 spent; do not upgrade/restart/reset it silently. A local 0.6.0
+wheel is for deliberate version-matched installation after allowance reconciliation.
+
 **25 November user-led 0.5.0 retest:** local mtest/backend now runs 0.5.0. Guided HUL
 margin, same-key replay and INFY growth succeed; ledger B2/D0, B2 local allowance spent.
 The tool arithmetic/units are correct relative to returned inputs, but the model's final

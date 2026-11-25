@@ -1,5 +1,16 @@
 # Function validation status
 
+## Reporting contract v2: 25 November 2026, 0.6.0
+
+All nine company workflows retain their existing mathematics/data requirements and
+now expose canonical structured report rows. Calculated amounts and source inputs
+use matching reporting scales; raw calculation fields are optional details. Same-key
+projection is tested without a second fetch. Saved 0.5.0 HUL margin and INFY growth
+replies were reformatted offline with correct displays. These presentation checks
+do not repeat live data calls, authenticate issuer values or establish model prose
+accuracy; the observed 0.5.0 model reporting failures below remain failures.
+See [implementation](../implementation.md) and [migration](../mcp.md#reporting-contract-v2-and-migration).
+
 ## User-led fresh live checks: 25 November 2026
 
 On the 0.5.0 installed MCP, HINDUNILVR `finance.company_margins` and INFY

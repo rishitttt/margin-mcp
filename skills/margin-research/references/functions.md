@@ -113,13 +113,22 @@ Company-preview accepts `money_unit: "auto"` (default), explicit monetary scales
 The announcement schema's added extraction flag was reviewed. Margin explicitly defaults `include_extracted_information` to false and holds true; no generic executor or extraction branch is newly enabled. Query preview/receipts show the default. The runtime catalog owns connection/schema holds.
 
 
-## MCP transport, package 0.5.0
+## MCP transport, package 0.6.0
+
+Company responses now use `margin.company_finance.v2`. Default `report.rows` contains
+matching exact values/units/displays. Use the supplied displays without rescaling;
+no prose summaries or Markdown tables are generated. Amounts including absolute growth,
+cash-flow differences and balance-sheet values use INR_crore; per-share, percentage
+and ratio units remain separate. Raw `values`/`inputs` moved into optional `details`,
+requested with `include_details: true` and the SAME financial inputs/key, without a
+new fetch. Do not mix those raw units with reporting rows. Pure calculator schemas
+and outputs remain unchanged. No host-enforced final-prose verifier was added.
 
 The MCP exposes twenty-one tools: `margin_company_finance`, the fourteen workflows
 below and six directly typed tools. The fresh tool accepts a company function/ticker,
 defaults to local preview, and executes one fresh financials request plus calculation
-with `execute: true` and a stable `idempotency_key`. It returns compact values/selected
-inputs/source context directly, without previous handles or raw-source retention. It
+with `execute: true` and a stable `idempotency_key`. It returns canonical reporting rows and source context directly, without previous
+handles or raw-source retention. It
 supports all nine company functions above, subject to existing field/scope/history holds.
 Repeat the same inputs/key to wait/read a lost or pending answer. Keys are process-local;
 a new key fetches again. Page bounds remain two annual/eight quarterly rows. No Drishti

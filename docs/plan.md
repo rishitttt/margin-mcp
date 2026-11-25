@@ -1,5 +1,14 @@
 # Margin build and evaluation plan
 
+**25 November 0.6.0 reporting repair:** the [plan](design/fetch-and-calculate.md)
+published as `1ffec64` now delivers canonical structured rows and
+opt-in raw details. No generated summary or Markdown table. Software and saved HUL/INFY presentation checks precede a new
+host test. Point 4 (host-enforced final prose validation/rendering) is deferred;
+it is not a prerequisite for this patch. Next: inspect the offline reports without
+new data calls, then deliberately upgrade the version-matched backend/frontend
+and budget a fresh model acceptance only if needed. Do not reset the active spent
+0.5.0 allowance or count formatter checks as a model success.
+
 **25 November 0.5.0 delivery:** [self-contained fresh-finance](design/fetch-and-calculate.md)
 was implemented after publishing plan `0e9710c`. The ticker-based tool now fetches and
 calculates without prior source handles; local preview, bounded calls and process-local

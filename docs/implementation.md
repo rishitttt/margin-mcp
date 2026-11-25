@@ -1,5 +1,44 @@
 # Implementation and validation status
 
+## Canonical structured rows: 25 November 2026, 0.6.0
+
+Plan `1ffec64` and the user-requested rows-only refinement `7281893` were published
+before their respective runtime changes. Company response v2 supplies canonical
+structured rows only; no generated prose summary/Markdown table. Exact row values,
+units and formatted displays agree: money INR_crore, per-share INR_per_share,
+percentages percent and ratios ratio. Calculated growth changes, CFO-minus-capex,
+working capital/borrowings and TTM use reviewed units. Definitions, scope holds,
+unknown dates and explicit comparison endpoints are preserved. Existing mathematics,
+all 21 tools and data-access/duplicate/cancellation safeguards remain unchanged.
+
+Raw-unit calculation `values`/compact `inputs` are opt-in `details`; `include_details`
+changes projection, not financial intent, so the same inputs/key make no extra fetch.
+The bounded record holds canonical rows plus compact details (32 KiB maximum), never
+full provider payloads. Pure explicit-input/retrieval contracts are unchanged. See
+[migration](mcp.md#reporting-contract-v2-and-migration).
+
+Validation: **319 offline tests** including unit-scale, per-share, percentage/ratio,
+zero/negative/null/unknown-unit, scope-held, comparison/TTM/readiness and same-key
+projection coverage. All nine complete fictional company workflows have report checks.
+SDK standalone and shared source/installed-wheel acceptance exercise default rows and
+opt-in details: 21 tools, 37 calls/74 log events standalone, four frontends and 12
+calls/24 events shared; no duplicate fetch. Fictional counts B2/D1 and B2/D0 respectively.
+Installed acceptance reuses existing pinned dependencies, not a fresh cross-platform
+installation. Ruff, skills, local links and credential/package checks are recorded
+in the private release evidence.
+
+Saved 0.5.0 HUL/INFY replies were reformatted offline; expected displays, computed
+amounts/percentages and null starts are preserved. No fresh provider/model call or
+original-source verification is claimed. Final saved-report sizes are in
+`reports/private/canonical-rows-2026-11-25/`. Earlier template experiments were superseded
+by the user's rows-only clarification and are not the delivered runtime.
+
+Point 4 (host-enforced final claims/direct rendering) stays deferred. No verifier,
+host hook, inference or dependency was added. A model can still misreport rows;
+actual 0.6.0 model fidelity remains a user-led check. The live 0.5.0 mtest venv,
+backend, keys and spent B2 allowance are untouched. Installed skill instructions
+are synchronized while preserving private connection settings and old test packets.
+
 ## User-led 0.5.0 live acceptance: 25 November 2026
 
 The user upgraded `mtest`/LM Studio to 0.5.0 and completed the guided preview,
