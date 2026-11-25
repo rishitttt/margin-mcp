@@ -1,5 +1,26 @@
 # Implementation and validation status
 
+## First user-led 0.6.2 preview: 25 November 2026
+
+Read-only operator status confirms the running backend and installed venv are 0.6.2,
+same session 366a40cde7964091a21aaa9387eeb8ad, live with recording enabled. The user
+called status, exact announcement catalog, one successful Drishti metadata connection
+and three failed local previews. Seven reviewed schemas approved, no schema changes.
+All three previews omitted the required operation.arguments.query wrapper. The first
+used symbols=[INFY]; subsequent attempts changed only that field to a string. Local
+invalid_input was not an API response and no announcement execution occurred.
+
+Offline Registry validation reproduces the flat rejection and accepts the corrected
+nested query. This is a host schema-use/reporting failure, not evidence of changed
+upstream validation. The model also labelled contract margin.mcp.v1 as package version
+and called BharatStock's explicit zero allowance unspecified. The earlier test prompt
+asked for a package version that margin_status does not currently expose; use operator
+status/installation metadata for that distinction. Visible why summaries are present.
+Private original 12-event capture and review are in
+reports/private/lmstudio-062-preview-2026-11-25/. No runtime change/new release,
+operator provider call, purchase, restart or reinstallation. Corrected exact preview
+input is in [review acceptance](review-workflows.md#first-062-host-preview-finding).
+
 ## Drishti-to-review repair: 25 November 2026, 0.6.2
 
 Plan `2c1c91b` preceded one isolated INFY live pass; `78dc2b2` recorded measured

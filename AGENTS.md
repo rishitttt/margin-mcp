@@ -1,5 +1,15 @@
 # Working on Margin
 
+**Latest 25 November 0.6.2 host check:** user upgraded/restarted, confirmed by the
+existing backend's read-only status. Active version is now 0.6.2; older 0.6.1-active
+notes below are history. Seven Drishti schemas approved; three preview requests
+omitted operations[0].arguments.query and failed locally. No announcement execution
+or upstream schema drift is established. Offline corrected nesting passes. Preserve
+the original lmstudio-062-preview private capture and use review-workflows' exact JSON.
+No operator data call, runtime patch, reinstall, backend restart or allowance reset
+is authorized/needed to fix this host argument error. margin_status exposes contract,
+not package version; do not report margin.mcp.v1 as the installed version.
+
 **25 November 0.6.2 delivered:** bounded INFY Drishti pass used B0/D10 MCP HTTP,
 seven credits and two separate free account checks. All four data calls succeeded;
 the original overall checker failed after fetching at source import. Preserve that

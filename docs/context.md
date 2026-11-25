@@ -1,5 +1,13 @@
 # Project context and handoff
 
+**Latest user-led 0.6.2 preview:** the user upgraded/restarted; operator status confirms
+active 0.6.2, session 366a40cde7964091a21aaa9387eeb8ad. Drishti metadata approved all
+seven reviewed schemas. Three previews failed locally because operation.arguments.query
+was omitted. No announcement execution or demonstrated upstream schema change. Exact
+corrected JSON is in review-workflows; offline validation passes. No reinstall/runtime
+patch/restart required. Contract margin.mcp.v1 is not package version. Older active-
+0.6.1 notes below describe previous checkpoints.
+
 **25 November 0.6.2 Drishti/review delivery:** isolated INFY news, summary announcement,
 earnings list/detail all succeeded, B0/D10 MCP HTTP, seven credits, two separate free
 account checks (943→936). Existing key is sufficient. Initial post-fetch source import

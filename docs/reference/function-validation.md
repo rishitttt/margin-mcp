@@ -1,5 +1,12 @@
 # Function validation status
 
+**25 November first 0.6.2 model preview:** Drishti connection/schema refresh passed.
+Three announcement previews failed locally because the host omitted arguments.query;
+no data execution. Flat failure/nested acceptance reproduced offline. This is a host
+input-shape error; upstream schema drift is not established. See
+[corrected request](../review-workflows.md#first-062-host-preview-finding). Do not
+count this trial as completed model retrieval/citation/sentiment acceptance.
+
 ## Drishti/review stage: 25 November 2026, 0.6.2
 
 | Function/path | Current evidence | Remaining limit |

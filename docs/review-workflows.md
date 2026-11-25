@@ -111,6 +111,46 @@ not hidden reasoning. Check quote/claim attribution, protected URLs, date/releva
 aggregate denominator and actual provider attempts. Operator acceptance exercised
 these paths with real saved text; a particular LM Studio model remains untested.
 
+### First 0.6.2 host preview finding
+
+The user's 25 November run connected successfully and approved all seven admitted
+Drishti schemas. Three previews failed locally because the model flattened the query
+fields into operation.arguments, omitting its required query object. Changing symbols
+from array to string did not fix that wrapper. No announcement execution occurred;
+the model's claim of an API/schema discrepancy was unsupported. Offline validation
+reproduces the flat rejection and accepts the nested request below. Keep strict input
+validation; do not flatten/guess inputs or refetch to repair this planning error.
+
+Use this exact margin_preview input after an explicit metadata refresh if stale:
+
+```json
+{
+  "operations": [{
+    "operation": "drishti.get_announcements",
+    "arguments": {
+      "query": {
+        "symbols": ["INFY"],
+        "from": "2026-11-10",
+        "to": "2026-11-25",
+        "page": 1,
+        "limit": 1,
+        "include_extracted_information": false
+      }
+    }
+  }],
+  "why": "Preview one INFY summary announcement without executing it."
+}
+```
+
+margin_status currently returns the protocol contract margin.mcp.v1, not the package
+version. Do not label that as a package version. Local installed metadata and the
+existing backend's read-only operator status both confirmed 0.6.2. The zero BharatStock
+HTTP limit is an explicit disabled allowance, not an unspecified limit. Visible why
+summaries were recorded; hidden reasoning/final prose are not captured by the MCP log.
+No runtime patch, reinstallation, backend restart or new operator provider call was
+needed. Better retrieval-validation feedback is a possible later usability repair;
+it is separate from this confirmed host argument error.
+
 ## Citation round trip
 
 1. Register up to twelve source records using `evidence.register_sources`. Each has issuer,
