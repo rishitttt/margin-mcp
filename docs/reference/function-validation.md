@@ -1,5 +1,16 @@
 # Function validation status
 
+## User-led fresh live checks: 25 November 2026
+
+On the 0.5.0 installed MCP, HINDUNILVR `finance.company_margins` and INFY
+`finance.company_growth` succeeded with two total BharatStock attempts and no Drishti.
+HUL duplicate replay used the same request ID/data without another fetch. Exact
+arithmetic matches the returned INR inputs. Model prose still mis-scaled HUL profit
+and INFY money amounts; tool execution and final-answer fidelity must be scored
+separately. No original-source verification or fresh live execution of the other seven
+company functions is claimed. [Implementation](../implementation.md) owns the full
+observation and the distinction from saved-response/fictional-data checks below.
+
 ## Fresh-finance interface: 25 November 2026, 0.5.0
 
 All nine existing company functions are now accessible through `margin_company_finance`:

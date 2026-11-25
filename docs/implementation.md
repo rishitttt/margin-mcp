@@ -1,5 +1,32 @@
 # Implementation and validation status
 
+## User-led 0.5.0 live acceptance: 25 November 2026
+
+The user upgraded `mtest`/LM Studio to 0.5.0 and completed the guided preview,
+HINDUNILVR annual margin, identical-key duplicate and INFY annual revenue-growth
+checks. The private journal confirms successful direct calculations, identical
+structured HUL replies/request ID, and the same backend identity throughout. Read-only
+operator status confirms **two BharatStock HTTP attempts, zero Drishti attempts and
+zero estimated Drishti credits**, with two finance request controls. No extra provider
+fetch was made by this audit. Exact Decimal recomputation of HUL margin, INFY growth
+and absolute change matched the returned values. No independent issuer verification.
+
+Final prose remains a separate failure: the duplicate HUL answer inflated one profit
+display by ten; INFY money amounts were divided by one hundred despite correct tool
+input displays and percentage growth. The first answer also confused two financial
+records with two input fields and suggested margin_result/run_id for a response that
+has no retained run handle. Units come from reviewed documentation, not magnitude
+detection. Do not score these answers as accurate merely because arithmetic succeeded.
+
+These are guided acceptance checks with supplied exact arguments, not an autonomous
+cross-model benchmark. Context exhaustion, model identity/settings and hidden reasoning
+are not established by the MCP log; final prose was pasted separately by the user.
+Private report/events: `reports/private/lmstudio-050-live-2026-11-25/`. All nine functions
+retain offline coverage, but only fresh margins/growth were exercised in this live pass.
+The backend's B2 local allowance is exhausted. Duplicate-key reporting-only retests
+require no extra fetch; do not reset budgets or introduce a new key to rescue prose.
+The build checkpoint below describes its earlier 0.4.0 installation state.
+
 ## Fresh-fetch company finance: 25 November 2026, 0.5.0
 
 Plan `0e9710c` was pushed before runtime changes. `margin_company_finance` is a

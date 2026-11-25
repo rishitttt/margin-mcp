@@ -1,5 +1,13 @@
 # Project context and handoff
 
+**25 November user-led 0.5.0 retest:** local mtest/backend now runs 0.5.0. Guided HUL
+margin, same-key replay and INFY growth succeed; ledger B2/D0, B2 local allowance spent.
+The tool arithmetic/units are correct relative to returned inputs, but the model's final
+prose still mis-scales money. No proof of context exhaustion or original-source accuracy.
+See [implementation](implementation.md) and the private live audit. Next useful retest
+is reporting-only with existing keys, without restarting or fetching again. Older
+installation-state notes below describe their build checkpoints, not current setup.
+
 **25 November 0.5.0 checkpoint:** `margin_company_finance` provides explicitly executed fresh financials plus existing deterministic company math in one tool call. It does not read/write the retained raw-source buffers and needs no earlier handles; at most one BharatStock request, no Drishti. Local preview is default, stable keys protect duplicate requests within one process, and compact answers/control records are bounded. All prior interfaces remain. [MCP usage](mcp.md) owns commands and [fresh-fetch design](design/fetch-and-calculate.md) owns subscription/retention choices. Current live `mtest` backend remains 0.4.0 pending a controlled upgrade/allowance reconciliation; no new provider/model calls in this build.
 
 **25 November 0.4.0 checkpoint:** deterministic financial_view output and six directly typed common calculation tools address the observed Qwen interpretation/schema failures. Optional private Unix-socket shared mode keeps one core/identity/ledger alive across frontend restarts; source TTL/eviction remains. Backend credentials/recording stay in the state owner. No automatic start/retry or persistent data corpus is added. [Current MCP setup](mcp.md) owns commands and lifecycle. The workbench/CLI process remains separate; do not mix its handles with shared MCP handles. Model-host improvement requires a fresh retest.
