@@ -1,5 +1,26 @@
 # API and MCP testing protocol
 
+## 0.8.0 review interface validation and next host test
+
+This build makes zero new provider/model API calls. Validate software with the normal
+offline suite and fictional SDK scripts. New focused-profile runner:
+`.venv/bin/python scripts/smoke_mcp_review.py --output reports/private/NEW-DIRECTORY`.
+Optional --package-root must point to an isolated installed package. It starts a
+synthetic zero-budget process, exercises all 14 local tools and both typed workflows,
+and separately captures a frontend unknown-tool and outer tool-schema rejection that
+are absent from admitted-call logs. It is not a real-company or model benchmark.
+
+For a real host, deliberately upgrade backend/frontend to 0.8.0 after preserving logs
+and reconciling allowance. Register already supplied real text/locators without a
+provider call, or separately authorize one fresh full-mode retrieval/import. Old
+0.7.0 source IDs are not valid after backend upgrade. Then change only frontend args
+to --tool-profile review, retaining the same 0.8.0 backend and unexpired handles.
+Use actual advertised typed schemas and follow next_steps/required_host_fields.
+Do not guess packet refs, reconnect/refetch on expiry or infer TTL from verification
+flags. Profile configuration and caller parse/validation outcomes need separate capture
+for evaluation; backend logs alone do not contain them. No subscription is needed for
+local-only review, and no paid access is purchased by these tests.
+
 ## 0.7.0 typed-preview host acceptance
 
 This build adds no authenticated calls. Upgrade backend/frontend together only after

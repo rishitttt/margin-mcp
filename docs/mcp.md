@@ -1,10 +1,78 @@
 # Run Margin as a local MCP server
 
-Current release **0.7.0**, 25 November 2026. Twenty-five MCP tools expose the existing
+Current release **0.8.0**, 26 November 2026. Thirty-five full-profile MCP tools expose the existing
 37 retrieval/finance and ten review functions. Six common calculations now have directly
 advertised strict schemas. The core, CLI and workbench remain available independently.
 The [architecture](design/mcp-aggregation.md) owns the plan published before this change;
 [implementation](implementation.md) owns evidence and limitations.
+
+## Typed review tools, profiles and packet handoffs
+
+Use each tool's exact host-advertised inputSchema at the top level. No function/
+arguments wrapper is needed. These schemas are copied from protocols.schemas.SCHEMAS;
+the underlying ten functions and generic margin_review remain available in full mode.
+
+| Typed tool | Core function |
+| --- | --- |
+| margin_review_workflows | protocols.list_workflows |
+| margin_register_sources | evidence.register_sources |
+| margin_prepare_verification | evidence.prepare_verification |
+| margin_submit_assessment | evidence.submit_assessment |
+| margin_render_citations | evidence.render_citations |
+| margin_audit_answer | evidence.audit_answer |
+| margin_check_numeric_claim | evidence.check_numeric_claim |
+| margin_prepare_sentiment | sentiment.prepare_analysis |
+| margin_submit_annotations | sentiment.submit_annotations |
+| margin_aggregate_sentiment | sentiment.aggregate |
+
+Citation preparation takes claims with existing source_ids. Sentiment preparation
+takes source_ids, issuer, aspect, flat from/to and date_basis—not raw text/window.
+Neither preparation accepts invented packet refs. Follow returned next_steps:
+select mcp_execution.tool, merge bound_arguments with required_host_fields, then
+validate against that tool's schema. is_complete_input=false means a partial binding,
+not an executable request. Host reviewer/judgments/quotes and actual final claim_ids
+remain caller input. Preparation returns real packet_id/hash; they are not run IDs.
+Hints are response metadata outside the frozen packet hash, not a stored assessment.
+Inventory-only profiles point to render/aggregate without manufacturing judgments.
+Packet expires_at concerns TTL; original_document_verified concerns authenticity.
+
+Review errors now distinguish JSON/size failures, content requiring sanitization and
+schema mismatch. A schema error identifies missing/allowed fields without claiming
+credential misuse or echoing arbitrary caller keys/values. All quote/hash/source,
+capability, TTL/capacity and no-refetch guards remain. Margin still runs no LLM.
+
+`margin-mcp --tool-profile all` is the default full surface. For a local review stage,
+add `--tool-profile review` to the **frontend** command, standalone or shared. It
+advertises 14 tools: the ten above plus status/catalog/result/review_sources; no
+provider connect/run, retrieval previews, finance or generic margin_review. Catalog
+is scoped to review and all means all review functions. Function names are labels,
+not callable aliases; unknown/hidden tools fail before forwarding. This is a frontend
+view, not an authorization boundary; other full clients retain the same owner/budgets.
+
+Example LM Studio shared frontend arguments after a version-matched upgrade:
+
+```json
+[
+  "--backend-socket", "/Users/rishit/Desktop/mtest/shared/core.sock",
+  "--mode", "live",
+  "--tool-profile", "review"
+]
+```
+
+Change only frontend profile/reconnect to preserve the same backend's source/packet
+state (subject to TTL); do not restart the backend to switch profiles. Upgrading an
+older backend to 0.8.0 still requires a deliberate restart and loses old handles.
+Review mode can register host-supplied real text or read/import already retained
+results without provider keys or requests. It never fetches missing/expired sources.
+Status data.tool_profile and advertised_tools describe the frontend view, separate
+from package_version/contract_version. Backend recording stores underlying calls;
+frontend profile projections/instructions, host parse failures, hidden reasoning and
+final prose are not recorded there. Outer tool-schema rejections can occur before
+recording too; capture caller-side results when evaluating failures.
+
+Measured tools/list JSON bytes: full 35 tools 82,930; review 14 tools 29,088,
+51.40% below 0.7.0's 59,853. This is uncompressed byte size, not token/context fit or
+proof of model improvement. The next real-host check remains separate.
 
 ## Typed retrieval previews and exact schema authority
 
@@ -53,7 +121,7 @@ Pass it to `margin_preview_announcements`; execute only the resulting plan throu
 the existing margin_run/session/idempotency workflow. Unknown fields remain rejected.
 Retrieval errors now name schema-owned missing/allowed fields (such as missing query)
 without echoing unknown caller names/values. `margin_status.data.package_version`
-identifies software (0.7.0); envelope.contract_version remains margin.mcp.v1.
+identifies software; envelope.contract_version remains margin.mcp.v1.
 
 Tradeoff: tools/list measured 59,853 JSON bytes versus 47,721 for 0.6.2 (+25.42%).
 These are uncompressed byte counts, not host-tokenizer/context guarantees. Smaller
@@ -169,9 +237,9 @@ Console commands are `margin-mcp`, `margin-backend`, and the existing `margin-ag
 optional `margin-workbench`. No new package dependency is required for shared mode.
 The package is not yet published to PyPI; use the local wheel or checkout.
 
-The current tested 0.7.0 wheel is committed at
-[`releases/0.7.0/margin_research-0.7.0-py3-none-any.whl`](../releases/0.7.0/margin_research-0.7.0-py3-none-any.whl),
-with [`SHA256SUMS`](../releases/0.7.0/SHA256SUMS). Earlier tested 0.6.1/0.6.2 artifacts
+The current tested 0.8.0 wheel is committed at
+[`releases/0.8.0/margin_research-0.8.0-py3-none-any.whl`](../releases/0.8.0/margin_research-0.8.0-py3-none-any.whl),
+with [`SHA256SUMS`](../releases/0.8.0/SHA256SUMS). Earlier tested 0.6.1/0.6.2/0.7.0 artifacts
 remain in their versioned directories with original checksums. Keep release artifacts immutable and publish
 a new package version for later runtime changes. Generated `dist/` outputs remain
 ignored; only deliberately reviewed versioned release files belong in Git.
@@ -179,7 +247,7 @@ ignored; only deliberately reviewed versioned release files belong in Git.
 From the repository root, verify the committed artifact before installation:
 
 ```sh
-(cd releases/0.7.0 && shasum -a 256 -c SHA256SUMS)
+(cd releases/0.8.0 && shasum -a 256 -c SHA256SUMS)
 ```
 
 The wheel contains no provider keys or private captures. Credentials/configuration
@@ -273,19 +341,19 @@ the executable is `/Users/rishit/Desktop/mtest/.venv/bin/margin-mcp`. After a wh
 restart the backend deliberately and reconnect the host; never silently replenish spent
 allowances. The existing `.env` and logs remain private, outside the package.
 
-For a controlled upgrade to 0.7.0, inspect/save the old ledger and logs, stop the
+For a controlled upgrade to 0.8.0, inspect/save the old ledger and logs, stop the
 old backend with its existing executable, then install the new wheel into that venv:
 
 ```sh
 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
-/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.7.0/margin_research-0.7.0-py3-none-any.whl
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.8.0/margin_research-0.8.0-py3-none-any.whl
 ```
 
 These are manual instructions, not actions performed during this build. Existing pinned
 dependencies are reused. Restart explicitly using the backend command above only
 after setting reconciled remaining provider allowances; do not copy the old allowance
 as if nothing was spent. With no confirmed requests remaining, set the BharatStock
-allowance to zero and test local preview only. Both backend and frontend must be 0.7.0;
+allowance to zero and test only local actions (including review). Both backend and frontend must be 0.8.0;
 reconnect the host after the version-matched restart. No provider key belongs in commands.
 
 ## Tools and financial output

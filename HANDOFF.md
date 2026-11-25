@@ -1,5 +1,16 @@
 # Margin: quick handoff
 
+**Latest source 0.8.0:** ten typed review tools, clearer schema/JSON/size/sanitization
+errors and actual next-step packet bindings. Full profile 35 tools; optional review
+frontend 14 local tools, same shared owner and no provider dispatch surface. Exact
+schemas come from canonical SCHEMAS, not remembered examples. 392 tests and SDK checks
+pass; saved real INFY replay is operator-authored, not a model benchmark. See
+[profile/setup](docs/mcp.md#typed-review-tools-profiles-and-packet-handoffs),
+[plan/evaluation](docs/design/mcp-aggregation.md#080-review-repair-plan-and-evaluation-26-november-2026)
+and [validation](docs/implementation.md). Active user backend stays 0.7.0; no live
+upgrade/reset/fetch. Deliberately upgrade both sides, obtain valid source handles,
+then switch only the frontend to review profile and follow returned next_steps.
+
 **Latest source 0.7.0:** four typed Drishti previews generate their exact schemas from
 reviewed Registry contracts and construct query wrappers internally. Generic calls
 remain; obtain their exact schema from margin_catalog. Typed calls use the actual

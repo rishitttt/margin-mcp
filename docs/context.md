@@ -1,5 +1,17 @@
 # Project context and handoff
 
+**Latest source 0.8.0:** plan e5e97d0 preceded typed schemas for all ten review tools,
+distinct safe diagnostics and next_steps with real packet refs/required host fields.
+35 tools full, 14 local tools in optional frontend --tool-profile review. Shared
+profile switching preserves owner/unexpired packets without restarting the backend;
+catalog/calls are filtered and profile is not an authorization boundary. 392 tests
+and SDK acceptance; saved real INFY operator replay passed without new provider calls.
+Review definitions 29,088 bytes versus 0.7.0's 59,853 (-51.40%), no model-success claim.
+Active mtest remains 0.7.0, estimated data allowance spent. No install/restart/reset
+or authenticated call in this build. Next: deliberate version-matched upgrade, obtain
+new valid source handles and test one typed review step at a time. Old handles do not
+survive backend upgrade; profile-only frontend changes preserve them subject to TTL.
+
 **Latest 26 November review attempt:** one margin_review call for evidence.prepare_verification
 was rejected for missing claims/invalid passage/packet fields. The function exists;
 the model's missing-function/credential-misuse explanations are unsupported. Exact

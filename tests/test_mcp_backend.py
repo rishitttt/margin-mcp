@@ -81,7 +81,7 @@ async def test_real_stdio_preview_and_execution_survive_frontend_restarts(addres
             async with stdio_client(params, errlog=err) as (read, write):
                 async with ClientSession(read, write) as client:
                     await client.initialize()
-                    assert len((await client.list_tools()).tools) == 25
+                    assert len((await client.list_tools()).tools) == 35
                     preview = (
                         await client.call_tool(
                             "margin_preview",
@@ -148,6 +148,74 @@ async def test_shared_proxy_never_creates_a_local_core(address):
         server = create_server(backend_socket=address, service_factory=forbidden)
         async with server.lifespan(server) as proxy:
             assert not (await proxy.call("margin_status", {})).is_error
+
+
+async def test_shared_profile_switch_keeps_prepared_packet_without_provider_calls(
+    address, tmp_path
+):
+    async with Backend(
+        address, Settings(bharatstock_requests=0, drishti_requests=0, drishti_credits=0)
+    ) as backend:
+        params = client_params(address)
+        with (tmp_path / "profile-stderr.txt").open("w") as err:
+            async with stdio_client(params, errlog=err) as (read, write):
+                async with ClientSession(read, write) as client:
+                    await client.initialize()
+                    status = (await client.call_tool("margin_status", {})).structured_content
+                    source = {
+                        "issuer": "NSE:EXAMPLE",
+                        "title": "Fictional profile source",
+                        "url": "https://example.invalid/profile",
+                        "kind": "provider_summary",
+                        "date": None,
+                        "date_kind": "unknown",
+                        "passages": [
+                            {"passage_id": "P1", "text": "Demand improved.", "locator": "summary"}
+                        ],
+                    }
+                    registered = (
+                        await client.call_tool("margin_register_sources", {"sources": [source]})
+                    ).structured_content
+                    sid = registered["data"]["sources"][0]["source_id"]
+                    prepared = (
+                        await client.call_tool(
+                            "margin_prepare_verification",
+                            {
+                                "claims": [
+                                    {
+                                        "claim_id": "C1",
+                                        "text": "Demand improved.",
+                                        "source_ids": [sid],
+                                    }
+                                ],
+                            },
+                        )
+                    ).structured_content["data"]
+            params = client_params(address)
+            params.args += ["--tool-profile", "review"]
+            async with stdio_client(params, errlog=err) as (read, write):
+                async with ClientSession(read, write) as client:
+                    initialized = await client.initialize()
+                    assert "local review profile" in initialized.instructions
+                    assert len((await client.list_tools()).tools) == 14
+                    current = (await client.call_tool("margin_status", {})).structured_content
+                    assert (
+                        current["session_id"] == status["session_id"] == backend.adapter.session_id
+                    )
+                    assert current["data"]["tool_profile"] == "review"
+                    rendered = (
+                        await client.call_tool(
+                            "margin_render_citations",
+                            {k: prepared[k] for k in ("packet_id", "packet_hash")},
+                        )
+                    ).structured_content
+                    assert rendered["data"]["citations"][0]["semantic_review"] == "not_reviewed"
+                    before = backend.recorder.sequence
+                    with pytest.raises(MCPError) as caught:
+                        await client.call_tool("margin_run", {})
+                    assert caught.value.error.code == -32602
+                    assert backend.recorder.sequence == before
+        assert backend.service.ledger.requests == {"bharatstock": 0, "drishti": 0}
 
 
 async def test_backend_restart_rejects_old_epoch_and_plan(address):

@@ -1,5 +1,13 @@
 # Function validation status
 
+**0.8.0 review repair:** all ten review functions have generated typed MCP tools.
+Both typed workflows, actual next-step refs, strict quote/hash/capability/expiry guards,
+classified diagnostics and 14-tool profile restrictions pass offline/SDK checks.
+392 offline tests; full 35-tool and focused 14-tool installed acceptance. Saved real
+INFY text also passed an isolated operator-authored replay, with zero new provider
+calls or model benchmark claims. Original user host failures remain preserved; no
+real 0.8.0 model completion yet. [Implementation](../implementation.md) owns details.
+
 **26 November local review trial:** retrieval/import still pass, but semantic review
 has not completed. One prepare_verification function call reached margin_review with
 the wrong argument schema and was rejected; the function is present. Later model tool

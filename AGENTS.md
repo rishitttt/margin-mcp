@@ -1,5 +1,17 @@
 # Working on Margin
 
+**0.8.0 implementation checkpoint:** plan e5e97d0 preceded ten generated typed review
+tools, classified safe errors and next_steps using actual packet refs/required host
+fields outside frozen hashes. Full 35 tools; optional frontend review view 14 local
+tools over the same owner. Preserve generic full mode, canonical SCHEMAS, strict
+hash/quote/capability/TTL guards and no invented judgments/refetch. 392 offline tests
+and SDK/profile-state checks own software evidence; saved real replay is explicitly
+operator-authored, not model gold. Profile definition bytes 29,088 vs old 59,853; no
+context-fit guarantee. Active mtest stays 0.7.0, credit spent; no new authenticated
+calls/install/restart/reset. Backend upgrade loses old handles; profile-only frontend
+switch does not. Profile/caller-side validation outcomes require separate experiment
+capture; backend logs omit projections and some pre-recording rejections.
+
 **26 November review repair authorized:** follow the 0.8.0 plan in
 docs/design/mcp-aggregation.md before runtime edits. Generate ten typed review tools
 from SCHEMAS, preserve generic full mode, separate safe review diagnostics and return

@@ -1,7 +1,7 @@
 # Citation and sentiment handoffs
 
 Implemented **24 November 2026**, core version 0.2.0, and exposed through Margin's
-MCP since 0.3.0. Current package 0.7.0 retains all ten functions plus Python/HTTP/CLI
+MCP since 0.3.0. Current package 0.8.0 retains all ten functions plus Python/HTTP/CLI
 and the temporary workbench tester. Historical interface statements below are dated;
 [MCP usage](mcp.md) and [implementation](implementation.md) own current setup/evidence.
 The core performs no LLM inference, web search, document download or PDF extraction.
@@ -23,6 +23,22 @@ receive locators/inventory and incomplete analysis; there is no fallback model o
 neutral label. Operator-declared profiles describe workflow availability, not competence.
 
 ## Entry points
+
+**0.8.0 preferred MCP route:** use the ten typed tools in the
+[review/profile guide](mcp.md#typed-review-tools-profiles-and-packet-handoffs), with
+their host-advertised exact schemas and top-level fields. No function/arguments
+wrapper. The optional review frontend profile exposes only 14 local tools; changing
+frontend profiles preserves a version-matched shared backend. Generic margin_review
+and exact catalog function schemas remain a full-profile fallback. The dated generic
+examples below remain valid there, not in the focused profile.
+
+Prepare citation → margin_submit_assessment → margin_render_citations →
+margin_audit_answer; prepare sentiment → margin_submit_annotations →
+margin_aggregate_sentiment. Preparation returns next_steps with actual bound packet
+refs, named typed tools and required host fields. Do not call a partial binding until
+host fields are supplied, invent hashes/reviewer judgments, or use a data run ID as
+a packet ID. Follow expires_at for packet TTL independently of verification status.
+Schema mismatch, JSON/size and sanitization errors are now separate, bounded messages.
 
 For a native MCP host, use `margin_catalog` with group `review` and one function name
 plus include_schemas=true, then `margin_review` with that function identifier and its
@@ -77,7 +93,7 @@ available on successful announcement, earnings-list and earnings-detail cards in
 
 ## Small-model acceptance after activation
 
-Use a deliberately version-matched 0.7.0 backend/frontend with an explicitly
+Use a deliberately version-matched 0.8.0 backend/frontend with an explicitly
 reconciled Drishti allowance. Historical finance-only profiles have Drishti zero; do not
 reset/restart an active process just to bypass that condition. Installing a wheel alone does not
 update a running process. Existing keys were sufficient for the measured live pass.
@@ -100,15 +116,22 @@ an acceptance target, and Margin supplies no hidden fallback model.
    actual run_id/operation_id and issuer=NSE:INFY. Expect supplied summary, source
    IDs, protected locator state and unknown publication timing; no attachment reading.
 3. **Citation:** use this source for one atomic claim attributed to the summary.
-   Prepare verification, assess against an exact passage quote, submit, render
+   Use margin_prepare_verification with its advertised claims schema, assess against
+   an exact packet passage quote, then follow next_steps to submit, render
    citations and audit the claim manifest. Preserve packet ID/hash and actual source/
    passage IDs. No further provider calls or independent-original claim. An incapable
    host returns inventory/not reviewed instead. An altered quote must be rejected.
-4. **Sentiment:** review the same source for Infosys AI positioning, explicitly
+4. **Sentiment:** use margin_prepare_sentiment on the same source for Infosys AI positioning, explicitly
    choosing record_date for the same window because publication timing is unknown.
    Prepare, quote/annotate in the host, then aggregate. Preserve unclear/missing
    counts and retrieved-content scope. Published-date mode should exclude the source
    unless separate publication evidence is supplied. No further provider calls.
+
+After a 0.8.0 backend upgrade old handles are unavailable; do not reuse IDs printed
+in historical examples below. Register already supplied real text/locators explicitly,
+or arrange a separately budgeted fresh retrieval in full mode. Once sources are in
+the same 0.8.0 backend, switch only the frontend to review profile for the review
+stage, without restarting the backend. No paid key is needed for local-only review.
 
 Save tool events and the final answer separately. Why summaries are self-reports,
 not hidden reasoning. Check quote/claim attribution, protected URLs, date/relevance,

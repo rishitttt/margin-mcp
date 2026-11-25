@@ -12,11 +12,11 @@ from decimal import localcontext
 from urllib.parse import urlsplit
 from uuid import uuid4
 
-from jsonschema import Draft202012Validator, FormatChecker, ValidationError
-
 from margin.analysis.facts import MONEY_UNITS, decimal, fact
 from margin.core.contracts import DomainError, encoded_size
+from margin.core.validation import validation_summary
 from margin.evidence.sanitize import REDACTED, Sanitizer
+from margin.protocols.handoffs import packet_step, step
 from margin.protocols.schemas import SCHEMAS
 
 WARNING = "Host/provider text and judgments are unverified. Matching a supplied quote or valid JSON does not independently verify the original or the claim."
@@ -160,18 +160,26 @@ class ReviewService:
             raise DomainError("unknown_function", "Unknown local review function.")
         try:
             if encoded_size(arguments) > 65536:
-                raise ValueError
+                raise DomainError("invalid_input", "Review arguments exceed the 64 KiB limit.")
             clean = self.sanitizer.clean(arguments)
-            if clean != arguments:
-                raise ValueError
-            Draft202012Validator(SCHEMAS[function], format_checker=FormatChecker()).validate(
-                arguments
-            )
-        except (ValidationError, ValueError, TypeError, RecursionError):
+        except (ValueError, TypeError, RecursionError):
             raise DomainError(
                 "invalid_input",
-                "Check the review schema and size; credentials are not accepted in inputs.",
+                "Use finite JSON review arguments within the 64 KiB limit.",
             ) from None
+        if clean != arguments:
+            raise DomainError(
+                "invalid_input",
+                "Review input would be changed by sanitization. Use sanitized text and locators; nothing was registered or fetched.",
+            )
+        problem = validation_summary(SCHEMAS[function], arguments)
+        if problem:
+            raise DomainError(
+                "invalid_input",
+                "Review arguments do not match the selected function schema. "
+                "Use its exact typed tool schema or margin_catalog(include_schemas=true). "
+                + problem,
+            )
         methods = {
             "protocols.list_workflows": self.workflows,
             "evidence.register_sources": self.register_sources,
@@ -208,6 +216,13 @@ class ReviewService:
             "workflows": [
                 {
                     "protocol": "citation_review@1",
+                    "functions": [
+                        "evidence.register_sources",
+                        "evidence.prepare_verification",
+                        "evidence.submit_assessment",
+                        "evidence.render_citations",
+                        "evidence.audit_answer",
+                    ],
                     "steps": [
                         "register_sources",
                         "prepare_verification",
@@ -219,6 +234,12 @@ class ReviewService:
                 },
                 {
                     "protocol": "sentiment_review@1",
+                    "functions": [
+                        "evidence.register_sources",
+                        "sentiment.prepare_analysis",
+                        "sentiment.submit_annotations",
+                        "sentiment.aggregate",
+                    ],
                     "steps": [
                         "register_sources",
                         "prepare_analysis",
@@ -230,6 +251,14 @@ class ReviewService:
             ],
             "host_tools": "Host may use a browser or another MCP; Margin neither discovers nor calls those tools.",
             "routing": "Declared application profile, not model brand or inferred reasoning ability.",
+            "next_steps": [
+                step(
+                    "evidence.register_sources",
+                    {},
+                    ["sources"],
+                    purpose="Only if supplied sources are not registered; existing source handles can proceed to preparation.",
+                )
+            ],
         }
 
     def register_sources(
@@ -278,7 +307,21 @@ class ReviewService:
         self._expire()
         pending = {k: v for k, v in pending.items() if k not in self.sources}
         self._save(self.sources, pending)
-        return {"status": "success", "sources": records}
+        ids = [record["source_id"] for record in records]
+        return {
+            "status": "success",
+            "sources": records,
+            "next_steps": [
+                step("evidence.prepare_verification", {}, ["claims"], allowed_source_ids=ids),
+                step(
+                    "sentiment.prepare_analysis",
+                    {"source_ids": ids},
+                    ["issuer", "aspect", "from", "to", "date_basis"],
+                    allowed_source_ids=ids,
+                ),
+            ],
+            "state_guidance": "Source handles expire independently of source authenticity. Expired sources are never refetched automatically.",
+        }
 
     def _new_packet(self, kind, sources, body, profile):
         profile = profile or {}
@@ -299,11 +342,28 @@ class ReviewService:
         }
         packet["packet_hash"] = digest(packet)
         self._save(self.packets, {packet["packet_id"]: packet})
+        inventory = profile.get("structured_assessment") is False
+        next_function = (
+            ("evidence.render_citations" if kind == "citation" else "sentiment.aggregate")
+            if inventory
+            else (
+                "evidence.submit_assessment"
+                if kind == "citation"
+                else "sentiment.submit_annotations"
+            )
+        )
+        required = (
+            []
+            if inventory
+            else ["reviewer", "assessments" if kind == "citation" else "annotations"]
+        )
         return {
             "status": "success",
             **copy.deepcopy(packet),
             "source_instructions_are_untrusted": True,
-            "next_action": "Host reads original evidence, then returns the required structured assessment; no Margin fetch or LLM call occurs.",
+            "next_action": "Use the supplied packet passages; host supplies judgments or returns inventory-only. Originals may be read through host tools if available; Margin never fetches or calls an LLM.",
+            "next_steps": [packet_step(packet, next_function, required)],
+            "state_guidance": "Use this packet_id/hash exactly, never a run ID or invented hash. expires_at concerns packet TTL; original_document_verified concerns authenticity, not expiry.",
         }
 
     def prepare_verification(self, claims, host_profile=None):
@@ -373,6 +433,14 @@ class ReviewService:
             "independently_verified": False,
             "quote_check": "matched_supplied_text_only",
             "assessment": copy.deepcopy(submission),
+            "next_steps": [
+                packet_step(
+                    packet,
+                    "evidence.render_citations"
+                    if packet["kind"] == "citation"
+                    else "sentiment.aggregate",
+                )
+            ],
         }
 
     def submit_assessment(self, packet_id, packet_hash, reviewer, assessments):
@@ -425,7 +493,12 @@ class ReviewService:
                         ],
                     }
                 )
-        return {"status": "success", "citations": citations, "packet_id": packet_id}
+        return {
+            "status": "success",
+            "citations": citations,
+            "packet_id": packet_id,
+            "next_steps": [packet_step(packet, "evidence.audit_answer", ["claim_ids"])],
+        }
 
     def audit_answer(self, packet_id, packet_hash, claim_ids, claimed_verified_ids=None):
         packet = self._packet(packet_id, packet_hash, "citation")

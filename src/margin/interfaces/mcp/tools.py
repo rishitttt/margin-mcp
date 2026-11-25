@@ -12,7 +12,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.7.0"
+VERSION = "0.8.0"
 CONTRACT = "margin.mcp.v1"
 DIRECT_FUNCTIONS = {
     "margin_calculate_margins": "finance.calculate_margins",
@@ -27,6 +27,30 @@ DIRECT_PREVIEWS = {
     "margin_preview_announcements": "drishti.get_announcements",
     "margin_preview_earnings": "drishti.list_earnings",
     "margin_preview_earnings_filing": "drishti.get_earnings_filing",
+}
+DIRECT_REVIEWS = {
+    "margin_review_workflows": "protocols.list_workflows",
+    "margin_register_sources": "evidence.register_sources",
+    "margin_prepare_verification": "evidence.prepare_verification",
+    "margin_submit_assessment": "evidence.submit_assessment",
+    "margin_render_citations": "evidence.render_citations",
+    "margin_audit_answer": "evidence.audit_answer",
+    "margin_check_numeric_claim": "evidence.check_numeric_claim",
+    "margin_prepare_sentiment": "sentiment.prepare_analysis",
+    "margin_submit_annotations": "sentiment.submit_annotations",
+    "margin_aggregate_sentiment": "sentiment.aggregate",
+}
+REVIEW_HELP = {
+    "protocols.list_workflows": "Discover local citation/sentiment steps and capability fallbacks.",
+    "evidence.register_sources": "Register supplied source locators/passages. No document download; unknown dates stay unknown.",
+    "evidence.prepare_verification": "Prepare claims with existing source_ids. Do not supply passage fields, packet IDs or hashes here; preparation returns real packet refs and passages.",
+    "evidence.submit_assessment": "Submit host reviewer and per-claim assessments/quotes using the actual returned packet_id/hash; run IDs and invented hashes are invalid.",
+    "evidence.render_citations": "Render an existing citation packet with its actual packet_id/hash. Unreviewed claims remain not_reviewed.",
+    "evidence.audit_answer": "Audit actual final claim_ids against an existing packet_id/hash; this is not preparation, a raw claim/URL verifier or arbitrary prose audit.",
+    "evidence.check_numeric_claim": "Compare two supplied typed financial facts and explicit context/units; does not authenticate original sources.",
+    "sentiment.prepare_analysis": "Prepare from source_ids, issuer, aspect, flat from/to and date_basis. No text/window fields or packet refs. Returns actual packet refs; publication timing must be established separately.",
+    "sentiment.submit_annotations": "Submit host reviewer and source-level annotations/quotes with actual packet_id/hash. This is sentiment annotation, not citation assessment.",
+    "sentiment.aggregate": "Aggregate an existing sentiment packet using its actual packet_id/hash. Missing labels are not neutral; balance excludes mixed/unclear/missing/irrelevant. Not comprehensive investor sentiment.",
 }
 ID = {"type": "string", "pattern": r"^[A-Za-z0-9_-]{1,100}$"}
 WAIT = {"type": "integer", "minimum": 0, "maximum": 30, "default": 0}
@@ -281,6 +305,26 @@ def definitions():
                 preview_schema(operation, registry),
                 False,
                 False,
+                False,
+            )
+        )
+    for name, function in DIRECT_REVIEWS.items():
+        inputs = deepcopy(SCHEMAS[function])
+        inputs["properties"]["why"] = deepcopy(WHY)
+        readonly = function in {
+            "protocols.list_workflows",
+            "evidence.render_citations",
+            "evidence.audit_answer",
+            "evidence.check_numeric_claim",
+            "sentiment.aggregate",
+        }
+        rows.append(
+            (
+                name,
+                f"{REVIEW_HELP[function]} Use THIS advertised exact inputSchema at top level; no function/arguments wrapper. Follow next_steps and complete required host input. No provider/LLM call; semantic judgments are host reports, not original authentication.",
+                inputs,
+                readonly,
+                readonly,
                 False,
             )
         )

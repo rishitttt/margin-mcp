@@ -1,5 +1,14 @@
 # Margin build and evaluation plan
 
+**0.8.0 review repair delivered:** typed schemas for ten review functions, precise
+diagnostics and actual next-step bindings; optional 14-tool frontend review profile
+over the same state owner. No hidden judgment generation or provider call. Software
+and saved-real-text operator acceptance precede the next model-host trial. See
+[evaluated plan](design/mcp-aggregation.md#080-review-repair-plan-and-evaluation-26-november-2026)
+and [implementation](implementation.md). Upgrade deliberately; profile changes alone
+must not restart the backend/reset budgets. Then test one typed preparation/submission
+step at a time before freezing the separate benchmark profile.
+
 **0.7.0 usability repair:** evaluated plan df45376 adds four generated typed event
 previews, precise retrieval errors and explicit status version. Generic contracts
 remain compatible and exact schema sources are documented. Software validation

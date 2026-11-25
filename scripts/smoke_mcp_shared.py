@@ -94,7 +94,7 @@ async def main(args):
                 async with stdio_client(params, errlog=stderr) as (read, write):
                     async with ClientSession(read, write) as client:
                         initialized = await client.initialize()
-                        assert len((await client.list_tools()).tools) == 25
+                        assert len((await client.list_tools()).tools) == 35
                         status = await call(client, "margin_status")
                         assert status["data"]["state_owner"] == "shared_backend_process"
                         assert not any(status["data"]["ledger"]["http_attempts"].values())
@@ -231,7 +231,7 @@ async def main(args):
         "version": initialized.server_info.version,
         "protocol": initialized.protocol_version,
         "stdio_frontends": 4,
-        "tools": 25,
+        "tools": 35,
         "calls": len(observations),
         "recorded_events": len(events),
         "stable_backend_identity": True,

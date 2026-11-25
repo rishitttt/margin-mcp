@@ -1,5 +1,15 @@
 # Margin
 
+**Current source release: 0.8.0 (26 November).** Ten typed review tools remove the
+generic-wrapper step for citation/sentiment. Preparation returns next tools and real
+packet references; schema, JSON/size and sanitization errors are distinct. Optional
+`--tool-profile review` advertises 14 local tools instead of the full 35, over the same
+state owner. [Review/profile guide](docs/mcp.md#typed-review-tools-profiles-and-packet-handoffs),
+[plan/evaluation](docs/design/mcp-aggregation.md#080-review-repair-plan-and-evaluation-26-november-2026),
+[validation](docs/implementation.md), [wheel](releases/0.8.0/margin_research-0.8.0-py3-none-any.whl)
+and [checksum](releases/0.8.0/SHA256SUMS). Active mtest remains 0.7.0; no live restart,
+provider call or quota reset. Older dated source-release notes below are history.
+
 **Current source release: 0.7.0.** Four typed Drishti previews remove the query-wrapper
 translation from common event calls; exact schemas are generated from reviewed core
 contracts. Generic catalog routing remains compatible. Retrieval errors identify missing/
@@ -50,7 +60,7 @@ The [portable local test bundle](docs/portable-agent-bundle.md) adds relocatable
 
 ## Current state
 
-`main` has an installable core, two upstream adapters, 25 local MCP tools, deterministic
+`main` has an installable core, two upstream adapters, 35 full-profile MCP tools, deterministic
 finance and ten citation/content-sentiment review functions. Synthetic mode defaults
 to fictional software fixtures. Explicit live checks and user-led finance tests are
 documented separately from offline transport tests. Broad issuer accuracy, source

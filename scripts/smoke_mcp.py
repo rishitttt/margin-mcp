@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import copy
 import json
 import os
 import sys
@@ -57,7 +58,7 @@ async def main(args):
             async with ClientSession(read, write) as session:
                 initialized = await session.initialize()
                 tools = {tool.name: tool for tool in (await session.list_tools()).tools}
-                assert len(tools) == 25
+                assert len(tools) == 35
                 status = await call(session, "margin_status")
                 assert not any(status["data"]["ledger"]["http_attempts"].values())
                 session_id = status["session_id"]
@@ -257,7 +258,10 @@ async def main(args):
                 )["data"]
                 assert imported["sources"]
 
+                review_inputs = {}
+
                 async def review(function, arguments):
+                    review_inputs[function] = copy.deepcopy(arguments)
                     return (
                         await call(
                             session, "margin_review", {"function": function, "arguments": arguments}
@@ -348,6 +352,25 @@ async def main(args):
                 )
                 balance = await review("sentiment.aggregate", sr)
                 assert balance["counts"]["positive"] == 1 and not balance["investor_sentiment"]
+                await review("evidence.audit_answer", ref | {"claim_ids": ["C1"]})
+                numeric_fact = {
+                    "issuer": "NSE:SYNTHA",
+                    "metric": "revenue",
+                    "definition": "Fictional revenue",
+                    "value": "100",
+                    "unit": "INR",
+                    "period_type": "annual",
+                    "period_end": "2026-03-31",
+                    "basis": "standalone",
+                }
+                await review(
+                    "evidence.check_numeric_claim",
+                    {"claim": numeric_fact, "evidence": numeric_fact},
+                )
+                from margin.interfaces.mcp.tools import DIRECT_REVIEWS
+
+                for tool, function in DIRECT_REVIEWS.items():
+                    await call(session, tool, review_inputs[function])
                 fresh_inputs = {
                     "function": "finance.company_margins",
                     "ticker": "SYNTHA",

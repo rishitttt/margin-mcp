@@ -31,6 +31,7 @@ from margin.interfaces.mcp.tools import (
     CONTRACT,
     DIRECT_FUNCTIONS,
     DIRECT_PREVIEWS,
+    DIRECT_REVIEWS,
     VERSION,
     definitions,
 )
@@ -95,6 +96,19 @@ Preserve its required nesting; do not infer schemas from memory or provider docs
 Catalog direct_preview is an alternative flat tool route, not the generic operation
 schema. Unknown/changed upstream contracts remain held. Status data.package_version
 is the software version; envelope.contract_version names the protocol contract.
+Prefer typed local review tools: margin_register_sources, margin_prepare_verification,
+margin_submit_assessment, margin_render_citations, margin_audit_answer,
+margin_check_numeric_claim, margin_prepare_sentiment, margin_submit_annotations,
+margin_aggregate_sentiment and margin_review_workflows. Their exact fields are top-level,
+without function/arguments wrappers. Generic margin_review remains a full-mode fallback.
+Citation preparation takes claims/source_ids; sentiment preparation takes source_ids,
+issuer/aspect and flat from/to/date_basis, not text/window. Packet IDs/hashes come from
+preparation, never a data run or invented string. Follow next_steps.mcp_execution.tool;
+merge bound_arguments with required host fields and validate the advertised schema.
+The host still supplies judgments/quotes; partial bindings are not executable calls.
+Use packet expires_at for expiry; original_document_verified concerns authenticity only.
+The optional --tool-profile review advertises only local review/retained-result tools
+over the same owner; switching only the frontend profile does not reset state/budgets.
 """
 
 
@@ -178,6 +192,7 @@ class MarginMCP:
             args = copy.deepcopy(arguments)
             args.pop("why", None)
             data = await self.dispatch(name, args)
+            data = self.review_handoffs(data)
             body = self.service.sanitizer.clean(base | {"data": data})
             if encoded_size(body) > self.service.settings.max_result_bytes + 64 * 1024:
                 raise DomainError(
@@ -264,6 +279,11 @@ class MarginMCP:
                 "inputs_at": "arguments",
             }
         if group == "review":
+            direct_review = next(
+                (tool for tool, function in DIRECT_REVIEWS.items() if function == name), None
+            )
+            if direct_review:
+                return {"tool": direct_review, "bind": {}, "inputs_at": "top_level"}
             return {
                 "tool": "margin_review",
                 "bind": {"function": name},
@@ -321,6 +341,12 @@ class MarginMCP:
             for row in rows:
                 identifier = row.get("operation") or row.get("function")
                 row["mcp_execution"] = self.execution_route(kind, identifier)
+                if kind == "review":
+                    row["generic_mcp_execution"] = {
+                        "tool": "margin_review",
+                        "bind": {"function": identifier},
+                        "inputs_at": "arguments",
+                    }
                 direct_preview = next(
                     (
                         tool
@@ -383,6 +409,8 @@ class MarginMCP:
         return state
 
     async def dispatch(self, name, args):
+        if name in DIRECT_REVIEWS:
+            return self.service.review(DIRECT_REVIEWS[name], args)
         if name in DIRECT_PREVIEWS:
             operation = DIRECT_PREVIEWS[name]
             arguments = (
@@ -432,6 +460,34 @@ class MarginMCP:
             return self.service.review(args["function"], args["arguments"])
         return self.service.import_review_sources(**args)
 
+    @staticmethod
+    def review_handoffs(data):
+        if not isinstance(data, dict) or not data.get("next_steps"):
+            return data
+        data = copy.deepcopy(data)
+        for action in data["next_steps"]:
+            tool = next(
+                (
+                    name
+                    for name, function in DIRECT_REVIEWS.items()
+                    if function == action["function"]
+                ),
+                None,
+            )
+            if tool:
+                action["mcp_execution"] = {"tool": tool, "inputs_at": "top_level"}
+                action["schema_source"] = (
+                    "Use the named tool's exact host-advertised inputSchema. Merge bound_arguments with required host fields; do not invent references or judgments."
+                )
+        for workflow in data.get("workflows", []):
+            workflow["mcp_steps"] = [
+                {"function": function, "tool": tool, "inputs_at": "top_level"}
+                for function in workflow.get("functions", [])
+                for tool, target in DIRECT_REVIEWS.items()
+                if target == function
+            ]
+        return data
+
 
 def create_server(
     settings=None,
@@ -441,7 +497,12 @@ def create_server(
     record_dir=None,
     backend_socket=None,
     expected_mode=None,
+    tool_profile="all",
 ):
+    from margin.interfaces.mcp.profiles import REVIEW_INSTRUCTIONS, ToolView
+
+    if tool_profile not in {"all", "review"}:
+        raise ValueError("Unknown MCP tool profile.")
     if not backend_socket:
         settings = settings or Settings.from_env()
 
@@ -452,13 +513,13 @@ def create_server(
 
             if record_file or record_dir:
                 raise ValueError("Shared-mode recording belongs to the backend.")
-            yield await RemoteMCP.connect(backend_socket, expected_mode)
+            yield ToolView(await RemoteMCP.connect(backend_socket, expected_mode), tool_profile)
             return
         recorder = ToolRecorder(record_file, directory=record_dir)
         service = None
         try:
             service = service_factory(settings)
-            yield MarginMCP(service, recorder)
+            yield ToolView(MarginMCP(service, recorder), tool_profile)
         finally:
             try:
                 if service is not None:
@@ -478,7 +539,7 @@ def create_server(
         "margin",
         version=VERSION,
         title="Margin Indian financial research",
-        instructions=INSTRUCTIONS,
+        instructions=INSTRUCTIONS if tool_profile == "all" else REVIEW_INSTRUCTIONS,
         lifespan=lifespan,
         on_list_tools=list_tools,
         on_call_tool=call_tool,
@@ -486,7 +547,12 @@ def create_server(
 
 
 async def serve(
-    settings, record_file=None, record_dir=None, backend_socket=None, expected_mode=None
+    settings,
+    record_file=None,
+    record_dir=None,
+    backend_socket=None,
+    expected_mode=None,
+    tool_profile="all",
 ):
     server = create_server(
         settings,
@@ -494,6 +560,7 @@ async def serve(
         record_dir=record_dir,
         backend_socket=backend_socket,
         expected_mode=expected_mode,
+        tool_profile=tool_profile,
     )
     async with stdio_server() as (read, write):
         await server.run(read, write, server.create_initialization_options())
@@ -504,6 +571,7 @@ def main(argv=None):
         description="Run the local Margin MCP server over stdio; stdout is reserved for protocol messages."
     )
     parser.add_argument("--mode", choices=["synthetic", "live"])
+    parser.add_argument("--tool-profile", choices=["all", "review"], default="all")
     parser.add_argument(
         "--backend-socket",
         help="Connect to an explicitly started private local backend; never autostart or retry",
@@ -531,7 +599,14 @@ def main(argv=None):
         if args.backend_socket:
             if args.credentials_file or args.record_file or args.record_dir:
                 raise ValueError("Configure credentials and recording on the shared backend only.")
-            asyncio.run(serve(None, backend_socket=args.backend_socket, expected_mode=args.mode))
+            asyncio.run(
+                serve(
+                    None,
+                    backend_socket=args.backend_socket,
+                    expected_mode=args.mode,
+                    tool_profile=args.tool_profile,
+                )
+            )
             return 0
         settings = Settings.from_env()
         keys = read_provider_env(args.credentials_file) if args.credentials_file else {}
@@ -545,7 +620,9 @@ def main(argv=None):
             f"Margin MCP {VERSION}: {settings.mode.upper()} mode; process allowances are not account quotas.",
             file=sys.stderr,
         )
-        asyncio.run(serve(settings, args.record_file, args.record_dir))
+        asyncio.run(
+            serve(settings, args.record_file, args.record_dir, tool_profile=args.tool_profile)
+        )
         return 0
     except (DomainError, BridgeError, OSError, ValueError):
         print(

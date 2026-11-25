@@ -118,9 +118,11 @@ Company-preview accepts `money_unit: "auto"` (default), explicit monetary scales
 The announcement schema's added extraction flag was reviewed. Margin explicitly defaults `include_extracted_information` to false and holds true; no generic executor or extraction branch is newly enabled. Query preview/receipts show the default. The runtime catalog owns connection/schema holds.
 
 
-## MCP transport, package 0.7.0
+## MCP transport, package 0.8.0
 
-25 callable tools, unchanged 37 retrieval/finance operations and ten review functions.
+35 full-profile tools or 14 local review-profile tools, unchanged 37 retrieval/finance
+operations and ten review functions. Profiles are frontend views, not authorization
+boundaries; other full clients share the same backend/budgets.
 Four typed local previews map to reviewed Drishti operations: margin_preview_news →
 get_news, margin_preview_announcements → get_announcements, margin_preview_earnings →
 list_earnings, margin_preview_earnings_filing → get_earnings_filing. Use each tool's
@@ -129,10 +131,22 @@ Execution remains a separate margin_run. Existing readiness/selector/window/cred
 guards still apply; no preview triggers connection or data calls.
 
 For generic calls obtain the exact selected schema from margin_catalog with name and
-include_schemas=true, preserving nested query/arguments. Catalog mcp_execution remains
+include_schemas=true, preserving nested query/arguments. Retrieval mcp_execution remains
 generic; direct_preview names the flat alternative and its schema source. Both are
 generated from reviewed Registry contracts; examples/provider docs are not runtime
 input authority. Status data.package_version is software; contract_version is protocol.
+
+Review catalog mcp_execution now prefers generated typed tools; generic_mcp_execution
+preserves margin_review in full mode. Review mode hides the generic route and scopes
+catalog to review. Typed tools: margin_review_workflows, margin_register_sources,
+margin_prepare_verification, margin_submit_assessment, margin_render_citations,
+margin_audit_answer, margin_check_numeric_claim, margin_prepare_sentiment,
+margin_submit_annotations, margin_aggregate_sentiment. Inputs are exact SCHEMAS copies
+plus optional top-level why; no function/arguments wrapper. Follow returned next_steps,
+using real bound packet refs and supplying every required host field. No fabricated
+judgment, quote, hash or claim manifest. Hints are outside the immutable packet hash.
+Source/packet TTL and verification flags are independent. Profile/status projections
+and pre-recording rejections require caller-side capture for full evaluation traces.
 
 0.6.1 fixes per-metric formula metadata: use each report row's formula; raw comparison
 `values.formulas` maps absolute/percentage changes separately. Legacy `values.formula`

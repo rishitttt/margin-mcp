@@ -21,7 +21,13 @@ from margin.core.contracts import DomainError
 from margin.core.service import ResearchService
 from margin.interfaces.mcp.recording import ToolRecorder
 from margin.interfaces.mcp.server import MarginMCP, create_server
-from margin.interfaces.mcp.tools import CONTRACT, DIRECT_FUNCTIONS, VERSION, definitions
+from margin.interfaces.mcp.tools import (
+    CONTRACT,
+    DIRECT_FUNCTIONS,
+    DIRECT_REVIEWS,
+    VERSION,
+    definitions,
+)
 
 ROOT = Path(__file__).parents[1]
 
@@ -61,9 +67,9 @@ def fcff():
     }
 
 
-def test_static_catalog_has_25_tools_and_accurate_annotations():
+def test_static_catalog_has_35_tools_and_accurate_annotations():
     tools = definitions()
-    assert len(tools) == 25
+    assert len(tools) == 35
     for tool in tools.values():
         Draft202012Validator.check_schema(tool.input_schema)
         Draft202012Validator.check_schema(tool.output_schema)
@@ -160,7 +166,11 @@ async def test_every_catalog_entry_has_an_explicit_callable_mcp_route(adapter):
             route = row["mcp_execution"]
             assert route["tool"] in adapter.tools
             name = row.get("function") or row.get("operation")
-            assert name in route["bind"].values() or DIRECT_FUNCTIONS.get(route["tool"]) == name
+            assert (
+                name in route["bind"].values()
+                or DIRECT_FUNCTIONS.get(route["tool"]) == name
+                or DIRECT_REVIEWS.get(route["tool"]) == name
+            )
             if group in {"calculations", "review"}:
                 assert route["inputs_at"] in {"arguments", "top_level"} and "then" not in route
             elif group == "company":
@@ -757,7 +767,7 @@ async def test_real_stdio_sdk_handshake_run_finance_and_shutdown(tmp_path):
                     and initialized.server_info.version == VERSION
                 )
                 tools = (await session.list_tools()).tools
-                assert len(tools) == 25
+                assert len(tools) == 35
                 status = (await session.call_tool("margin_status", {})).structured_content
                 assert status["mode"] == "synthetic" and status["data"]["ledger"][
                     "http_attempts"
@@ -824,5 +834,5 @@ async def test_server_lifespan_closes_core_and_optional_log():
     server = create_server(Settings(), service_factory=factory)
     async with server.lifespan(server) as adapter:
         await invoke(adapter, "margin_status")
-        assert not any(adapter.service.ledger.requests.values())
+        assert not any(adapter.inner.service.ledger.requests.values())
     assert services[0].closed and not services[0]._buffers

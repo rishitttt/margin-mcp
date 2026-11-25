@@ -1,5 +1,57 @@
 # Implementation and validation status
 
+## Typed review and focused profile: 26 November 2026, 0.8.0
+
+Evaluated plan e5e97d0 preceded runtime edits. Ten typed review tools are generated
+directly from the existing SCHEMAS; full mode now has 35 tools. Generic margin_review
+still works in full mode; review catalog mcp_execution prefers typed routing and
+generic_mcp_execution preserves its alternative. No review function was removed or
+semantic inference/source fetch added. Review errors separately identify JSON/size,
+sanitization and bounded schema-owned missing/allowed fields; ordinary schema failure
+no longer implies credential detection. Original quote/reference/issuer/date/hash,
+immutable submission, capability, TTL/capacity and no-refetch guards remain.
+
+Core next_steps bind actual source/packet references and name required host input;
+the MCP adapter decorates them with actual typed tool names. These hints are outside
+frozen packet hashes. Hosts must supply reviewer/judgments/quotes or actual final
+claim manifests; partial bindings are not executable until completed. Inventory-only
+preparation points to render/aggregate. expires_at and original_document_verified
+have explicit separate meanings. Other core interfaces retain function-based hints.
+
+Optional --tool-profile review is a frontend view: 14 local tools, no provider
+connect/run/finance/generic review, review-only catalog and matching short instructions.
+Both standalone and shared modes use the same view; shared state remains in the full
+backend. A profile-only frontend restart preserves unexpired source/packet refs and
+owner identity. Profiles are not an account authorization boundary; other full clients
+can use that same owner/budget. Status adds frontend tool_profile/advertised_tools.
+
+Validation: **392 offline tests**, including both typed workflow round trips, schema
+parity/isolation, exact logged bad inputs, no secret reflection, size/nonfinite versus
+schema errors, wrong quotes/hash/workflow/run IDs, immutable packets/expiry/inventory,
+profile call/catalog restrictions and real SDK shared profile switching. Source and
+installed-wheel SDK checks: full standalone 35 tools/53 calls/106 events; full shared
+four frontends/16 calls/32 events; review 14 tools/16 result-bearing calls/30 events,
+one frontend unknown-tool rejection and one outer-schema rejection before recording.
+Caller observations capture that last rejected input; backend logs are not a complete
+host trace. Installed acceptance reuses pinned dependencies, not a clean OS setup.
+
+Advertised JSON bytes: full 82,930; review 29,088, **51.40% below 0.7.0's 59,853**.
+Matching review instructions are 1,873 bytes versus full 6,068. These are byte counts,
+not token/context-fit guarantees or demonstrated model improvements. All executable
+acceptance above uses fictional fixtures. An isolated replay of the saved real INFY
+announcement also passed typed citation/sentiment handoffs with protected locator and
+unknown publication status preserved. Labels were operator/host-authored, not gold or
+a new model run. It made zero provider calls, changed no live handles and did not
+overwrite earlier failed captures. Evidence: reports/private/review-interface-2026-11-26/.
+
+Ruff/format, source/installed skill validation, local links and credential/wheel checks
+accompany the release. No new authenticated provider/model call, purchase, active
+mtest installation/restart or allowance reset. Active user backend stays 0.7.0 with
+its one estimated data credit spent; old versioned artifacts remain immutable. Next:
+controlled 0.8.0 activation, source registration or separately budgeted retrieval,
+then a one-step typed review host test using the focused profile. Backend upgrade
+invalidates old handles; switching only a matching frontend profile does not.
+
 ## User-led 0.7.0 review failure: 26 November 2026 IST
 
 The user subsequently supplied the model's generated thinking text for sentiment.
