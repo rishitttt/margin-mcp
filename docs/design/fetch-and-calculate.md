@@ -1,5 +1,51 @@
 # Self-contained company finance
 
+## 0.6.0 reporting contract plan, 25 November 2026
+
+The user authorizes points 1–3 of the reporting repair after the guided 0.5.0 live
+tests: the backend returned correct values/displays but final prose changed scales.
+Point 4 (host-enforced final-answer validation/rendering) is deferred. It is optional
+for this repair and would be needed for a stronger guarantee about unrestricted host
+prose; an MCP server alone cannot enforce it. Do not add an LLM, verifier service,
+database, new provider calls, live backend restart or quota reset.
+
+1. Publish this plan before runtime changes. Version the default company response as
+   `margin.company_finance.v2` in package 0.6.0 because its default output shape changes.
+   Keep all 21 tools, nine company functions, pure calculation contracts and guards.
+2. Put one canonical reporting table in `report.rows`: input/result, metric, label,
+   exact decimal `value`, matching `unit`, formatted `display`, reporting dates/type,
+   status and applicable formula/hold. Monetary rows use INR_crore consistently;
+   per-share amounts remain INR_per_share, percentages percent and ratios ratio.
+   Preserve definitions and continuing/group/owners scope. Never derive missing dates.
+3. Format computed absolute growth, CFO-minus-capex, balance-sheet amounts, TTM,
+   percentages and ratios with Decimal in Margin, not the model. Unknown output/unit
+   combinations remain unavailable rather than guessed. Missing is distinct from zero;
+   hold statuses/issues and partial components remain visible in the report.
+4. Generate a plain-text summary and Markdown table from those same canonical rows.
+   Include reporting context, unverified-source caveat, missing-period-start caveat
+   and relevant component holds. Templates contain no inferred financial narrative.
+   Instruct agents to copy the supplied report instead of rescaling or rewriting it.
+5. Move raw-INR selected inputs, exact core `values`, formulas/components and precision
+   into optional `details`, requested with `include_details: true`. The flag affects
+   response projection only, not request fingerprint: same financial inputs/key can
+   read details without a new fetch. Cache the bounded report plus compact details;
+   still no full raw provider response. Enforce the existing 32 KiB per-request bound.
+6. Preserve explicit execution, budgets, duplicate/conflict/cancellation behavior and
+   no-refetch rules. Existing 0.5.0 live compact responses stay untouched in their
+   running process. Use saved recorded outputs offline to check new presentation;
+   do not relabel replay as a fresh API or model test.
+7. Test exact transformations across all nine workflows and real saved HUL/INFY
+   outputs, all supported unit scales, per-share amounts, percentages, ratios, zero,
+   negatives, nulls, scope holds, time windows, readiness and unknown-unit fallbacks.
+   Verify identical report/default-versus-details projection, key reuse and no extra
+   fetch. Run full offline suite, lint/format, official SDK standalone/shared and
+   installed-wheel checks. Update usage, migration, context, function map and source/
+   installed skill instructions. No runtime dependency changes are expected.
+
+An external model can still alter a correctly formatted report. New LM Studio
+behavioral acceptance is a separate user-led test after a deliberate version-matched
+upgrade; this build cannot claim to have fixed all model prose errors.
+
 Delivered as 0.5.0 after plan commit `0e9710c`; see [implementation evidence](../implementation.md).
 
 Planned 25 November 2026, after the 0.4.0 LM Studio retest. This document owns the
