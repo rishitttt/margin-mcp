@@ -1,5 +1,15 @@
 # Project context and handoff
 
+**Latest 26 November review attempt:** one margin_review call for evidence.prepare_verification
+was rejected for missing claims/invalid passage/packet fields. The function exists;
+the model's missing-function/credential-misuse explanations are unsupported. Exact
+logged input is unchanged by credential sanitization; review's generic error text
+conflates schema/size/credential issues. Later sentiment-as-tool/extra outer fields/
+malformed calls failed host-side and are absent from backend logs. No packet created,
+no schema drift/source-expiry diagnosis, no operator fetch/runtime change. Exact
+prepare payload is validated offline in review-workflows; recover one step at a time
+within source TTL. Better typed review entry points/diagnostics remain proposed.
+
 **26 November active 0.7.0:** user upgraded/restarted. Typed INFY announcement preview,
 one explicit successful execution/result/import and deliberate generic nesting error
 pass in recorded calls. Session c527a681dc9d4e28b2b2483be3deac73, B0/D6 HTTP, estimated

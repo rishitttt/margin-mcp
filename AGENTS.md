@@ -1,5 +1,14 @@
 # Working on Margin
 
+**26 November review trial:** the function evidence.prepare_verification exists;
+one margin_review call failed because claims was missing and passage/run/packet fields
+were invented/misplaced. No review-schema lookup is recorded. Sanitizer left the exact
+input unchanged; the generic review error's credential wording is not evidence of keys
+in that call. Later malformed/unknown-tool calls were host-rejected and unlogged.
+Preserve lmstudio-070-review private evidence. No packet/runtime/provider change or
+reinstall/restart/reset in this audit; exact prepare recovery is in review-workflows.
+Review diagnostics/typed wrappers are proposed improvements, not current features.
+
 **26 November user-led 0.7.0 acceptance:** active backend is now 0.7.0, same session
 c527a681dc9d4e28b2b2483be3deac73. Typed announcement preview, one INFY data execution/
 result/import and expected generic missing-query error passed. Current B0/D6 HTTP,

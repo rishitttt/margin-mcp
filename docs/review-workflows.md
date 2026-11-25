@@ -123,6 +123,46 @@ expires, stop without fetching or resetting allowance. Already returned text/act
 locators can be deliberately registered as host-supplied evidence, preserving unknown
 publication and unverified origin; do not invent URLs or silently claim retained origin.
 
+### First 0.7.0 review finding: 26 November 2026
+
+The next user attempt reached Margin once, calling evidence.prepare_verification with
+passage_id/source_id/text and invented packet_id/hash instead of claims. The function
+exists; the schema rejection does not mean it is unavailable. No review-schema lookup
+is recorded in this run. The generic review error also mentions credentials for schema
+failures; offline sanitization of the exact logged inputs changed nothing. This is a
+feedback weakness, not evidence of credential misuse or changed review schemas.
+
+The user also reported unknown sentiment.prepare_analysis tool, extra top-level fields
+on margin_review and malformed XML/JSON. Those did not reach the backend log. Both
+preparation names are functions passed to margin_review; packet IDs/hashes are returned
+by preparation, not copied from data run IDs or invented. Audit_answer requires an
+existing packet reference/claim-ID manifest; it cannot replace preparation with a
+claim/URL pair. A model-generated end date of 0001-01-01 was not a Margin transformation.
+
+Recover with one exact prepare call only, not the whole workflow at once. The corrected
+shape below passed offline schema validation; no operator live review was performed:
+
+```json
+{
+  "function": "evidence.prepare_verification",
+  "arguments": {
+    "claims": [{
+      "claim_id": "C1",
+      "text": "The provider summary says Infosys was assessed at CMMI AI Maturity Level 5.",
+      "source_ids": ["src_d2a0e3a7301b1c49b9d6421d"]
+    }],
+    "host_profile": {"host_search": false, "structured_assessment": true}
+  },
+  "why": "Prepare one claim against the retained provider summary without fetching data."
+}
+```
+
+These source IDs are transient trial handles, not reusable examples for another run.
+If expired, stop without a provider request; do not invent packet references. Capture
+the actual returned packet_id/hash/sources before a separate assessment step. No
+reinstall/restart/data fetch is needed to correct the argument shape. Better review
+diagnostics/typed entry points remain a proposed usability repair, not delivered here.
+
 ### First 0.6.2 host preview finding
 
 The user's 25 November run connected successfully and approved all seven admitted

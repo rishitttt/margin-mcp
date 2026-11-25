@@ -1,5 +1,30 @@
 # Implementation and validation status
 
+## User-led 0.7.0 review failure: 26 November 2026 IST
+
+The next recorded action is one margin_review call with function
+evidence.prepare_verification. That function exists in both the enum and review
+registry; rejection came from invalid arguments before packet/source lookup. It
+received passage/source/text plus a data run ID as packet_id and fabricated hash,
+instead of claims and optional host_profile. No review-schema catalog lookup appears
+in this run. No packet was created by that call.
+
+Review's generic invalid_input mentions credentials/size for all validation failures.
+Offline replay of the exact recorded arguments confirms sanitizer.clean returned
+unchanged input: no credential misuse demonstrated. Schema-owned diagnostics identify
+missing claims and allowed claims/host_profile. This feedback weakness remains
+unpatched in 0.7.0; do not describe the error prose as a credential detection event.
+
+User-reported sentiment function-as-tool, extra outer source/packet fields and malformed
+tool-call XML/JSON do not appear in backend events; they were host-side routing/parser
+failures. The suggested claim/source_locator audit_answer call is also invalid.
+Context loss is unproven; model/context metadata is absent. This is not an upstream
+failure, original verification or successful semantic review. Exact corrected prepare
+arguments pass offline schema validation; operator made no live review/provider call,
+runtime change, restart or allowance reset. Private request/response and host-reported
+failure classifications are in reports/private/lmstudio-070-review-2026-11-26/.
+See [review recovery](review-workflows.md#first-070-review-finding-26-november-2026).
+
 ## User-led 0.7.0 retrieval acceptance: 26 November 2026 IST
 
 Recorded user calls confirm package_version 0.7.0, successful metadata connection,

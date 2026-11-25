@@ -1,5 +1,13 @@
 # Function validation status
 
+**26 November local review trial:** retrieval/import still pass, but semantic review
+has not completed. One prepare_verification function call reached margin_review with
+the wrong argument schema and was rejected; the function is present. Later model tool
+routing/parser errors were rejected by the host. Review's generic error misleadingly
+mentions credentials; the actual logged input was not altered by sanitizer checks.
+No live review packet or new provider call was made by the operator. Corrected exact
+prepare arguments pass offline validation; no code/packaging change in this audit.
+
 **26 November 0.7.0 user-led acceptance:** typed announcement preview, one actual
 INFY summary execution/result/import and the intentional generic missing-query error
 all pass. Same-session read-only status confirms B0/D6 HTTP and one estimated credit
