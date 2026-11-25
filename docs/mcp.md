@@ -115,6 +115,24 @@ Console commands are `margin-mcp`, `margin-backend`, and the existing `margin-ag
 optional `margin-workbench`. No new package dependency is required for shared mode.
 The package is not yet published to PyPI; use the local wheel or checkout.
 
+The exact tested 0.6.1 wheel is also committed at
+[`releases/0.6.1/margin_research-0.6.1-py3-none-any.whl`](../releases/0.6.1/margin_research-0.6.1-py3-none-any.whl),
+with [`SHA256SUMS`](../releases/0.6.1/SHA256SUMS). It matches the runtime Python source
+from commit `36d10b7` and the previously tested build; later documentation-only edits
+do not rebuild or replace it. Keep versioned release artifacts immutable and publish
+a new package version for later runtime changes. Generated `dist/` outputs remain
+ignored; only deliberately reviewed versioned release files belong in Git.
+
+From the repository root, verify the committed artifact before installation:
+
+```sh
+(cd releases/0.6.1 && shasum -a 256 -c SHA256SUMS)
+```
+
+The wheel contains no provider keys or private captures. Credentials/configuration
+remain separate. It reuses the existing 0.6.1 validation evidence; saving a byte-identical
+artifact to Git does not establish a new cross-platform or model acceptance result.
+
 A stdio process waits for protocol messages, not typed company questions. Configure an
 MCP host to launch it. Stdout is reserved for JSON-RPC; diagnostics use stderr. The web
 interface and skill are not prerequisites. No provider is connected at discovery/startup.
@@ -207,7 +225,7 @@ old backend with its existing executable, then install the new wheel into that v
 
 ```sh
 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
-/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/dist/margin_research-0.6.1-py3-none-any.whl
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.6.1/margin_research-0.6.1-py3-none-any.whl
 ```
 
 These are manual instructions, not actions performed during this build. Existing pinned

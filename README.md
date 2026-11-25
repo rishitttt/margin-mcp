@@ -1,5 +1,7 @@
 # Margin
 
+The tested **0.6.1 wheel is committed in Git**: [download/install wheel](releases/0.6.1/margin_research-0.6.1-py3-none-any.whl), [SHA-256 checksum](releases/0.6.1/SHA256SUMS). See [installation](docs/mcp.md#install) for verification and setup. Provider keys are supplied separately; installing the artifact does not change an already-running backend.
+
 **25 November release 0.6.1:** fixes formula metadata for calculated report rows, including absolute versus percentage change and CAGR's years input. Numeric math/units and the rows-only contract are unchanged. See [validation and live findings](docs/implementation.md) and [MCP usage](docs/mcp.md). The user subsequently activated 0.6.1 and confirmed live formula outputs; see validation for remaining model raw-unit reporting limits. Earlier release checkpoints below are historical.
 
 **25 November release 0.6.0:** company-finance responses now provide consistent structured rows, including formatted calculated amounts. No prose summary or Markdown table is generated. Raw calculation details are opt-in with the same request key. [Usage/migration](docs/mcp.md#reporting-contract-v2-and-migration) explains the changed default response. No financial math, tool count or provider dependencies changed. Host-enforced final-prose verification is deferred; a model can still rewrite the supplied report. The active 0.5.0 live setup is untouched. Older dated notes below are historical.

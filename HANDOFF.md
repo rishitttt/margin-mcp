@@ -1,5 +1,10 @@
 # Margin: quick handoff
 
+**Wheel in Git:** the exact tested 0.6.1 artifact and checksum are under
+[`releases/0.6.1/`](releases/0.6.1/). Runtime source matches `36d10b7`; generated dist
+outputs stay ignored. Read [installation](docs/mcp.md#install) for checksum/setup.
+No keys/private captures are included and no live instance is changed by this addition.
+
 **Latest user-led check, 25 November:** live mtest now runs 0.6.1; B1/D0 used and
 local B1 spent. HUL completeness, INFY formulas/amounts and backend details projection
 pass. Raw-versus-report prose is still incomplete despite the fields being returned.

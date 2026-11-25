@@ -1,5 +1,17 @@
 # Implementation and validation status
 
+## Versioned wheel committed: 25 November 2026
+
+At the user's request, the existing tested 0.6.1 wheel is saved under
+[`releases/0.6.1/`](../releases/0.6.1/) with SHA256SUMS. It is byte-identical to the
+earlier release evidence: 135,498 bytes, 58 archive entries, 48 Python files matching
+the runtime source from `36d10b7`. Version metadata, known-key exclusion, private-file
+exclusion, checksum and local documentation links were checked. No rebuild/runtime
+change or new provider/model call; the existing 321-test/SDK evidence remains the
+validation baseline, not a new acceptance run. Dist outputs stay ignored, and keys,
+captures, private bundles and validation evidence stay outside Git. The live setup
+and budgets are unchanged. [MCP installation](mcp.md#install) owns verification/setup.
+
 ## User-led 0.6.1 acceptance: 25 November 2026
 
 The no-fetch HUL retest on the previous 0.6.0 backend returned identical data/request
