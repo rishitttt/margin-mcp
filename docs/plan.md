@@ -1,5 +1,51 @@
 # Margin build and evaluation plan
 
+## Next validation stage: Drishti → citations → sentiment, 25 November 2026
+
+Treat 0.6.1 finance as a baseline with known model raw-unit/prose limitations; avoid
+repeated financial micro-patches unless a new core defect is reproduced. The MCP is
+already packaged. This next sequence is proposed, not permission to make new provider
+calls, restart the active backend, reset allowances or purchase a plan.
+
+1. **Drishti slice:** refresh/review current native and admitted schemas before paid
+   work. Exercise one known company with a bounded news page, one summary announcement,
+   earnings discovery and one detail selected by returned ID. Check identity/date/date-
+   kind, missing fields, source links, sanitized protected URLs, readiness/holds and
+   actual HTTP versus estimated credits. Seven Drishti operations already exist;
+   the upstream catalog's 25 operations are not all exposed. Preserve extraction=false
+   and schema quarantine. Publish a separate explicit call/credit/cleanup allowance
+   before execution; current Drishti budgets are zero and trial balance is unknown.
+2. **Citation round trip:** use those bounded sources for a few supported, contradicted
+   and insufficient-evidence claims; register/import text, prepare a packet, receive
+   host assessment, validate quotes/references/numeric context, render citations and
+   audit the claim manifest. Ten review/workflow functions already exist. Test one host
+   with original-source reading and a no-reader inventory/provider-text fallback.
+   Matching supplied quotes is not source authenticity or semantic proof. Evidence
+   packets are bounded transient memory, not a maintained corpus.
+3. **Sentiment:** reuse eligible retrieved material without refetching; annotate issuer/
+   aspect/time-scoped passages in the host, then aggregate deterministically. Test
+   mixed/unclear, missing labels/dates, duplicate sources and unsupported hosts. This is
+   sentiment of retrieved content, not a comprehensive investor-sentiment measurement.
+4. **Usability repairs only where measured:** adapt schemas/routing/compact records or
+   packet-preparation helpers if the small-model test shows a reproducible gap. Keep
+   function math/quote checks in Margin and semantic judgments in the user's host.
+   Concall retrieval/transcript search are candidate next source additions after the
+   admitted paths pass; they require reviewed schemas, cost/entitlement checks and tests.
+5. **Then evaluate:** freeze a tested product version and run the separate multi-model
+   with/without-Margin study, tracking tool success, source/answer fidelity, completeness,
+   cost and visible why summaries separately. No hidden-reasoning capture or product
+   dependency on independent gold/research infrastructure is implied.
+
+Public [Drishti MCP guide](https://drishti.manasija.in/docs/guides/drishti-mcp) and
+[pricing](https://drishti.manasija.in/docs/pricing) were rechecked for this recommendation.
+The Sandbox's published trial does not prove this account's remaining credit balance
+or every MCP operation's entitlement. Start with existing access if sufficient;
+upgrade only on a demonstrated access/volume need. MCP lifecycle HTTP and advertised
+REST quotas are separate measurements. No authenticated provider/model calls occurred
+in this planning review. See [review workflow contracts](review-workflows.md).
+Earlier dated plans below are historical checkpoints; this proposed sequence
+supersedes their pre-MCP priorities.
+
 **25 November 0.6.1 metadata repair:** plan `bf43c96` owns the confirmed inherited-
 formula defect. Per-result formulas are corrected without changing numeric math,
 units or data access. Latest user-led test evidence separates backend metadata from

@@ -1,7 +1,9 @@
 # Citation and sentiment handoffs
 
-Implemented **24 November 2026**, core version 0.2.0. These are local Python/HTTP/CLI
-functions and a temporary workbench tester. Margin's own MCP adapter is not implemented.
+Implemented **24 November 2026**, core version 0.2.0, and exposed through Margin's
+MCP since 0.3.0. Current package 0.6.1 retains all ten functions plus Python/HTTP/CLI
+and the temporary workbench tester. Historical interface statements below are dated;
+[MCP usage](mcp.md) and [implementation](implementation.md) own current setup/evidence.
 The core performs no LLM inference, web search, document download or PDF extraction.
 The user's host supplies passages/judgments or imports just-retained provider news text.
 
@@ -19,6 +21,22 @@ receive locators/inventory and incomplete analysis; there is no fallback model o
 neutral label. Operator-declared profiles describe workflow availability, not competence.
 
 ## Entry points
+
+For a native MCP host, use `margin_catalog` with group `review` and one function name
+plus include_schemas=true, then `margin_review` with that function identifier and its
+arguments. `protocols.list_workflows` is itself a function called through margin_review,
+not a separate callable MCP tool. `margin_review_sources` imports a successful retained
+news result using run_id/operation_id and issuer attribution. Use one shared backend;
+do not mix CLI/workbench/MCP handles from different state owners. The fresh numerical
+company-finance response is not a retained news result and cannot use this importer.
+All review actions are local, without provider/model calls. Drishti retrieval/metadata
+connection remains separate bounded work; the current operator configuration must
+explicitly allow it. No startup or local review action automatically enables Drishti.
+
+Delivered checks are source/reference/quote/numeric consistency and host-reported
+semantic assessments. This is not automatic original-source verification. If the host
+cannot fetch/read an original, it can review supplied provider passages with that
+limitation or return inventory/not-reviewed; no stronger hidden model is called.
 
 Use the existing running backend from the [agent guide](agent-interface.md). Keep a
 single backend per session; state and handles do not survive restart. These commands
@@ -134,11 +152,13 @@ labelled as requiring resolution; this core does not obtain credentials for the 
 
 ## Validation and remaining gate
 
-The offline suite exercises shape/context/expiry/atomicity/fallback cases, all five company
-wrappers and original finance tests. Process acceptance covers the actual CLI/recorder
+The offline suite exercises shape/context/expiry/atomicity/fallback cases and the
+company/explicit-input finance workflows. Process acceptance covers the actual CLI/recorder
 citation/sentiment round trips; browser acceptance covers the JSON tester and escaping.
 Fixtures are labelled fictional software tests. Separate 24 November provider acceptance
 used real data and host-authored review judgments; it is not independent financial or
 sentiment ground truth. [Implementation status](implementation.md) owns the exact counts
-and remaining live/source-review gaps. Own MCP packaging waits for that core-validation
-review; old private 16 November runner/evaluator ZIPs remain frozen and unchanged.
+and remaining live/source-review gaps. MCP transport round trips have fictional SDK
+acceptance coverage, while the 24 November real-source handoffs were host-authored;
+the full current Drishti-to-review LM Studio/model workflow still needs a guided live
+test. Old private 16 November runner/evaluator ZIPs remain frozen and unchanged.

@@ -1,5 +1,13 @@
 # Project context and handoff
 
+**Next stage proposed, 25 November:** Drishti retrieval/live MCP acceptance, then
+source-backed citation handoffs, then content sentiment, followed by the separate
+model benchmark. These are existing adapters/protocols needing current end-to-end
+coverage, not an unbuilt MCP. The review guide's stale pre-MCP statement is corrected.
+See [next-stage plan](plan.md#next-validation-stage-drishti--citations--sentiment-25-november-2026).
+No new provider/model calls, live restart, budget reset or subscription purchase are
+authorized/performed by this recommendation; current Drishti limits remain zero.
+
 **25 November user-led 0.6.1 validation:** current live mtest backend is now 0.6.1,
 B1/D0 spent. HUL's old-key all-rows answer passed before the upgrade. INFY amounts
 and corrected formulas pass; include_details reuses the same request/report and
