@@ -1,5 +1,15 @@
 # Working on Margin
 
+**26 November optional citation protocol authorized:** follow the evaluated 0.8.1
+plan at the top of docs/design/mcp-aggregation.md before runtime edits. Keep citation
+review optional, preserve all functions and exact schemas, add an optional declared
+host_read_sources field and response-only capability/fallback guidance. Search does
+not prove reading, host declarations do not verify competence or original authenticity.
+No-passage/no-reader cases must remain insufficient/unreviewed; no Margin LLM/browser,
+hidden fetch or guessed tool. Preserve packet hashes/TTL/strict quotes and old wheels.
+Test adverse cases and publish unguided goal-only acceptance instructions. Do not
+upgrade/restart the active 0.8.0 backend, reset allowances or make paid API calls.
+
 **26 November completed 0.8.0 host review:** nine admitted calls / eighteen events
 now pass, including both typed submissions, citation render/manifest audit and
 sentiment aggregate. Exact full quotes match; host_reported/unverified/protected/

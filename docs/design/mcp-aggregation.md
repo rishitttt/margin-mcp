@@ -1,5 +1,63 @@
 # Margin MCP adapter architecture and implementation plan
 
+## 0.8.1 optional citation protocol plan and evaluation: 26 November 2026
+
+The user asks whether to remove citation verification or retain a protocol for hosts
+with suitable tools, and authorizes planning, implementation and testing. Keep it as
+an optional evidence-review protocol. The successful guided 0.8.0 run establishes a
+supplied-summary round trip, not original authentication or unguided usability.
+
+### Decision and boundaries
+
+Removing citation functions loses useful quote/reference checks and working handoffs.
+Mandatory citation review adds irrelevant work to ordinary retrieval/math. Running a
+Margin-side browser/LLM changes the product and cost model. Select optional host-side
+review, advertised with exact schemas and next steps; preserve all existing functions,
+tool names, profiles, packet hashes, TTLs and strict submission guards. No new provider
+call, key purchase, active backend upgrade/restart or budget reset is part of this build.
+
+The existing host_search declaration does not prove source-reading access. Add optional
+host_profile.host_read_sources alongside the existing fields; absent means unknown,
+not false or inferred from model brand. Declared capability is not verified competence.
+Existing callers remain valid. structured_assessment=false still prohibits semantic
+submission; a no-browser host may assess text supplied by the user/provider.
+
+### Implementation
+
+1. Return compact citation_protocol response guidance, outside frozen packet hashes:
+   optional status, supplied-text-only review boundary, declared reader availability,
+   claims without usable passages and the appropriate host action. Never infer a
+   supported verdict or original verification from capability declarations.
+2. Expose the same policy in workflow discovery. Describe optional original reading
+   through the host's own browser/file reader/other MCP: inspect identity/date/basis,
+   read the actual document, register exact original passages and prepare a new packet.
+   Do not relabel summaries, mutate existing packets, fetch in Margin or invent a reader
+   tool. Missing text allows insufficient_evidence or an unreviewed inventory.
+3. Explain task selection in MCP instructions/descriptions and the portable skill:
+   finance/retrieval do not require citation review, source authenticity remains
+   unverified, and search access is separate from source reading and judgment ability.
+4. Add an operator checklist with goal-only prompts for unguided finance/retrieval,
+   supplied-text citation/sentiment, no-reader and reader-enabled hosts. Keep expected
+   outcomes separate from tested-agent input. Also cover false quotes, insufficient/
+   contradicted claims, mixed/missing labels, date scope and expired references.
+
+### Acceptance and remaining gates
+
+Offline tests must cover reader true/false/unknown, search without a reader,
+inventory-only hosts, no-passage sources, original-reading registration guidance,
+metadata/hash separation, strict wrong-quote rejection and unchanged zero-network
+behavior. Test the generated typed schemas and an SDK review-profile round trip;
+run required lint/format/suite and build a new immutable 0.8.1 wheel. Preserve 0.8.0.
+These checks are software validation, not a new real-model or original-source trial.
+
+After delivery, test first attempts in fresh model chats with user goals and ordinary
+constraints only. Record actual model/context/profile/settings, host tool availability,
+calls/errors/recovery, answer fidelity and optional visible why summaries. Separately
+budget any new live retrieval; current review-only/zero-budget setup cannot fetch.
+Then broaden real company/function coverage, freeze the release/tasks and conduct
+the independent with/without-Margin benchmark. Public release/clean-install checks
+remain separate; no PyPI publication or hosted deployment is included here.
+
 ## 0.8.0 review repair plan and evaluation: 26 November 2026
 
 User authorized planning and implementation after the failed 0.7.0 review trial.
