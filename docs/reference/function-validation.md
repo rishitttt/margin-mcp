@@ -1,5 +1,10 @@
 # Function validation status
 
+**26 November first 0.8.1 unguided trial:** setup status succeeds; no citation or
+sentiment review call reaches the backend. The model directly answers supplied text.
+Classify as tool-use omission, not protocol success or evidence of runtime failure.
+Keep separate from earlier guided completion; see [implementation](../implementation.md).
+
 **26 November 0.8.1 optional citation protocol:** all existing functions remain;
 host_read_sources is an optional canonical profile field, distinct from host_search.
 New guidance covers optional supplied-text review, host original-reading/registration

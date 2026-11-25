@@ -1,5 +1,27 @@
 # Implementation and validation status
 
+## User-led 0.8.1 first unguided attempt: 26 November 2026 IST
+
+The user activated 0.8.1. Latest backend log has two events: one successful setup
+margin_status call, live mode, recording enabled, B0/D0 attempts. Review/14-tool profile
+is user-reported; frontend projection is absent from the underlying log. The subsequent
+supplied-summary answer contains no returned review handles, and no registration,
+preparation, submission, rendering/audit or aggregation call reached this backend.
+Record this as **unguided tool-use omission**, not completed protocol acceptance.
+Backend logs alone cannot exclude host-side rejected/unlogged calls; model/context
+metadata was not supplied. The earlier guided 0.8.0 completion remains a separate run.
+
+The model distinguished the reported achievement from unsupported investor reaction,
+but its suggestion of favorability for investors exceeds the requested content scope.
+Supplying all the text allows a direct answer; that is a plausible selection explanation,
+not proof of a hidden cause or context failure. No Margin schema/API defect is shown.
+Private original events/review: reports/private/lmstudio-081-unguided-nonuse-2026-11-26/.
+Next test explicitly requests actual Margin review records/audit/aggregate outputs,
+without naming functions; classify it separately as an artifact-required task rather
+than overwriting the original outcome. No patch, install/restart, data fetch or budget
+reset is needed in this audit. Active backend is now 0.8.1; older active-0.8.0 statements
+below describe build-time state.
+
 ## Optional capability-aware citation protocol: 26 November 2026, 0.8.1
 
 Plan dfd3113 was committed/pushed before runtime edits. Citation review is retained

@@ -1,5 +1,12 @@
 # Margin build and evaluation plan
 
+**26 November first 0.8.1 unguided outcome:** the host answered supplied text without
+admitted review calls; setup status passed. Preserve this omission and separately test
+a goal requiring actual Margin review records/audit/aggregate outputs, without naming
+functions. Distinguish optional tool selection, artifact-required workflow execution
+and coached routing conditions. No runtime patch or renewed provider allowance follows
+from this observation; [implementation](implementation.md) owns evidence and limits.
+
 **26 November 0.8.1 delivered:** optional citation protocol with declared host reading
 access, clear no-reader/no-text/inventory fallbacks and original-reading handoff steps.
 No change to finance/retrieval math or tool counts; 403 offline tests and SDK checks

@@ -1,5 +1,12 @@
 # Working on Margin
 
+**26 November latest host 0.8.1:** user upgraded; status-only log has two events,
+live/recorded B0/D0. The first unguided supplied-text answer bypassed admitted review
+tools. Preserve private lmstudio-081-unguided-nonuse evidence; do not call it workflow
+success or infer a schema/context defect. Next artifact-required trial without function
+names is a separate condition. No patch/restart/refetch/reset in this audit. Older
+active-0.8.0 notes below are dated build state; missing model/context remains unknown.
+
 **26 November 0.8.1 delivered:** plan dfd3113 preceded optional citation_protocol
 response guidance and canonical host_profile.host_read_sources. Search is not reading;
 missing remains unknown and declarations do not prove competence. All old functions,

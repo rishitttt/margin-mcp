@@ -70,6 +70,17 @@ from an unsupported investor-reaction inference, and retain unknown publication/
 authenticity. The host chooses its sentiment annotation; this is not independent gold.
 This reuses real supplied text, not fresh live retrieval or an original document.
 
+The first user 0.8.1 attempt answered directly; only setup status reached the backend.
+Preserve that result as tool-use omission. For a separate artifact-required condition,
+reuse the same material in a fresh chat with Margin enabled and add: "Use Margin to
+create auditable claim-review and sentiment records. Return the actual source/review
+identifiers, claim-audit outcome and sentiment counts returned by the tools. If you
+cannot create those records, report the blocking step. Make no external requests."
+This specifies an outcome without naming functions. It tests interface execution;
+do not treat unavailable Margin record IDs in a without-Margin condition as an answer-
+quality failure or overwrite the original unguided outcome. Host parser failures and
+per-chat tool enablement require caller-side evidence; backend logs alone omit them.
+
 1. **Supplied text, zero-provider budget, review or full profile.** Prompt: "This is a
    fictional software test. ExampleCo's supplied announcement says: 'Demand improved,
    but costs increased. No revenue figure is provided.' Source locator:

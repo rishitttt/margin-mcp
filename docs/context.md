@@ -1,5 +1,13 @@
 # Project context and handoff
 
+**Latest 26 November host observation:** active backend is now 0.8.1, live/recorded,
+B0/D0. User reports review/14-tool profile. Only the setup status call is recorded;
+the first unguided supplied-text answer used no admitted review calls. This is a
+tool-use omission, not protocol completion or a demonstrated schema/API defect.
+Preserve the private lmstudio-081-unguided-nonuse capture. Next use a separately
+labelled artifact-required goal without function names; no patch/refetch/restart/reset.
+Model/context identity remains unknown. Older active-version notes below are history.
+
 **Latest source 0.8.1, 26 November:** plan dfd3113 preceded optional citation protocol
 guidance and canonical host_read_sources declaration. Search is not document reading;
 missing capability stays unknown. Supplied passages may be reviewed without a reader;

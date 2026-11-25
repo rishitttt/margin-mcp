@@ -1,5 +1,11 @@
 # Margin: quick handoff
 
+**Latest host trial, 26 November:** user activated 0.8.1. Status works, but the first
+unguided answer bypassed admitted review tools; do not count it as workflow acceptance.
+No runtime defect is established. Preserve the original result, then test a separately
+labelled request for actual Margin review records without function names. Active live
+backend B0/D0, no patch/restart/refetch/reset needed. [Evidence](docs/implementation.md).
+
 **Latest source 0.8.1, 26 November:** optional citation protocol now explains supplied
 passage review, host original-reading handoffs and insufficient/inventory fallbacks.
 host_read_sources is a declaration, not inferred from search/model brand. No Margin
