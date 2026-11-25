@@ -1,5 +1,11 @@
 # Phase 1: core research services and local workbench
 
+The 0.5.0 core additionally exposes async `ResearchService.company_finance(**arguments)`:
+fresh bounded financials and existing company calculations in one request, without the
+run/source buffers. The new MCP tool calls it directly; legacy workbench/CLI routes
+remain unchanged. [Fresh-finance design](fetch-and-calculate.md) owns duplicate control,
+compact output and no-database behavior; [MCP usage](../mcp.md) owns its public schema.
+
 **16 November adapter extension:** [agent CLI and skill](../agent-interface.md) are implemented over this same local HTTP backend. Separate command processes share one service/ledger/result store. No browser is required. A separate opt-in `research/pilot.py` consumes the CLI's observation hook; product code never imports it. This is private pilot logging, not frozen replay, a model runner, independent gold or Margin MCP packaging.
 
 Architecture set on **20 October 2026**, implemented as the core/workbench slice, with selected live execution shown in the 21 October user export. Broader financial/source validation and Margin MCP packaging remain pending. This document describes the delivered core boundary; [delivery plan](../plan.md) owns milestones and [implementation status](../implementation.md) owns actual progress. The [MCP adapter design](mcp-aggregation.md) remains deferred.

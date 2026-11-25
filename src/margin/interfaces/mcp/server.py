@@ -30,6 +30,12 @@ from margin.interfaces.mcp.recording import ToolRecorder
 from margin.interfaces.mcp.tools import CONTRACT, DIRECT_FUNCTIONS, VERSION, definitions
 
 INSTRUCTIONS = """Margin provides Indian-company research tools over one process-local core.
+For company finance questions, prefer margin_company_finance: ticker plus a company
+function, execute=true and a stable idempotency_key fetch fresh data and return the
+calculation internally. No prior result/fact handles are needed. Default execute=false
+previews locally. At most one BharatStock request, zero Drishti calls/credits. Repeat
+the SAME financial inputs/key to wait/read a pending/lost reply; never substitute a
+new key. Use returned input displays/units and explicit incomplete outcomes.
 Prefer the directly typed margin_calculate_margins, margin_convert_units,
 margin_compare_periods, margin_calculate_cashflow_metrics, margin_calculate_profitability
 and margin_calculate_balance_sheet_metrics tools when applicable. Their inputs are
@@ -51,7 +57,9 @@ identify locations and allowed fields. Correct the indicated field instead of re
 changing valid numeric strings to numbers or adding optional fields without evidence.
 Start with margin_status, then margin_catalog for routes and exact schemas. Synthetic mode
 contains fictional examples and must not answer real-company questions. Retrieval and
-company data dependencies require preview then margin_run. Respect holds, process IDs,
+legacy company data dependencies require preview then margin_run. The explicit
+execute=true fresh-company path performs bounded retrieval and math in one call.
+Respect holds, process IDs,
 budgets and idempotency; no automatic retries, source fallback or page exhaustion.
 Calculations/review tools are local and may return partial/incomplete results. Preserve
 units, periods, consolidation, continuing/total-profit scope and source caveats. DCF needs
@@ -284,6 +292,13 @@ class MarginMCP:
             for row in rows:
                 identifier = row.get("operation") or row.get("function")
                 row["mcp_execution"] = self.execution_route(kind, identifier)
+                if kind == "company":
+                    row["fresh_mcp_execution"] = {
+                        "tool": "margin_company_finance",
+                        "bind": {"function": identifier},
+                        "inputs_at": "top_level",
+                        "execution": "execute=true plus a stable idempotency_key performs one fresh fetch and returns a compact calculation. No retained source needed.",
+                    }
             if not include_schemas:
                 rows = [
                     {
@@ -336,6 +351,8 @@ class MarginMCP:
             return self.service.create_plan(args["operations"])
         if name == "margin_company_preview":
             return self.service.plan_financial(**args)
+        if name == "margin_company_finance":
+            return await self.service.company_finance(**args)
         if name == "margin_run":
             self.require_session(args["session_id"])
             run = await self.service.start_run(args["plan_id"], args["idempotency_key"])

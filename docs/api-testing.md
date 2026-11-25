@@ -1,5 +1,24 @@
 # API and MCP testing protocol
 
+## 0.5.0 fresh-finance acceptance gate, 25 November 2026
+
+[Current MCP usage](mcp.md#company-finance-without-previous-results) and the
+[fresh-finance plan](design/fetch-and-calculate.md) describe the new one-call path.
+Offline software/wheel checks use no financial-provider calls. The running older
+live installation is not upgraded or given new allowance by the build.
+
+After a controlled version-matched upgrade and confirmation of applicable model-evaluation
+access/current quota, a proposed acceptance pass is at most **BharatStock 2 HTTP
+requests / Drishti 0 / estimated Drishti credits 0**: one annual HINDUNILVR continuing-
+profit margin and one annual INFY revenue-growth request. These calls have not been
+made. Previews are local; each new executed key fetches one bounded page. Repeating
+the same inputs/key must add zero attempts. Growth may correctly hold if the page
+contains fewer than two eligible periods; no automatic extra pages. Preserve exact
+units, basis/periods, source caveats and visible why summaries. Check the actual
+receipt and compare against independently reviewed sources before assigning gold.
+A restart does not renew account quota. Never convert the old spent local allowance
+into a fresh budget without reconciliation.
+
 ## Completed finance repair: 24 November 2026
 
 Budget: B2, D14 HTTP including lifecycle/cleanup, six estimated credits. Initial D12 was

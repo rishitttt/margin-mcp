@@ -24,7 +24,7 @@ async def main(args):
         and k not in {"BHARATSTOCK_API_KEY", "DRISHTI_API_KEY", "PYTHONPATH"}
     }
     env.update(
-        MARGIN_BHARATSTOCK_REQUESTS="1", MARGIN_DRISHTI_REQUESTS="0", MARGIN_DRISHTI_CREDITS="0"
+        MARGIN_BHARATSTOCK_REQUESTS="2", MARGIN_DRISHTI_REQUESTS="0", MARGIN_DRISHTI_CREDITS="0"
     )
     if args.package_root:
         env["PYTHONPATH"] = str(args.package_root.resolve())
@@ -94,7 +94,7 @@ async def main(args):
                 async with stdio_client(params, errlog=stderr) as (read, write):
                     async with ClientSession(read, write) as client:
                         initialized = await client.initialize()
-                        assert len((await client.list_tools()).tools) == 20
+                        assert len((await client.list_tools()).tools) == 21
                         status = await call(client, "margin_status")
                         assert status["data"]["state_owner"] == "shared_backend_process"
                         assert not any(status["data"]["ledger"]["http_attempts"].values())
@@ -157,10 +157,24 @@ async def main(args):
                             "margin_convert_units",
                             {"value": current["revenue"], "target_unit": "INR_crore"},
                         )
+                        fresh_inputs = {
+                            "function": "finance.company_margins",
+                            "ticker": "SYNTHA",
+                            "execute": True,
+                            "idempotency_key": "shared-fresh-finance-once",
+                        }
+                        fresh = await call(client, "margin_company_finance", fresh_inputs)
+                        assert fresh["data"]["status"] == "success"
+                # A fourth frontend repeats the same direct request after disconnect.
+                async with stdio_client(params, errlog=stderr) as (read, write):
+                    async with ClientSession(read, write) as client:
+                        await client.initialize()
+                        duplicate = await call(client, "margin_company_finance", fresh_inputs)
+                        assert duplicate["data"] == fresh["data"]
                         final = await call(client, "margin_status")
                         assert final["session_id"] == status["session_id"]
                         assert final["data"]["ledger"]["http_attempts"] == {
-                            "bharatstock": 1,
+                            "bharatstock": 2,
                             "drishti": 0,
                         }
             finally:
@@ -190,13 +204,13 @@ async def main(args):
         "mode": "fictional_software_fixtures",
         "version": initialized.server_info.version,
         "protocol": initialized.protocol_version,
-        "stdio_frontends": 3,
-        "tools": 20,
+        "stdio_frontends": 4,
+        "tools": 21,
         "calls": len(observations),
         "recorded_events": len(events),
         "stable_backend_identity": True,
         "duplicate_dispatches": 0,
-        "fictional_provider_attempts": 1,
+        "fictional_provider_attempts": 2,
         "real_provider_calls": 0,
         "model_calls": 0,
     }

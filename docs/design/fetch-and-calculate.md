@@ -1,5 +1,7 @@
 # Self-contained company finance
 
+Delivered as 0.5.0 after plan commit `0e9710c`; see [implementation evidence](../implementation.md).
+
 Planned 25 November 2026, after the 0.4.0 LM Studio retest. This document owns the
 fresh-fetch workflow; [MCP usage](../mcp.md) owns installation and examples. User
 authorization supersedes the earlier requirement that every company request must
@@ -41,8 +43,10 @@ flowchart LR
   call. A stable `idempotency_key` is required; a separate plan/session handoff is not.
   This is the authorized convenience path. Legacy preview/run remains unchanged.
 - Use `GET /v1/stocks/{ticker}/financials`, `exchange`, `period_type`, page 1 only.
-  Request 4 rows for latest-period groups, 8 for growth/CAGR and 16 for TTM. These
-  allow both reporting bases but cannot guarantee enough usable rows. No second
+  Preserve the reviewed registry bounds: at most 2 annual or 8 quarterly rows.
+  The initial 4/8/16-row proposal was rejected during implementation because it
+  exceeded those bounds; expanding retrieval policy is a separate measured change.
+  Mixed reporting bases can leave too few usable rows. No second
   page, hidden retry, alternate provider or unit/date inference. Basis is checked
   locally because the current reviewed adapter does not send a basis filter.
 - Supported: data readiness, margins, profitability, cash conversion, cash-flow

@@ -1,5 +1,10 @@
 # Finance scope and data support
 
+**25 November 0.5.0 interface update:** the nine company workflows can now fetch fresh
+financials and calculate internally through one MCP tool, without previous source
+handles. This does not expand source coverage, infer missing periods or add forecasts;
+see [fresh-finance contract](fetch-and-calculate.md) and [validation map](../reference/function-validation.md).
+
 Reviewed 24 November 2026. This is the finance capability decision and data-requirements
 map; [financial analysis](../financial-analysis.md) owns usage and [implementation status](../implementation.md)
 owns measured checks. The active scope uses BharatStock REST and Drishti MCP, with no

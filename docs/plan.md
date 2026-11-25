@@ -1,5 +1,15 @@
 # Margin build and evaluation plan
 
+**25 November 0.5.0 delivery:** [self-contained fresh-finance](design/fetch-and-calculate.md)
+was implemented after publishing plan `0e9710c`. The ticker-based tool now fetches and
+calculates without prior source handles; local preview, bounded calls and process-local
+duplicate control remain. Software/packaging checks are in implementation status.
+Next: controlled version-matched installation, reconcile provider allowance/Developer
+evaluation access, then one fresh HUL margin and, if history permits, one growth test
+on a new ticker. Do not silently restart the existing live backend. Source verification,
+event coverage, broader host/model acceptance and the independent benchmark stay
+separate gates; no live calls/purchase are part of this build.
+
 **25 November 0.4.0 delivery:** implement the planned financial views, six strict direct financial tools and optional Unix-socket state owner. Code, 252 offline checks, source/installed protocol checks and local shared configuration are complete; evidence and limitations are recorded in implementation status. The next user-facing gate is a fresh LM Studio retest of schema construction, two-turn preview/execute, source reuse and financial reporting. No provider/model calls are implicitly authorized by these release checks.
 
 **25 November authorized fidelity/reconnect pass:** implement the [financial fidelity and reconnect plan](design/mcp-aggregation.md#implementation-plan-financial-fidelity-and-reconnects-25-november): deterministic financial views, six strictly typed common calculation tools, and optional explicitly started Unix-socket shared backend. Preserve standalone mode and all spending/scope/state guards. Use offline and saved-response validation; no new authenticated provider/model calls are planned.

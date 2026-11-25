@@ -1,5 +1,7 @@
 # Margin
 
+**25 November release 0.5.0:** the new `margin_company_finance` tool fetches fresh financials and returns one of the nine existing company calculations directly. It requires no previous result handle or financial database; only compact request answers/duplicate-control keys stay in process memory. Twenty-one MCP tools now expose the unchanged function inventory. See [usage](docs/mcp.md#company-finance-without-previous-results), [plan/subscriptions](docs/design/fetch-and-calculate.md) and [validation](docs/implementation.md). The older dated notes below are historical; the running 0.4.0 live installation has not been silently replaced.
+
 **25 November release 0.4.0:** financial results now include deterministic crore/EPS displays, metric labels and scope warnings. Six common financial functions have direct strict MCP schemas (twenty tools total). An optional explicitly started local Unix-socket backend retains plans, results and quotas across LM Studio frontend restarts. Standalone mode remains available. Read [current setup](docs/mcp.md) and [architecture](docs/design/mcp-aggregation.md). No new authenticated data/model calls were used to implement this release; earlier dated checkpoints below are historical.
 
 **25 November recording patch (0.3.3):** `--record-dir` generates a unique private log per server launch, avoiding LM Studio new-chat startup collisions. Existing logs remain unchanged; `--record-file` retains its no-overwrite behavior. [Recording setup](docs/mcp.md#optional-decision-and-observation-logs).

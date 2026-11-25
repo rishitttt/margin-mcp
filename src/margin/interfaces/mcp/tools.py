@@ -6,11 +6,12 @@ from mcp import types
 
 from margin.analysis.company import FUNCTIONS, planning_capabilities
 from margin.analysis.service import SPECS, obj
+from margin.core.company_finance import SCHEMA as COMPANY_FINANCE_SCHEMA
 from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.4.0"
+VERSION = "0.5.0"
 CONTRACT = "margin.mcp.v1"
 DIRECT_FUNCTIONS = {
     "margin_calculate_margins": "finance.calculate_margins",
@@ -58,6 +59,8 @@ def definitions():
     company = deepcopy(planning_capabilities()[0]["planning_schema"])
     company["properties"]["function"] = {"enum": sorted(FUNCTIONS)}
     company["properties"]["why"] = WHY
+    fresh_company = deepcopy(COMPANY_FINANCE_SCHEMA)
+    fresh_company["properties"]["why"] = WHY
     rows = [
         (
             "margin_status",
@@ -101,6 +104,14 @@ def definitions():
             False,
             False,
             False,
+        ),
+        (
+            "margin_company_finance",
+            "Preferred for company finance from a ticker: fetch fresh BharatStock financials and calculate internally, without previous results or copying fact objects. Supports nine company functions, not automatic DCF. Default execute=false previews locally. Set execute=true plus a stable idempotency_key to perform at most ONE API request and return the answer directly (wait up to 30s). Repeat the SAME inputs/key to wait/read; a new key means a new charged fetch. Never change keys after a lost/uncertain reply. Read values, selected-input displays, units, scope and incomplete components; never fabricate dates or rescale displays. Zero Drishti calls/credits; keys survive only in this core process.",
+            fresh_company,
+            False,
+            True,
+            True,
         ),
         (
             "margin_company_preview",

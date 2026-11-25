@@ -1,5 +1,12 @@
 # Financial facts and local calculations
 
+**0.5.0 company entrypoint:** `margin_company_finance` can explicitly fetch fresh
+financials and return any of the nine company calculations directly, without an earlier
+result handle. Pure explicit-input calculations still never fetch. The new path uses
+the same units, period/profit-scope guards and math; [MCP usage](mcp.md) owns its schema
+and [fresh-finance design](design/fetch-and-calculate.md) owns bounded duplicate control.
+Raw data is request-local; compact responses/keys remain only for the core process.
+
 Implemented **15 November 2026** over the existing Python core/workbench. Updated 24 November: the provider registry has thirteen retrieval operations; the local calculation catalog has fifteen functions, plus retained-result fact preparation and nine company financial workflows. See the [finance data-support decision](design/finance-data-support.md). Pure calculations make no network calls. A company workflow may include one explicitly previewed financials request. Ten local citation/sentiment handoff functions were added on 24 November; see [review workflows](review-workflows.md). Research capture/replay and downstream Margin MCP remain separate/deferred.
 
 ## Unit evidence: 24 November 2026

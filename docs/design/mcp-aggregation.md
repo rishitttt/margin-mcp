@@ -1,5 +1,7 @@
 # Margin MCP adapter architecture and implementation plan
 
+**0.5.0 fresh-finance extension:** [self-contained company finance](fetch-and-calculate.md) adds one typed tool over a reusable core coordinator. Explicit execution fetches once, prepares facts and calculates, without previous result handles or raw-source buffers. Only bounded compact answers and request keys remain for process-local duplicate protection. Existing 20 tools, shared/standalone modes and underlying math are preserved; total now 21. This authorized convenience path supersedes the mandatory separate preview/run requirement for this tool only. Its default remains a no-call preview.
+
 **0.4.0 fidelity/reconnect implementation:** twenty tools now include six directly typed common functions, and retained financial results include deterministic financial_view output. Optional shared mode routes short-lived stdio frontends through bounded owner-only Unix IPC to one explicitly started backend. That backend owns the unchanged core, credentials, ledger, results and optional journal. Standalone mode remains. This supersedes the earlier fixed-fourteen-tool/direct-only boundary for the authorized pass; historical design/results below are preserved. [Current operations guide](../mcp.md) owns setup/lifecycle.
 
 Planned and implemented **25 November 2026**, after core checkpoint `6b22f57` was pushed and validated

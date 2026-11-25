@@ -20,6 +20,7 @@ from margin.analysis.facts import prepare_financial_facts
 from margin.analysis.presentation import financial_view
 from margin.analysis.service import SPECS, calculate
 from margin.analysis.service import capabilities as analysis_capabilities
+from margin.core.company_finance import CompanyFinance
 from margin.core.config import Settings
 from margin.core.contracts import DomainError, OperationRequest, OperationResult, encoded_size, now
 from margin.core.registry import Registry, schema_hash
@@ -74,6 +75,7 @@ class ResearchService:
         self._reserved_buffer_bytes = 0
         self._receipts = []
         self._connection_task = None
+        self.company_finance_workflow = CompanyFinance(self)
         self.reviews = ReviewService(
             sanitizer=self.sanitizer,
             mode=settings.mode,
@@ -108,6 +110,11 @@ class ResearchService:
             "uncertain_providers": sorted(self._uncertain_providers),
             "last_historical_balance": {"date": "2026-10-09", "credits": 986, "current": False},
             "receipt_count": len(self._receipts),
+            "company_finance_requests": {
+                "used": len(self.company_finance_workflow.requests),
+                "limit": self.company_finance_workflow.capacity,
+                "retention": "Compact answers and duplicate-control keys only; no raw financial source buffers. Process lifetime only.",
+            },
             "note": "No network is performed by status. Process restart resets the local ledger.",
         }
 
@@ -261,6 +268,10 @@ class ResearchService:
     def prepare_facts(self, run_id, operation_id, money_unit="auto"):
         result = self.get_result(run_id, operation_id)
         return prepare_financial_facts(result, money_unit)
+
+    async def company_finance(self, **arguments):
+        """Self-contained fresh financials retrieval and deterministic calculation."""
+        return await self.company_finance_workflow.call(arguments)
 
     def financial_sources(self):
         """Local retained financial responses only; no discovery/refetch."""
@@ -964,6 +975,7 @@ class ResearchService:
         return result
 
     async def close(self):
+        await self.company_finance_workflow.close()
         tasks = [t for t in self._tasks.values() if not t.done()]
         if self._connection_task and not self._connection_task.done():
             tasks.append(self._connection_task)

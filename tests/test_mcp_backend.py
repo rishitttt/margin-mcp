@@ -81,7 +81,7 @@ async def test_real_stdio_preview_and_execution_survive_frontend_restarts(addres
             async with stdio_client(params, errlog=err) as (read, write):
                 async with ClientSession(read, write) as client:
                     await client.initialize()
-                    assert len((await client.list_tools()).tools) == 20
+                    assert len((await client.list_tools()).tools) == 21
                     preview = (
                         await client.call_tool(
                             "margin_preview",

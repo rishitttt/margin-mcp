@@ -57,7 +57,7 @@ async def main(args):
             async with ClientSession(read, write) as session:
                 initialized = await session.initialize()
                 tools = {tool.name: tool for tool in (await session.list_tools()).tools}
-                assert len(tools) == 20
+                assert len(tools) == 21
                 status = await call(session, "margin_status")
                 assert not any(status["data"]["ledger"]["http_attempts"].values())
                 session_id = status["session_id"]
@@ -334,8 +334,29 @@ async def main(args):
                 )
                 balance = await review("sentiment.aggregate", sr)
                 assert balance["counts"]["positive"] == 1 and not balance["investor_sentiment"]
+                fresh_inputs = {
+                    "function": "finance.company_margins",
+                    "ticker": "SYNTHA",
+                    "execute": True,
+                    "idempotency_key": "mcp-smoke-fresh-finance",
+                }
+                preview = await call(
+                    session,
+                    "margin_company_finance",
+                    {
+                        k: v
+                        for k, v in fresh_inputs.items()
+                        if k not in {"execute", "idempotency_key"}
+                    },
+                )
+                assert preview["data"]["status"] == "preview"
+                fresh = await call(session, "margin_company_finance", fresh_inputs)
+                assert fresh["data"]["status"] == "success"
+                duplicate = await call(session, "margin_company_finance", fresh_inputs)
+                assert duplicate["data"] == fresh["data"]
+                assert len(fresh["data"]["inputs"]) == 2
                 final = (await call(session, "margin_status"))["data"]
-                assert final["ledger"]["http_attempts"]["bharatstock"] == 1
+                assert final["ledger"]["http_attempts"]["bharatstock"] == 2
                 assert {o["tool"] for o in observations} == set(tools)
 
     events = [json.loads(line) for line in log.read_text().splitlines()]

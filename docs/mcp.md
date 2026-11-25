@@ -1,10 +1,66 @@
 # Run Margin as a local MCP server
 
-Current release **0.4.0**, 25 November 2026. Twenty MCP tools expose the existing
+Current release **0.5.0**, 25 November 2026. Twenty-one MCP tools expose the existing
 37 retrieval/finance and ten review functions. Six common calculations now have directly
 advertised strict schemas. The core, CLI and workbench remain available independently.
 The [architecture](design/mcp-aggregation.md) owns the plan published before this change;
 [implementation](implementation.md) owns evidence and limitations.
+
+## Company finance without previous results
+
+Prefer `margin_company_finance` for ticker-based financial questions. It fetches fresh
+BharatStock financials, prepares facts and calculates internally. No database or prior
+result/fact handle is required. `execute` defaults false: a local preview. To execute
+within the user's authorized scope, call the same tool with these top-level arguments:
+
+```json
+{
+  "function": "finance.company_margins",
+  "ticker": "HINDUNILVR",
+  "exchange": "NSE",
+  "period_type": "annual",
+  "basis": "consolidated",
+  "execute": true,
+  "idempotency_key": "hul-annual-margin-test-001",
+  "why": "Fetch one annual financials page and calculate the continuing-profit margin."
+}
+```
+
+This is one maximum BharatStock request, zero Drishti calls/credits. Nine existing
+company functions are supported: margins, profitability, balance-sheet metrics,
+cash conversion, cash-flow metrics, growth, CAGR, TTM and data readiness. Use their
+exact `finance.company_*` identifiers advertised in the tool schema. Defaults: NSE,
+consolidated, annual (quarterly for TTM), revenue for growth/CAGR/TTM. No automatic
+DCF forecasts or FCFF assumptions. Explicit-input calculators remain local.
+
+Each new key fetches page 1 fresh, up to two annual or eight quarterly rows, even if
+other retained financial sources exist. Basis is selected locally; more pages are not
+fetched to resolve insufficient history, mixed bases or missing cash flows. Growth/CAGR
+need two eligible endpoints; TTM needs four comparable quarterly flows and established
+duration. Read partial components and scope holds; a subscription cannot create absent
+issuer fields. The returned `values`, compact `inputs` with ready-to-report `display`
+strings, definitions/periods/units/source paths, source timestamps and `usage` are the
+answer. No raw provider payload is returned or added to retained financial buffers.
+
+The call waits at most 30 seconds. If `status` is `running`, repeat the SAME financial
+inputs and key to wait/read; only `wait_seconds` may be changed. If a reply was lost,
+also reuse that key. A new key means a new request, not a recovery. Conflicting inputs
+are rejected. Up to 200 compact responses/control records (or smaller `max_records`)
+remain in memory, each at most 32 KiB; keys never silently expire into a new fetch.
+At capacity, new requests are blocked. This protects duplicates within one core process
+only. Backend restart loses that protection and does not renew account quota. A hosted
+multi-worker service needs separate shared quota/request control, not a financial corpus.
+Optional private logs can retain compact tool outputs; the new response is not a raw
+source handle usable by `margin_facts` or `margin_result`. Legacy tools keep their buffers.
+
+For a fresh model benchmark, current public guidance is BharatStock Developer at
+INR 1,500/month before tax, with internal model evaluation and full history. Ordinary
+on-demand querying is permitted on any plan within entitlements; Free's advertised
+60/day does not establish this older 25/day key's quota. No Drishti purchase is needed
+for this tool. See the dated [plan and subscription sources](design/fetch-and-calculate.md).
+No new paid/live run was made for this release. The existing `mtest` 0.4.0 live backend
+is deliberately not upgraded/restarted by building this wheel; follow the version-matched
+upgrade guidance below and reconcile remaining allowances before a controlled cutover.
 
 ## Install
 
@@ -101,7 +157,25 @@ the executable is `/Users/rishit/Desktop/mtest/.venv/bin/margin-mcp`. After a wh
 restart the backend deliberately and reconnect the host; never silently replenish spent
 allowances. The existing `.env` and logs remain private, outside the package.
 
+For a controlled 0.4.0 to 0.5.0 upgrade, inspect/save the old ledger and logs, stop the
+old backend with its existing executable, then install the new wheel into that venv:
+
+```sh
+/Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/dist/margin_research-0.5.0-py3-none-any.whl
+```
+
+These are manual instructions, not actions performed during this build. Existing pinned
+0.4.0 dependencies are reused. Restart explicitly using the backend command above only
+after setting reconciled remaining provider allowances; do not copy the old allowance
+as if nothing was spent. With no confirmed requests remaining, set the BharatStock
+allowance to zero and test local preview only. Both backend and frontend must be 0.5.0;
+reconnect the host after the version-matched restart. No provider key belongs in commands.
+
 ## Tools and financial output
+
+`margin_company_finance` is the fresh-fetch convenience tool above. Company catalog
+entries also advertise its `fresh_mcp_execution` route; legacy `mcp_execution` remains.
 
 The original workflow tools remain: `margin_status`, `margin_catalog`, `margin_preview`,
 `margin_company_preview`, `margin_run`, `margin_run_status`, `margin_result`,

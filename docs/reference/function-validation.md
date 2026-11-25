@@ -1,5 +1,32 @@
 # Function validation status
 
+## Fresh-finance interface: 25 November 2026, 0.5.0
+
+All nine existing company functions are now accessible through `margin_company_finance`:
+fresh fetch and calculation in one explicitly executed call, without prior source handles.
+All nine succeeded against complete fictional transport data. The saved-real column
+below is offline reprocessing of the user's one-row HINDUNILVR annual response, not
+a new provider call or independent answer key. No underlying math/guards were changed.
+
+| Company function suffix | Complete fictional data | Saved HUL annual response |
+| --- | --- | --- |
+| `data_readiness` | success | success; reports supported/held components |
+| `balance_sheet_metrics` | success | success |
+| `cash_conversion` | success | partial; continuing/total-profit scope review |
+| `profitability` | success | partial; continuing/total-profit scope review |
+| `margins` | success | success; continuing profit selected, dates not invented |
+| `cashflow_metrics` | success | success; CFO-minus-capex remains distinct from FCFF |
+| `growth` | success | incomplete; only one returned annual period |
+| `cagr` | success | incomplete; only one returned annual period |
+| `ttm` | success | not tested with this annual-only response |
+
+Every fresh execution uses at most one BharatStock request and zero Drishti requests.
+New keys mean fresh requests; repeating the same financial inputs/key protects against
+duplicates only in the current core process. Legacy reuse remains available separately.
+The unchanged retrieval/local/review inventory and older live outcomes below remain
+historical evidence. [Implementation](../implementation.md) owns release validation;
+[MCP usage](../mcp.md) owns the new contract and limitations.
+
 ## Current repair checkpoint: 24 November 2026
 
 Current inventory: **13 retrieval, 15 local calculation and nine company functions** (37), plus ten local review functions separately. **192 offline tests passed**. Fresh repair calls used B2/D13 HTTP including metadata/lifecycle, one estimated Drishti credit; actual debit was not measured. Summary announcements now succeed with the reviewed extraction flag explicitly false. Other retrieval outcomes below come from the earlier run and were not all repeated.

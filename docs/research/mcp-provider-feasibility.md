@@ -1,5 +1,17 @@
 # BharatStock and Drishti: MCP access, endpoints and coverage
 
+## 25 November 2026: fresh-finance subscription review
+
+Public [pricing/FAQ](https://bharatstockapi.com/) and [terms](https://bharatstockapi.com/terms)
+were inspected again for the new one-request finance workflow. On-demand AI-agent
+querying and internal model benchmarking have different published permissions. The
+[fresh-finance design](../design/fetch-and-calculate.md#subscriptions-and-live-testing)
+owns the dated plan prices, grandfathered-key quota caveat and Developer recommendation.
+Margin continues to use BharatStock REST; no Drishti subscription is required for
+these numerical calculations. No purchase, provider contact, account entitlement check
+or authenticated provider/model request was made in this build. Earlier trial balances
+and pricing sections below remain dated historical observations.
+
 Research checkpoints: **8–9 October 2026**. Purpose: establish the evidence behind the [aggregation design](../design/mcp-aggregation.md). This is a dated investigation, not an implemented adapter or a full-market coverage report. Trial accounts now authenticate; no paid purchase has been observed. The [first authenticated trial](#authenticated-trial-results-8-october-2026) supersedes earlier no-key observations; the [operation comparison](#authenticated-operation-discovery-and-rest-comparison-9-october-2026) adds selected live schemas, execution and source-link evidence.
 
 **Current decision:** use BharatStock REST + Drishti MCP behind Margin's MCP interface. Earlier Developer/Starter and two-native-MCP recommendations below are retained as dated research history, not current build requirements. See the [transport correction](#transport-decision-correction-9-october-2026) and current [architecture](../design/mcp-aggregation.md).

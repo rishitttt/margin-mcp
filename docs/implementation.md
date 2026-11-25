@@ -1,5 +1,56 @@
 # Implementation and validation status
 
+## Fresh-fetch company finance: 25 November 2026, 0.5.0
+
+Plan `0e9710c` was pushed before runtime changes. `margin_company_finance` is a
+self-contained typed tool over async `ResearchService.company_finance`: one fresh
+BharatStock financials page, existing fact preparation/guards and one of the nine
+company calculations, returning compact values/selected inputs/source context directly.
+No earlier handle, retained raw source buffer, database, Margin LLM, Drishti connection
+or new dependency. New keys fetch again even if legacy results exist. Default execution
+is a local preview; explicit `execute: true` requires a stable key. Duplicate calls join
+or return the same compact response; conflicting inputs block. Up to 200 compact
+answers/controls (or smaller configured capacity), each bounded to 32 KiB, last for the
+core process only. Cancellation of a waiter leaves work alive; provider uncertainty and
+shutdown accounting remain guarded. No durable exactly-once/account-quota claim.
+
+The MCP has **21 tools**, underlying catalog counts unchanged. Old retrieval, pure
+math, company reuse, review, workbench/CLI and standalone/shared modes remain. No source
+schema or financial compatibility checks were weakened. The initial larger page-size
+proposal was rejected against the existing registry: two annual/eight quarterly rows
+remain the bounds. Missing history/basis/fields stay incomplete, with no page exhaustion
+or provider fallback. DCF/FCFF still require their explicit inputs/assumptions.
+
+Validation: **288 offline tests passed**, including 36 new fresh-workflow checks. All
+nine functions succeeded with deliberately complete fictional transport data. Tests
+cover no-call preview/invalid inputs, one request, no raw-source buffering, ignored old
+sources, units and missing dates with same-row provenance, continuing-profit selection,
+scope holds, null/missing basis, quota/capacity, 401/403/429, uncertain timeout, concurrent
+duplicates/conflicts, pending reads, waiter cancellation, shutdown, output bounds and
+private recording. Source and installed-wheel SDK stdio acceptance each passed with
+21 tools, 36 calls/72 log events and fictional B2/D1 attempts. Source/shared acceptance
+passed with four frontend connections, 11 calls/22 events, stable identity, fictional
+B2/D0 and zero duplicate dispatch. Installed shared acceptance passed the same checks.
+Ruff lint/format and source/installed skill validation passed; the wheel was installed
+in an isolated target using the existing pinned dependency environment (not a fresh
+cross-platform dependency install). These use no real provider/model calls and do not establish
+small-model behavioral success or current account entitlement.
+
+Offline reprocessing of the saved 25 November HINDUNILVR annual response preserved
+the expected continuing-profit margin and display units without guessed dates or new
+requests. Readiness, balance-sheet, margins and cash-flow outputs succeeded; cash
+conversion/profitability remained partial under the existing profit-scope guard.
+Growth/CAGR remained incomplete with only one returned annual period. TTM was not
+tested against that annual response. This is source-mapping/software evidence, not
+independent issuer verification or another live run. See the [function map](reference/function-validation.md)
+and [fresh-finance plan](design/fetch-and-calculate.md).
+
+Private evidence: `reports/private/fresh-finance-2026-11-25/`. Versioned wheel is local
+under `dist/`; no public package release or new paid plan. Existing `mtest`/LM Studio
+live backend remains 0.4.0 with its prior allowances; this build does not restart it,
+replace its installation, silently reset budgets or edit its keys. A controlled
+version-matched upgrade and bounded live/model acceptance remain next.
+
 ## Financial fidelity and shared local state: 25 November 2026, 0.4.0
 
 Plan `65c4901` was pushed before implementation. Retained financial results now include

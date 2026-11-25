@@ -1,6 +1,6 @@
 # Documentation index and update responsibilities
 
-`main` contains the core, local stdio MCP alpha, workbench, CLI and skill. See [MCP setup](mcp.md) for the 0.4.0 server and host-neutral configuration. The 24 November [build plan](plan.md) covers retrieval/finance repairs, citation and content-sentiment workflows, capability-aware fallbacks, thin MCP packaging and a separate cross-model benchmark with short decision trails. Review handoffs and finance repairs are delivered; The stdio MCP alpha is delivered; selected LM Studio observations are recorded; broader host/model evaluation and the separate benchmark remain planned. The professor's research harness remains optional and independent of product installation. Historical corpus code stays on `d1`.
+`main` contains the core, local stdio MCP alpha, workbench, CLI and skill. See [MCP setup](mcp.md) for the 0.5.0 server and host-neutral configuration. The 24 November [build plan](plan.md) covers retrieval/finance repairs, citation and content-sentiment workflows, capability-aware fallbacks, thin MCP packaging and a separate cross-model benchmark with short decision trails. Review handoffs and finance repairs are delivered; The stdio MCP alpha is delivered; selected LM Studio observations are recorded; broader host/model evaluation and the separate benchmark remain planned. The professor's research harness remains optional and independent of product installation. Historical corpus code stays on `d1`.
 
 | Document | Authority |
 | --- | --- |
