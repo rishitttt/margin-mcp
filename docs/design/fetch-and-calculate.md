@@ -1,5 +1,36 @@
 # Self-contained company finance
 
+## 0.6.1 formula-metadata correction, 25 November 2026
+
+The user-led 0.6.0 retest confirms correct INFY amounts/percentage, same-key replay
+and raw-details projection, with B2/D0 total. It also exposes a Margin defect: the
+report builder copies a function-wide percentage formula onto absolute change. That
+wrong row formula must be attributed to Margin, not the model. HUL returned all three
+rows; the model omitted profit/margin. The model also mislabeled normalized values
+as raw INR provenance and suggested an invalid margin_result/request_id lookup.
+
+Publish this focused plan before runtime edits. Patch formula metadata only:
+
+1. Keep comparison arithmetic unchanged; add per-metric formulas for absolute and
+   percentage changes. Preserve legacy values.formula as the percentage formula for
+   compatibility, documenting the per-metric mapping as authoritative.
+2. Map each standalone report result to its own reviewed formula, never inherit one
+   function-wide formula for all numeric fields. CAGR's input years must not carry
+   the CAGR result formula. Check CFO-minus-capex/coverage, margins and TTM too;
+   group components retain their existing explicit formulas.
+3. Add regressions for raw comparison metadata, growth row formulas, and CAGR's
+   years field. Reformat saved 0.6.0 INFY details offline and preserve the original
+   defective capture. Check actual user logs/request counts separately from source
+   truth and model final prose. No generated summaries, new tool or final verifier.
+4. Run focused/full offline tests and installed-wheel protocol checks. Update the
+   live-test audit, migration/implementation/function-map notes and release 0.6.1.
+   No provider/model call, live venv/backend restart, quota reset or purchase. Current
+   0.6.0 cached answers remain unchanged; a build does not repair an active old process.
+
+The HUL reporting-only retest can use its existing key and ask for every report row,
+including kind=result, with zero additional provider calls. This does not prove a
+general model-fidelity guarantee; point 4 remains deferred.
+
 ## 0.6.0 reporting contract plan, 25 November 2026
 
 The user authorizes the reporting repair after the guided 0.5.0 live tests: the
