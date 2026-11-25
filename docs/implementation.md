@@ -1,5 +1,35 @@
 # Implementation and validation status
 
+## User-led 0.8.0 completed review acceptance: 26 November 2026 IST
+
+The same guided LM Studio session now has **nine admitted calls / eighteen recorded
+events**, all successful: status, typed registration, both preparations, citation
+assessment submission, citation rendering, claim-manifest audit, sentiment annotation
+submission and aggregation. The five follow-up calls used the actual unexpired packet
+references. Both submitted quotes exactly match the full registered passage; the
+ellipsis in the pasted model answer is only a prose abbreviation. Both submissions
+retain host_reported origin and independently_verified=false. Citation audit reports
+one supported claim, no flags and no omitted packet claims; it audits the supplied
+claim-ID manifest, not arbitrary final prose. The rendered locator still requires
+resolution and original_document_verified remains false.
+
+Sentiment returns positive=1, all other counts=0, balance="1", denominator=1,
+record_date scope, coverage_complete=false and investor_sentiment=false. This describes
+one annotated provider summary, not market-wide sentiment. The general denominator
+is positive+negative+neutral; mixed/unclear/unannotated/irrelevant are excluded. Zero
+provider attempts does not imply test mode: the recorded mode is live, initial HTTP
+and credit limits are zero, and every subsequent review response reports zero network
+attempts. No final status call is recorded; no operator poll or API call was added.
+
+Original eighteen events and the checked review are private under
+reports/private/lmstudio-080-complete-2026-11-26/; the earlier eight-event preparation
+snapshot remains unchanged. Optional why appears on two of nine calls; submission
+rationales are host self-reports, not hidden reasoning. Reviewer model is unspecified
+and context size is unrecorded. This establishes one guided end-to-end host success,
+not general reliability, independent semantic gold or a causal model comparison.
+No runtime change, reinstall, restart, refetch or allowance reset is needed. Next are
+bounded adverse/ambiguous review cases, then a separately frozen model benchmark.
+
 ## User-led 0.8.0 preparation acceptance: 26 November 2026 IST
 
 Four recorded calls succeeded: status, typed source registration, citation preparation

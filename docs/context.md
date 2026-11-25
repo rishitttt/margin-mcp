@@ -1,14 +1,15 @@
 # Project context and handoff
 
 **Latest 26 November host check:** user activated 0.8.0, review profile configured,
-zero provider allowances. Status, typed registration of already returned real INFY
-text and both typed packet preparations pass. Source origin is host_supplied, not a
-new provider call; unknown publication/protected locator/original unverified preserved.
-Real citation/sentiment refs route to margin_submit_assessment/submit_annotations.
-Next are separate host submissions then render/audit/aggregate, within packet TTL.
-No runtime patch/reinstall/refetch/reset needed. Evidence is private in the
-lmstudio-080-preparation audit; model/context settings and complete semantic success
-remain unestablished. Older active-0.7.0 notes below describe earlier checkpoints.
+zero provider allowances. Nine admitted calls / eighteen events now pass end to end:
+typed registration/preparation, both submissions, citation render/manifest audit and
+sentiment aggregate. Exact full quotes match; source and semantic judgments remain
+host-supplied/unverified. One positive summary gives balance=1, denominator=1, not
+investor sentiment. Mode is live despite zero network attempts. Private completed
+audit is lmstudio-080-complete; earlier preparation capture is preserved. No runtime
+patch/reinstall/refetch/reset needed. Next: adverse/ambiguous cases, then a frozen
+benchmark; model/context identity and general reliability remain unestablished.
+Older active-0.7.0 notes below describe earlier checkpoints.
 
 **Latest source 0.8.0:** plan e5e97d0 preceded typed schemas for all ten review tools,
 distinct safe diagnostics and next_steps with real packet refs/required host fields.
@@ -17,9 +18,9 @@ profile switching preserves owner/unexpired packets without restarting the backe
 catalog/calls are filtered and profile is not an authorization boundary. 392 tests
 and SDK acceptance; saved real INFY operator replay passed without new provider calls.
 Review definitions 29,088 bytes versus 0.7.0's 59,853 (-51.40%), no model-success claim.
-Active mtest remains 0.7.0, estimated data allowance spent. No install/restart/reset
-or authenticated call in this build. Next: deliberate version-matched upgrade, obtain
-new valid source handles and test one typed review step at a time. Old handles do not
+At the release-build checkpoint mtest was still 0.7.0; the newer host check above
+supersedes that installation state. No install/restart/reset or authenticated call
+was made by the build. Old handles do not
 survive backend upgrade; profile-only frontend changes preserve them subject to TTL.
 
 **Latest 26 November review attempt:** one margin_review call for evidence.prepare_verification

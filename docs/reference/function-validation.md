@@ -1,5 +1,15 @@
 # Function validation status
 
+**26 November 0.8.0 completed guided host review:** nine admitted calls / eighteen
+events all succeed. Both typed submissions match the full source quote and actual
+packet references; citation render/claim-manifest audit return one supported claim
+and no flags, with original_document_verified=false. Sentiment returns one positive
+source, balance=1, denominator=1; investor_sentiment=false. Live mode, zero network
+attempts on all review responses, no new operator API call. Private completed events
+and review remain separate from the earlier preparation snapshot and software tests.
+No runtime fix/reinstall required. Model/context identity and broader/adverse-case
+host reliability remain untested; this is guided success, not benchmark evidence.
+
 **26 November 0.8.0 guided host preparation:** status, typed registration of real
 previously returned INFY text, margin_prepare_verification and margin_prepare_sentiment
 all succeed in four recorded calls. Actual packet refs and correct typed next steps
@@ -13,7 +23,8 @@ classified diagnostics and 14-tool profile restrictions pass offline/SDK checks.
 392 offline tests; full 35-tool and focused 14-tool installed acceptance. Saved real
 INFY text also passed an isolated operator-authored replay, with zero new provider
 calls or model benchmark claims. Original user host failures remain preserved; no
-real 0.8.0 model completion yet. [Implementation](../implementation.md) owns details.
+real 0.8.0 model completion at that build checkpoint; the newer guided host check
+above supersedes it. [Implementation](../implementation.md) owns details.
 
 **26 November local review trial:** retrieval/import still pass, but semantic review
 has not completed. One prepare_verification function call reached margin_review with

@@ -1,5 +1,14 @@
 # Margin: quick handoff
 
+**Current host status, 26 November:** installed 0.8.0, configured review profile;
+one guided citation/sentiment round trip passed all nine recorded calls. Exact quote
+matching, bound packet references, citation render/manifest audit and aggregation
+worked with zero provider attempts in live mode. Source authenticity and semantic
+judgments remain unverified; one positive summary is not market sentiment. No new
+wheel, install/restart, fetch or quota reset is needed. Next are adverse/ambiguous
+review cases and then the separate frozen benchmark. Model/context settings remain
+unknown; [implementation status](docs/implementation.md) owns evidence and limits.
+
 **Latest source 0.8.0:** ten typed review tools, clearer schema/JSON/size/sanitization
 errors and actual next-step packet bindings. Full profile 35 tools; optional review
 frontend 14 local tools, same shared owner and no provider dispatch surface. Exact
@@ -7,9 +16,9 @@ schemas come from canonical SCHEMAS, not remembered examples. 392 tests and SDK 
 pass; saved real INFY replay is operator-authored, not a model benchmark. See
 [profile/setup](docs/mcp.md#typed-review-tools-profiles-and-packet-handoffs),
 [plan/evaluation](docs/design/mcp-aggregation.md#080-review-repair-plan-and-evaluation-26-november-2026)
-and [validation](docs/implementation.md). Active user backend stays 0.7.0; no live
-upgrade/reset/fetch. Deliberately upgrade both sides, obtain valid source handles,
-then switch only the frontend to review profile and follow returned next_steps.
+and [validation](docs/implementation.md). At this release-build checkpoint the active
+user backend was still 0.7.0; the newer current host status above supersedes that
+activation advice. Follow returned next_steps with unexpired source/packet references.
 
 **Latest source 0.7.0:** four typed Drishti previews generate their exact schemas from
 reviewed Registry contracts and construct query wrappers internally. Generic calls

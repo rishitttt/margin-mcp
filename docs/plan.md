@@ -1,9 +1,19 @@
 # Margin build and evaluation plan
 
+**26 November host gate completed:** the 0.8.0 review profile now completes one
+guided real-text citation/sentiment round trip in LM Studio, nine admitted calls,
+zero provider attempts. Preserve the private run and earlier failures; do not patch
+the runtime for remaining model prose errors. Next validate contradicted/insufficient
+claims, incorrect quotes and ambiguous/excluded sentiment/date cases with separate
+packets. Then freeze package/profile/tasks, identify model/context/settings and run
+the independent with/without-Margin benchmark. Original-document verification and
+market sentiment are not established by this one supplied summary. No new provider
+call, backend restart, purchase or budget reset follows from this checkpoint.
+
 **0.8.0 review repair delivered:** typed schemas for ten review functions, precise
 diagnostics and actual next-step bindings; optional 14-tool frontend review profile
 over the same state owner. No hidden judgment generation or provider call. Software
-and saved-real-text operator acceptance precede the next model-host trial. See
+and saved-real-text operator acceptance preceded the guided host trial above. See
 [evaluated plan](design/mcp-aggregation.md#080-review-repair-plan-and-evaluation-26-november-2026)
 and [implementation](implementation.md). Upgrade deliberately; profile changes alone
 must not restart the backend/reset budgets. Then test one typed preparation/submission

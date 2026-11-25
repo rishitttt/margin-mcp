@@ -1,5 +1,16 @@
 # Working on Margin
 
+**26 November completed 0.8.0 host review:** nine admitted calls / eighteen events
+now pass, including both typed submissions, citation render/manifest audit and
+sentiment aggregate. Exact full quotes match; host_reported/unverified/protected/
+unknown-publication labels remain. One positive source is not investor sentiment;
+balance denominator is positive+negative+neutral. Mode is live with zero network
+attempts, not synthetic. Preserve private lmstudio-080-complete events and earlier
+preparation/failure snapshots. No runtime patch/reinstall/restart/refetch/reset is
+needed. Why exists on only two of nine calls; model/context remain unknown. Next are
+adverse/ambiguous host cases and a frozen benchmark, not a general reliability claim.
+This supersedes pending-submission and active-0.7.0 notes at older checkpoints below.
+
 **26 November active 0.8.0 preparation trial:** four user calls (status, typed real-
 text registration, citation/sentiment preparation) succeeded. Review frontend is
 configured, provider budgets zero. Actual packet refs/next typed submission tools
