@@ -1,14 +1,14 @@
 # Margin
 
-**Current source release: 0.8.0 (26 November).** Ten typed review tools remove the
-generic-wrapper step for citation/sentiment. Preparation returns next tools and real
-packet references; schema, JSON/size and sanitization errors are distinct. Optional
-`--tool-profile review` advertises 14 local tools instead of the full 35, over the same
-state owner. [Review/profile guide](docs/mcp.md#typed-review-tools-profiles-and-packet-handoffs),
-[plan/evaluation](docs/design/mcp-aggregation.md#080-review-repair-plan-and-evaluation-26-november-2026),
-[validation](docs/implementation.md), [wheel](releases/0.8.0/margin_research-0.8.0-py3-none-any.whl)
-and [checksum](releases/0.8.0/SHA256SUMS). Active mtest remains 0.7.0; no live restart,
-provider call or quota reset. Older dated source-release notes below are history.
+**Current source release: 0.8.1 (26 November).** Citation review stays optional:
+capability-aware protocol guidance distinguishes supplied text, host original-reading
+handoffs and insufficient-evidence/inventory fallbacks. No Margin browser or LLM.
+Full profile stays 35 tools; focused review stays 14. All 403 offline tests and source/
+installed SDK checks pass. [Protocol and unguided tests](docs/review-workflows.md#optional-citation-protocol-and-host-capability),
+[plan/evaluation](docs/design/mcp-aggregation.md#081-optional-citation-protocol-plan-and-evaluation-26-november-2026),
+[validation](docs/implementation.md), [wheel](releases/0.8.1/margin_research-0.8.1-py3-none-any.whl)
+and [checksum](releases/0.8.1/SHA256SUMS). Active mtest stays 0.8.0; no install/restart,
+provider call or quota reset. Unguided model testing remains next. Older notes are history.
 
 **Current source release: 0.7.0.** Four typed Drishti previews remove the query-wrapper
 translation from common event calls; exact schemas are generated from reviewed core

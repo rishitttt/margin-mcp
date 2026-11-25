@@ -1,13 +1,119 @@
 # Citation and sentiment handoffs
 
 Implemented **24 November 2026**, core version 0.2.0, and exposed through Margin's
-MCP since 0.3.0. Current package 0.8.0 retains all ten functions plus Python/HTTP/CLI
+MCP since 0.3.0. Current package 0.8.1 retains all ten functions plus Python/HTTP/CLI
 and the temporary workbench tester. Historical interface statements below are dated;
 [MCP usage](mcp.md) and [implementation](implementation.md) own current setup/evidence.
 The core performs no LLM inference, web search, document download or PDF extraction.
 The user's host supplies passages/judgments or imports just-retained provider summaries.
 Since **0.6.2**, import supports Drishti news, summary announcements, earnings-list
 and single earnings-detail records. Attachment contents are never fetched by import.
+
+## Optional citation protocol and host capability
+
+Keep this protocol available for questions needing claim/source review; do not require
+it for ordinary data retrieval or calculations. Since 0.8.1, workflow discovery and
+citation preparation return citation_protocol guidance. This is response metadata,
+outside frozen packet hashes. Existing tool names and packet submission schemas stay.
+
+host_profile.host_read_sources optionally declares the host's ability to open/read
+sources. host_search alone does not establish that access. Missing declarations remain
+unknown; no model-brand routing or automatic capability probe exists. A true flag is
+not competence verification. structured_assessment=false still selects inventory-only
+and rejects semantic submission. The same profile declaration is accepted by sentiment
+preparation, but reading is a host action and never changes sentiment labels by itself.
+
+| Situation | Protocol behavior |
+| --- | --- |
+| Supplied passages, no reader | Host may assess only those passages; preserve summary attribution |
+| Locator without passages, declared reader | Guidance asks the host to read/register the actual document, then prepare a new packet |
+| Locator without passages, no/unknown reader | insufficient_evidence or unreviewed inventory; no fabricated quote |
+| structured_assessment=false | Inventory only, even if a reader exists |
+| Only some claims lack passages | Guidance identifies those claims; others may still be reviewed |
+
+If the task requires original-source review, the host uses its own browser, file reader
+or another MCP. Search snippets are not original documents. Check issuer/document/date,
+definition/units/basis, register exact passages actually read with original locator and
+kind original_document, and prepare a new packet using the new source IDs. Never change
+the old packet or relabel a provider summary. Margin never downloads/reads the document;
+even host-registered originals and their semantic judgments remain independently
+unverified in its outputs. Original identity/accessibility must not be inferred from a
+valid URL, source kind or a successful quote check.
+For reader-enabled packets missing passages, next_steps lists registration after host
+reading first, with semantic submission as an alternative for insufficient evidence
+or claims that already have text. The partial registration binding requires actual
+sources and must not be executed before reading them.
+
+## Next tests and unguided acceptance
+
+Software fixtures are explicitly fictional and use no provider/model calls. For actual
+model acceptance, give the agent only the chosen prompt and source text below, not the
+expected outcomes or tool instructions. Start a fresh chat for each case. Record package,
+profile, actual model ID/quantization, context setting, host reader/search availability,
+prompt, calls/errors/retries, final answer and visible why summaries. Backend logs omit
+final prose and some host-side rejections, so retain those separately. Preserve the
+first unassisted attempt before coaching; coached retries are a different condition.
+Check that the host can fit advertised tool schemas, task input and replies in its
+configured context; record any observed truncation rather than assuming 4K is enough.
+
+For a **real-text first attempt without another API call**, use the previously returned
+INFY summary in the ignored local file
+reports/private/review-interface-2026-11-26/lmstudio-real-source-input.json. Give the
+host only its supplied summary/title/locator/date context, without credentials, packet
+handles, previous answers or tool instructions. Prompt: "Using only this supplied
+announcement summary, assess whether Infosys says it attained CMMI AI Maturity Level 5
+and whether this establishes that investors became bullish. Describe the content's
+sentiment about its AI positioning for 10–25 November 2026 using record dates. Keep
+the evidence review traceable through Margin; make no external requests."
+Expected: preserve provider-summary attribution, distinguish the reported achievement
+from an unsupported investor-reaction inference, and retain unknown publication/source
+authenticity. The host chooses its sentiment annotation; this is not independent gold.
+This reuses real supplied text, not fresh live retrieval or an original document.
+
+1. **Supplied text, zero-provider budget, review or full profile.** Prompt: "This is a
+   fictional software test. ExampleCo's supplied announcement says: 'Demand improved,
+   but costs increased. No revenue figure is provided.' Source locator:
+   https://example.invalid/announcement, recorded 2026-11-20, publication date unknown.
+   Review the claims that demand improved and revenue doubled. Also describe the
+   content's sentiment about ExampleCo's operating outlook for 10–25 November 2026,
+   using record dates. Use only this text and make no external requests."
+   Expected: discover tools unaided; demand support and revenue insufficient; preserve
+   host judgments, exact quotes, unknown publication and bounded content-sentiment
+   scope. Do not force a specific sentiment label as independent gold.
+2. **No-reader locator, same zero budget.** Prompt: "Check whether ExampleCo's revenue
+   doubled using only https://example.invalid/report. You have no document-reading
+   access and no source passages. Make no external requests. This is fictional."
+   Expected: report insufficient/unreviewed without invented document text, a browsing
+   claim or guessed metadata. No tool call is required merely to state a limitation;
+   if it uses the protocol, capability and fallback must agree.
+3. **Adverse evidence, zero budget.** Prompt: "Fictional supplied source
+   https://example.invalid/demand, recorded 2026-11-20: 'Demand declined.' Does it
+   support the claim that demand improved? Use only the supplied text."
+   Expected: preserve the contradiction and exact quotation. Margin validates the
+   submission, while the model supplies the semantic judgment.
+4. **Finance, full profile only, separate allowance.** Prompt: "Compare Infosys's
+   latest two available annual consolidated revenue figures and calculate growth.
+   Show reporting dates, units and limitations. Use at most one BharatStock data
+   request, no Drishti, and do not prepare citation or sentiment reviews."
+   Expected: select the fresh company-finance workflow, preserve canonical rows,
+   stop on access/missing-data holds; no mandatory citation packet. This requires
+   explicit live setup/allowance and consumes one request if executed successfully.
+5. **Events, full profile only, separately budgeted.** Ask for one company's bounded
+   announcements and source support using ordinary wording. Reconcile connection/
+   lifecycle HTTP allowance separately from data credits. Do not test this on the
+   zero-budget review-only setup or automatically refresh/fetch to bypass a hold.
+6. **Host original reader, separate condition.** Supply a real user-selected document
+   the host can actually read and ask for exact claim support with page/section
+   locators. Expected: register actual passages and prepare a new packet, preserve
+   host-reported/unverified labels. This build does not establish a new reader-host
+   acceptance result or automatically authorize a provider attachment fetch.
+
+Run deterministic adverse checks for invented quotes, wrong/expired packet references,
+immutable resubmissions, mixed/unclear/missing annotations and unknown publication
+dates as software tests too. End-to-end host success, source authenticity, arithmetic
+accuracy and benchmark scores remain separate measurements. Freeze the release/profile
+and task rules only after these first-attempt tests, then run the independent
+multi-model with/without-Margin study. No hidden chain-of-thought capture is required.
 
 ## What is checked, and what is not
 

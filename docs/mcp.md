@@ -1,10 +1,24 @@
 # Run Margin as a local MCP server
 
-Current release **0.8.0**, 26 November 2026. Thirty-five full-profile MCP tools expose the existing
+Current release **0.8.1**, 26 November 2026. Thirty-five full-profile MCP tools expose the existing
 37 retrieval/finance and ten review functions. Six common calculations now have directly
 advertised strict schemas. The core, CLI and workbench remain available independently.
 The [architecture](design/mcp-aggregation.md) owns the plan published before this change;
 [implementation](implementation.md) owns evidence and limitations.
+
+## Optional citation protocol (0.8.1)
+
+Citation review is available when the task needs claim/source support; it is not a
+prerequisite for ordinary retrieval or math. Discovery/preparation return
+citation_protocol guidance outside frozen packet hashes. Optional
+host_profile.host_read_sources declares actual host reader access; host_search does
+not imply it, and absent means unknown. Declared capability is not competence proof.
+A no-reader host can review supplied passages. Without passages, report insufficient
+or inventory-only; structured_assessment=false still prohibits semantic submissions.
+If originals are needed, an actually available host reader may read/register exact
+original passages and prepare a new packet. Margin does not fetch, run an LLM or
+independently authenticate originals. See [protocol/fallbacks](review-workflows.md#optional-citation-protocol-and-host-capability)
+and [goal-only host tests](review-workflows.md#next-tests-and-unguided-acceptance).
 
 ## Typed review tools, profiles and packet handoffs
 
@@ -61,7 +75,7 @@ Example LM Studio shared frontend arguments after a version-matched upgrade:
 
 Change only frontend profile/reconnect to preserve the same backend's source/packet
 state (subject to TTL); do not restart the backend to switch profiles. Upgrading an
-older backend to 0.8.0 still requires a deliberate restart and loses old handles.
+older backend to 0.8.1 still requires a deliberate restart and loses old handles.
 Review mode can register host-supplied real text or read/import already retained
 results without provider keys or requests. It never fetches missing/expired sources.
 Status data.tool_profile and advertised_tools describe the frontend view, separate
@@ -70,9 +84,10 @@ frontend profile projections/instructions, host parse failures, hidden reasoning
 final prose are not recorded there. Outer tool-schema rejections can occur before
 recording too; capture caller-side results when evaluating failures.
 
-Measured tools/list JSON bytes: full 35 tools 82,930; review 14 tools 29,088,
+Historical 0.8.0 tools/list JSON bytes: full 35 tools 82,930; review 14 tools 29,088,
 51.40% below 0.7.0's 59,853. This is uncompressed byte size, not token/context fit or
-proof of model improvement. The next real-host check remains separate.
+proof of model improvement. The guided 0.8.0 host round trip passed; unguided
+0.8.1 model acceptance remains separate.
 
 ## Typed retrieval previews and exact schema authority
 
@@ -245,7 +260,7 @@ MCP hosts. Package name and command name differ, so use --from. After publishing
 release under a confirmed available name, the proposed launcher is:
 
 ```sh
-uvx --python 3.12 --from 'margin-research==0.8.0' margin-mcp --tool-profile review
+uvx --python 3.12 --from 'margin-research==0.8.1' margin-mcp --tool-profile review
 ```
 
 This is a future publication example, not a claim that our package/name is available
@@ -265,9 +280,9 @@ registry upload/account action is performed by this recommendation. References:
 [uv tool execution/version pinning](https://docs.astral.sh/uv/guides/tools/),
 [npx behavior](https://docs.npmjs.com/cli/v11/commands/npx/).
 
-The current tested 0.8.0 wheel is committed at
-[`releases/0.8.0/margin_research-0.8.0-py3-none-any.whl`](../releases/0.8.0/margin_research-0.8.0-py3-none-any.whl),
-with [`SHA256SUMS`](../releases/0.8.0/SHA256SUMS). Earlier tested 0.6.1/0.6.2/0.7.0 artifacts
+The current tested 0.8.1 wheel is committed at
+[`releases/0.8.1/margin_research-0.8.1-py3-none-any.whl`](../releases/0.8.1/margin_research-0.8.1-py3-none-any.whl),
+with [`SHA256SUMS`](../releases/0.8.1/SHA256SUMS). Earlier tested 0.6.1/0.6.2/0.7.0/0.8.0 artifacts
 remain in their versioned directories with original checksums. Keep release artifacts immutable and publish
 a new package version for later runtime changes. Generated `dist/` outputs remain
 ignored; only deliberately reviewed versioned release files belong in Git.
@@ -275,7 +290,7 @@ ignored; only deliberately reviewed versioned release files belong in Git.
 From the repository root, verify the committed artifact before installation:
 
 ```sh
-(cd releases/0.8.0 && shasum -a 256 -c SHA256SUMS)
+(cd releases/0.8.1 && shasum -a 256 -c SHA256SUMS)
 ```
 
 The wheel contains no provider keys or private captures. Credentials/configuration
@@ -369,19 +384,19 @@ the executable is `/Users/rishit/Desktop/mtest/.venv/bin/margin-mcp`. After a wh
 restart the backend deliberately and reconnect the host; never silently replenish spent
 allowances. The existing `.env` and logs remain private, outside the package.
 
-For a controlled upgrade to 0.8.0, inspect/save the old ledger and logs, stop the
+For a controlled upgrade to 0.8.1, inspect/save the old ledger and logs, stop the
 old backend with its existing executable, then install the new wheel into that venv:
 
 ```sh
 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
-/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.8.0/margin_research-0.8.0-py3-none-any.whl
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.8.1/margin_research-0.8.1-py3-none-any.whl
 ```
 
 These are manual instructions, not actions performed during this build. Existing pinned
 dependencies are reused. Restart explicitly using the backend command above only
 after setting reconciled remaining provider allowances; do not copy the old allowance
 as if nothing was spent. With no confirmed requests remaining, set the BharatStock
-allowance to zero and test only local actions (including review). Both backend and frontend must be 0.8.0;
+allowance to zero and test only local actions (including review). Both backend and frontend must be 0.8.1;
 reconnect the host after the version-matched restart. No provider key belongs in commands.
 
 ## Tools and financial output

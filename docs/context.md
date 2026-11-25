@@ -1,5 +1,16 @@
 # Project context and handoff
 
+**Latest source 0.8.1, 26 November:** plan dfd3113 preceded optional citation protocol
+guidance and canonical host_read_sources declaration. Search is not document reading;
+missing capability stays unknown. Supplied passages may be reviewed without a reader;
+missing text yields insufficient/inventory, or a host reader can register actual
+original passages and prepare a new packet. No Margin inference/source authentication.
+All 403 tests, lint/format, skill and installed SDK checks pass; full 35/review 14 tools
+unchanged. New versioned wheel is saved; old wheels immutable. Active mtest remains
+0.8.0, no install/restart/budget reset/API call. Use review-workflows' unguided prompts
+next, then broader coverage and the separately frozen benchmark. Software validation
+does not establish new unguided model success or original-source authentication.
+
 **Latest 26 November host check:** user activated 0.8.0, review profile configured,
 zero provider allowances. Nine admitted calls / eighteen events now pass end to end:
 typed registration/preparation, both submissions, citation render/manifest audit and

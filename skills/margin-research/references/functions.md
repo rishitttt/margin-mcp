@@ -2,6 +2,13 @@
 
 Use `catalog --name <name>` for exact schemas and current held reasons. This inventory describes implemented interfaces, not universal provider coverage or entitlement. `preview` handles retrieval/local calculations; `company-preview` handles company workflows.
 
+Citation functions are optional protocols, not prerequisites for retrieval/math.
+Since 0.8.1, use citation_protocol guidance and only declared host_profile capabilities.
+host_read_sources is distinct from host_search; missing is unknown. No-reader hosts
+may review supplied text; missing passages stay insufficient/unreviewed. Original
+reading is performed by actual host tools, followed by registering exact passages and
+preparing a new packet; no Margin-side original authentication occurs.
+
 ## Retrieval: BharatStock REST
 
 | Operation | Data and constraints |

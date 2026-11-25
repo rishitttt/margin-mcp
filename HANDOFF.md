@@ -1,5 +1,16 @@
 # Margin: quick handoff
 
+**Latest source 0.8.1, 26 November:** optional citation protocol now explains supplied
+passage review, host original-reading handoffs and insufficient/inventory fallbacks.
+host_read_sources is a declaration, not inferred from search/model brand. No Margin
+LLM/browser; source authenticity remains unverified. 403 tests and source/installed
+SDK checks pass; full 35/review 14 tools unchanged. [Plan](docs/design/mcp-aggregation.md#081-optional-citation-protocol-plan-and-evaluation-26-november-2026),
+[unguided tests](docs/review-workflows.md#next-tests-and-unguided-acceptance),
+[wheel](releases/0.8.1/margin_research-0.8.1-py3-none-any.whl) and
+[checksum](releases/0.8.1/SHA256SUMS). Active mtest stays 0.8.0; upgrade is deliberate,
+not performed here. Next: unassisted model cases, broader live coverage, frozen benchmark
+and clean-install/public release gates. No new provider request or purchase needed now.
+
 **Current host status, 26 November:** installed 0.8.0, configured review profile;
 one guided citation/sentiment round trip passed all nine recorded calls. Exact quote
 matching, bound packet references, citation render/manifest audit and aggregation

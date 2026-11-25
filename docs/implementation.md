@@ -1,5 +1,45 @@
 # Implementation and validation status
 
+## Optional capability-aware citation protocol: 26 November 2026, 0.8.1
+
+Plan dfd3113 was committed/pushed before runtime edits. Citation review is retained
+as an optional host-side protocol, not a prerequisite for retrieval or financial
+calculations. Workflow discovery and citation preparation now return citation_protocol:
+supplied-text review scope, source-reading instructions, declared reader availability,
+claims without passages and insufficient/inventory fallbacks. Metadata is outside the
+frozen packet hash. Optional host_profile.host_read_sources is in the canonical schema;
+host_search does not imply reading, missing is unknown, and no declaration proves
+competence. structured_assessment=false still prohibits semantic submissions.
+
+No-reader hosts may review supplied text. A host with actual original-reading tools
+can read/register exact original passages and prepare a new packet; no summary
+relabeling, packet mutation, automatic source read or new Margin-side inference is
+introduced. Source authentication remains unverified in every path. Existing ten
+review functions, 35 full/14 focused tools, profiles and generic routes remain.
+[Review guide](review-workflows.md#next-tests-and-unguided-acceptance) supplies goal-only
+prompts and a separate operator checklist, not tool-name instructions for the agent.
+
+Validation: **403 offline tests pass**, including eleven new typed-protocol cases for
+reader true/false/unknown, search-only hosts, inventory, absent/partial passages,
+false-quote rejection, host contradiction/insufficient verdicts, immutable original
+handoffs and metadata/hash separation. Existing suite covers mixed/missing sentiment,
+date scope, expiry and all prior finance/retrieval guards. Shared-backend tests need
+local Unix-socket permission; they use isolated fixtures, not the active backend.
+Ruff lint/format and source skill validation pass. Official SDK source and installed
+review checks each pass with 14 tools/16 result-bearing calls/30 recorded events;
+frontend unknown-tool and outer-schema rejections are captured separately. Full
+installed SDK check passes with 35 tools/53 calls/106 events. All SDK material here
+is fictional software validation, zero real provider/model calls.
+
+New immutable 0.8.1 wheel: 146,858 bytes, 61 entries, all 51 Python modules match
+source, checksum/private-entry/known-key scans pass. All four prior wheel checksums
+remain valid. Isolated wheel checks reuse pinned dependencies, not a clean OS install.
+Private evidence: reports/private/optional-citation-2026-11-26/. Runtime/dependencies
+in the active user mtest installation were not changed; it stays 0.8.0 with its
+existing zero allowances. No purchase, account query, source fetch or hidden model
+call. Unguided model acceptance, reader-host original review, broader live coverage,
+independent benchmark and public registry publication remain separate gates.
+
 ## User-led 0.8.0 completed review acceptance: 26 November 2026 IST
 
 The same guided LM Studio session now has **nine admitted calls / eighteen recorded

@@ -12,7 +12,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.8.0"
+VERSION = "0.8.1"
 CONTRACT = "margin.mcp.v1"
 DIRECT_FUNCTIONS = {
     "margin_calculate_margins": "finance.calculate_margins",
@@ -41,9 +41,9 @@ DIRECT_REVIEWS = {
     "margin_aggregate_sentiment": "sentiment.aggregate",
 }
 REVIEW_HELP = {
-    "protocols.list_workflows": "Discover local citation/sentiment steps and capability fallbacks.",
+    "protocols.list_workflows": "Discover optional local citation/sentiment protocols, host source-reading steps and capability fallbacks. Ordinary retrieval/math does not require citation review.",
     "evidence.register_sources": "Register supplied source locators/passages. No document download; unknown dates stay unknown.",
-    "evidence.prepare_verification": "Prepare claims with existing source_ids. Do not supply passage fields, packet IDs or hashes here; preparation returns real packet refs and passages.",
+    "evidence.prepare_verification": "Optional claim-to-passage review protocol, not automatic original verification. Prepare claims with existing source_ids; optional host_profile declares reading/assessment access. Follow citation_protocol for no-reader/no-text fallbacks. Do not supply passage fields, packet IDs or hashes here; preparation returns real packet refs and passages.",
     "evidence.submit_assessment": "Submit host reviewer and per-claim assessments/quotes using the actual returned packet_id/hash; run IDs and invented hashes are invalid.",
     "evidence.render_citations": "Render an existing citation packet with its actual packet_id/hash. Unreviewed claims remain not_reviewed.",
     "evidence.audit_answer": "Audit actual final claim_ids against an existing packet_id/hash; this is not preparation, a raw claim/URL verifier or arbitrary prose audit.",

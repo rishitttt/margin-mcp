@@ -1,5 +1,14 @@
 # Function validation status
 
+**26 November 0.8.1 optional citation protocol:** all existing functions remain;
+host_read_sources is an optional canonical profile field, distinct from host_search.
+New guidance covers optional supplied-text review, host original-reading/registration
+and insufficient/inventory fallback without fetching or claiming authenticity. Eleven
+new typed cases bring the offline suite to 403; source/installed review SDK and full
+installed SDK acceptance pass on fictional fixtures. No new real model/provider call,
+no active 0.8.0 upgrade or budget reset. Goal-only host test prompts are in
+[review acceptance](../review-workflows.md#next-tests-and-unguided-acceptance).
+
 **26 November 0.8.0 completed guided host review:** nine admitted calls / eighteen
 events all succeed. Both typed submissions match the full source quote and actual
 packet references; citation render/claim-manifest audit return one supported claim

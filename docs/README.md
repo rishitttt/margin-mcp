@@ -1,6 +1,6 @@
 # Documentation index and update responsibilities
 
-`main` contains the core, local stdio MCP, workbench, CLI and skill. See [MCP setup](mcp.md) for 0.8.0 typed review tools, frontend profiles and host-neutral configuration. The [build plan](plan.md) covers retrieval/finance, citation/content-sentiment handoffs and the separate model benchmark. Selected LM Studio observations are recorded; broader model evaluation remains planned. The professor's research harness is independent of product installation. Historical corpus code stays on `d1`.
+`main` contains the core, local stdio MCP, workbench, CLI and skill. See [MCP setup](mcp.md) for 0.8.1 optional citation guidance, typed tools, frontend profiles and host-neutral configuration. The [build plan](plan.md) covers retrieval/finance, citation/content-sentiment handoffs and the separate model benchmark. Selected LM Studio observations are recorded; broader model evaluation remains planned. The professor's research harness is independent of product installation. Historical corpus code stays on `d1`.
 
 | Document | Authority |
 | --- | --- |
@@ -14,7 +14,7 @@
 | [Agent interface](agent-interface.md) | Python/CLI/skill packaging, shared backend, fresh-chat setup, command contracts and the separate optional private pilot recorder |
 | [Portable local agent bundle](portable-agent-bundle.md) | Private ZIP distribution, optional trial keys, per-agent setup, complete function coverage and visible-summary logging for evaluation |
 | [Live skill evaluation](live-skill-evaluation.md) | Separate two-ticker runner/evaluator packages, live-call budgets, visible tool-choice summaries, submission export and gold/manual-review limits |
-| [Review workflows](review-workflows.md) | Delivered no-inference citation/sentiment functions, CLI/HTTP/UI usage, origins, state, capability fallbacks and limitations |
+| [Review workflows](review-workflows.md) | Optional no-inference citation/sentiment protocols, declared host-reading access, origins/state/fallbacks and unguided acceptance prompts |
 | [Finance scope and data support](design/finance-data-support.md) | Implemented financial groups, observed inputs, deferred analytics, MCP design references and HUL definition findings |
 | [Financial analysis](financial-analysis.md) | Implemented facts/calculations/DCF contracts, workbench usage, local HTTP surface and limitations |
 | [Implementation status](implementation.md) | Delivered capabilities and dated validation |

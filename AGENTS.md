@@ -1,5 +1,14 @@
 # Working on Margin
 
+**26 November 0.8.1 delivered:** plan dfd3113 preceded optional citation_protocol
+response guidance and canonical host_profile.host_read_sources. Search is not reading;
+missing remains unknown and declarations do not prove competence. All old functions,
+35 full/14 review tools and strict quote/hash/TTL/inventory guards stay. 403 tests and
+source/installed SDK checks pass; fictional software evidence is separate from model
+acceptance. Read review-workflows for goal-only prompts/remaining tests. Active mtest
+stays 0.8.0; no install/restart/reset/provider/model call. New immutable 0.8.1 wheel
+is separate from all prior wheels. Do not call this automatic original verification.
+
 **26 November optional citation protocol authorized:** follow the evaluated 0.8.1
 plan at the top of docs/design/mcp-aggregation.md before runtime edits. Keep citation
 review optional, preserve all functions and exact schemas, add an optional declared

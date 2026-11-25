@@ -80,6 +80,7 @@ async def main(options):
                 )
                 workflows = await call("margin_review_workflows")
                 assert workflows["workflows"][0]["mcp_steps"]
+                assert workflows["workflows"][0]["citation_protocol"]["optional"] is True
                 source = {
                     "issuer": "NSE:EXAMPLE",
                     "title": "Fictional review fixture",
@@ -99,8 +100,13 @@ async def main(options):
                         "claims": [
                             {"claim_id": "C1", "text": "Demand improved.", "source_ids": [sid]}
                         ],
+                        "host_profile": {"host_read_sources": False, "structured_assessment": True},
                     },
                 )
+                assert (
+                    packet["citation_protocol"]["recommended_action"] == "review_supplied_passages"
+                )
+                assert packet["citation_protocol"]["host_read_sources"] is False
                 reviewer = {"host": "software-fixture", "model": "none"}
                 quote = {"source_id": sid, "passage_id": "P1", "quote": "Demand improved."}
                 action = packet["next_steps"][0]

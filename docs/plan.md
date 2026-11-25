@@ -1,5 +1,18 @@
 # Margin build and evaluation plan
 
+**26 November 0.8.1 delivered:** optional citation protocol with declared host reading
+access, clear no-reader/no-text/inventory fallbacks and original-reading handoff steps.
+No change to finance/retrieval math or tool counts; 403 offline tests and SDK checks
+pass. Plan dfd3113 preceded code. [Unguided acceptance prompts](review-workflows.md#next-tests-and-unguided-acceptance)
+now own the next operator tests. First test supplied text, a missing-text locator and
+a contradiction in fresh model chats without function instructions. Then, under a
+separate explicit live allowance/full profile, test finance and event selection.
+Reader-host original review is a separate capability condition, not a universal
+requirement. Finally broaden real coverage, freeze version/profile/tasks/settings and
+run the independent model benchmark; complete clean-install/public-release checks.
+Keep citations optional. No active upgrade/restart, allowance reset, new provider/model
+API call or purchase was performed by this build.
+
 **26 November host gate completed:** the 0.8.0 review profile now completes one
 guided real-text citation/sentiment round trip in LM Studio, nine admitted calls,
 zero provider attempts. Preserve the private run and earlier failures; do not patch

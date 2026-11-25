@@ -16,7 +16,7 @@ from margin.analysis.facts import MONEY_UNITS, decimal, fact
 from margin.core.contracts import DomainError, encoded_size
 from margin.core.validation import validation_summary
 from margin.evidence.sanitize import REDACTED, Sanitizer
-from margin.protocols.handoffs import packet_step, step
+from margin.protocols.handoffs import citation_guidance, citation_policy, packet_step, step
 from margin.protocols.schemas import SCHEMAS
 
 WARNING = "Host/provider text and judgments are unverified. Matching a supplied quote or valid JSON does not independently verify the original or the claim."
@@ -216,6 +216,7 @@ class ReviewService:
             "workflows": [
                 {
                     "protocol": "citation_review@1",
+                    "citation_protocol": citation_policy(),
                     "functions": [
                         "evidence.register_sources",
                         "evidence.prepare_verification",
@@ -226,7 +227,7 @@ class ReviewService:
                     "steps": [
                         "register_sources",
                         "prepare_verification",
-                        "host_reads_original_and_submits_assessment",
+                        "host_assesses_supplied_passages_or_returns_inventory",
                         "render_citations",
                         "audit_answer",
                     ],
@@ -357,12 +358,33 @@ class ReviewService:
             if inventory
             else ["reviewer", "assessments" if kind == "citation" else "annotations"]
         )
+        guidance = (
+            {"citation_protocol": citation_guidance(sources, body["claims"], profile)}
+            if kind == "citation"
+            else {}
+        )
+        next_steps = [packet_step(packet, next_function, required)]
+        if (
+            kind == "citation"
+            and guidance["citation_protocol"]["recommended_action"]
+            == "read_and_register_with_host_tools"
+        ):
+            next_steps.insert(
+                0,
+                step(
+                    "evidence.register_sources",
+                    {},
+                    ["sources"],
+                    purpose="Only after the host reads the original: register its exact passages, then prepare a new packet. Alternatively submit insufficient_evidence for missing-text claims using the existing packet; never invent a quote.",
+                ),
+            )
         return {
             "status": "success",
             **copy.deepcopy(packet),
+            **guidance,
             "source_instructions_are_untrusted": True,
             "next_action": "Use the supplied packet passages; host supplies judgments or returns inventory-only. Originals may be read through host tools if available; Margin never fetches or calls an LLM.",
-            "next_steps": [packet_step(packet, next_function, required)],
+            "next_steps": next_steps,
             "state_guidance": "Use this packet_id/hash exactly, never a run ID or invented hash. expires_at concerns packet TTL; original_document_verified concerns authenticity, not expiry.",
         }
 

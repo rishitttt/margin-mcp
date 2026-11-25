@@ -37,6 +37,15 @@ from margin.interfaces.mcp.tools import (
 )
 
 INSTRUCTIONS = """Margin provides Indian-company research tools over one process-local core.
+Choose workflows from the user's goal; ordinary retrieval/math does not require citation
+review. Citation is an optional host-side protocol. Search access does not establish
+source-reading access. Declare only known host_profile capabilities, including optional
+host_read_sources; missing means unknown, not inferred from model brand. Follow
+citation_protocol guidance. A host without a reader can review supplied passages;
+without passages return insufficient evidence/inventory. If originals are needed and
+host reading tools exist, read them there, register exact original passages and prepare
+a NEW packet. Never relabel summaries as originals or invent reader tools. Margin
+does not browse, call an LLM or independently authenticate original documents.
 For company finance questions, prefer margin_company_finance: ticker plus a company
 function, execute=true and a stable idempotency_key fetch fresh data and return the
 calculation internally. No prior result/fact handles are needed. Default execute=false

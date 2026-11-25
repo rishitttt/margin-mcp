@@ -19,6 +19,13 @@ REVIEW_TOOLS = frozenset(DIRECT_REVIEWS) | {
     "margin_review_sources",
 }
 REVIEW_INSTRUCTIONS = """Margin local review profile exposes only its advertised tools.
+Citation review is optional, not a prerequisite for ordinary retrieval/math. The
+citation_protocol response distinguishes supplied-text review, host source-reading
+handoff and insufficient-evidence/inventory fallback. host_profile.host_read_sources
+is a caller declaration; search alone does not imply reading, and missing is unknown.
+If originals are needed, use actually available host tools, register exact passages
+actually read and prepare a new packet. Never relabel summaries as originals or infer
+authentication from capability. Margin does no source reading or LLM inference.
 Use margin_status to inspect software version, interface profile and shared-owner state.
 Use typed review tools with their EXACT host-advertised inputSchema at top level;
 no function/arguments wrapper. tools/list is protocol discovery, not a callable tool.

@@ -21,7 +21,22 @@ def array(items, maximum=12, minimum=0):
 
 
 ID = text(100)
-PROFILE = obj({"host_search": {"type": "boolean"}, "structured_assessment": {"type": "boolean"}})
+PROFILE = obj(
+    {
+        "host_search": {
+            "type": "boolean",
+            "description": "Declared host search access; does not imply document-reading access.",
+        },
+        "host_read_sources": {
+            "type": "boolean",
+            "description": "Declared host ability to open/read sources with its own tools. Omitted means unknown; Margin does not test or invoke those tools.",
+        },
+        "structured_assessment": {
+            "type": "boolean",
+            "description": "False selects inventory-only. True is a declaration, not verified semantic competence.",
+        },
+    }
+)
 PASSAGE = obj(
     {"passage_id": ID, "text": text(6000), "locator": text(120)}, ["passage_id", "text", "locator"]
 )

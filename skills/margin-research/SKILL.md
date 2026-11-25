@@ -5,6 +5,18 @@ description: Retrieve Indian listed-company financial and event data, run determ
 
 # Margin research
 
+Choose functionality from the user's goal. Citation review is optional; ordinary
+retrieval/math does not require a citation packet. For 0.8.1+, follow citation_protocol
+guidance from workflow discovery/preparation. Declare only known host_profile fields:
+host_search is not document reading; host_read_sources is actual host reader access,
+and omitted means unknown. No-reader hosts can review supplied passages. Without
+passages return insufficient_evidence or an unreviewed inventory; structured_assessment
+false permits inventory only. If originals are needed and a host reader is available,
+read the actual source through that tool, register exact original passages and prepare
+a new packet. Never relabel provider summaries or snippets as original documents.
+Host capability declarations, quote matches and semantic verdicts do not authenticate
+originals. Margin provides no browser, hidden LLM or stronger-model fallback.
+
 ## Choose the available interface
 
 Follow an interface explicitly requested by the user/task. Otherwise, if the host exposes Margin MCP tools, use those tools directly; do not start a second HTTP backend or invoke the CLI bridge. Discover their actual host-qualified names rather than inventing a namespace. If no Margin MCP tools are available, use the existing CLI bridge below. Never change allowances or host configuration to bypass missing setup.

@@ -46,6 +46,183 @@ async def call(adapter, tool, values=None, error=False):
     return result.structured_content.get("data", result.structured_content)
 
 
+@pytest.mark.parametrize(
+    "profile,has_text,action,reader",
+    [
+        ({}, True, "review_supplied_passages", None),
+        ({"host_search": True}, False, "return_insufficient_evidence_or_inventory", None),
+        ({"host_read_sources": False}, True, "review_supplied_passages", False),
+        ({"host_read_sources": False}, False, "return_insufficient_evidence_or_inventory", False),
+        ({"host_read_sources": True}, False, "read_and_register_with_host_tools", True),
+        ({"host_read_sources": True}, True, "review_supplied_passages", True),
+        (
+            {"host_read_sources": True, "structured_assessment": False},
+            False,
+            "return_unreviewed_inventory",
+            True,
+        ),
+    ],
+)
+async def test_optional_citation_routes_declared_capabilities_without_fetch_or_hash_change(
+    adapter, profile, has_text, action, reader
+):
+    before = adapter.service.ledger.snapshot()
+    item = source()
+    if not has_text:
+        item["passages"] = []
+    registration = await call(adapter, "margin_register_sources", {"sources": [item]})
+    sid = registration["sources"][0]["source_id"]
+    packet = await call(
+        adapter,
+        "margin_prepare_verification",
+        {
+            "claims": [{"claim_id": "C1", "text": "Demand improved.", "source_ids": [sid]}],
+            "host_profile": profile,
+        },
+    )
+    guidance = packet["citation_protocol"]
+    assert guidance["optional"] is True
+    assert guidance["host_read_sources"] is reader
+    assert guidance["recommended_action"] == action
+    assert guidance["claims_without_passages"] == ([] if has_text else ["C1"])
+    assert guidance["review_scope"] == "supplied_passages_only"
+    assert guidance["original_document_verified"] is False
+    if action == "read_and_register_with_host_tools":
+        first, fallback = packet["next_steps"]
+        assert first["mcp_execution"]["tool"] == "margin_register_sources"
+        assert first["required_host_fields"] == ["sources"]
+        assert not first["is_complete_input"]
+        assert fallback["mcp_execution"]["tool"] == "margin_submit_assessment"
+        assert fallback["bound_arguments"] == ref(packet)
+    stored = copy.deepcopy(adapter.service.reviews.packets[packet["packet_id"]][1])
+    assert "citation_protocol" not in stored
+    stored.pop("packet_hash")
+    assert digest(stored) == packet["packet_hash"]
+    assert adapter.service.ledger.snapshot() == before
+
+
+async def test_no_reader_can_review_supplied_text_but_not_invent_support_for_locator(adapter):
+    item = source()
+    item["passages"] = []
+    registration = await call(adapter, "margin_register_sources", {"sources": [item]})
+    sid = registration["sources"][0]["source_id"]
+    packet = await call(
+        adapter,
+        "margin_prepare_verification",
+        {
+            "claims": [{"claim_id": "C1", "text": "Demand improved.", "source_ids": [sid]}],
+            "host_profile": {"host_read_sources": False, "structured_assessment": True},
+        },
+    )
+    values = ref(packet) | {
+        "reviewer": {"host": "fixture", "model": "unspecified"},
+        "assessments": [
+            {
+                "claim_id": "C1",
+                "verdict": "supported",
+                "quotes": [quote(sid)],
+                "rationale": "A locator alone does not supply this quote.",
+            }
+        ],
+    }
+    rejected = await call(adapter, "margin_submit_assessment", values, error=True)
+    assert rejected["error"]["code"] == "quote_mismatch"
+    values["assessments"][0].update(verdict="insufficient_evidence", quotes=[])
+    result = await call(adapter, "margin_submit_assessment", values)
+    assert result["assessment"]["assessments"][0]["verdict"] == "insufficient_evidence"
+    assert result["independently_verified"] is False
+
+
+async def test_host_original_handoff_requires_new_source_packet_and_never_authenticates(adapter):
+    before = adapter.service.ledger.snapshot()
+    locator = source() | {"passages": [], "kind": "source_locator"}
+    sid = (await call(adapter, "margin_register_sources", {"sources": [locator]}))["sources"][0][
+        "source_id"
+    ]
+
+    async def prepare(sid):
+        return await call(
+            adapter,
+            "margin_prepare_verification",
+            {
+                "claims": [{"claim_id": "C1", "text": "Demand improved.", "source_ids": [sid]}],
+                "host_profile": {"host_read_sources": True},
+            },
+        )
+
+    initial = await prepare(sid)
+    original = source() | {"kind": "original_document", "url": "https://example.invalid/original"}
+    new_source = (await call(adapter, "margin_register_sources", {"sources": [original]}))[
+        "sources"
+    ][0]
+    updated = await prepare(new_source["source_id"])
+    assert updated["packet_id"] != initial["packet_id"]
+    assert new_source["source_id"] != sid
+    assert initial["citation_protocol"]["recommended_action"] == "read_and_register_with_host_tools"
+    assert updated["citation_protocol"]["recommended_action"] == "review_supplied_passages"
+    assert new_source["original_document_verified"] is False
+    retained = adapter.service.reviews.packets[initial["packet_id"]][1]
+    assert retained["sources"][0]["passages"] == []
+    assert adapter.service.ledger.snapshot() == before
+
+
+async def test_workflow_discovery_marks_citation_optional_and_exposes_host_reading_steps(adapter):
+    result = await call(adapter, "margin_review_workflows")
+    policy = result["workflows"][0]["citation_protocol"]
+    assert policy["optional"] is True
+    assert policy["review_scope"] == "supplied_passages_only"
+    assert len(policy["original_source_steps"]) == 4
+    assert "host_assesses_supplied_passages_or_returns_inventory" in result["workflows"][0]["steps"]
+    assert "host_reads_original_and_submits_assessment" not in result["workflows"][0]["steps"]
+
+
+async def test_partial_text_inventory_preserves_other_claims_and_host_contradiction(adapter):
+    registration = await call(
+        adapter,
+        "margin_register_sources",
+        {"sources": [source(), source() | {"passages": [], "url": "https://example.invalid/link"}]},
+    )
+    text_id, link_id = [s["source_id"] for s in registration["sources"]]
+    packet = await call(
+        adapter,
+        "margin_prepare_verification",
+        {
+            "claims": [
+                {"claim_id": "C1", "text": "Demand declined.", "source_ids": [text_id]},
+                {"claim_id": "C2", "text": "Sales doubled.", "source_ids": [link_id]},
+            ],
+            "host_profile": {"host_search": True, "host_read_sources": False},
+        },
+    )
+    assert packet["citation_protocol"]["claims_without_passages"] == ["C2"]
+    result = await call(
+        adapter,
+        "margin_submit_assessment",
+        ref(packet)
+        | {
+            "reviewer": {"host": "fixture", "model": "fixture"},
+            "assessments": [
+                {
+                    "claim_id": "C1",
+                    "verdict": "contradicted",
+                    "quotes": [quote(text_id)],
+                    "rationale": "Supplied text reports the opposite direction.",
+                },
+                {
+                    "claim_id": "C2",
+                    "verdict": "insufficient_evidence",
+                    "quotes": [],
+                    "rationale": "No readable source passage is available.",
+                },
+            ],
+        },
+    )
+    assert result["assessment_origin"] == "host_reported"
+    audit = await call(adapter, "margin_audit_answer", ref(packet) | {"claim_ids": ["C1", "C2"]})
+    assert audit["assessment_counts"] == {"contradicted": 1, "insufficient_evidence": 1}
+    assert audit["original_document_verified"] is False
+
+
 def ref(packet):
     return {k: packet[k] for k in ("packet_id", "packet_hash")}
 
@@ -80,7 +257,11 @@ async def test_typed_citation_roundtrip_uses_real_next_steps_and_keeps_snapshot_
                     "source_ids": [sid],
                 }
             ],
-            "host_profile": {"host_search": False, "structured_assessment": True},
+            "host_profile": {
+                "host_search": False,
+                "host_read_sources": False,
+                "structured_assessment": True,
+            },
         },
     )
     stored = copy.deepcopy(adapter.service.reviews.packets[packet["packet_id"]][1])
