@@ -1,5 +1,15 @@
 # Working on Margin
 
+**26 November review repair authorized:** follow the 0.8.0 plan in
+docs/design/mcp-aggregation.md before runtime edits. Generate ten typed review tools
+from SCHEMAS, preserve generic full mode, separate safe review diagnostics and return
+next-step bindings using actual packet refs without invented judgments. Full surface
+35 tools; optional frontend review view 14 local tools, same shared owner/state.
+Profiles are not authorization boundaries; filter calls/catalog without backend
+restart or hidden fetching. Preserve immutable packet hashes/TTL/quotes/capability
+guards and clear source-verification versus expiry semantics. No new authenticated
+calls, active 0.7.0 install/restart, quota reset or replacement of old wheels.
+
 **26 November review trial:** the function evidence.prepare_verification exists;
 one margin_review call failed because claims was missing and passage/run/packet fields
 were invented/misplaced. No review-schema lookup is recorded. Sanitizer left the exact
