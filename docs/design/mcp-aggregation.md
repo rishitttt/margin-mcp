@@ -1,5 +1,67 @@
 # Margin MCP adapter architecture and implementation plan
 
+## 0.7.0 typed retrieval preview plan and evaluation: 25 November 2026
+
+The user authorized evaluation/planning before implementation. The 0.6.2 model fetched
+the correct announcement schema but omitted arguments.query three times. Core rejection
+was correct; generic arguments at the MCP boundary and unspecific retrieval errors
+made recovery harder. The first status prompt also requested a package version that
+margin_status did not expose. Preserve original private evidence; no schema drift or
+provider failure was established.
+
+### Alternatives evaluated
+
+| Approach | Benefit | Cost/decision |
+| --- | --- | --- |
+| Keep generic routing with instructions only | Smallest tool surface | Does not address the observed wrapper translation; retain as compatibility path |
+| Embed every operation schema in generic preview via a large union | All nested contracts inline | Repeats many schemas and adds complex branching for small hosts; defer |
+| Seven typed Drishti previews | Every admitted operation directly typed | Three extra discovery helpers were not involved in this failure; defer those |
+| Four typed event previews generated from reviewed schemas | Removes the failed wrapper step for current news/filing work | Select: 25 total tools, unchanged underlying operation inventory; measure schema bytes |
+
+### Implementation boundary
+
+Add margin_preview_news, margin_preview_announcements, margin_preview_earnings and
+margin_preview_earnings_filing. Discovery tools expose the exact reviewed query object's
+properties at their top level, plus optional why. The adapter constructs arguments.query
+once; detail already has top-level ID or symbol/quarter selectors. Generate schemas by
+projection/deep copy from Registry.specs; do not maintain a second provider schema by
+hand. Preserve reviewed constraints/defaults including extraction=false; runtime selector,
+date, limit, readiness and cost guards remain authoritative. These tools only call the
+existing create_plan service. Execution still requires margin_run/session/idempotency;
+no connection, provider data fetch or auto-refresh occurs during discovery/preview.
+
+Keep generic margin_preview and its catalog mcp_execution route compatible. Add a
+separate direct_preview route naming the typed tool, top-level binding and tools/list
+inputSchema as its exact input authority. Its flat shape differs deliberately from the
+core operation schema. Generic callers must obtain the selected exact schema through
+margin_catalog(name=..., include_schemas=true), not memory, example prose or provider
+documentation. Direct callers use the actual typed tool definition; both are generated
+from the reviewed registry. Upstream native discovery checks compatibility only; changed
+contracts remain quarantined until reviewed, never auto-approved from new documentation.
+Make these distinctions explicit in MCP instructions, tool descriptions, catalog and skill.
+
+Use the existing bounded schema-owned validation_summary for retrieval errors, including
+missing query and allowed fields. Do not echo caller values, arbitrary property names,
+dynamic keys or SDK diagnostics; preserve strict rejection and no automatic coercion.
+Add data.package_version to margin_status, separate from envelope.contract_version.
+
+### Validation and release
+
+Test schema generation against all four reviewed contracts, direct/generic equivalent
+plans, missing/misnested/unknown fields, extraction=true rejection, detail selector
+guards, connection holds and zero-network previews. Exercise actual run/import after a
+typed preview with fictional transports, shared backend/official SDK routes, status
+version distinction and output schemas. Replay the logged flat/nested input offline.
+Check generic legacy behavior, schema mutation isolation and sensitive-field redaction.
+Measure tools/list schema size rather than claiming tokenizer/context compatibility.
+
+No new authenticated provider/model calls, subscriptions, active mtest installation or
+backend restart in this build. Publish this plan before runtime changes, release 0.7.0
+with a new immutable wheel/checksum after tests, and preserve 0.6.1/0.6.2 artifacts.
+Update owning docs/function guide/skill and deliberate installed instructions without
+changing connection settings. A later user-led model acceptance remains necessary;
+software tests do not establish improved model behavior. Final-prose enforcement,+wider native Drishti admission and the separate benchmark remain outside this patch.
+
 **0.6.1 metadata patch:** per-metric formulas replace inherited report formulas;
 comparison details add an explicit mapping while preserving the legacy percentage
 formula field. Math, units, tools and response versions are unchanged. The latest

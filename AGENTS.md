@@ -1,5 +1,15 @@
 # Working on Margin
 
+**25 November typed-preview authorization:** follow the evaluated 0.7.0 plan in
+docs/design/mcp-aggregation.md before implementation. Four generated typed Drishti
+event previews (25 total MCP tools) plus bounded retrieval diagnostics and explicit
+status package_version; generic routing remains compatible. Exact typed input comes
+from tools/list, generic operation input from margin_catalog(include_schemas=true),
+both backed by reviewed Registry contracts. Preserve schema quarantine, query binding,
+preview/run/readiness/budget/idempotency and strict missing-value/field guards. No new
+authenticated calls, live install/restart or budget reset. Active user setup is 0.6.2.
+Publish plan before runtime edits; versioned wheels remain immutable.
+
 **Latest 25 November 0.6.2 host check:** user upgraded/restarted, confirmed by the
 existing backend's read-only status. Active version is now 0.6.2; older 0.6.1-active
 notes below are history. Seven Drishti schemas approved; three preview requests
