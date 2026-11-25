@@ -4,6 +4,7 @@
 
 | Document | Authority |
 | --- | --- |
+| [Self-contained company finance](design/fetch-and-calculate.md) | Fresh-fetch execution contract, subscription findings and build/acceptance plan |
 | [Project README](../README.md) | Purpose, branch state and reading order |
 | [Quick handoff: 9 November](../HANDOFF.md) | Short repo map and documentation-push summary; separates the professor's new notes from our response and existing product backlog |
 | [Contributor instructions](../AGENTS.md) | Shared human/agent rules |
