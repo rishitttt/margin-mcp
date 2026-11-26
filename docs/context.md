@@ -1,5 +1,14 @@
 # Project context and handoff
 
+**Latest 0.9.1 user retry, 27 November:** active owner now 0.9.1; same Qwen3-8B/context
+30,183/preset and goal prompt. Two calls/four events: company catalog, correct annual
+INFY company_growth preview. Expected missing-BharatStock-key hold; zero provider calls,
+no invented values or parse error. Final answer omits requested plan/usage summary and
+adds unsupported session-ID advice. Partial discovery success, not completed planning
+or live-data success. Preserve private lmstudio-091-finance-discovery capture; no patch/
+new wheel needed from this auth hold. Next local summary follow-up, then separately
+budgeted/key-enabled live trial. Earlier B4 authorization remains exhausted.
+
 **Latest source 0.9.1, 27 November:** explicit no-fabrication policy plus company-first
 and growth-vs-TTM guidance. Broader reproduced fixes: quarterly TTM defaults across
 interfaces, pre-fetch rejection of non-flow TTM metrics, exact-anniversary company

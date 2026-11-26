@@ -1,5 +1,11 @@
 # Margin: quick handoff
 
+**Latest user trial 0.9.1:** correct annual revenue-growth workflow selected, no
+fabricated numbers or JSON error; deliberately zero-key preview safely held. Final
+answer still omits requested local plan/usage bound. No new runtime fix or wheel for
+this hold. [Measured outcome](docs/implementation.md); current active version 0.9.1.
+Only live fetching needs key loading/new allowance; catalog planning remains local.
+
 **Current source 0.9.1, 27 November:** no-fabrication guidance is explicit in the MCP.
 Safety audit also repairs TTM defaults/metric eligibility and company CAGR calendar-
 year duration. 544 offline tests and source SDK compatibility checks pass. All APIs/

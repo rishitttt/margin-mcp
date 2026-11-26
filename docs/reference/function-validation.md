@@ -1,5 +1,12 @@
 # Function validation status
 
+**0.9.1 actual model retry, 27 November:** correct annual company_growth selection from
+company catalog; no invented financial values/JSON failure observed. Preview is held
+on deliberately unconfigured BharatStock key, no data request. Final discovery plan
+and call bound are omitted; generic session-ID/parameter advice is unsupported. Partial
+choice/safety pass, incomplete reporting, no live retrieval claim. Active0.9.1 confirmed
+by separate local metadata read. See implementation and private lmstudio-091-finance-discovery.
+
 ## 0.9.1 saved-real company replay matrix
 
 Saved HUL provider responses from 24 November, reprocessed locally; **no fresh API

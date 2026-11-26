@@ -10,9 +10,10 @@ APIs and profile counts remain:
 37 full tools, 16 advanced review, three review-simple. No new profile or provider call.
 [Validation](docs/implementation.md),
 [wheel](releases/0.9.1/margin_research-0.9.1-py3-none-any.whl) and
-[checksum](releases/0.9.1/SHA256SUMS). Active user backend remains 0.9.0 until a deliberate
-upgrade; [instructions](docs/mcp.md#no-fabrication-guidance-091). Post-upgrade model test
-is still required; the failed 0.9.0 discovery trial remains preserved.
+[checksum](releases/0.9.1/SHA256SUMS). User has activated 0.9.1: the first retry selects annual growth correctly and stops
+safely at an expected missing-key hold, but omits the requested planning summary.
+[Measured outcome](docs/implementation.md); further model acceptance remains.
+The failed 0.9.0 trial is preserved separately.
 
 **Historical release: 0.9.0.** Two-step supplied-text review and internally bound
 references remain available. Operator SDK checks and the recovered real-model review

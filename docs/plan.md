@@ -1,5 +1,14 @@
 # Margin build and evaluation plan
 
+## Latest model gate: 0.9.1 user retry
+
+Active owner 0.9.1; correct annual-growth choice and no-fabrication stop observed.
+Remaining failure is local discovery summary/usage reporting after expected auth hold.
+Complete a zero-call catalog-based summary as a separate follow-up condition, then
+run fresh guard/discovery cases. Live model data tests require explicit credentials
+loading and newly confirmed allowance; prior B4 is exhausted. No new runtime patch,
+wheel or reset is justified by this deliberately unconfigured-key response alone.
+
 ## Current 0.9.1 acceptance gate
 
 No-fabrication protocol and reproduced TTM/CAGR/default/metric fixes are implemented.

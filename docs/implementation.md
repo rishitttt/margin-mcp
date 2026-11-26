@@ -1,5 +1,38 @@
 # Implementation and validation status
 
+## User-led 0.9.1 discovery retry: 27 November 2026 IST
+
+User activated 0.9.1; an audit-only local backend metadata read confirms owner version,
+mode/live and recording. It is separate from the model's two calls/four events. Same
+full-profile goal-only prompt, Qwen3-8B/context30,183 and inherited 898-char preset as
+baseline. Actual call 1 now discovers group=company (nine schemas), not all fifteen
+calculator schemas. Call 2 selects finance.company_growth/INFY/NSE/annual/consolidated/
+revenue, with execute omitted (default false). It is a preview, not a data execution.
+
+The preview is held because the deliberately zero-key owner has no configured
+BharatStock key. No provider request, fake-value fallback or host JSON parse error
+occurred. Correct function selection and safe stopping are improved observations in
+this case; this does not prove general obedience or live financial retrieval success.
+
+The final answer still fails part of discovery: it omits the available workflow,
+proposed inputs and one-BharatStock/zero-Drishti maximum for future execution, and
+instead offers generic configuration advice. The provider is definitely BharatStock,
+not an ambiguous Drishti/BharatStock choice. Session IDs are not inputs to this direct
+company tool; an idempotency key is needed only for execute=true, not this held preview.
+No request-parameter correction or new API purchase is established by this message.
+
+Record as partial discovery success: correct route/no fabrication, incomplete final
+planning summary. Catalog alone can supply the requested plan despite held live access.
+Next test can ask the host to complete that summary locally with no retrieval; record
+such a coached follow-up separately from the first attempt. Live execution requires
+explicit key loading and a new remaining allowance; the earlier B4 allocation remains
+exhausted. No audit install/restart, budget reset, runtime patch or new wheel.
+
+Private evidence: reports/private/lmstudio-091-finance-discovery-2026-11-27/{events.jsonl,
+caller-evidence.json,review.json}. User text/tool requests/parse states/final answer/
+prediction metadata only; thinking/debug blocks excluded. Older active-version and
+pending-first-trial checkpoints below are historical.
+
 ## 0.9.1 guidance and function-safety repairs: 27 November 2026 IST
 
 Plan 1d0c925 preceded runtime edits; user additionally requested a broader audit/fixes.

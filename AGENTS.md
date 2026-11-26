@@ -1,5 +1,14 @@
 # Working on Margin
 
+**27 November user activated 0.9.1:** full-profile same Qwen3-8B/30,183/preset/goal.
+Two admitted calls/four events: company catalog and correct annual INFY company_growth
+preview. execute omitted=false; expected missing-BharatStock-key hold, zero provider
+requests, no fake-value fallback or host parse error. Final planning/usage summary is
+missing; session-ID/parameter advice unsupported. Preserve private lmstudio-091-finance-
+discovery evidence, no thinking/debug extraction. Record partial discovery success, not
+completed plan or live data. No patch/upgrade/reset/refetch for this hold. Earlier B4
+budget exhausted; any live model execution needs a fresh remaining allocation.
+
 **0.9.1 completed software checks:** 544 offline tests, Ruff 98 files and source SDK
 checks pass. New policy is advisory, not source authentication. Reproduced/fixed TTM
 catalog/legacy default disagreement, pre-fetch non-flow refusal (EPS/stocks), and
