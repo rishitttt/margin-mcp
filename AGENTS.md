@@ -1,5 +1,13 @@
 # Working on Margin
 
+**Guided 0.9.3 follow-up:** freeze sequences19–22 separately: two successful exact
+company_finance execute=false previews, both next_tool same company_finance/missing
+key/is_complete_input=false/no plan/exclude margin_run. User final still says margin_run
+and no missing fields. Guided invocation passes, prose fidelity fails, zero provider
+requests. Cannot infer two calls in one chat without host transcript. No runtime/new
+wheel/operator backend call/reset. Next evaluate compact finance surface/projection,
+not more identical guided retries or new credits. Original autonomous cohort unchanged.
+
 **Actual 0.9.3 preview trial:** active user upgraded to all37/keyconfigured/B0D0.
 Freeze private lmstudio-093-finance-previews evidence (9 calls/18 events), no operator
 status added. Status passes; HUL fresh preview succeeds after wrong legacy route,

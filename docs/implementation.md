@@ -1,5 +1,22 @@
 # Implementation and validation status
 
+## Guided 0.9.3 margin preview follow-up: 27 November 2026 IST
+
+Two subsequent admitted margin_company_finance calls (sequences 19–22) explicitly use
+execute=false and both return successful previews. Each response names the next tool
+as margin_company_finance, requires idempotency_key, declares is_complete_input=false,
+creates no plan ID and explicitly excludes margin_run. No provider requests occur.
+User's final answer correctly reports preview but incorrectly names margin_run and
+says no fields are missing. Guided invocation succeeds; final-answer fidelity fails.
+
+Keep these four events separate from the original nine-call autonomous cohort. Without
+host transcripts, do not attribute both calls to one chat or the supplied final to a
+specific call. Private guided-margin evidence retains exact responses; no hidden
+thinking/debug, operator calls, runtime release or budget change. Further identical
+prompt retries or purchased credits do not address this finding. Next evaluate a
+smaller, unambiguous finance tool surface and compact response projection before a
+separate model trial; this improvement is proposed, not implemented in this audit.
+
 ## Actual 0.9.3 zero-request model previews: 27 November 2026 IST
 
 User status confirms 0.9.3/all37/recording/key configured, B0/D0. Freeze the original
