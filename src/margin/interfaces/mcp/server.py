@@ -46,6 +46,9 @@ without passages return insufficient evidence/inventory. If originals are needed
 host reading tools exist, read them there, register exact original passages and prepare
 a NEW packet. Never relabel summaries as originals or invent reader tools. Margin
 does not browse, call an LLM or independently authenticate original documents.
+margin_check_numeric_claim compares financial facts only. Certification/maturity levels
+such as CMMI Level 5 need passage-based claim review; do not coerce them into financial
+units or standalone/consolidated basis just because the statement contains a number.
 For company finance questions, prefer margin_company_finance: ticker plus a company
 function, execute=true and a stable idempotency_key fetch fresh data and return the
 calculation internally. No prior result/fact handles are needed. Default execute=false

@@ -26,6 +26,27 @@ immutable wheel check. Do not replace 0.8.1, install/restart the active backend 
 allowances. A later host retry must still preserve unknown publication/record_date
 and use actual returned references; the fix cannot prevent fabricated final prose.
 
+The user separately reports a host-side margin_check_numeric_claim rejection for
+unit=level on a CMMI maturity claim. This tool compares financial facts, not arbitrary
+ordinal/certification levels. Keep the financial unit/basis schema unchanged. Clarify
+its description and review instructions, test that level remains rejected before
+dispatch, and route such semantic claims through passage review. Do not conflate that
+expected schema guard with registration failures from another attempt.
+
+Robustness extension requested by the user: exercise control characters/whitespace/
+case normalization in URLs, partial assessments, missing passages, wrong kinds/IDs,
+date scope and unsafe payloads. Require exact raw URL minus fragment, preventing a
+URL parser from silently normalizing extra characters. Add response-only
+assessment_coverage to preparation/submission/render/aggregation so read-operation
+success is distinct from complete host assessment. Preserve existing status meanings,
+immutable snapshots and independent-source/market-coverage caveats. No auto-coercion,
+invented dates/units, forced semantic verdict or new live provider test.
+Audit also exposes coverage and status_meaning; unsupported claims may legitimately
+keep its status incomplete after every assessment is submitted. Keep credential-key
+redaction global and expose safe formula metadata through aggregation_policy instead
+of the legacy redacted policy field. Diagnostic paths must be schema-owned and omit
+all caller values/unknown keys.
+
 ## Instruction delivery review: 26 November 2026
 
 After the enabled-but-unused trial, an explicit MCP instruction elicited calls but the

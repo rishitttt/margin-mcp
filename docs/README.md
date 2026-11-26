@@ -1,6 +1,6 @@
 # Documentation index and update responsibilities
 
-`main` contains the core, local stdio MCP, workbench, CLI and skill. See [MCP setup](mcp.md) for 0.8.1 optional citation guidance, typed tools, frontend profiles and host-neutral configuration. The [build plan](plan.md) covers retrieval/finance, citation/content-sentiment handoffs and the separate model benchmark. Selected LM Studio observations are recorded; broader model evaluation remains planned. The professor's research harness is independent of product installation. Historical corpus code stays on `d1`.
+`main` contains the core, local stdio MCP, workbench, CLI and skill. See [MCP setup](mcp.md) for 0.8.2 registration/assessment safeguards, optional citation guidance, typed tools, profiles and host-neutral configuration. The [build plan](plan.md) covers retrieval/finance, citation/content-sentiment handoffs and the separate model benchmark. Selected LM Studio observations are recorded; broader model evaluation remains planned. The professor's research harness is independent of product installation. Historical corpus code stays on `d1`.
 
 | Document | Authority |
 | --- | --- |

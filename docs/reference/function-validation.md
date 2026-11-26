@@ -1,5 +1,11 @@
 # Function validation status
 
+**26 November 0.8.2 robustness:** plain URL-anchor normalization, unsafe URL/control
+rejections, safe sanitization paths and partial assessment coverage tested. 432 offline
+tests pass; exact caller registration replays pass. Numeric unit=level remains correctly
+invalid; no financial schema/math change. Source/packet guards and independent-source
+limits remain. No new real-model pass or active 0.8.1 upgrade. See implementation.
+
 **26 November complete INFY task:** seven calls reach a new backend; guessed source
 handles fail, summary text is omitted from registration, and quote submission fails
 against an empty packet. Audit returns incomplete/not_reviewed=2. No sentiment packet/

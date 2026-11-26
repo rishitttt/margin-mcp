@@ -1,5 +1,63 @@
 # Implementation and validation status
 
+## Anchor registration and review robustness repair: 26 November 2026, 0.8.2
+
+Plan e224a98 preceded code. The 0.8.1 recorded run has two registration rejections at
+09:51/09:52 UTC (15:21/15:22 IST). Raw caller arguments establish #CLAIM1 on the
+passage URL; backend logging had already removed it, so logged-input replay alone
+could not reproduce the failure. The summary text was valid. Separate user-reported
+numeric checking tried unit=level on CMMI maturity; its financial schema correctly
+rejects that at the host, before backend recording. These are different errors; another
+registration success does not invalidate the separately captured failures.
+
+0.8.2 accepts only credential-free, plain ASCII identifier fragments on named source
+URL/passage-locator fields, requiring exact raw URL minus fragment. Response receipts
+list safe input_normalizations paths; passage text and IDs stay exact. No global
+sanitizer relaxation. Other transformations remain rejected and diagnostics now name
+bounded schema-owned changed paths without caller values/unknown keys. Registration
+rejects raw URL whitespace/control characters atomically; plain page labels and
+multiline passage text retain their existing contracts. Numeric-tool descriptions
+and profile instructions distinguish financial facts from certification levels;
+financial unit/basis schemas are unchanged.
+
+Preparation/submission/render/audit/aggregation return response-only assessment_coverage:
+not_reviewed, partially_reviewed or host_assessed, with counts and missing IDs. A
+successful read/render is not an accepted assessment. Audit status still stays incomplete
+when claims are not all supported, including correctly assessed insufficient evidence;
+new status_meaning explains this separately from packet-wide assessment coverage.
+Sentiment exposes its formula under aggregation_policy; the older policy key is
+redacted by the shared credential-key policy. Keep that global redaction and legacy
+field rather than weakening credential handling to recover application metadata.
+No hashes/TTL, immutable submissions, financial math, provider contracts or tool counts
+change. All originals remain independently unverified; labels remain host judgments.
+
+Validation: **432 offline tests pass**, Ruff lint/format pass. New tests cover exact
+plain-anchor normalization and quote round trips, unsafe/encoded/signed fragments,
+simultaneous text changes, URL controls/extra normalization, atomic batches, safe
+diagnostics, partial citation/sentiment coverage and invalid maturity-level units.
+Existing missing-text/date/kind/hash/expiry/replay/finance guards remain covered.
+Both exact raw registration calls pass isolated replay. An operator-authored real-text
+handoff restores unknown publication/record_date, assesses both claims and aggregates
+an explicitly unclear label; it is software replay, not model success or semantic gold.
+Caller metadata identifies qwen/qwen3-8b, configured context 30,183; this is not evidence
+of actual context overflow. The chat-level system-prompt field is empty; no claim is
+made about hidden/default host prompt assembly. Captures exclude model thinking.
+
+Official SDK source/installed review checks pass: 14 tools, 16 result-bearing calls,
+30 backend events, with frontend/outer-schema rejections separately captured. Full
+installed SDK check passes: 35 tools, 53 calls, 106 events. Fixtures are explicitly
+fictional and use no real provider/model calls. The 0.8.2 wheel has 61 entries and
+51 source-matched Python modules; README metadata, known-key/private-entry scans and
+all five prior immutable checksums pass. Isolated installation reuses pinned existing
+dependencies, not a clean OS/dependency-resolution claim.
+
+Private evidence: reports/private/anchor-registration-2026-11-26/. Active user backend
+remains 0.8.1; no install/restart/reset, account query, provider/model API call or new
+host acceptance. All earlier captures/wheels remain separate and immutable. Test the
+new package deliberately; remaining model risks include guessed references, unsupported
+date/basis declarations, ignored errors and invented final results. Backend checks do
+not automatically intercept the host's final prose.
+
 ## User-led complete INFY task, incomplete protocol: 26 November 2026 IST
 
 New backend log contains seven calls/fourteen events, all supplied with visible why;

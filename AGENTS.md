@@ -1,5 +1,13 @@
 # Working on Margin
 
+**26 November 0.8.2 checkpoint:** plan e224a98 preceded narrow plain-anchor normalization,
+URL control/extra-transformation guards, schema-owned sanitization paths and explicit
+assessment coverage. 432 offline tests pass. Preserve strict financial units (no level),
+source/packet/quote/TTL guards, original-unverified labels and old artifacts. Successful
+rendering is not review completion; audit incomplete can reflect assessed unsupported
+claims. Raw caller-only extraction excludes thinking. Active backend stays 0.8.1;
+no install/restart/API/reset; new real-host success remains unverified.
+
 **26 November plain-anchor repair:** follow the new 0.8.2 plan in mcp-aggregation
 before edits. Raw LM Studio arguments establish #CLAIM1 on passage locator; sanitized
 backend logs concealed that difference. Permit only credential-free, identifier-shaped

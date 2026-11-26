@@ -87,7 +87,7 @@ provider preview and do not reset or spend upstream allowances. Every call can u
 | `evidence.submit_assessment` | Attributed host verdicts, reference and exact supplied-quote checks |
 | `evidence.render_citations` | Structured claim/source citations with reviewer, locator and verification scope |
 | `evidence.audit_answer` | Final claim-ID manifest coverage and unsupported verification-label flags; not prose parsing |
-| `evidence.check_numeric_claim` | Typed claim/evidence facts, explicit scales/context and absolute tolerance; not source authentication |
+| `evidence.check_numeric_claim` | Financial facts with explicit scales/context/tolerance; certification or maturity levels use passage review, without inventing financial units/basis; not source authentication |
 | `sentiment.prepare_analysis` | Issuer/aspect/date scope, duplicate/out-of-window exclusions and host label guide |
 | `sentiment.submit_annotations` | Host relevance/tone annotations with supplied-passage references |
 | `sentiment.aggregate` | Versioned distinct-source counts/balance; mixed/unclear/missing are separate |

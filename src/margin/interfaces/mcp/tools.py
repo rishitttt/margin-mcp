@@ -12,7 +12,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.8.1"
+VERSION = "0.8.2"
 CONTRACT = "margin.mcp.v1"
 DIRECT_FUNCTIONS = {
     "margin_calculate_margins": "finance.calculate_margins",
@@ -47,7 +47,7 @@ REVIEW_HELP = {
     "evidence.submit_assessment": "Submit host reviewer and per-claim assessments/quotes using the actual returned packet_id/hash; run IDs and invented hashes are invalid.",
     "evidence.render_citations": "Render an existing citation packet with its actual packet_id/hash. Unreviewed claims remain not_reviewed.",
     "evidence.audit_answer": "Audit actual final claim_ids against an existing packet_id/hash; this is not preparation, a raw claim/URL verifier or arbitrary prose audit.",
-    "evidence.check_numeric_claim": "Compare two supplied typed financial facts and explicit context/units; does not authenticate original sources.",
+    "evidence.check_numeric_claim": "Compare two supplied FINANCIAL facts with compatible financial units/context. Not for maturity/certification levels, ratings or arbitrary numbers in prose (for example CMMI Level 5); use passage-based claim review for those. Never invent a financial unit or reporting basis to fit. Does not authenticate original sources.",
     "sentiment.prepare_analysis": "Prepare from source_ids, issuer, aspect, flat from/to and date_basis. No text/window fields or packet refs. Returns actual packet refs; publication timing must be established separately.",
     "sentiment.submit_annotations": "Submit host reviewer and source-level annotations/quotes with actual packet_id/hash. This is sentiment annotation, not citation assessment.",
     "sentiment.aggregate": "Aggregate an existing sentiment packet using its actual packet_id/hash. Missing labels are not neutral; balance excludes mixed/unclear/missing/irrelevant. Not comprehensive investor sentiment.",

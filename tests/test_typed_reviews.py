@@ -131,6 +131,10 @@ async def test_no_reader_can_review_supplied_text_but_not_invent_support_for_loc
     result = await call(adapter, "margin_submit_assessment", values)
     assert result["assessment"]["assessments"][0]["verdict"] == "insufficient_evidence"
     assert result["independently_verified"] is False
+    audit = await call(adapter, "margin_audit_answer", ref(packet) | {"claim_ids": ["C1"]})
+    assert audit["status"] == "incomplete"
+    assert audit["assessment_coverage"]["status"] == "host_assessed"
+    assert audit["assessment_counts"] == {"insufficient_evidence": 1}
 
 
 async def test_host_original_handoff_requires_new_source_packet_and_never_authenticates(adapter):
@@ -231,6 +235,222 @@ def quote(sid, text="Demand improved."):
     return {"source_id": sid, "passage_id": "P1", "quote": text}
 
 
+@pytest.mark.parametrize("field", ["url", "locator"])
+async def test_registration_normalizes_plain_anchors_and_preserves_passage_quotes(adapter, field):
+    before = adapter.service.ledger.snapshot()
+    item = source()
+    item["passages"][0]["locator"] = item["url"]
+    owner = item if field == "url" else item["passages"][0]
+    owner[field] += "#CLAIM1"
+    original = copy.deepcopy(item)
+    result = await call(adapter, "margin_register_sources", {"sources": [item]})
+    assert item == original
+    expected = "/sources/0/url" if field == "url" else "/sources/0/passages/0/locator"
+    assert result["input_normalizations"] == [
+        {"path": expected, "change": "plain_url_fragment_removed"}
+    ]
+    registered = result["sources"][0]
+    assert registered["passages"][0]["text"] == item["passages"][0]["text"]
+    assert registered["passages"][0]["passage_id"] == "P1"
+    sid = registered["source_id"]
+    packet = await call(
+        adapter,
+        "margin_prepare_verification",
+        {"claims": [{"claim_id": "C1", "text": "Demand improved.", "source_ids": [sid]}]},
+    )
+    submitted = await call(
+        adapter,
+        "margin_submit_assessment",
+        ref(packet)
+        | {
+            "reviewer": {"host": "fixture", "model": "fixture"},
+            "assessments": [
+                {
+                    "claim_id": "C1",
+                    "verdict": "supported",
+                    "quotes": [quote(sid)],
+                    "rationale": "Supplied fictional text.",
+                }
+            ],
+        },
+    )
+    assert submitted["quote_check"] == "matched_supplied_text_only"
+    assert submitted["independently_verified"] is False
+    assert adapter.service.ledger.snapshot() == before
+
+
+@pytest.mark.parametrize(
+    "fragment",
+    [
+        "api_key=unconfigured",
+        "token=unconfigured",
+        "secret:unconfigured",
+        "authorization:BearerSomething",
+        "api_key%3Dhidden",
+        "summary%20label",
+        "synthetic-private-key-never-forward",
+    ],
+)
+def test_registration_still_rejects_sensitive_or_nonplain_fragments(fragment):
+    item = source()
+    item["passages"][0]["locator"] = item["url"] + "#" + fragment
+    service = ReviewService()
+    with pytest.raises(DomainError) as caught:
+        service.invoke("evidence.register_sources", {"sources": [item]})
+    assert "/sources/0/passages/0/locator" in caught.value.message
+    assert fragment not in caught.value.message
+    assert not service.sources
+
+
+@pytest.mark.parametrize(
+    "location",
+    [
+        "text",
+        "query",
+        "userinfo",
+        "unknown_field",
+        "leading_space",
+        "newline",
+        "host_case",
+        "scheme_case",
+    ],
+)
+def test_plain_anchor_does_not_permit_other_sanitization_changes(location):
+    item = source()
+    item["url"] += "#summary"
+    if location == "text":
+        item["passages"][0]["text"] = "secret=never-forward"
+    elif location == "query":
+        item["url"] = "https://example.invalid/review?api_key=never-forward#summary"
+    elif location == "userinfo":
+        item["url"] = "https://user:password@example.invalid/review#summary"
+    elif location == "leading_space":
+        item["url"] = " " + item["url"]
+    elif location == "newline":
+        item["url"] = "https://example.invalid/re\nview#summary"
+    elif location == "host_case":
+        item["url"] = "https://EXAMPLE.invalid/review#summary"
+    elif location == "scheme_case":
+        item["url"] = "HTTPS://example.invalid/review#summary"
+    else:
+        item["secret"] = "never-forward"
+    service = ReviewService()
+    with pytest.raises(DomainError):
+        service.invoke("evidence.register_sources", {"sources": [item]})
+    assert not service.sources
+
+
+@pytest.mark.parametrize("field", ["url", "locator"])
+@pytest.mark.parametrize("control", ["\n", "\t", "\x00", " "])
+def test_registration_rejects_raw_url_controls_atomically(field, control):
+    item = source()
+    raw = f"https://example.invalid/re{control}view"
+    if field == "url":
+        item["url"] = raw
+    else:
+        item["passages"][0]["locator"] = raw
+    service = ReviewService()
+    with pytest.raises(DomainError):
+        service.invoke("evidence.register_sources", {"sources": [source(), item]})
+    assert not service.sources
+
+
+def test_sanitization_diagnostic_omits_unknown_keys_and_values():
+    item = source()
+    item["unknown-sensitive-field"] = {"api_key": "private-placeholder-never-echo"}
+    service = ReviewService()
+    with pytest.raises(DomainError) as caught:
+        service.invoke("evidence.register_sources", {"sources": [item]})
+    assert "/sources/0" in caught.value.message
+    assert "unknown-sensitive-field" not in caught.value.message
+    assert "private-placeholder-never-echo" not in caught.value.message
+    assert not service.sources
+
+
+@pytest.mark.parametrize("workflow", ["citation", "sentiment"])
+async def test_partial_host_submission_coverage_never_reports_full_assessment(adapter, workflow):
+    registered = await call(
+        adapter,
+        "margin_register_sources",
+        {"sources": [source(), source() | {"url": "https://example.invalid/second"}]},
+    )
+    ids = [s["source_id"] for s in registered["sources"]]
+    reviewer = {"host": "fixture", "model": "fixture"}
+    if workflow == "citation":
+        packet = await call(
+            adapter,
+            "margin_prepare_verification",
+            {
+                "claims": [
+                    {"claim_id": f"C{i}", "text": "Demand improved.", "source_ids": [sid]}
+                    for i, sid in enumerate(ids)
+                ]
+            },
+        )
+        assert packet["assessment_coverage"]["status"] == "not_reviewed"
+        result = await call(
+            adapter,
+            "margin_submit_assessment",
+            ref(packet)
+            | {
+                "reviewer": reviewer,
+                "assessments": [
+                    {
+                        "claim_id": "C0",
+                        "verdict": "supported",
+                        "quotes": [quote(ids[0])],
+                        "rationale": "Fictional supplied passage.",
+                    }
+                ],
+            },
+        )
+        projected = await call(adapter, "margin_render_citations", ref(packet))
+        assert projected["status"] == "success"
+        missing = ["C1"]
+    else:
+        packet = await call(
+            adapter,
+            "margin_prepare_sentiment",
+            {
+                "source_ids": ids,
+                "issuer": "NSE:EXAMPLE",
+                "aspect": "demand",
+                "from": "2026-11-01",
+                "to": "2026-11-25",
+                "date_basis": "published",
+            },
+        )
+        assert packet["assessment_coverage"]["status"] == "not_reviewed"
+        result = await call(
+            adapter,
+            "margin_submit_annotations",
+            ref(packet)
+            | {
+                "reviewer": reviewer,
+                "annotations": [
+                    {
+                        "source_id": ids[0],
+                        "relevant": True,
+                        "label": "positive",
+                        "quotes": [quote(ids[0])],
+                        "rationale": "Fictional supplied passage.",
+                    }
+                ],
+            },
+        )
+        projected = await call(adapter, "margin_aggregate_sentiment", ref(packet))
+        assert projected["status"] == "incomplete"
+        assert projected["counts"]["unannotated"] == 1
+        assert projected["investor_sentiment"] is False
+        assert "(positive+negative+neutral)" in projected["aggregation_policy"]
+        missing = [ids[1]]
+    assert result["assessment_coverage"] == projected["assessment_coverage"]
+    assert projected["assessment_coverage"]["status"] == "partially_reviewed"
+    assert projected["assessment_coverage"]["reviewed_count"] == 1
+    assert projected["assessment_coverage"]["total_count"] == 2
+    assert projected["assessment_coverage"]["unreviewed_ids"] == missing
+
+
 @pytest.mark.parametrize("tool,function", DIRECT_REVIEWS.items())
 def test_review_tool_schema_is_exact_core_copy_without_wrapper_or_mutation(tool, function):
     schema = definitions()[tool].input_schema
@@ -240,6 +460,26 @@ def test_review_tool_schema_is_exact_core_copy_without_wrapper_or_mutation(tool,
     schema["properties"].clear()
     assert SCHEMAS[function] == expected
     assert definitions()[tool].input_schema["properties"]
+
+
+async def test_maturity_level_is_not_a_financial_numeric_fact(adapter):
+    before = adapter.service.ledger.snapshot()
+    item = {
+        "issuer": "NSE:EXAMPLE",
+        "metric": "CMMI AI Maturity Level",
+        "definition": "Maturity certification",
+        "value": "5",
+        "unit": "level",
+        "period_type": "instant",
+        "period_end": "2026-11-25",
+        "basis": "standalone",
+    }
+    result = await call(
+        adapter, "margin_check_numeric_claim", {"claim": item, "evidence": item}, error=True
+    )
+    assert result["error"]["code"] == "invalid_input"
+    assert adapter.service.ledger.snapshot() == before
+    assert "certification" in adapter.tools["margin_check_numeric_claim"].description
 
 
 async def test_typed_citation_roundtrip_uses_real_next_steps_and_keeps_snapshot_immutable(adapter):

@@ -1,14 +1,14 @@
 # Margin
 
-**Current source release: 0.8.1 (26 November).** Citation review stays optional:
-capability-aware protocol guidance distinguishes supplied text, host original-reading
-handoffs and insufficient-evidence/inventory fallbacks. No Margin browser or LLM.
-Full profile stays 35 tools; focused review stays 14. All 403 offline tests and source/
-installed SDK checks pass. [Protocol and unguided tests](docs/review-workflows.md#optional-citation-protocol-and-host-capability),
-[plan/evaluation](docs/design/mcp-aggregation.md#081-optional-citation-protocol-plan-and-evaluation-26-november-2026),
-[validation](docs/implementation.md), [wheel](releases/0.8.1/margin_research-0.8.1-py3-none-any.whl)
-and [checksum](releases/0.8.1/SHA256SUMS). Active mtest stays 0.8.0; no install/restart,
-provider call or quota reset. Unguided model testing remains next. Older notes are history.
+**Current source release: 0.8.2 (26 November).** Registration accepts plain URL anchors
+with explicit normalization receipts; credentials, altered passage text and raw URL
+controls remain rejected. Review outputs expose assessment coverage separately from
+operation success. Numeric verification stays financial-only; certification levels
+use passage review. Full profile stays 35 tools; focused review stays 14. All 432
+offline tests pass. [Plan](docs/design/mcp-aggregation.md#082-plain-anchor-registration-repair-26-november-2026),
+[validation](docs/implementation.md), [wheel](releases/0.8.2/margin_research-0.8.2-py3-none-any.whl)
+and [checksum](releases/0.8.2/SHA256SUMS). Active mtest stays 0.8.1; no install/restart,
+provider call or quota reset. New host acceptance remains separate. Older notes are history.
 
 **Current source release: 0.7.0.** Four typed Drishti previews remove the query-wrapper
 translation from common event calls; exact schemas are generated from reviewed core

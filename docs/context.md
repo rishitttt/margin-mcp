@@ -1,5 +1,13 @@
 # Project context and handoff
 
+**Latest source 0.8.2, 26 November:** plan e224a98 preceded plain-anchor normalization,
+raw URL-control rejection, safe field diagnostics and explicit assessment coverage.
+Financial-only numeric checking remains strict; CMMI levels use passage review. 432
+offline tests pass. Exact raw requests and a corrected real-text operator replay pass,
+not model gold. Caller metadata: Qwen3-8B, configured 30,183 context; no overflow claim.
+Active mtest stays 0.8.1; no upgrade/restart/API/budget reset. See implementation for
+the two distinct host errors and remaining final-prose/reference/date risks.
+
 **Latest complete INFY test, 26 November:** seven recorded calls, three guard errors.
 The model omitted summary passages from registration, guessed handles/passage IDs,
 and ignored the missing-passage guidance. Audit remains incomplete/not_reviewed=2;

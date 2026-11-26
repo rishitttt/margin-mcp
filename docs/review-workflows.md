@@ -1,13 +1,42 @@
 # Citation and sentiment handoffs
 
 Implemented **24 November 2026**, core version 0.2.0, and exposed through Margin's
-MCP since 0.3.0. Current package 0.8.1 retains all ten functions plus Python/HTTP/CLI
+MCP since 0.3.0. Current package 0.8.2 retains all ten functions plus Python/HTTP/CLI
 and the temporary workbench tester. Historical interface statements below are dated;
 [MCP usage](mcp.md) and [implementation](implementation.md) own current setup/evidence.
 The core performs no LLM inference, web search, document download or PDF extraction.
 The user's host supplies passages/judgments or imports just-retained provider summaries.
 Since **0.6.2**, import supports Drishti news, summary announcements, earnings-list
 and single earnings-detail records. Attachment contents are never fetched by import.
+
+## Registration and result interpretation (0.8.2)
+
+Register supplied passages, not metadata alone, before quoting them. Source registration
+does not prove URL existence, source authenticity or publication timing. A provider
+summary's record date must not be silently relabelled published. Preserve declared
+unknown dates and select record_date explicitly when appropriate.
+
+Plain URL anchor fragments such as #CLAIM1 are removed with input_normalizations
+receipts, while passage IDs/text remain exact. Only named registration URL/locator
+fields accept this narrow change. Credential/signature payloads, encoded/nonplain
+fragments and other text changes remain rejected; raw URL whitespace/control characters
+are invalid. Plain page labels remain supported. No sanitization flag is required.
+Sanitization errors identify safe schema-owned paths; logs still sanitize the input,
+so the original caller view may be needed to explain a transformation.
+
+Use assessment_coverage to distinguish not_reviewed, partially_reviewed and host_assessed.
+This is packet-wide submission coverage, not independent verification, correctness or
+market coverage. Rendering can succeed while every claim is unreviewed. Audit incomplete
+can also be a correct final outcome when all claims were assessed but some were
+insufficient/contradicted; status_meaning explains it. Preserve actual verdict counts.
+Read aggregation_policy for the deterministic sentiment denominator/formula; the
+legacy policy key can be redacted by the common credential sanitizer.
+
+The numeric claim tool accepts financial facts and financial units, not arbitrary
+numbers in prose. CMMI Level 5 is a passage-review claim; do not invent unit=ratio,
+unit=null or standalone/consolidated context to force it into a financial comparison.
+One accepted citation assessment does not create a sentiment packet. Use actual source/
+passage/packet references, preserve failed outcomes and never invent result IDs.
 
 ## Optional citation protocol and host capability
 

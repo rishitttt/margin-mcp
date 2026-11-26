@@ -5,6 +5,32 @@ from itertools import islice
 from jsonschema import Draft202012Validator, FormatChecker
 
 
+def changed_schema_paths(schema, original, clean):
+    """Locate changed values using schema-owned names only, never caller values/keys."""
+    paths = []
+
+    def walk(node, left, right, parts):
+        if left == right or len(paths) >= 4:
+            return
+        before = len(paths)
+        if len(parts) < 8 and isinstance(left, dict) and isinstance(right, dict):
+            for key, child in node.get("properties", {}).items():
+                if key in left and key in right:
+                    walk(child, left[key], right[key], [*parts, key])
+        elif len(parts) < 8 and isinstance(left, list) and isinstance(right, list):
+            for index, (a, b) in enumerate(zip(left[:201], right[:201], strict=False)):
+                walk(node.get("items", {}), a, b, [*parts, str(index)])
+                if len(paths) >= 4:
+                    break
+        if before == len(paths) and len(paths) < 4:
+            path = "/" + "/".join(p.replace("~", "~0").replace("/", "~1") for p in parts)
+            if path not in paths:
+                paths.append(path)
+
+    walk(schema, original, clean, [])
+    return paths
+
+
 def validation_summary(schema, value):
     """Return schema-owned guidance, or None when input matches the schema."""
     names = set()

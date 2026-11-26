@@ -1,5 +1,13 @@
 # Margin build and evaluation plan
 
+**26 November 0.8.2 robustness pass:** narrow URL-anchor registration repair plus
+control-character/extra-normalization rejection, safe field diagnostics, explicit
+assessment coverage and financial-only numeric routing. 432 offline tests pass;
+exact raw requests and operator replay pass without live calls. Next deliberately
+activate the matching wheel with reconciled allowances, then retry the full task
+with known model/settings and preserve original first attempts. Do not infer model
+success from software checks or make a new data call to repair local review inputs.
+
 **26 November full-task outcome:** seven INFY calls still leave the protocol incomplete:
 metadata-only registration, guessed references and rejected quotation; two unreviewed
 claims, no sentiment aggregate. Next use the same complete task in a separately labelled

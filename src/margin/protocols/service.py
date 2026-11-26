@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import re
 import time
 from collections import Counter
 from datetime import UTC, datetime, timedelta
@@ -14,7 +15,7 @@ from uuid import uuid4
 
 from margin.analysis.facts import MONEY_UNITS, decimal, fact
 from margin.core.contracts import DomainError, encoded_size
-from margin.core.validation import validation_summary
+from margin.core.validation import changed_schema_paths, validation_summary
 from margin.evidence.sanitize import REDACTED, Sanitizer
 from margin.protocols.handoffs import citation_guidance, citation_policy, packet_step, step
 from margin.protocols.schemas import SCHEMAS
@@ -155,6 +156,64 @@ class ReviewService:
             raise DomainError("packet_mismatch", "Use the exact packet hash and workflow kind.")
         return packet
 
+    def _plain_anchor_input(self, arguments):
+        canonical = copy.deepcopy(arguments)
+        changes = []
+        if not isinstance(canonical, dict) or not isinstance(canonical.get("sources"), list):
+            return canonical, changes
+        for i, source in enumerate(canonical["sources"][:12]):
+            if not isinstance(source, dict):
+                continue
+            fields = [(source, "url", f"/sources/{i}/url")]
+            if isinstance(source.get("passages"), list):
+                fields.extend(
+                    (p, "locator", f"/sources/{i}/passages/{j}/locator")
+                    for j, p in enumerate(source["passages"][:8])
+                    if isinstance(p, dict)
+                )
+            for owner, key, path in fields:
+                raw = owner.get(key)
+                if not isinstance(raw, str):
+                    continue
+                try:
+                    parts = urlsplit(raw)
+                    if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_.-]{0,99}", parts.fragment):
+                        continue
+                    safe, private = self.sanitizer.url(raw)
+                    without_fragment = raw.partition("#")[0]
+                    if private or safe != without_fragment or raw == safe:
+                        continue
+                except ValueError:
+                    continue
+                owner[key] = safe
+                changes.append({"path": path, "change": "plain_url_fragment_removed"})
+        return canonical, changes
+
+    @staticmethod
+    def _assessment_coverage(packet):
+        citation = packet["kind"] == "citation"
+        id_field = "claim_id" if citation else "source_id"
+        expected = [item[id_field] for item in packet["claims" if citation else "sources"]]
+        reviewed = {
+            item[id_field]
+            for item in (packet["assessment"] or {}).get(
+                "assessments" if citation else "annotations", []
+            )
+        }
+        missing = [key for key in expected if key not in reviewed]
+        count = len(expected) - len(missing)
+        return {
+            "status": "not_reviewed"
+            if not count
+            else "partially_reviewed"
+            if missing
+            else "host_assessed",
+            "reviewed_count": count,
+            "total_count": len(expected),
+            "unreviewed_ids": missing,
+            "scope": "Packet-wide host submission coverage only; not source authenticity, semantic correctness or market coverage.",
+        }
+
     def invoke(self, function, arguments):
         if not isinstance(function, str) or function not in SCHEMAS:
             raise DomainError("unknown_function", "Unknown local review function.")
@@ -167,10 +226,18 @@ class ReviewService:
                 "invalid_input",
                 "Use finite JSON review arguments within the 64 KiB limit.",
             ) from None
+        normalizations = []
+        if clean != arguments and function == "evidence.register_sources":
+            canonical, normalizations = self._plain_anchor_input(arguments)
+            if canonical == clean:
+                arguments = canonical
         if clean != arguments:
+            paths = ", ".join(changed_schema_paths(SCHEMAS[function], arguments, clean))
             raise DomainError(
                 "invalid_input",
-                "Review input would be changed by sanitization. Use sanitized text and locators; nothing was registered or fetched.",
+                "Review input would be changed by sanitization at "
+                + paths
+                + ". Use sanitized text and locators; nothing was registered or fetched. No sanitization flag is required; plain URL anchors are normalized automatically, while credentials/signatures and passage-text changes remain rejected.",
             )
         problem = validation_summary(SCHEMAS[function], arguments)
         if problem:
@@ -200,13 +267,21 @@ class ReviewService:
                 "mode": self.mode,
                 "network_attempts": 0,
                 "llm_inference": False,
-                "warnings": [WARNING],
+                "warnings": [WARNING]
+                + (
+                    [
+                        "Plain URL anchor fragments were removed from locators; passage text is unchanged."
+                    ]
+                    if normalizations
+                    else []
+                ),
                 "receipt": {
                     "arguments": copy.deepcopy(arguments),
                     "http_attempts": 0,
                     "estimated_credits": 0,
                 },
                 **result,
+                **({"input_normalizations": normalizations} if normalizations else {}),
             }
         )
 
@@ -271,6 +346,20 @@ class ReviewService:
         pending, records = {}, []
         for index, supplied in enumerate(sources):
             item = copy.deepcopy(supplied)
+            if re.search(r"[\x00-\x20\x7f]", item["url"]):
+                raise DomainError(
+                    "invalid_source",
+                    "Source URLs cannot contain raw whitespace or control characters.",
+                )
+            for passage in item.get("passages", []):
+                locator = passage["locator"]
+                if locator.lstrip().lower().startswith(("http://", "https://")) and re.search(
+                    r"[\x00-\x20\x7f]", locator
+                ):
+                    raise DomainError(
+                        "invalid_source",
+                        "Passage URL locators cannot contain raw whitespace or control characters; plain page labels remain supported.",
+                    )
             url, protected = self.sanitizer.url(item["url"])
             if url == REDACTED:
                 raise DomainError(
@@ -382,6 +471,7 @@ class ReviewService:
             "status": "success",
             **copy.deepcopy(packet),
             **guidance,
+            "assessment_coverage": self._assessment_coverage(packet),
             "source_instructions_are_untrusted": True,
             "next_action": "Use the supplied packet passages; host supplies judgments or returns inventory-only. Originals may be read through host tools if available; Margin never fetches or calls an LLM.",
             "next_steps": next_steps,
@@ -455,6 +545,7 @@ class ReviewService:
             "independently_verified": False,
             "quote_check": "matched_supplied_text_only",
             "assessment": copy.deepcopy(submission),
+            "assessment_coverage": self._assessment_coverage(packet),
             "next_steps": [
                 packet_step(
                     packet,
@@ -518,6 +609,7 @@ class ReviewService:
         return {
             "status": "success",
             "citations": citations,
+            "assessment_coverage": self._assessment_coverage(packet),
             "packet_id": packet_id,
             "next_steps": [packet_step(packet, "evidence.audit_answer", ["claim_ids"])],
         }
@@ -546,6 +638,8 @@ class ReviewService:
             else "success",
             "claim_count": len(claim_ids),
             "assessment_counts": dict(counts),
+            "assessment_coverage": self._assessment_coverage(packet),
+            "status_meaning": "incomplete means manifest claims are not all fully supported or overclaim flags exist; a completed host review can legitimately find insufficient or contradicted evidence.",
             "flags": flags,
             "omitted_packet_claim_ids": sorted(known - set(claim_ids)),
             "scope": "Submitted claim-ID manifest only; final prose is not automatically parsed or verified.",
@@ -672,7 +766,9 @@ class ReviewService:
             "balance": balance,
             "balance_denominator": denominator,
             "policy": packet["aggregation_policy"],
+            "aggregation_policy": packet["aggregation_policy"],
             "annotation_origin": "host_reported",
+            "assessment_coverage": self._assessment_coverage(packet),
             "date_basis": packet["date_basis"],
             "coverage_complete": False,
             "investor_sentiment": False,

@@ -26,6 +26,9 @@ is a caller declaration; search alone does not imply reading, and missing is unk
 If originals are needed, use actually available host tools, register exact passages
 actually read and prepare a new packet. Never relabel summaries as originals or infer
 authentication from capability. Margin does no source reading or LLM inference.
+margin_check_numeric_claim compares financial facts, not maturity/certification levels
+or ratings. Use passage-based claim review for CMMI Level 5; never invent a financial
+unit or reporting basis to fit a number in prose.
 Use margin_status to inspect software version, interface profile and shared-owner state.
 Use typed review tools with their EXACT host-advertised inputSchema at top level;
 no function/arguments wrapper. tools/list is protocol discovery, not a callable tool.

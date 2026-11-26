@@ -1,5 +1,12 @@
 # Margin: quick handoff
 
+**Latest source 0.8.2, 26 November:** plain URL anchors normalize with receipts; raw
+URL controls and unsafe changes reject. Outputs expose submission coverage separately
+from operation success. Numeric financial checking still rejects maturity unit=level.
+432 tests pass; [plan](docs/design/mcp-aggregation.md#082-plain-anchor-registration-repair-26-november-2026)
+and [validation](docs/implementation.md) separate real caller failures, software replay
+and model outcomes. Active mtest remains 0.8.1; no install/restart/allowance reset.
+
 **Latest complete INFY trial, 26 November:** tool calls now use the actual task, but
 registration omits passages and guessed references fail. Audit: two unreviewed claims;
 no sentiment result exists. Final completed/neutral-from-tool claims are unsupported.

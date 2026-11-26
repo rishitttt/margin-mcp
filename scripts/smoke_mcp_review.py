@@ -89,10 +89,20 @@ async def main(options):
                     "date": "2026-11-01",
                     "date_kind": "published",
                     "passages": [
-                        {"passage_id": "P1", "text": "Demand improved.", "locator": "summary"}
+                        {
+                            "passage_id": "P1",
+                            "text": "Demand improved.",
+                            "locator": "https://example.invalid/review#P1",
+                        }
                     ],
                 }
                 registered = await call("margin_register_sources", {"sources": [source]})
+                assert registered["input_normalizations"] == [
+                    {
+                        "path": "/sources/0/passages/0/locator",
+                        "change": "plain_url_fragment_removed",
+                    }
+                ]
                 sid = registered["sources"][0]["source_id"]
                 packet = await call(
                     "margin_prepare_verification",
@@ -129,6 +139,7 @@ async def main(options):
                 action = submitted["next_steps"][0]
                 rendered = await call(action["mcp_execution"]["tool"], action["bound_arguments"])
                 assert rendered["citations"][0]["original_document_verified"] is False
+                assert rendered["assessment_coverage"]["status"] == "host_assessed"
                 action = rendered["next_steps"][0]
                 assert action["required_host_fields"] == ["claim_ids"]
                 await call(
