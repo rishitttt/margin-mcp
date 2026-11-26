@@ -1,5 +1,15 @@
 # Margin build and evaluation plan
 
+## Current gate after guided readiness
+
+The exact-tool readiness diagnostic succeeded, using the final batch request. B3 of 3/
+D0 is exhausted; do not refill to continue testing implicitly. Backend growth/margin/
+readiness work on the measured calls. Next implement/test preview-to-same-tool bindings,
+readiness routing and precise definition/replay guidance without more provider calls.
+A new autonomous model test needs a deliberately allocated remaining budget and fresh
+case; do not score the guided diagnostic as autonomous completion. Final prose must
+preserve unverified-source status even when field eligibility succeeds.
+
 ## Current live findings after 0.9.2
 
 Two actual company executions pass numeric/report checks; HUL needs wrong-route

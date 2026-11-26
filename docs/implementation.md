@@ -1,5 +1,36 @@
 # Implementation and validation status
 
+## Guided 0.9.2 readiness completion: 27 November 2026 IST
+
+Separate operator-directed prompt supplies exact tool/function/arguments, not an
+independent model-selection pass. One margin_company_finance call executes
+finance.company_data_readiness/INFY/NSE/annual/consolidated with execute=true and
+key infy-readiness-092. Status success; B1D0, no parse error. Seven checked annual
+calculations are supported and valuation status remains needs_explicit_inputs with
+the actual eight required assumption/context items. Empty numeric report.rows is
+intentional; report.readiness/report.valuation_readiness carry the answer.
+
+Three final-prose problems remain: 'no unverified fields' conflicts with provider-only
+source status; empty rows are attributed to the revenue selector instead of readiness
+output design; the final suggestion to repeat execute=true ignores that this request
+already executed and same-key replay returns its cached readiness result, not another
+workflow or refreshed financials. No new data is needed to correct those descriptions.
+Completeness of checked mapped fields is distinct from source authenticity and from
+having all possible valuation inputs. DCF requirements were reproduced correctly.
+
+An audit-only local status read confirms total B3 of 3/D0; this configured model-batch
+allowance is exhausted. No inference about current account balance. Keep the original
+three-task cohort frozen (ten calls/twenty events) and this guided completion separate
+(one call/two events); operator status calls are not model trials. Caller evidence
+captures user/tool/final/prediction metadata only, no thinking/debug. Why was absent
+on this exact-argument forced call, not an independent choice-summary observation.
+
+Private guided-readiness-{events.jsonl,caller.json,review.json} in lmstudio-092-live-
+finance-2026-11-27 own this outcome. No runtime/code/configuration change, new API probe,
+wheel replacement or quota reset during the audit. Backend growth/margin/readiness
+paths work on the measured real calls; autonomous workflow/final-prose fidelity still
+needs the preview/readiness guidance repairs already identified.
+
 ## Actual 0.9.2 live-model batch: 27 November 2026 IST
 
 Active user 0.9.2/full profile, Qwen3-8B/context30,183 and inherited 898-char preset.

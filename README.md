@@ -9,9 +9,9 @@ not authenticate source facts or guarantee model compliance.
 [Live three-case setup](docs/mcp.md#live-finance-acceptance-092),
 [validation](docs/implementation.md),
 [wheel](releases/0.9.2/margin_research-0.9.2-py3-none-any.whl) and
-[checksum](releases/0.9.2/SHA256SUMS). User has activated 0.9.2 with keys: growth and margin executions match report math,
-while readiness stopped at previews. The actual batch used B2 of 3/D0; one configured
-request remains. [Observed workflow/prose issues](docs/implementation.md) remain open.
+[checksum](releases/0.9.2/SHA256SUMS). User activated 0.9.2 with keys: growth/margin executions match report math and a
+separate guided readiness call succeeds. The B3 of 3/D0 batch is exhausted. Autonomous
+readiness and [workflow/prose issues](docs/implementation.md) remain open.
 The build used no real calls; model trials are recorded separately.
 
 **Historical release: 0.9.1.** No-fabrication protocol, TTM safety/default repairs and

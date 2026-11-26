@@ -1,5 +1,11 @@
 # Margin: quick handoff
 
+**Latest guided completion:** readiness now executes successfully with one real request;
+all seven checked annual calculations supported, DCF assumptions still explicit. Batch
+B3 of 3/D0 exhausted. Growth/margin/readiness backend paths are validated for these cases;
+autonomous readiness and final prose remain imperfect. No new wheel/reset in this
+audit; guided evidence is separate from original model first attempts.
+
 **0.9.2 user live results:** growth/margin real executions succeed (math/units match),
 HUL first misroutes via unissued generic plan IDs and adds unsupported prose. Third
 readiness task performs previews only; not complete. Ledger B2 of 3/D0 leaves one batch

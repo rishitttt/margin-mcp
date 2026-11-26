@@ -1,5 +1,13 @@
 # Working on Margin
 
+**Latest guided 0.9.2 readiness:** exact operator-supplied tool/args execute successfully,
+B1D0, seven annual readiness checks supported, DCF explicit inputs needed. Batch now
+B3 of 3/D0 exhausted; no reset/refetch. Keep one-call guided condition separate from
+original ten-call cohort/autonomous readiness failure. Final prose falsely conflates
+no missing fields with verification, empty readiness rows with revenue selection and
+same-key replay with a future full workflow. Preserve private guided-readiness evidence,
+exclude thinking/debug. No runtime patch/new wheel/provider probe in this audit.
+
 **27 November actual 0.9.2 batch:** Qwen3-8B/full/30,183/same 898-char preset. Growth 1
 call passes; HUL 6 calls includes 3 previews/2 unissued margin_run references/1 successful
 fresh execution, numeric output correct but prose unsupported. Readiness 3 previews,

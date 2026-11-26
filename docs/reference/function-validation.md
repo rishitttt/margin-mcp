@@ -1,5 +1,12 @@
 # Function validation status
 
+**0.9.2 guided readiness:** one explicit-tool execution succeeds on real INFY data,
+seven annual checks supported and valuation needs explicit inputs. This confirms backend
+readiness, not autonomous function selection. Numeric rows intentionally empty; provider
+facts remain unverified; same-key repeat replays the same completed check. Batch B3 of 3/
+D0 exhausted. Exact guided caller/tool evidence is separate from original three-task
+trial in private lmstudio-092-live-finance-2026-11-27; final prose still needs correction.
+
 **Actual 0.9.2 model batch:** INFY growth and HUL margin each execute B1D0 and return
 correct canonical rows; HUL has 2 wrong generic-plan errors before recovery and unsupported
 prose. Readiness executes zero data calls (3 individual previews), so its analysis is

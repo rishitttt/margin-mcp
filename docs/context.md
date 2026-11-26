@@ -1,5 +1,13 @@
 # Project context and handoff
 
+**Latest guided readiness:** correct exact-argument call succeeds with B1D0; seven
+annual checks supported, explicit DCF inputs still needed. Batch now B3 of 3/D0, exhausted.
+Keep this separate from autonomous readiness failure; no new unguided-selection pass.
+Final prose still confuses field completeness/authenticity, empty readiness rows and
+same-key replay/new workflow. Private guided-readiness captures exclude thinking/debug.
+No runtime/reinstall/reset or new provider probe; next work is preview/readiness
+handoffs and faithful scope/reporting guidance using saved data/software tests.
+
 **Latest actual live batch 0.9.2:** model growth executes once and matches report.
 HUL recovers after 3 previews/2 unissued-plan errors, executes once; numeric output matches
 but adds unsupported accounting claims. Readiness stops at 3 previews without fetching
