@@ -1,5 +1,37 @@
 # Implementation and validation status
 
+## User-led 0.8.2 preset-assisted trials: 26 November 2026 IST
+
+Thirteen calls/twenty-six events cover setup (one call), full INFY task (three) and
+missing-input task (nine). Version 0.8.2, live, recorded, zero provider attempts.
+Prediction metadata confirms the same 898-character system prompt in both task chats
+(SHA256 a7938e6747449bb64abb9b79fd38d0faf6f1681f6a365661e011bd78ee67c947), including
+missing-input/ref/coverage rules. Empty chat-level systemPrompt inherits the preset;
+it does not mean the prompt was absent. Qwen/qwen3-8b, configured context 30,183.
+
+INFY registration/anchor normalization succeeded with the full passage. The model
+discarded the supplied record date (date=null), then passed the source URL instead of
+returned source_id in both preparations. These failed seconds after registration;
+the final expiry diagnosis is unsupported. It also declared structured_assessment=false,
+which would select inventory-only even with a correct handle. No INFY packet, accepted
+assessment or sentiment result exists. Final C1/C2 and positive labels are direct model
+judgments, not completed Margin records.
+
+The missing-input chat contains no company/source/claim. The model invented ExampleCorp,
+report/URL/2023 date, financial passage and reviewer identity. It initially used a passage
+ID as source_id, then recovered the actual handle. Citation assessment/render/audit on
+its own supplied text succeeded with host_reported/unverified labels. Sentiment was only
+prepared, not annotated or aggregated; its completion claim is unsupported. This fails
+the expected clarification behavior. Quote consistency cannot prove that model-supplied
+material came from the user or an authentic source; no source-reading occurred.
+
+Private inputs/effective preset/backend events are preserved under
+reports/private/lmstudio-082-preset-2026-11-26/, excluding assistant thinking. No runtime
+patch, provider call, backend restart or allowance reset in this audit. The anchor repair
+is confirmed; model reference/date/task fidelity remains a measured limitation. Next
+compare another model on the fixed task and consider reducing handle-heavy preparation;
+do not overwrite this failed preset-assisted condition with coached recovery.
+
 ## Anchor registration and review robustness repair: 26 November 2026, 0.8.2
 
 Plan e224a98 preceded code. The 0.8.1 recorded run has two registration rejections at

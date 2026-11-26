@@ -1,5 +1,16 @@
 # Margin build and evaluation plan
 
+**26 November preset-assisted result:** setup/anchor normalization pass, but Qwen3-8B
+uses URLs/passage IDs as handles and invents a missing task despite the effective preset.
+Preserve the failed condition; compare another model and simplify preparation only under
+a separately documented change. User separately requests a professor demo: add a small
+repo-only official-SDK client over the existing zero-budget backend. It reads saved real
+source text plus explicitly operator-supplied judgments, binds returned references and
+prints honest audit/coverage/sentiment limits. No model inference, new provider call,
+backend restart or new wheel. Test it with fictional software fixtures and actual saved
+text, label its logs separately from model trials, and never present it as model autonomy
+or independent verification. The product MCP and old versioned artifacts stay unchanged.
+
 **26 November 0.8.2 robustness pass:** narrow URL-anchor registration repair plus
 control-character/extra-normalization rejection, safe field diagnostics, explicit
 assessment coverage and financial-only numeric routing. 432 offline tests pass;

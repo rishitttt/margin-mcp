@@ -1,5 +1,14 @@
 # Working on Margin
 
+**26 November latest host/demo scope:** 0.8.2 setup and anchor registration pass.
+Actual prediction settings confirm the 898-char preset was used by Qwen3-8B/30,183;
+empty chat-level prompt was inherited, not absent. INFY used URL as handle/droppeddate;
+missing-input case invented ExampleCorp. Preserve private lmstudio-082-preset evidence.
+User requests a demo command: implement a repo-only SDK client with saved real text and
+explicit operator judgments over the existing zero-budget backend. No Margin inference,
+provider call, restart/reset or wheel replacement. Demo input/output private, no hidden
+reasoning capture; label tool logs so they are not counted as model-trial observations.
+
 **26 November 0.8.2 checkpoint:** plan e224a98 preceded narrow plain-anchor normalization,
 URL control/extra-transformation guards, schema-owned sanitization paths and explicit
 assessment coverage. 432 offline tests pass. Preserve strict financial units (no level),
