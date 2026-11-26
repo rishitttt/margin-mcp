@@ -1,5 +1,34 @@
 # Margin MCP adapter architecture and implementation plan
 
+## 0.9.1 no-fabrication guidance plan: 27 November 2026
+
+The full-profile autonomous discovery trial failed: Qwen selected annual TTM instead
+of growth, then invented revenue/date in malformed calculator JSON. Two backend calls,
+one valid guarded error and one host parse failure; no provider data call. Actual
+reported prompt17,611/generated496 versus configured30,183 does not establish overflow.
+Preserve the first attempt privately, including caller-only failures, not hidden thought.
+
+User explicitly requires the MCP to tell models not to fabricate. Add concise shared
+instructions, status/catalog data_policy and recovery guidance to financial errors:
+only actual tool-returned or explicit user inputs; hypothetical inputs only when the
+user requests an example and labels/context stay hypothetical; no invented facts/dates
+or numeric workaround after a held/invalid call. Discovery-only means no financial
+answer. Put company-first routing and growth-vs-TTM semantics near the top, with exact
+company function meanings generated from existing definitions. Ask for one schema,
+not all calculator schemas. Keep explicit-input math usable for real supplied inputs.
+
+This is an advisory host protocol, not source authentication or a guarantee that models
+comply. Do not block arbitrary numbers, infer provenance from model brand/why, run a
+server LLM, weaken math/period/unit guards or change any function/route/profile counts.
+A focused company profile remains a possible later experiment; do not claim one added.
+
+Test identical policy across initialization profiles/status/catalog, safe error recovery,
+explicit-user hypothetical math, annual-TTM refusal/no network, schema source and route
+compatibility. Run offline regression plus official-SDK source/isolated-wheel checks,
+replay already returned real inputs without API calls, release a new immutable0.9.1
+wheel and document manual upgrade. Leave active0.9.0 installation/config/budgets alone;
+no more live requests are authorized. Model success requires a fresh post-upgrade trial.
+
 ## 0.9.0 review-flow repair plan: 26 November 2026
 
 **Implemented after plan commit 9e43879.** 470 offline tests plus source/installed-wheel

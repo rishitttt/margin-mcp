@@ -1,5 +1,16 @@
 # Working on Margin
 
+**27 November no-fabrication patch authorized:** full-profile Qwen discovery failed
+with wrong annual-TTM selector, invented revenue/date and host JSON parse failure.
+Preserve lmstudio-090-finance-discovery private evidence (2 admitted calls/1 guarded
+error/1 caller parse error; zero data calls). User asks MCP to prohibit fabrication.
+Follow0.9.1 plan in mcp-aggregation before runtime edits: advisory shared policy,
+status/catalog guidance, company-first/growth-vs-TTM descriptions and financial error
+recovery. No new profiles, changed tool counts, source-authentication promise or hidden
+LLM. Keep explicit-user hypothetical math; existing guards/old wheels unchanged.
+No new API calls or active0.9.0 install/restart/budget reset. Publish new wheel/tests;
+actual host retest is pending, not guaranteed by instructions.
+
 **27 November finance discovery:** user authorized four B requests after key setup.
 Isolated 0.9.0 full SDK checks consume exactly B4/D0 and close, active review owner
 unchanged. Nine company previews pass; HUL margin, INFY growth/readiness and HUL quote
