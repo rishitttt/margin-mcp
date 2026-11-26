@@ -1,5 +1,12 @@
 # Margin: quick handoff
 
+**0.9.2 user live results:** growth/margin real executions succeed (math/units match),
+HUL first misroutes via unissued generic plan IDs and adds unsupported prose. Third
+readiness task performs previews only; not complete. Ledger B2 of 3/D0 leaves one batch
+request. [Actual call audit](docs/implementation.md) separates execution, recovery and
+final prose. Private first attempts frozen; no new runtime patch or quota reset during
+audit. Use remaining allowance only for a separate guided readiness check if desired.
+
 **Current source 0.9.2:** shared explicit execution metadata in company discovery/
 previews. 558 offline tests/source SDK checks pass; no actual-provider/model request.
 [Manual key-enabled setup](docs/mcp.md#live-finance-acceptance-092) reserves3 requests

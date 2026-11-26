@@ -9,9 +9,10 @@ not authenticate source facts or guarantee model compliance.
 [Live three-case setup](docs/mcp.md#live-finance-acceptance-092),
 [validation](docs/implementation.md),
 [wheel](releases/0.9.2/margin_research-0.9.2-py3-none-any.whl) and
-[checksum](releases/0.9.2/SHA256SUMS). Active user owner remains 0.9.1 until manual
-upgrade/key setup; reserve the first actual-model batch at three BharatStock requests.
-No real provider/model call is made during this build.
+[checksum](releases/0.9.2/SHA256SUMS). User has activated 0.9.2 with keys: growth and margin executions match report math,
+while readiness stopped at previews. The actual batch used B2 of 3/D0; one configured
+request remains. [Observed workflow/prose issues](docs/implementation.md) remain open.
+The build used no real calls; model trials are recorded separately.
 
 **Historical release: 0.9.1.** No-fabrication protocol, TTM safety/default repairs and
 CAGR calendar-year duration remain. Actual model discovery/recovery was partial;

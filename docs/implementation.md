@@ -1,5 +1,46 @@
 # Implementation and validation status
 
+## Actual 0.9.2 live-model batch: 27 November 2026 IST
+
+Active user 0.9.2/full profile, Qwen3-8B/context30,183 and inherited 898-char preset.
+Three separate fresh-chat prompts (growth, HUL margin, readiness) generate 10 admitted
+calls/20 recorded events, zero host parse errors and two guarded backend errors.
+Audit-only local status is outside this frozen cohort. Ledger: BharatStock 2 of 3,
+Drishti 0 of 0; one configured request remains. Account-wide balance is not remeasured.
+
+| Task | Actual behavior | Assessment |
+| --- | --- | --- |
+| INFY growth | One execute=true call, B1D0, successful report | Math/units/formulas match final answer; full fiscal end dates reduced to years; same-key replay does not mean fresh updates |
+| HUL margin | Three convenience previews, two margin_run calls with unissued plan IDs, then one correct execute=true call; B1D0 | Final amount/margin match exact report; workflow recovery inefficient; added accounting interpretations/normalization provenance unsupported |
+| INFY readiness | Three individual profitability/cash-conversion/balance-sheet previews, no execute=true, B0D0 | Not completed; no fetched-data readiness assessment; final capability/routing claims overstate contracts |
+
+The HUL IDs were not returned by margin_company_finance previews; this route creates
+no plan_id. The plan_expired code reflects unavailable references here, not observed
+TTL expiry. Failed calls/previews consumed no data request. Correct convenience
+execution uses the same financial inputs with execute=true and stable idempotency_key,
+without margin_run. Numeric growth/margin independently checked from actual report
+rows, not final prose alone; original issuer facts remain unverified.
+
+Unsupported HUL prose includes assumptions about non-operational/non-recurring items
+and all-income coverage; keep the exact continuing-profit/revenue-from-operations
+labels. INR_crore is Margin's canonical display, not proof raw provider data is crore.
+Readiness prose incorrectly calls cash-conversion metrics a cash-conversion cycle and
+labels current-assets-less-inventories as a fully defined quick ratio. Explicit-input
+DCF is finance.calculate_dcf via margin_calculate, not a valid company-finance selector;
+historical financials do not supply the forecast/discount/equity-bridge assumptions.
+
+Private evidence: reports/private/lmstudio-092-live-finance-2026-11-27/{model-events.jsonl,
+*-events.jsonl,*-caller.json,review.json,review.md}. Caller extraction includes user
+prompts/tool requests/final answers/prediction metadata, excluding thinking/debug.
+No engine/context overflow is established by these generation counts. No runtime,
+key, allowance or active-owner changes and no operator provider call in this audit.
+
+Next repair candidates: explicit preview→same-tool execution bindings (no invented
+plan refs), unavailable-plan diagnostics, clearer one-fetch readiness selection and
+exact scope/routing descriptions. Preserve failed first attempts and label a guided
+remaining-one-request readiness check separately from autonomous acceptance. Do not
+refetch successful growth/margin or reset the batch allowance to recover this task.
+
 ## 0.9.2 explicit execution contract: 27 November 2026 IST
 
 Plan 13ca0a4 preceded implementation. User reports 57 BharatStock requests remaining,

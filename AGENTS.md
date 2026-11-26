@@ -1,5 +1,14 @@
 # Working on Margin
 
+**27 November actual 0.9.2 batch:** Qwen3-8B/full/30,183/same 898-char preset. Growth 1
+call passes; HUL 6 calls includes 3 previews/2 unissued margin_run references/1 successful
+fresh execution, numeric output correct but prose unsupported. Readiness 3 previews,
+no data fetch/completion, CCC/quick-ratio/DCF route claims wrong. B2 of 3/D0 confirmed,
+one batch request remains. Freeze private lmstudio-092-live-finance evidence before
+operator status; exclude thinking/debug. No new runtime/key/budget/owner edits for this
+audit. Do not refetch successful cases or reset allowance. A guided readiness check
+uses only remaining 1 and is a separate condition, not autonomous-model acceptance.
+
 **0.9.2 software checkpoint:** 558 tests/Ruff 99 files/source SDK pass; no real-provider/
 model calls. Shared core execution contract matches all nine previews/catalog bounds,
 BharatStock-only source, execute/key/allowance/no-session and answer fields. Metadata

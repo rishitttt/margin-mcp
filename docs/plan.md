@@ -1,5 +1,15 @@
 # Margin build and evaluation plan
 
+## Current live findings after 0.9.2
+
+Two actual company executions pass numeric/report checks; HUL needs wrong-route
+recovery and final prose adds unsupported definitions. Third readiness task executes
+nothing. Batch B2 of 3/D0 leaves one request, not permission to reset 3. Next address
+convenience-preview→same-tool execution binding, unissued-plan diagnostics, readiness
+selection and exact metric/DCF scope guidance. Preserve first attempts. A guided
+readiness diagnostic may use the remaining one request in the existing owner, and
+must stay separate from an unguided model pass. No runtime patch in this audit.
+
 ## Current 0.9.2 live-model acceptance gate
 
 User reports 57 BharatStock requests remaining, correcting3. Reserve a 3-request model

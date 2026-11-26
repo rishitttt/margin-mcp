@@ -1,5 +1,12 @@
 # Function validation status
 
+**Actual 0.9.2 model batch:** INFY growth and HUL margin each execute B1D0 and return
+correct canonical rows; HUL has 2 wrong generic-plan errors before recovery and unsupported
+prose. Readiness executes zero data calls (3 individual previews), so its analysis is
+not a fetched-data pass. Local ledger B2 of 3/D0 leaves 1; all first attempts/caller metadata
+are private in lmstudio-092-live-finance-2026-11-27. Source/method honesty and routing
+still need work; no model/autonomy pass inferred from two successful calculations.
+
 **0.9.2 execution metadata:** all nine company previews match a shared provider/
 preview/execution/bound/key/session/output contract. Catalog exposes it without live
 credentials; ordinary and readiness answer fields are explicit. 558 offline tests
