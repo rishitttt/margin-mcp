@@ -1,5 +1,44 @@
 # Margin MCP adapter architecture and implementation plan
 
+## 0.9.4 finance surface and preview clarity plan: 27 November 2026
+
+User authorizes implementing the remaining simplification and related repairs, then
+testing. Actual 0.9.3 autonomous and guided traces show competing legacy/fresh routes
+and final summaries that ignore correct preview bindings. Catalog investigation finds
+company mcp_execution still points to legacy planning, contrary to the preferred fresh
+route. Fix that default, retaining explicit legacy_mcp_execution/planning_schema and
+unchanged callable tools. Unknown-function recovery must use the same preferred route.
+
+Add an optional finance frontend profile with four tools: status, scoped catalog,
+company_finance and explicit-input calculate. No legacy preview/run/source/review/event
+tools compete in this view. Profile catalog exposes only company/calculation functions
+and only executable routes; selected schemas match actual callable inputs. It is a
+frontend projection, not authorization or a budget reset; full/review/simple remain.
+Use short finance-specific initialization instructions and truthful profile status.
+
+Add transport-neutral preview summary fields separating inputs missing for preview
+from inputs missing for execution, preview requests zero from potential execution B1/D0,
+and completed preview from authorization to execute. MCP supplies the next tool and a
+deterministic copyable summary. Finance view removes duplicate contract/legacy metadata
+and unrelated envelope IDs from previews, retaining canonical binding/flags/warnings.
+Canonical report rows and raw audit details on executions remain intact.
+
+Repair legacy source_required recovery: distinguish that selected retained route from
+fresh no-data preview, never demand a fetch to preview. Clarify local budget blocks
+versus unknown account balance; no reset/purchase recommendation. Preserve guards,
+strict schemas, keys/replay/units/math and original logs. Do not auto-execute or invent
+permission from a preview; host task compliance remains an evaluation target.
+
+Test scoped schemas/routes/hidden calls, source-required recovery, summary/binding
+agreement across all nine functions and key/no-key cases, zero-key/zero-allowance
+previews, blocked execution/replay, no-data/partial reports, and shared-owner projection
+without state changes. Run full pytest/Ruff, official SDK (including finance zero-
+budget and fixture execution/shared tests), saved-real HUL replay, immutable 0.9.4 wheel
+scan/installed SDK. Actual provider calls remain zero. Active user 0.9.3 is untouched.
+Provide manual version-matched B0/D0 setup and goal-only tasks with recorded calls and
+final prose; separate changed-profile condition from prior full-profile failures.
+No model acceptance is inferred from software checks. Paid trials need new allocation.
+
 ## 0.9.3 evaluated finance handoff/readiness repair plan: 27 November 2026
 
 **Implemented after plan eb6dbaf.** 575 offline tests/source and installed-wheel SDK

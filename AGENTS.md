@@ -1,5 +1,15 @@
 # Working on Margin
 
+**0.9.4 authorized plan:** implement compact finance frontend (4 tools), canonical
+fresh company catalog routing with explicit legacy alternative, preview summary with
+separate preview/execution missing fields and request bounds, legacy source_required
+and local-budget diagnostics. Plan is in mcp-aggregation before edits. Preserve old
+interfaces/wheels/math/guards/raw details. Test all profiles/scoped callable routes,
+zero-key/budget previews, replay/shared state, source/wheel SDK and saved-real HUL.
+No active 0.9.3 upgrade/reset or real provider call; later model finance-profile B0/D0
+trial is a distinct experimental condition, not proof from SDK checks. Update skill
+source only; no silent global skill or host configuration edits.
+
 **Guided 0.9.3 follow-up:** freeze sequences19–22 separately: two successful exact
 company_finance execute=false previews, both next_tool same company_finance/missing
 key/is_complete_input=false/no plan/exclude margin_run. User final still says margin_run
