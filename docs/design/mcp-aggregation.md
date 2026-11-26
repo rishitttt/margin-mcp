@@ -1,5 +1,31 @@
 # Margin MCP adapter architecture and implementation plan
 
+## 0.8.2 plain-anchor registration repair: 26 November 2026
+
+The latest host run registered actual passages but both attempts failed sanitization.
+Backend logs contain already-cleaned inputs, whose offline replay succeeds. Read-only
+LM Studio caller inspection establishes the omitted difference: passage locator ends
+in #CLAIM1. Existing Sanitizer removes fragments; ReviewService rejects any changed
+input. This is a reproducible Margin registration friction point, separate from later
+model-invented handles/hashes and date-scope changes. Caller metadata identifies
+qwen/qwen3-8b with load.contextLength=30183, not an established context overflow.
+
+Plan before code: version 0.8.2 permits only removal of plain ASCII anchor fragments
+on evidence.register_sources source.url/passages[].locator. Require sanitizer.url's
+private flag false and exact equality to the original URL with only its fragment
+removed; permit an identifier-shaped fragment at most 100 chars, not query/signature/
+encoded credential payloads. All other sanitization changes remain rejected; no
+global sanitizer change, arbitrary text rewrite, field dropping, secret echo or
+fetch. Return safe field-path normalization receipts/warnings, never original values.
+Retain current validation, passage IDs, packet hashes/TTL and strict references.
+
+Test the exact two caller payloads offline and fictional benign anchor cases, signed/
+credential/encoded fragments, simultaneous text changes, existing schema checks,
+quote round trips and unchanged network counters. Run full tests/lint, SDK and a new
+immutable wheel check. Do not replace 0.8.1, install/restart the active backend or reset
+allowances. A later host retry must still preserve unknown publication/record_date
+and use actual returned references; the fix cannot prevent fabricated final prose.
+
 ## Instruction delivery review: 26 November 2026
 
 After the enabled-but-unused trial, an explicit MCP instruction elicited calls but the

@@ -1,5 +1,13 @@
 # Working on Margin
 
+**26 November plain-anchor repair:** follow the new 0.8.2 plan in mcp-aggregation
+before edits. Raw LM Studio arguments establish #CLAIM1 on passage locator; sanitized
+backend logs concealed that difference. Permit only credential-free, identifier-shaped
+fragment removal in named registration URL/locator fields and report safe normalization
+paths. Preserve all other redaction rejections, exact passage text, reference/quote/
+packet guards and old wheels. No global sanitizer relaxation, active upgrade/restart,
+API call or budget reset. Raw caller extraction stays private and excludes thinking.
+
 **26 November complete INFY trial:** seven calls/three guarded errors in a new log.
 The host omitted summary passages, guessed handles/passages, ignored missing-text
 guidance and claimed results despite rejection. Audit remains not_reviewed=2; no
