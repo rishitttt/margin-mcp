@@ -1,5 +1,55 @@
 # Run Margin as a local MCP server
 
+## Live finance acceptance (0.9.2)
+
+Current source 0.9.2 exposes one shared company_execution_contract in company catalog
+and previews. Each fresh_mcp_execution names BharatStock and max B1/D0 explicitly.
+The contract gives preview0, execute=true/stable-key requirements, configured backend
+key/remaining allowance/data prerequisites, no session_id for this convenience route,
+page/row limits, duplicate scope, and report.rows versus readiness answer fields.
+Legacy plan/run/session routing is unchanged. Metadata is advisory, not proof that a
+host follows it or that a provider record is independently authentic.
+
+The user corrected the current reported balance to 57, not 3. Reserve a three-request
+live-model batch; no operator data probe is needed. Do not claim account 57 from local
+status—the process allowance is a separate counter. Save logs/ledger before this
+manual upgrade; old handles will be invalidated:
+
+```sh
+/Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --status
+/Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.9.2/margin_research-0.9.2-py3-none-any.whl
+MARGIN_BHARATSTOCK_REQUESTS=3 MARGIN_DRISHTI_REQUESTS=0 MARGIN_DRISHTI_CREDITS=0 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --mode live --credentials-file /Users/rishit/Desktop/mtest/.env --record-dir /Users/rishit/Desktop/mtest/logs
+```
+
+Keep that terminal running. The private existing file is parsed as data, never sourced
+or copied into prompts. No keys in LM Studio tool arguments. Reconnect the frontend
+with --tool-profile all and use a fresh chat for each task over the same owner. Before
+starting, margin_status must show 0.9.2/all/37, recording=true, BharatStock configured=true,
+BharatStock HTTP limit 3, Drishti limit 0 and initially zero attempts. Authentication
+may be unverified until the first data request; that flag alone is not a failed key.
+Do not make a separate paid quote/key check.
+
+Run the three goal-only prompts in [the batch file](../research/finance-discovery/live-batch-0.9.2.json):
+INFY annual revenue growth, HUL continuing/group-defined margin and INFY annual data
+readiness. No tool/function names are supplied in these tasks. Each permits at most
+one BharatStock data request and zero Drishti. Preview may be followed by execution
+under that existing task authorization. Reuse the same key if pending/lost; new keys
+can spend again. Three successful fresh executions should increase the shared attempt
+counter 0→1→2→3. Holds/validation failures may leave it lower; dispatched failures may
+consume one. No automatic restart/quota reset or alternate-source retry.
+
+Return expanded tool arguments/results, final prose and actual model/context/preset/
+profile/version; brief visible why summaries, no hidden thinking. Check returned
+numbers, units, periods/basis/profit definitions and formulas against canonical report
+rows. For readiness use report.readiness/report.valuation_readiness; rows can be empty.
+Score first selection, schema validity, budget/replay control, answer fidelity and
+missing-data honesty separately. A safe incomplete result is different from a successful
+calculation, and provider truth remains distinct from deterministic math.
+
+This build leaves active 0.9.1, keys and allowance unchanged. It performs no real
+provider/model calls; new metadata still needs actual fresh model acceptance.
+
 ## No-fabrication guidance (0.9.1)
 
 Current source 0.9.1 explicitly tells every profile: use actual tool evidence or explicit

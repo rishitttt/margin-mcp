@@ -125,7 +125,15 @@ Company-preview accepts `money_unit: "auto"` (default), explicit monetary scales
 The announcement schema's added extraction flag was reviewed. Margin explicitly defaults `include_extracted_information` to false and holds true; no generic executor or extraction branch is newly enabled. Query preview/receipts show the default. The runtime catalog owns connection/schema holds.
 
 
-## MCP transport, package 0.9.1
+## MCP transport, package 0.9.2
+
+Fresh company catalog/preview publishes shared company_execution_contract: source
+BharatStock, preview 0, execute=true + stable key/backend key/remaining allowance,
+new execution at most B1/D0 and zero Drishti credits, no session_id for that direct tool.
+It states page bounds, process-local replay and report/readiness answer locations.
+Per-function fresh route explicitly names provider/max requests; legacy routing is
+unchanged. Metadata is advisory and does not guarantee source/host correctness.
+
 
 Every profile advertises no-fabrication guidance. Use returned evidence or explicit
 user inputs; never invent calculator values/dates after an error. Growth compares

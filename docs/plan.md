@@ -1,5 +1,15 @@
 # Margin build and evaluation plan
 
+## Current 0.9.2 live-model acceptance gate
+
+User reports 57 BharatStock requests remaining, correcting3. Reserve a 3-request model
+batch, no operator data probes. Add shared exact fresh-company execution metadata,
+software/SDK/wheel compatibility passed (558 tests); next manually load keys into a 0.9.2 B3/D0
+owner and run INFY growth/HUL margin/INFY readiness in fresh chats. Existing schema/
+math/guard checks are not an actual-model pass. Grade report fidelity/provider usage
+and safe incompleteness, not only tool invocation. Preserve remaining account quota;
+never reset the shared allowance to recover a failed test.
+
 ## Latest model gate: 0.9.1 user retry
 
 Active owner 0.9.1; correct annual-growth choice and no-fabrication stop observed.

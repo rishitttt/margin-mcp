@@ -1,5 +1,14 @@
 # Project context and handoff
 
+**Latest source 0.9.2:** compact company execution metadata added after plan 13ca0a4.
+558 offline tests/source SDK checks pass; no new math/profile/API work. Company
+catalog/previews now say BharatStock only, preview 0/new execution max B1/D0, stable
+key/configuration/allowance/no-session rules and readiness fields. User corrects
+remaining quota to 57; reserve 3 for actual model acceptance, no operator probes.
+Active 0.9.1 untouched until manual key-enabled upgrade/B3/D0 setup. Fresh goal tasks
+INFY growth/HUL margin/INFY readiness; capture real outputs/first attempts, not model
+success inferred from software checks. See mcp.md current setup.
+
 **Coached follow-up:** one extra local all-company-schema lookup, no provider call.
 Correct growth inputs returned, but exact B-only bound/execute flag/stable key/remaining
 allowance omitted. Partial recovery, not a full planning pass. Private coached captures

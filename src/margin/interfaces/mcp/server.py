@@ -20,6 +20,7 @@ from mcp.server.stdio import stdio_server
 from mcp.shared.exceptions import MCPError
 
 from margin.analysis.company import planning_capabilities
+from margin.core.company_finance import execution_contract
 from margin.core.config import Settings
 from margin.core.contracts import DomainError, encoded_size
 from margin.core.service import ResearchService
@@ -46,6 +47,9 @@ finance.company_growth (two periods), NOT company_ttm (four quarterly amounts).
 Prefer each company entry's fresh_mcp_execution for fresh data; its typed tool schema
 is distinct from legacy planning_schema. Do not load all calculation schemas to pick
 a company workflow. When discovery is enough, stop with proposed inputs and call bounds.
+Read company_execution_contract for exact provider, preview/execution controls,
+request bounds and output fields. Do not speculate about Drishti or require session
+IDs for the fresh company tool. A credential hold does not prevent a catalog summary.
 For supplied-text claim/sentiment review prefer margin_prepare_review then
 margin_submit_review: one review_id, internal source/packet/hash/date binding and one
 final report. Ask for missing user material, never invent a task. Legacy primitives
@@ -408,6 +412,11 @@ class MarginMCP:
                         "bind": {"function": identifier},
                         "inputs_at": "top_level",
                         "execution": "execute=true plus a stable idempotency_key performs one fresh fetch and returns a compact calculation. No retained source needed.",
+                        "provider": "bharatstock",
+                        "maximum_provider_requests": execution_contract()["execution"][
+                            "maximum_provider_requests"
+                        ],
+                        "execution_contract_ref": "company_execution_contract",
                     }
             if not include_schemas:
                 rows = [
@@ -423,13 +432,16 @@ class MarginMCP:
             raise DomainError(
                 "unknown_function", "No catalog entry matches the requested name/group."
             )
-        return {
+        output = {
             "groups": result,
             "routing_notice": "Catalog function identifiers are not callable MCP tools. Use each entry's mcp_execution.tool and bind; place inputs at inputs_at. Never replace dots with underscores. why is a top-level MCP argument.",
             "schema_lookup": "Generic calls MUST request one name/group with include_schemas=true and preserve that exact operation/function schema and nesting. Typed direct calls use their own MCP tools/list inputSchema, not the generic nested schema. Both originate from reviewed core contracts; do not guess from examples/provider docs. Unknown context stays unknown.",
             "availability_is_not_source_verification": True,
             "data_policy": copy.deepcopy(DATA_POLICY),
         }
+        if "company" in result:
+            output["company_execution_contract"] = execution_contract()
+        return output
 
     def require_session(self, supplied):
         if supplied != self.session_id:

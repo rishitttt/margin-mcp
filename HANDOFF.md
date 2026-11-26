@@ -1,5 +1,12 @@
 # Margin: quick handoff
 
+**Current source 0.9.2:** shared explicit execution metadata in company discovery/
+previews. 558 offline tests/source SDK checks pass; no actual-provider/model request.
+[Manual key-enabled setup](docs/mcp.md#live-finance-acceptance-092) reserves3 requests
+from user-reported 57; then run [three goal-only model tasks](research/finance-discovery/live-batch-0.9.2.json)
+in separate fresh chats sharing one owner. Active 0.9.1 unchanged until manual upgrade.
+No new financial math or profile counts; metadata is guidance, not automatic compliance.
+
 **Latest user trial 0.9.1:** correct annual revenue-growth workflow selected, no
 fabricated numbers or JSON error; deliberately zero-key preview safely held. Final
 answer still omits requested local plan/usage bound. No new runtime fix or wheel for

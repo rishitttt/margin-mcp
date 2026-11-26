@@ -1,5 +1,12 @@
 # Function validation status
 
+**0.9.2 execution metadata:** all nine company previews match a shared provider/
+preview/execution/bound/key/session/output contract. Catalog exposes it without live
+credentials; ordinary and readiness answer fields are explicit. 558 offline tests
+and source SDK checks pass, no new math or provider/model call. Existing function
+inventory and full/review/simple counts 37/16/3 unchanged. Three live model tasks are
+prepared with B3/D0 cap from the user's reported 57 remaining, not yet executed.
+
 **0.9.1 coached planning recovery:** correct growth selectors, no data request or
 invented amount. One repeated local catalog call; provider/maximum-call/execute/key/
 allowance summary still incomplete. Keep separate from first-attempt model acceptance.
@@ -9,7 +16,7 @@ See implementation for actual calls and context-count limits. No runtime change.
 company catalog; no invented financial values/JSON failure observed. Preview is held
 on deliberately unconfigured BharatStock key, no data request. Final discovery plan
 and call bound are omitted; generic session-ID/parameter advice is unsupported. Partial
-choice/safety pass, incomplete reporting, no live retrieval claim. Active0.9.1 confirmed
+choice/safety pass, incomplete reporting, no live retrieval claim. Active 0.9.1 confirmed
 by separate local metadata read. See implementation and private lmstudio-091-finance-discovery.
 
 ## 0.9.1 saved-real company replay matrix

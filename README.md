@@ -1,19 +1,21 @@
 # Margin
 
-**Current source release: 0.9.1 (27 November).** MCP initialization, tool descriptions,
-status/catalog policy and financial errors explicitly prohibit fabricated company facts,
-numbers, dates and sources. Discovery distinguishes annual growth from quarterly TTM
-and directs company questions to company capabilities. These instructions guide the
-host; they do not authenticate arbitrary caller facts or guarantee model compliance.
-TTM defaults/metric guards and annual CAGR duration are repaired. Existing review,
-APIs and profile counts remain:
-37 full tools, 16 advanced review, three review-simple. No new profile or provider call.
-[Validation](docs/implementation.md),
-[wheel](releases/0.9.1/margin_research-0.9.1-py3-none-any.whl) and
-[checksum](releases/0.9.1/SHA256SUMS). User has activated 0.9.1: the first retry selects annual growth correctly and stops
-safely at an expected missing-key hold, but omits the requested planning summary.
-[Measured outcome](docs/implementation.md); further model acceptance remains.
-The failed 0.9.0 trial is preserved separately.
+**Current source release: 0.9.2 (27 November).** Company discovery and previews now
+share explicit execution metadata: BharatStock-only source, zero-call preview,
+one-request execution bound, stable key/configuration/allowance requirements and
+answer locations. Existing financial math, no-fabrication guidance and APIs remain;
+full/review/review-simple expose 37/16/3 tools. This metadata guides the host and does
+not authenticate source facts or guarantee model compliance.
+[Live three-case setup](docs/mcp.md#live-finance-acceptance-092),
+[validation](docs/implementation.md),
+[wheel](releases/0.9.2/margin_research-0.9.2-py3-none-any.whl) and
+[checksum](releases/0.9.2/SHA256SUMS). Active user owner remains 0.9.1 until manual
+upgrade/key setup; reserve the first actual-model batch at three BharatStock requests.
+No real provider/model call is made during this build.
+
+**Historical release: 0.9.1.** No-fabrication protocol, TTM safety/default repairs and
+CAGR calendar-year duration remain. Actual model discovery/recovery was partial;
+its original and coached outcomes remain separate from SDK checks.
 
 **Historical release: 0.9.0.** Two-step supplied-text review and internally bound
 references remain available. Operator SDK checks and the recovered real-model review

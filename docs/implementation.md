@@ -1,5 +1,40 @@
 # Implementation and validation status
 
+## 0.9.2 explicit execution contract: 27 November 2026 IST
+
+Plan 13ca0a4 preceded implementation. User reports 57 BharatStock requests remaining,
+correcting 3; reserve a 3-request live-model batch rather than spending the balance.
+No real provider/model call during this build. Active user 0.9.1/key/allowances/config
+remain untouched until the manual setup. Earlier B4 diagnostic authorization is not
+reused; the new batch is specifically for actual model tasks.
+
+Fresh-company core now owns shared execution metadata. Catalog exposes it once as
+company_execution_contract, and fresh per-function routes name BharatStock/max B1D0
+and reference it. Previews return the same contract. It states preview 0, explicit
+execute/stable key/backend key/remaining allowance/data requirements, no session_id
+for this direct route, page/row limits, process-local replay and ordinary/readiness
+answer locations. Query bounds in preparation use that same source. Legacy route,
+auth/budget/idempotency, financial math and profile counts remain unchanged. This is
+truthful host guidance, not guaranteed model summary/compliance or source authenticity.
+
+**558 offline tests pass; Ruff lint/format pass (99 Python files); skill validates.**
+Fourteen new cases check all nine previews against catalog/query bounds, no-call
+catalog access with no key, deep-copy isolation and no unrelated-profile leakage.
+Source SDK full/review/simple/shared pass; full SDK checks the advertised contract.
+Installed-wheel full/review/simple/shared SDK checks pass with 55/18/5/16 calls
+and 110/34/10/32 events (advanced review includes expected rejections). The archive
+contains 53 exact source modules/63 entries; build-time README metadata and key scans
+pass, older artifacts stay unchanged, and analysis/math modules byte-match 0.9.1.
+Private REPORT.json owns exact evidence. All fixtures are labelled software evidence, not live financial/model results.
+
+[Manual live setup](mcp.md#live-finance-acceptance-092) loads existing private keys and
+sets B3/D0. [Three goal-only tasks](../research/finance-discovery/live-batch-0.9.2.json)
+cover INFY growth, HUL margin and INFY readiness. Fresh chats share the same owner,
+record actual reports/first attempts/host errors/preset/context and visible choices,
+not hidden thinking. Ready-to-run is not a completed model pass. Grade calculation/
+unit/period/scope fidelity and honest holds separately from discovery rhetoric.
+Private build/SDK evidence: reports/private/execution-contract-2026-11-27.
+
 ## Coached 0.9.1 planning follow-up: 27 November 2026 IST
 
 Separate recovery condition in the same chat, not a new unguided trial. One additional

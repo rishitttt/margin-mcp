@@ -1,5 +1,12 @@
 # Test finance discovery through Margin
 
+**Current live step 0.9.2:** use the [key-enabled, three-request setup](mcp.md#live-finance-acceptance-092)
+and [three goal-only prompts](../research/finance-discovery/live-batch-0.9.2.json).
+User-reported remaining 57 corrects 3; cap this batch at B3/D0, do not spend all 57.
+No operator provider calls during the metadata build. The new shared execution contract
+makes provider/bounds/execute/key/output rules explicit. Active0.9.1 is not silently
+replaced. Fresh chats, same owner, preserve first attempts and actual reports.
+
 **0.9.1 patch after the first model baseline:** full 0.9.0 discovery failed: wrong
 annual-TTM choice, then invented amount/date in malformed manual calculator JSON.
 No provider data call occurred. Qwen3-8B context 30,183; reported last-generation prompt

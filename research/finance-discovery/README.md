@@ -1,5 +1,11 @@
 # Finance discovery acceptance pack
 
+For the current 0.9.2 acceptance batch use live-batch-0.9.2.json: three freshly authorized
+company tasks (growth, margin, readiness), max B3/D0 total. The user's reported 57 balance
+is not an instruction to spend 57; operator probes use none. Follow the current manual
+setup link below, keep the same owner and separate fresh chats. Older task/rubric
+baseline labels remain for comparison; record actual package/profile per run.
+
 Separate optional agent tests for the existing Margin 0.9.0 full profile. This does
 not add a product dependency, runtime profile or model runner.
 

@@ -2,6 +2,10 @@
 
 ## 0.9.2 execution-contract and live acceptance plan: 27 November 2026
 
+**Implemented after plan 13ca0a4:** 558 offline tests and source SDK checks pass. No
+real provider/model call. Manual key-enabled B3/D0 setup and three goal-only tasks
+are ready; active 0.9.1 remains untouched. See implementation for evidence/limits.
+
 The user requests completing/testing the finance flow and reports57 BharatStock
 requests remaining (correcting3). Reserve the first model batch at3 requests; do not
 spend any on operator probes. Active0.9.1 remains unchanged until manual setup.

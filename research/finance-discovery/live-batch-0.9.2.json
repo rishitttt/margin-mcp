@@ -1,0 +1,32 @@
+{
+  "version": "finance-live-batch.0.9.2",
+  "condition": "goal-only live model acceptance, no function names supplied",
+  "user_reported_bharatstock_remaining": 57,
+  "batch_limit": {
+    "bharatstock": 3,
+    "drishti": 0
+  },
+  "fresh_chat_per_case": true,
+  "single_shared_owner_for_batch": true,
+  "expectations": "Record actual first attempts/recoveries, final answers, model/context/preset, profile, package version, keys and provider-attempt deltas. Provider figures are not independently verified issuer truth.",
+  "cases": [
+    {
+      "task_id": "LIVE092-INFY-GROWTH",
+      "maximum_bharatstock_requests": 1,
+      "maximum_drishti_requests": 0,
+      "prompt": "Task ID: LIVE092-INFY-GROWTH. Use the connected Margin MCP. Choose the appropriate available workflow yourself. You are authorized to execute this task using at most ONE BharatStock data request and ZERO Drishti requests. If you preview first, continue to execution within that authorization rather than stopping at the preview. Use a stable request key unique to this task; reuse it when waiting or recovering a lost reply. Never refetch with a new key to repair an error. Return actual report displays, dates, units, definitions, holds and source limitations without inventing values. Give brief visible tool-choice summaries, not private reasoning. For INFY on NSE, compare revenue between the latest two returned annual consolidated periods. Show both dated input values, absolute change and percentage growth, preserving their different formulas."
+    },
+    {
+      "task_id": "LIVE092-HUL-MARGIN",
+      "maximum_bharatstock_requests": 1,
+      "maximum_drishti_requests": 0,
+      "prompt": "Task ID: LIVE092-HUL-MARGIN. Use the connected Margin MCP. Choose the appropriate available workflow yourself. You are authorized to execute this task using at most ONE BharatStock data request and ZERO Drishti requests. If you preview first, continue to execution within that authorization rather than stopping at the preview. Use a stable request key unique to this task; reuse it when waiting or recovering a lost reply. Never refetch with a new key to repair an error. Return actual report displays, dates, units, definitions, holds and source limitations without inventing values. Give brief visible tool-choice summaries, not private reasoning. For HINDUNILVR on NSE, calculate the latest returned annual consolidated profit margin. Show the financial inputs, the exact profit definition used, reporting period and margin."
+    },
+    {
+      "task_id": "LIVE092-INFY-READINESS",
+      "maximum_bharatstock_requests": 1,
+      "maximum_drishti_requests": 0,
+      "prompt": "Task ID: LIVE092-INFY-READINESS. Use the connected Margin MCP. Choose the appropriate available workflow yourself. You are authorized to execute this task using at most ONE BharatStock data request and ZERO Drishti requests. If you preview first, continue to execution within that authorization rather than stopping at the preview. Use a stable request key unique to this task; reuse it when waiting or recovering a lost reply. Never refetch with a new key to repair an error. Return actual report displays, dates, units, definitions, holds and source limitations without inventing values. Give brief visible tool-choice summaries, not private reasoning. For INFY on NSE, fetch bounded annual consolidated financials and determine which profitability, cash-conversion and liquidity calculations the returned data support. Explain unavailable components and additional inputs needed for DCF. Do not invent forecast assumptions or treat empty numeric report rows as missing readiness output."
+    }
+  ]
+}

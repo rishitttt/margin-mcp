@@ -20,6 +20,49 @@ from margin.evidence.results import data_payload
 
 RESPONSE_LIMIT = 32 * 1024
 RESPONSE_VERSION = "margin.company_finance.v2"
+EXECUTION_CONTRACT = {
+    "version": "margin.company_execution.v1",
+    "scope": "Fresh-company convenience workflow, not the legacy retained-source plan/run route.",
+    "provider": "bharatstock",
+    "preview": {
+        "execute": False,
+        "maximum_provider_requests": {"bharatstock": 0, "drishti": 0},
+        "may_be_held_by_configuration": True,
+    },
+    "execution": {
+        "execute": True,
+        "idempotency_key_required": True,
+        "session_id_required": False,
+        "maximum_provider_requests": {"bharatstock": 1, "drishti": 0},
+        "estimated_drishti_credits": 0,
+        "prerequisites": [
+            "BharatStock key loaded in backend",
+            "remaining process allowance and provider entitlement",
+            "supported inputs and enough compatible returned periods/fields",
+        ],
+        "auth_note": "A configured key may be unverified until the first actual request; status alone is not a failed authentication.",
+    },
+    "bounds": {
+        "page": 1,
+        "rows": {"annual": 2, "quarterly": 8},
+        "automatic_extra_pages": False,
+        "automatic_retries": False,
+        "account_wide_quota_enforcement": False,
+    },
+    "replay": "Repeat identical financial inputs and key to wait/read without another fetch in this owner process; a new key is new retrieval. Restart loses duplicate control, not account usage.",
+    "answer_fields": {
+        "ordinary": "report.rows",
+        "data_readiness": ["report.readiness", "report.valuation_readiness"],
+        "presentation": "Preserve returned displays, periods, units, definitions and holds; data can remain incomplete.",
+        "source_authentication": "Provider values are not independently verified originals.",
+    },
+}
+
+
+def execution_contract():
+    return copy.deepcopy(EXECUTION_CONTRACT)
+
+
 KEY = {"type": "string", "pattern": r"^[A-Za-z0-9_-]{8,100}$"}
 SCHEMA = obj(
     {
@@ -122,11 +165,11 @@ class CompanyFinance:
         company.validate(args["function"], {k: v for k, v in args.items() if k != "function"})
         # Preserve the reviewed registry bounds; mixed bases can leave fewer
         # usable periods. Report that gap rather than fetching another page.
-        size = 8 if args["period_type"] == "quarterly" else 2
+        size = EXECUTION_CONTRACT["bounds"]["rows"][args["period_type"]]
         request = OperationRequest(
             "bharatstock.get_financials",
             {k: args[k] for k in ("ticker", "exchange", "period_type")}
-            | {"page": 1, "page_size": size},
+            | {"page": EXECUTION_CONTRACT["bounds"]["page"], "page_size": size},
         )
         self.service.registry.validate(request)
         # Keys and selectors must not become a second channel for credentials.
@@ -151,8 +194,13 @@ class CompanyFinance:
                 "endpoint": "/v1/stocks/{ticker}/financials",
                 "arguments": copy.deepcopy(request.arguments),
             },
-            "maximum_provider_requests": {"bharatstock": 1, "drishti": 0},
-            "estimated_drishti_credits": 0,
+            "maximum_provider_requests": copy.deepcopy(
+                EXECUTION_CONTRACT["execution"]["maximum_provider_requests"]
+            ),
+            "estimated_drishti_credits": EXECUTION_CONTRACT["execution"][
+                "estimated_drishti_credits"
+            ],
+            "company_execution_contract": execution_contract(),
             "warnings": [
                 "No provider call has occurred. Set execute=true with a stable idempotency_key to fetch and calculate.",
                 "A new executed request fetches fresh page 1 only, even if other sources are retained. Enough usable rows are not guaranteed.",

@@ -72,6 +72,14 @@ async def main(args):
                     {"group": "company", "name": "company_data_readiness", "include_schemas": True},
                 )
                 assert exact["data"]["groups"]["company"][0]["planning_schema"]
+                contract = exact["data"]["company_execution_contract"]
+                assert contract["provider"] == "bharatstock"
+                assert contract["execution"]["maximum_provider_requests"] == {
+                    "bharatstock": 1,
+                    "drishti": 0,
+                }
+                assert contract["execution"]["session_id_required"] is False
+                assert contract["preview"]["execute"] is False
 
                 async def run(plan, key):
                     args = {

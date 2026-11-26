@@ -12,7 +12,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.9.1"
+VERSION = "0.9.2"
 CONTRACT = "margin.mcp.v1"
 DIRECT_FUNCTIONS = {
     "margin_calculate_margins": "finance.calculate_margins",
@@ -127,7 +127,7 @@ def definitions():
         ),
         (
             "margin_catalog",
-            "Discover function identifiers and routes. Ticker-based finance: inspect group=company first; fresh_mcp_execution uses fresh data, planning_schema is legacy. Annual growth compares periods; TTM sums quarters, not growth. Request one selected schema, not all calculator schemas. Never invent financial values during discovery or after an error. Function identifiers are not tool names; use the advertised routes. No provider calls.",
+            "Discover function identifiers and routes. Ticker-based finance: inspect group=company first; company_execution_contract states provider, exact usage bounds, execution/key/allowance requirements and answer fields. fresh_mcp_execution uses fresh data; planning_schema is legacy. Annual growth compares periods; TTM sums quarters, not growth. Request one selected schema, not all schemas. Missing credentials do not prevent a catalog planning summary. Never invent values. Function identifiers are not tool names; use advertised routes. No provider calls.",
             schema(
                 {
                     "group": {

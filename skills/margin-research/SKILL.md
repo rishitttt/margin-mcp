@@ -16,6 +16,13 @@ Company CAGR uses exact anniversary years, otherwise a disclosed day-count conve
 Margin 0.9.1 exposes this host guidance in initialization/status/catalog/errors; it is
 not independent authentication of caller facts or guaranteed host compliance.
 
+For 0.9.2 fresh-company discovery, read company_execution_contract from the company
+catalog/preview. It states BharatStock only, preview 0/new execution max B1/D0, execute
+and stable-key/configuration/allowance requirements, no fresh-tool session_id and
+answer fields. Readiness uses report.readiness/report.valuation_readiness even when
+report.rows is empty. Metadata is not an input object; follow the advertised schema.
+Do not infer account balance from local limits or restart to renew a spent allocation.
+
 For Margin 0.9.0 supplied-text claim/sentiment tasks prefer margin_prepare_review,
 then margin_submit_review with the ONE returned review_id. Use actual user text,
 metadata and ordered claims; ask for missing material rather than inventing examples.

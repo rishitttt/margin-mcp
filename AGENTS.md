@@ -1,11 +1,19 @@
 # Working on Margin
 
+**0.9.2 software checkpoint:** 558 tests/Ruff 99 files/source SDK pass; no real-provider/
+model calls. Shared core execution contract matches all nine previews/catalog bounds,
+BharatStock-only source, execute/key/allowance/no-session and answer fields. Metadata
+is advisory; auth/guard/math/tool/profile counts remain. User reports 57 (not 3), reserve
+B3/D0 for the actual model batch, no operator probes. Active 0.9.1 untouched; manual
+upgrade/key loading is documented, not silently executed. Preserve old artifacts and
+private execution-contract-2026-11-27 evidence; model acceptance is still pending.
+
 **27 November0.9.2 scope:** user wants completion/live testing; latest quota57 corrects
-3. Reserve a3-request model batch, no operator provider probes. Follow the new plan:
+3. Reserve a 3-request model batch, no operator provider probes. Follow the new plan:
 shared truthful fresh-company execution metadata in catalog/previews, provider-only
 and bound fields, execution flags/key/allowance/session/output rules. No math/auth/
 budget/idempotency weakening, new profiles, LLM or runtime source fetching. Source/
-installed SDK/offline checks before immutable wheel; active0.9.1 untouched. Manual
+installed SDK/offline checks pass; immutable 0.9.2 wheel is ready, active0.9.1 untouched. Manual
 key-loaded B3/D0 setup and fresh-chat goal tasks for INFY growth/HUL margin/INFY
 readiness; model first-attempt/final-answer evaluation remains separate from SDK tests.
 
