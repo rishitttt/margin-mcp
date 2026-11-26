@@ -1,5 +1,14 @@
 # Working on Margin
 
+**27 November0.9.2 scope:** user wants completion/live testing; latest quota57 corrects
+3. Reserve a3-request model batch, no operator provider probes. Follow the new plan:
+shared truthful fresh-company execution metadata in catalog/previews, provider-only
+and bound fields, execution flags/key/allowance/session/output rules. No math/auth/
+budget/idempotency weakening, new profiles, LLM or runtime source fetching. Source/
+installed SDK/offline checks before immutable wheel; active0.9.1 untouched. Manual
+key-loaded B3/D0 setup and fresh-chat goal tasks for INFY growth/HUL margin/INFY
+readiness; model first-attempt/final-answer evaluation remains separate from SDK tests.
+
 **27 November user activated 0.9.1:** full-profile same Qwen3-8B/30,183/preset/goal.
 Two admitted calls/four events: company catalog and correct annual INFY company_growth
 preview. execute omitted=false; expected missing-BharatStock-key hold, zero provider

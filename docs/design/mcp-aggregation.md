@@ -1,5 +1,30 @@
 # Margin MCP adapter architecture and implementation plan
 
+## 0.9.2 execution-contract and live acceptance plan: 27 November 2026
+
+The user requests completing/testing the finance flow and reports57 BharatStock
+requests remaining (correcting3). Reserve the first model batch at3 requests; do not
+spend any on operator probes. Active0.9.1 remains unchanged until manual setup.
+
+Observed0.9.1 discovery selects the right function but still omits provider bounds,
+execute/idempotency/allowance rules and speculates about Drishti. Add a compact shared
+company execution contract from the actual fresh-finance implementation: BharatStock
+only, preview0, new execution max B1/D0, zero Drishti credits, execute=true/stable key/
+loaded key/remaining allowance, no session_id input, bounded pages and output locations.
+Expose it in company catalog and previews, with small per-function provider/bound/ref
+fields; preserve existing routes and put exact selected-schema advice in tools. Do
+not change finance math, auth/budget/idempotency enforcement or profile/tool counts.
+No server LLM, source verification, hidden fetching or broad schema API break.
+
+Test contract/implementation consistency, deep-copy isolation, no-call catalog discovery,
+preview bounds and unchanged guards; run regression and source/installed SDK checks.
+No real provider/model calls during this build. Publish a new immutable0.9.2 wheel,
+manual key-enabled backend setup capped B3/D0 and three goal-only model tasks (INFY
+annual growth, HUL margin, INFY readiness). Fresh chat per task, same shared owner,
+actual model/context/preset/profile recorded, exact reports/caller failures retained
+privately. Score planning separately from numerical/period/unit/source fidelity. New
+live tests must preserve all first attempts and must not reset allowance to recover.
+
 ## 0.9.1 no-fabrication guidance plan: 27 November 2026
 
 **Implemented after plan 1d0c925; broader user-requested fixes included.** 544 offline
