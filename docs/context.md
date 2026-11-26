@@ -1,5 +1,13 @@
 # Project context and handoff
 
+**Actual user active 0.9.4/all37:** status/HUL margin preview/INFY profitability preview,
+3 calls/6 events, zero provider attempts. HUL invocation passes; INFY chooses wrong
+function for requested cross-group readiness and final invents DCF tool names. Not
+a backend report.rows inconsistency: profitability was actually selected. Status
+local zero limits are not account credits. Separate from API finance4 trials; model
+metadata not reconfirmed. No new patch/upgrade/reset; B0D0 profile/model comparison
+can isolate surface effects without paying. Private cohort frozen, no hidden thinking.
+
 **0.9.4:** compact finance profile (4 tools), consistent fresh catalog route with
 explicit legacy alternative, unambiguous preview/missing-key/no-data summaries and
 source-required/local-budget recovery. 614 tests and saved-real values pass; formulas

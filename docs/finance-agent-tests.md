@@ -1,5 +1,13 @@
 # Test finance discovery through Margin
 
+**Actual 0.9.4/all37:** 3 calls/6 events, correct HUL margin preview and wrong INFY
+profitability selector for requested cross-group readiness. Both stop before fetch;
+no backend errors/credits used. INFY final falsely attributes readiness and names
+nonadvertised DCF tools. [Audit](implementation.md) records this separately from
+API-harness finance4 results. Optional same-goal finance4 or stronger-model comparison
+at B0D0 should preserve first attempts and actual model/context/preset; no paid quota
+is required. Passing preview execution is not passing function selection/final prose.
+
 **Next 0.9.4 condition:** the new finance frontend has four tools and a scoped catalog;
 the full catalog also defaults company routing to the fresh convenience tool. Compact
 previews distinguish preview/execution missing fields and give a copyable summary.

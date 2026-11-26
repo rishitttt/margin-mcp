@@ -1,5 +1,33 @@
 # Implementation and validation status
 
+## Actual LM Studio 0.9.4/all37 previews: 27 November 2026 IST
+
+User confirms version0.9.4/full37/recording/key configured/B0D0. Three calls/six events:
+status, HUL margin preview and INFY profitability preview. Both execute=false; no
+backend error/provider attempt or operator call in this frozen cohort. Model/context/
+preset were not reconfirmed; do not copy metadata from the separate API harness.
+
+HUL correctly chooses finance.company_margins and returns the same-tool/key/no-data
+summary. Final prose mostly correct; idempotency key is duplicate control, not execution
+authorization, and a later execution also needs execute=true. Status accurately reports
+local configuration, but zero local allowance/credit estimate is not account-credit
+exhaustion; configured/unverified REST does not establish a disconnected provider.
+
+INFY actually chooses finance.company_profitability, not company_data_readiness.
+Its report.rows preview field is correct for the selected function. Final prose falsely
+attributes cross-group readiness to that profitability preview, so both function choice
+and workflow attribution fail. Requested readiness uses report.readiness and
+report.valuation_readiness. Invented DCF tool names are invalid; actual route is
+margin_calculate with function finance.calculate_dcf and the exact explicit-input schema.
+No actual data/field availability/financial readiness has been assessed in this run.
+
+Preserve private lmstudio-094-all-finance-previews-2026-11-27 separately from local
+finance4 API trials; backend logs alone cannot prove absence of host parser failures.
+No hidden thinking/debug, runtime/wheel/config change, provider probe or owner reset.
+Paid credits do not fix this local selection issue. Optional same-goal finance-profile
+comparison or stronger-model trial stays B0D0, with separately scored tool selection,
+preview-only adherence and final prose; do not rewrite the failed first attempt.
+
 ## 0.9.4 compact finance surface: 27 November 2026 IST
 
 Plan e78c84f precedes runtime edits. A reproduced routing conflict is repaired: company

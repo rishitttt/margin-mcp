@@ -1,5 +1,11 @@
 # Margin: quick handoff
 
+**Actual 0.9.4/all37 user trial:** correct HUL margin preview, wrong INFY profitability
+selector for cross-group readiness; both stop execute=false, no provider attempts.
+Final INFY prose misattributes readiness and invents DCF tools. [Call audit](docs/implementation.md)
+separates actual selection from output fidelity. Active user0.9.4; no new runtime/wheel
+or allowance reset. Optional B0D0 finance-profile/model comparison is a separate test.
+
 **0.9.4:** optional finance profile has four tools; full catalog defaults to fresh
 company routing while retaining explicit legacy paths. Compact previews separate
 execution inputs from completed preview and unfetched facts from assessed readiness.

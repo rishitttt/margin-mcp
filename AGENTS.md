@@ -1,5 +1,15 @@
 # Working on Margin
 
+**Actual active 0.9.4/all37 app-chat trial:** freeze private lmstudio-094-all-finance-
+previews (3 calls/6 events), zero provider attempts/errors, no operator calls added.
+HUL picks correct company_margins/execute=false; final largely correct, key != auth.
+INFY picks company_profitability, NOT data_readiness: report.rows correct for chosen
+function but final misattributes readiness/invents DCF tools. Real route calculate
+wrapper/function selector. No account-balance inference from B0D0. Model/context/
+preset not reconfirmed; separate from API finance4 trials. Audit only: no runtime/
+wheel/config/owner/reset or paid calls. Next optional B0D0 profile/model comparison,
+not credit purchase. Preserve first attempts, score selection/stop/prose separately.
+
 **0.9.4 checkpoint:** 614 tests/Ruff104/source SDK pass, saved-real HUL all9 values/
 statuses preserved. Optional finance4 projection/default fresh catalog and explicit
 legacy routes, preview-vs-execution/key/data-readiness flags, no-data recovery/budget

@@ -1,5 +1,15 @@
 # Margin build and evaluation plan
 
+## Gate after actual 0.9.4/full-profile previews
+
+HUL selects the correct fresh margin workflow; INFY selects profitability instead of
+cross-group readiness. Both stop before fetch, zero provider attempts; final INFY
+workflow/DCF route fidelity fails. Preserve actual app-chat condition separately from
+API finance4 trials. No backend/math defect or new paid request is shown by this run.
+Next optional same-goal B0D0 profile/model comparison with caller metadata can isolate
+tool-surface effects. Score function choice, preview-only adherence and final prose
+separately; do not keep adding instructions or quota to manufacture a passing result.
+
 ## 0.9.4 acceptance gate
 
 Finance profile/default routing/compact preview and recovery repairs are implemented
