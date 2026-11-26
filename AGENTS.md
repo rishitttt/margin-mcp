@@ -1,5 +1,14 @@
 # Working on Margin
 
+**0.9.3 authorized repair:** user says evaluate/do remaining finance handoffs/readiness.
+Follow new mcp-aggregation plan before runtime edits. Add canonical next_steps for
+same fresh tool (no plan_id/no key mint/authorization still required), unknown-versus-
+expired plan diagnostics, explicit readiness scope and finished-request replay guidance.
+Clarify metric/DCF labels without changing math or adding LLM/profiles/tools. Preserve
+input/auth/budget/quote/scope/replay guards and immutable old wheels. B3/D0 exhausted;
+no real provider/model call or active0.9.2 upgrade/restart/reset during build. Unit/SDK/
+saved-real replay tests then new wheel; model preview checks at key-loaded B0/D0 first.
+
 **Latest guided 0.9.2 readiness:** exact operator-supplied tool/args execute successfully,
 B1D0, seven annual readiness checks supported, DCF explicit inputs needed. Batch now
 B3 of 3/D0 exhausted; no reset/refetch. Keep one-call guided condition separate from

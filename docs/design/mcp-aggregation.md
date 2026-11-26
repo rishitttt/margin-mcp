@@ -1,5 +1,40 @@
 # Margin MCP adapter architecture and implementation plan
 
+## 0.9.3 evaluated finance handoff/readiness repair plan: 27 November 2026
+
+User explicitly asks to evaluate/implement the remaining fixes. Source evidence:
+0.9.2 HUL convenience previews caused two invented generic plan references before
+recovery; autonomous readiness stopped at three separate previews; forced readiness
+succeeded but prose confused coverage/authenticity/empty rows/replay. B3/D0 model
+allowance is exhausted. Preserve frozen initial and guided conditions; no new real
+provider/model call, active upgrade, restart or budget refill during implementation.
+
+Add transport-neutral next_steps to fresh-company previews: canonical valid financial
+inputs, execute=true, preserved caller key/projection/wait options, explicit required
+key when absent, authorization still required and no created plan_id. MCP annotates
+that step with the actual same tool and top-level schema, excluding margin_run. No
+new ID, nonce, plan store, automatic call or key mint. Preserve numeric/guard behavior.
+
+Separate unretained plan IDs (plan_unavailable) from retained but timed-out plans
+(plan_expired). Financial plan-error guidance names the two real generic previews
+versus the non-plan convenience route. Keep legacy routes and valid plan replay.
+
+Clarify readiness goal selection for multiple metric groups, cash-conversion ratios
+versus cycle days, the limited inventory-adjusted liquidity ratio, literal financial
+labels, and explicit-input DCF's calculator route. Add report readiness scope metadata:
+eligibility/completeness of mapped fields is not source verification; empty numeric
+rows are intentional; no-data assessment remains incomplete/not_assessed. Finished
+request lifecycle metadata distinguishes same-key replay from new work/fresh data.
+All host guidance remains advisory; no LLM or claim that final prose is enforced.
+
+Test nine executable preview bindings and caller-key/no-key projections, no hidden
+fetch/state creation, no extra data on replay, unknown/expired plan distinctions,
+no-data readiness and unverified-scope consistency, strict schemas and unchanged
+review handoffs. Run full offline/Ruff plus source/isolated installed-wheel SDK checks
+and saved-real-response replay. Publish immutable0.9.3 wheel and migration/test docs;
+active0.9.2 untouched. First post-upgrade model checks should be zero-request previews
+with configured key and B0/D0; fresh live allowance must be explicitly allocated later.
+
 ## 0.9.2 execution-contract and live acceptance plan: 27 November 2026
 
 **Implemented after plan 13ca0a4:** 558 offline tests and source SDK checks pass. No
