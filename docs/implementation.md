@@ -1,5 +1,27 @@
 # Implementation and validation status
 
+## Coached 0.9.1 planning follow-up: 27 November 2026 IST
+
+Separate recovery condition in the same chat, not a new unguided trial. One additional
+local margin_catalog call reloads all nine company schemas; no provider request or
+parse failure. The final answer now supplies correct company_growth/INFY/NSE/annual/
+consolidated/revenue selectors. It still leaves provider usage unquantified, mentions
+Drishti as a possible provider, and omits execute=true/stable idempotency_key/new
+remaining allowance for future execution. The direct source is BharatStock only,
+at most one request/zero Drishti; default preview performs no data retrieval. Two
+eligible returned periods remain a data prerequisite, not a guaranteed future answer.
+Unobserved example years should be omitted, though no financial amount was fabricated.
+
+Classify partial recovery, not a complete contract/planning pass. Repeated all-schema
+lookup is unnecessary; selected-schema guidance was not followed. Reported final prompt
+is 30,906 tokens versus saved load setting 30,183; no explicit engine overflow/truncation
+error is recorded, so context pressure is a concern, not established cause. Capture is
+private lmstudio-091-finance-discovery-2026-11-27/coached-{events.jsonl,caller-evidence.json,
+review.json}, separate from the frozen first attempt. Only user/tool/final/metadata
+content is retained, no hidden thinking. No source/runtime/config/budget/wheel change
+from this audit; provider execution still needs a newly authorized remaining allocation.
+
+
 ## User-led 0.9.1 discovery retry: 27 November 2026 IST
 
 User activated 0.9.1; an audit-only local backend metadata read confirms owner version,

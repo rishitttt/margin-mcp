@@ -1,5 +1,13 @@
 # Project context and handoff
 
+**Coached follow-up:** one extra local all-company-schema lookup, no provider call.
+Correct growth inputs returned, but exact B-only bound/execute flag/stable key/remaining
+allowance omitted. Partial recovery, not a full planning pass. Private coached captures
+are separate from first attempt. Repeated schemas add context; reported token counts
+exceed saved load setting but do not establish truncation. No runtime patch/new wheel
+or quota/config change in this audit. Future compact per-function execution metadata
+or a scoped finance profile can be evaluated as a separate condition, not claimed done.
+
 **Latest 0.9.1 user retry, 27 November:** active owner now 0.9.1; same Qwen3-8B/context
 30,183/preset and goal prompt. Two calls/four events: company catalog, correct annual
 INFY company_growth preview. Expected missing-BharatStock-key hold; zero provider calls,

@@ -1,5 +1,10 @@
 # Function validation status
 
+**0.9.1 coached planning recovery:** correct growth selectors, no data request or
+invented amount. One repeated local catalog call; provider/maximum-call/execute/key/
+allowance summary still incomplete. Keep separate from first-attempt model acceptance.
+See implementation for actual calls and context-count limits. No runtime change.
+
 **0.9.1 actual model retry, 27 November:** correct annual company_growth selection from
 company catalog; no invented financial values/JSON failure observed. Preview is held
 on deliberately unconfigured BharatStock key, no data request. Final discovery plan
