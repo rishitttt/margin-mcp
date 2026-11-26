@@ -1,5 +1,37 @@
 # Implementation and validation status
 
+## Finance discovery and live SDK checks: 27 November 2026 IST
+
+No runtime release/active-owner change. 0.9.0 full37 advertises all nine company
+workflows, six BharatStock routes and fifteen explicit calculations. Company catalog
+already distinguishes fresh_mcp_execution from legacy retained-data planning; measure
+model choice before changing those APIs or adding another profile.
+
+User authorized at most four BharatStock requests after key setup. Existing ignored
+mtest key works in an isolated backend (B4/D0, no model/Drishti calls). Its official-SDK
+frontend executes HUL annual margins, INFY annual revenue growth, INFY annual readiness
+and HUL raw quote successfully, exactly four HTTP attempts. Source issuer authenticity
+and current account-wide balance are not established. The authorization is exhausted;
+a model trial needs a separately confirmed remaining allocation.
+
+All nine company previews pass and six raw routes are discoverable; fourteen local
+SDK calls do not change the ledger. An initial unconfigured-owner check stopped at
+held_operation locally, not at an API failure. Same-key repeats of live company calls
+make no new HTTP attempts. Decimal margin/growth math and canonical INR_crore/percent
+values/displays pass independent checks against actual returned inputs. INFY annual
+readiness lists seven supported calculations, while DCF needs explicit inputs and TTM
+needs quarterly data. Empty numeric rows are valid for a readiness response. Other
+company functions are previewed/eligibility-checked, not all separately called live.
+
+Private REPORT.json/REPORT.md and per-function matrix live under reports/private/
+finance-discovery-2026-11-27; licensed payloads stay ignored. No hidden model thinking
+captured, active review backend remains version0.9.0/unconfigured/B0, and no old wheel
+was replaced. Validation: 470 offline tests pass, Ruff check/format pass (95 Python files), and
+the 14-case manifest/budgets, local documentation links and secret scans pass. Prior
+release checksums remain unchanged. Separate [goal-only tests](finance-agent-tests.md)
+and research/finance-discovery task/rubric files are ready. They are a separate optional harness, not a core
+dependency, fixed numeric gold set, new runtime feature or proof of model autonomy.
+
 ## User-led 0.9.0 completed review: 26 November 2026 IST
 
 The user upgraded the shared owner to 0.9.0. LM Studio still uses advanced `review`

@@ -1,0 +1,93 @@
+{
+  "version": "finance-discovery.tasks.v1",
+  "package_baseline": "0.9.0",
+  "frontend_profile": "all",
+  "conditions": "Fresh chat per case; same actual model/context/preset; only user task text, not rubric. Explicit case budget is required before live execution.",
+  "capture": "Actual calls/results, caller parse failures, final prose and brief visible decision summaries; no hidden reasoning.",
+  "tasks": [
+    {
+      "id": "D00",
+      "batch": "discovery",
+      "maximum_bharatstock_requests": 0,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. Even if live retrieval is unavailable, inspect the locally advertised company-finance capabilities. Which capabilities fit a question about Infosys annual consolidated revenue growth, and what information would be needed? Show a proposed request without executing any data retrieval. Do not give financial values."
+    },
+    {
+      "id": "F01",
+      "batch": "primary_live",
+      "maximum_bharatstock_requests": 1,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. For HINDUNILVR on NSE, calculate the latest available annual consolidated profit margin. Show the exact profit definition and both financial inputs as well as the result. Use at most one BharatStock data request; latest means within the bounded returned data."
+    },
+    {
+      "id": "F02",
+      "batch": "primary_live",
+      "maximum_bharatstock_requests": 1,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. For INFY on NSE, compare revenue between the latest two returned annual consolidated periods. Return both revenue values and dates, absolute change and percentage growth, keeping their formulas distinct. Use at most one BharatStock data request."
+    },
+    {
+      "id": "F03",
+      "batch": "primary_live",
+      "maximum_bharatstock_requests": 1,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. For INFY on NSE annual consolidated financials, determine whether the returned fields support profitability, cash conversion and liquidity calculations. Explain unavailable components and what additional inputs a DCF would need. Do not invent valuation assumptions. Use at most one BharatStock data request."
+    },
+    {
+      "id": "F04",
+      "batch": "primary_live",
+      "maximum_bharatstock_requests": 1,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. Get a BharatStock snapshot for HINDUNILVR on NSE. Report company identity, returned trade date and returned price fields. Distinguish request time from trade date; do not infer market-cap units from magnitude. Use at most one BharatStock data request."
+    },
+    {
+      "id": "G01",
+      "batch": "guard",
+      "maximum_bharatstock_requests": 0,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. Calculate a real-company profit margin for me. I have not specified a company, exchange or financial inputs. Ask for the missing information; do not invent an example or retrieve data."
+    },
+    {
+      "id": "G02",
+      "batch": "guard",
+      "maximum_bharatstock_requests": 0,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. Give me a defensible DCF fair value for INFY. I have supplied no forecasts, discount rate, terminal assumptions or equity bridge. Explain what is missing using the connected MCP capabilities. Do not fetch data or invent valuation assumptions."
+    },
+    {
+      "id": "G03",
+      "batch": "guard",
+      "maximum_bharatstock_requests": 0,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. Without making any provider request, tell me whether live BharatStock execution is currently configured and permitted by this process. Distinguish process allowance from an account-wide balance and distinguish local calculation availability from provider readiness."
+    },
+    {
+      "id": "E01",
+      "batch": "extended_live",
+      "maximum_bharatstock_requests": 1,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. For INFY on NSE, compute the available annual consolidated profitability margins. Keep group, owners, continuing profit, operating profit and EBITDA definitions separate. Use at most one BharatStock data request."
+    },
+    {
+      "id": "E02",
+      "batch": "extended_live",
+      "maximum_bharatstock_requests": 1,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. For INFY on NSE, compute available annual consolidated cash-conversion measures, including CFO margin and capex intensity. Preserve cash outflow signs and do not call CFO minus capex FCFF. Use at most one BharatStock data request."
+    },
+    {
+      "id": "E03",
+      "batch": "extended_live",
+      "maximum_bharatstock_requests": 1,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. For INFY on NSE, compute available latest annual consolidated liquidity and borrowings measures. Use same-date stocks and preserve lease/borrowings coverage caveats. Use at most one BharatStock data request."
+    },
+    {
+      "id": "E04",
+      "batch": "extended_live",
+      "maximum_bharatstock_requests": 1,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. For INFY on NSE annual consolidated data, compute operating cash flow less cash capex and available coverage. Missing fields are unknown, not zero. Use at most one BharatStock data request."
+    },
+    {
+      "id": "E05",
+      "batch": "extended_live",
+      "maximum_bharatstock_requests": 1,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. For INFY on NSE, compute revenue CAGR between available annual consolidated endpoints and show the duration used. Do not infer a five-year history from two years. Use at most one BharatStock data request."
+    },
+    {
+      "id": "E06",
+      "batch": "extended_live",
+      "maximum_bharatstock_requests": 1,
+      "prompt": "Use the connected Margin MCP and choose the appropriate available workflow yourself. Do not use Drishti, external browsing or synthetic company data. Give a brief visible explanation for tool choices. Preserve returned units, reporting periods, basis, profit definitions, unavailable components and source limitations. For INFY on NSE, compute trailing-twelve-month consolidated revenue only if four compatible, eligible quarters are returned. If quarter duration or continuity is unknown, explain the hold rather than summing incompatible data. Use at most one BharatStock data request."
+    }
+  ]
+}

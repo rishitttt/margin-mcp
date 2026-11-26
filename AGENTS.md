@@ -1,5 +1,15 @@
 # Working on Margin
 
+**27 November finance discovery:** user authorized four B requests after key setup.
+Isolated 0.9.0 full SDK checks consume exactly B4/D0 and close, active review owner
+unchanged. Nine company previews pass; HUL margin, INFY growth/readiness and HUL quote
+pass; exact math/displays and same-key no-refetch checked. No model calls/new wheel or
+runtime change. Authorization exhausted, never repeat it for new model trials. Preserve
+private finance-discovery-2026-11-27 captures; initial held-key check spent zero. New
+scripts check_finance_discovery/live are operator diagnostics, not model acceptance.
+Separate public tasks/rubric in research/finance-discovery; full-profile zero-call goal
+test first, then newly budgeted live cases. Keep source truth/eligibility distinct.
+
 **26 November user activated 0.9.0:** Qwen3-8B/30,183 + inherited 898-char preset,
 advanced review16. Four backend calls/eight events pass; caller captures one recovered
 legacy registration enum error. Actual high-level review correctly binds dates/ID,

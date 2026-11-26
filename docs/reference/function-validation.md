@@ -1,5 +1,14 @@
 # Function validation status
 
+**27 November finance discovery:** existing 0.9.0 full profile exposes all nine
+company workflows and six raw BharatStock routes. All nine company previews pass;
+HUL margins, INFY revenue growth, INFY annual readiness and HUL snapshot pass real SDK
+calls (B4/D0 total, authorization exhausted). Math/display checks pass for margin/growth;
+stable-key repeats add zero attempts. INFY readiness reports seven eligible annual
+calculations, not separately executed SDK routes; TTM needs quarterly data and DCF
+explicit inputs. No model run or original-source verification. Private per-function
+matrix: finance-discovery-2026-11-27/REPORT.json. [Agent test plan](../finance-agent-tests.md).
+
 **0.9.0 actual host outcome, 26 November:** prepare_review/submit_review pass in
 Qwen3-8B (30,183 context, same preset), advanced review16. Correct two-claim coverage,
 supported/insufficient verdicts, one positive content annotation and separate unknown

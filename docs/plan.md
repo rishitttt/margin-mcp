@@ -1,5 +1,36 @@
 # Margin build and evaluation plan
 
+## Finance discovery and agent acceptance: 27 November 2026
+
+**Measured:** [operator checks](implementation.md) passed all nine previews and four
+newly authorized live requests (now exhausted); active review owner unchanged. Goal-only
+agent tests are ready in [finance-agent-tests.md](finance-agent-tests.md). No autonomous
+model result yet. The before-execution plan below records this pass.
+
+Current 0.9.0 already exposes nine fresh-fetch company workflows, explicit finance
+and raw BharatStock routes in full profile. Review profiles intentionally hide them.
+Measure full-profile discovery before adding another profile or changing finance math.
+The active owner has no BharatStock key and B0/D0 limits; no live request is authorized
+by an old account balance or a preview. No runtime patch/release is planned for this
+acceptance pass, and no active restart, budget reset or model configuration edit is made.
+
+1. Add an official-SDK, preview-only checker over the existing backend. Inspect actual
+   tools/catalog routes, all nine company preview inputs, raw financials nesting and
+   stable zero-attempt ledger. Save private operator-labelled captures, not model trials.
+2. Prepare public goal-only tasks separately from the reviewer rubric. First live batch:
+   HUL margin, INFY revenue growth, INFY data readiness and HUL raw snapshot; at most four
+   requests total, one per task, only after fresh quota/key setup. Extended cases cover
+   the remaining six company functions. No DCF forecast generation or investor inference.
+3. User/model trials run in fresh full-profile chats without function names. Capture
+   actual first calls, host parse errors, brief visible choices and final report units/
+   definitions/periods/holds. Preview-only, absent-key/quota and missing-assumption cases
+   must stop without fictional results. Reviewer checks derived math against actual
+   response rows; live provider data is not issuer-document ground truth.
+4. Inspect failures before proposing focused finance tools/profile or routing changes.
+   Preserve existing full/review/review-simple APIs and old immutable wheels. Active
+   credentials/remaining allowance must be established before live execution.
+
+
 ## Current next steps after the 0.9.0 review repair
 
 1. User activated 0.9.0 and completed the new review flow in advanced review16 with

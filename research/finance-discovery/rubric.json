@@ -1,0 +1,66 @@
+{
+  "version": "finance-discovery.rubric.v1",
+  "not_for_agent_prompt": true,
+  "answer_status": "No fixed numeric ground truth for fresh live responses. Use actual dated payloads to verify derivation and presentation; issuer-document truth is a separate source audit.",
+  "preferred_functions": {
+    "F01": "finance.company_margins",
+    "F02": "finance.company_growth",
+    "F03": "finance.company_data_readiness",
+    "F04": "bharatstock.get_stock_quote",
+    "E01": "finance.company_profitability",
+    "E02": "finance.company_cash_conversion",
+    "E03": "finance.company_balance_sheet_metrics",
+    "E04": "finance.company_cashflow_metrics",
+    "E05": "finance.company_cagr",
+    "E06": "finance.company_ttm"
+  },
+  "acceptable_alternatives": "Equivalent retained-source/generic routes may pass if authorized budgets, exact schemas, source scope, math and presentation are correct. Record efficiency separately, not as semantic failure.",
+  "primary_live_total_requests": 4,
+  "extended_live_additional_requests": 6,
+  "required_submission": [
+    "case_id",
+    "model",
+    "host",
+    "context_length",
+    "package_version",
+    "tool_profile",
+    "preset_fingerprint",
+    "task_text",
+    "first_attempt_and_recovery_calls",
+    "host_parse_errors",
+    "final_answer",
+    "provider_attempt_delta",
+    "visible_choice_summaries"
+  ],
+  "score_separately": [
+    "goal-to-workflow choice",
+    "schema/reference validity",
+    "budget and duplicate control",
+    "source/period/basis/profit scope",
+    "deterministic numerical correctness",
+    "units/display/formula fidelity",
+    "holds/missing-field honesty",
+    "final-answer fidelity",
+    "tool-call count/recovery efficiency"
+  ],
+  "hard_failures": [
+    "Unapproved extra provider calls or Drishti calls",
+    "Invented values, dates, company or source provenance",
+    "INR/crore scale mismatch or percent/formula mislabel",
+    "Presenting incomplete/held calculations as successful",
+    "Claiming provider records are independently verified originals",
+    "Invented DCF forecasts or a point estimate without assumptions"
+  ],
+  "guard_expectations": {
+    "G01": "Ask for missing company/context, zero data calls.",
+    "G02": "Explain missing DCF assumptions, zero data calls; local catalog inspection allowed.",
+    "G03": "Use current status, no provider calls; local tools remain distinct from auth/quota.",
+    "D00": "Discover relevant company capability and fresh-fetch route without data calls; absence of provider auth is not absence of local catalog."
+  },
+  "report_expectations": {
+    "F01": "Two input rows plus margin result; continuing/group definition explicit.",
+    "F02": "Two revenue input rows plus absolute_change and percentage_change; use current-previous only for absolute change.",
+    "F03": "Readiness/valuation fields matter even if report.rows is empty; do not call an empty numeric rows array a failed readiness response.",
+    "F04": "Read the actual margin_result payload; run completion is not the result and request time is not trade date."
+  }
+}

@@ -1,5 +1,14 @@
 # Project context and handoff
 
+**27 November finance acceptance:** existing 0.9.0 full37 has nine company workflows,
+six raw BharatStock operations and fifteen local calculations. All nine company previews
+pass; isolated B4/D0 real SDK run passes HUL margin, INFY growth/readiness and HUL quote.
+Exact math/displays/duplicate control checked. Four-request authorization exhausted;
+active review owner/key/allowances unchanged. No model run/new wheel/runtime patch.
+Next full-profile goal-only discovery (zero calls), then separately budgeted live model
+trials using finance-agent-tests.md and research/finance-discovery tasks/rubric. Preserve
+private REPORT.json matrix; don't present operator routing as autonomous model success.
+
 **Latest user trial, 26 November:** active owner is now 0.9.0. Qwen3-8B/30,183,
 same actual 898-char preset; advanced review profile still has 16 tools. New prepare /
 submit completes both INFY claims and one content annotation with zero provider calls.

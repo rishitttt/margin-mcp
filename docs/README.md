@@ -4,6 +4,7 @@
 
 | Document | Authority |
 | --- | --- |
+| [Finance agent acceptance](finance-agent-tests.md) | Full-profile goal-only tasks, zero-call discovery, live setup/bounds and separate reviewer rubric |
 | [Self-contained company finance](design/fetch-and-calculate.md) | Fresh-fetch execution contract, subscription findings and build/acceptance plan |
 | [Project README](../README.md) | Purpose, branch state and reading order |
 | [Quick handoff](../HANDOFF.md) | Current release/activation state and repo map; dated professor-note and older push summaries remain below |

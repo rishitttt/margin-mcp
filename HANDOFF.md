@@ -1,5 +1,12 @@
 # Margin: quick handoff
 
+**27 November finance work:** [Full-profile goal-only tests](docs/finance-agent-tests.md)
+and a separate 14-case agent/reviewer pack are ready. Existing 0.9.0 needs no reinstall;
+select frontend all to expose finance. Nine previews pass and four authorized real SDK
+requests pass HUL margin, INFY growth/readiness and HUL quote; math/displays/duplicate
+handling checked. B4/D0 authorization is exhausted, active review owner unchanged.
+Model autonomy remains to test; no new paid key was needed for this measured run.
+
 **Latest user activation/test, 26 November:** installed shared owner now runs 0.9.0.
 The INFY prepare/submit workflow completes with correct claim coverage and one content
 annotation, zero provider calls. Advanced review (16 tools) is still selected; one
