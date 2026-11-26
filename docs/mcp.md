@@ -6,6 +6,42 @@ advertised strict schemas. The core, CLI and workbench remain available independ
 The [architecture](design/mcp-aggregation.md) owns the plan published before this change;
 [implementation](implementation.md) owns evidence and limitations.
 
+## Professor demonstration through the installed MCP
+
+The repo-only scripts/demo_mcp_review.py is an official-SDK client for the existing
+zero-budget shared backend. It neither launches/restarts that backend nor changes the
+wheel, credentials or allowance. The prepared local input uses saved real INFY provider
+text and **explicit operator-supplied** claim/sentiment judgments. It demonstrates tool
+execution, quote/reference checks, unsupported-claim handling and aggregation, not
+model selection, fresh retrieval or independent source authentication.
+
+With the current 0.8.2 backend running, from this repo:
+
+```sh
+/Users/rishit/Desktop/mtest/.venv/bin/python scripts/demo_mcp_review.py \
+  --backend-socket /Users/rishit/Desktop/mtest/shared/core.sock \
+  --input reports/private/professor-demo-2026-11-26/input.json
+```
+
+The known wrong-quote variant should stop with quote_mismatch and exit nonzero:
+
+```sh
+/Users/rishit/Desktop/mtest/.venv/bin/python scripts/demo_mcp_review.py \
+  --backend-socket /Users/rishit/Desktop/mtest/shared/core.sock \
+  --input reports/private/professor-demo-2026-11-26/bad-quote.json
+```
+
+Each run creates a fresh private reports/private/professor-demo-* directory containing
+result.json on success, normalized tool observations and frontend stderr. Backend tool
+events have an explicit Professor demo why/reviewer label; exclude them from model trials.
+The real input files are intentionally ignored and available only in this workspace.
+Other installations must supply their own authorized source/annotations; the script's
+--help and fictional software tests describe the format. It refuses missing input and
+nonzero provider allowances, validates advertised schemas and stops on failed calls.
+An incomplete claim-support audit is expected when every claim is assessed but one
+lacks evidence. No sentiment outcome is inferred by the script: its label comes from
+the operator input and is transparently submitted/aggregated by Margin.
+
 ## Registration robustness (0.8.2)
 
 Plain URL anchors on source URLs/passage locators normalize with safe

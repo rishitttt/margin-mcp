@@ -1,5 +1,11 @@
 # Margin build and evaluation plan
 
+**Professor demo delivered, 26 November:** the repo-only SDK client and private real-
+text/operator-judgment input are ready; success and wrong-quote commands tested, 437
+offline checks pass. See MCP guide. Use this to show core behavior honestly while
+model reference/task fidelity is investigated. No new core release, actual inference,
+provider call or budget/reset; demo events are a separate observation condition.
+
 **26 November preset-assisted result:** setup/anchor normalization pass, but Qwen3-8B
 uses URLs/passage IDs as handles and invents a missing task despite the effective preset.
 Preserve the failed condition; compare another model and simplify preparation only under

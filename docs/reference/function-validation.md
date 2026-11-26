@@ -1,5 +1,11 @@
 # Function validation status
 
+**26 November 0.8.2 model/demo separation:** anchor normalization passes; preset-assisted
+Qwen misuses references/dates and invents missing input. Neither test establishes full
+model workflow success. Separate SDK professor demo passes with real saved text and
+operator judgments, including correct unsupported claim and rejected wrong quote.
+437 tests; no new product version or provider call. Implementation owns both captures.
+
 **26 November 0.8.2 robustness:** plain URL-anchor normalization, unsafe URL/control
 rejections, safe sanitization paths and partial assessment coverage tested. 432 offline
 tests pass; exact caller registration replays pass. Numeric unit=level remains correctly

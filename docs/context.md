@@ -1,5 +1,14 @@
 # Project context and handoff
 
+**Latest 26 November:** 0.8.2 setup/anchor normalization pass, but the preset-assisted
+Qwen3-8B/30,183 trial misused URLs/passage IDs, dropped record date and invented a missing
+ExampleCorp task. Actual prediction config confirms the 898-char preset was inherited;
+empty chat field is not missing guidance. Preserve lmstudio-082-preset captures. Repo-only
+professor demo client now exercises the same installed MCP with saved real source and
+explicit operator judgments, ten local calls, no provider/reset/restart. Good/wrong-quote
+commands tested; 437 offline tests pass. It is a pipeline demo, not model or source gold.
+See mcp.md's professor demonstration; private prepared inputs are not shipped in Git.
+
 **Latest source 0.8.2, 26 November:** plan e224a98 preceded plain-anchor normalization,
 raw URL-control rejection, safe field diagnostics and explicit assessment coverage.
 Financial-only numeric checking remains strict; CMMI levels use passage review. 432

@@ -10,7 +10,7 @@
 | [Contributor instructions](../AGENTS.md) | Shared human/agent rules |
 | [Context](context.md) | Concise current handoff and blockers |
 | [Workbench guide](workbench.md) | Install/run/configure the implemented core and temporary interface; synthetic scenarios and executable checks |
-| [MCP setup](mcp.md) | Delivered stdio tools, configuration, optional skill/system-prompt guidance, budgets, logs and protocol/packaging validation |
+| [MCP setup](mcp.md) | Delivered tools, configuration, professor SDK demo commands, optional skill/preset guidance, budgets, logs and protocol/packaging validation |
 | [Agent interface](agent-interface.md) | Python/CLI/skill packaging, shared backend, fresh-chat setup, command contracts and the separate optional private pilot recorder |
 | [Portable local agent bundle](portable-agent-bundle.md) | Private ZIP distribution, optional trial keys, per-agent setup, complete function coverage and visible-summary logging for evaluation |
 | [Live skill evaluation](live-skill-evaluation.md) | Separate two-ticker runner/evaluator packages, live-call budgets, visible tool-choice summaries, submission export and gold/manual-review limits |

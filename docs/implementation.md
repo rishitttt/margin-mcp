@@ -1,5 +1,32 @@
 # Implementation and validation status
 
+## Professor demo client: 26 November 2026 IST
+
+Plan 85f0c7f preceded the repo-only demo client; installed product/wheel remains 0.8.2.
+scripts/demo_mcp_review.py uses the official SDK and current shared backend, actual
+advertised schemas and returned references. Input explicitly declares operator judgments;
+no model or provider inference is implied. It requires source passages/claim assessments/
+sentiment scope and zero provider limits, stops on errors, preserves insufficient
+outcomes and records safe private results. SDK exception groups expose only the safe
+demo failure instead of masking quote_mismatch behind a generic wrapper.
+
+Validation: **437 offline tests pass**, Ruff lint/format pass (90 files). Five new
+fictional client tests cover actual reference binding, unsupported-claim handling,
+false quotes stopping before sentiment, missing-task refusal, zero-budget enforcement
+and safe nested SDK-error output. Official-SDK executions through the existing installed
+0.8.2 MCP pass on saved real INFY text with operator-supplied supported/insufficient
+verdicts and positive content label. Successful demo uses ten local tool calls; wrong
+quote variant stops after four, with quote_mismatch. Both repeated/default-output
+success and clean failure paths checked. No actual LLM or provider call, restart,
+allowance reset, new core version or wheel replacement. Existing backend receives
+bounded local review records with Professor demo why/reviewer labels; exclude these
+from the earlier frozen model-trial captures. Input/output remain private.
+
+[Demo commands](mcp.md#professor-demonstration-through-the-installed-mcp) are runnable
+in this workspace; inputs are intentionally not distributed in Git. This is a reliable
+tool-pipeline demonstration, not evidence that Qwen now follows the workflow or that
+operator labels establish authentic originals/market sentiment.
+
 ## User-led 0.8.2 preset-assisted trials: 26 November 2026 IST
 
 Thirteen calls/twenty-six events cover setup (one call), full INFY task (three) and

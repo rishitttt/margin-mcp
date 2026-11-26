@@ -1,5 +1,11 @@
 # Margin: quick handoff
 
+**Professor demo, 26 November:** [one-command SDK demo](docs/mcp.md#professor-demonstration-through-the-installed-mcp)
+uses installed 0.8.2, saved real text and explicit operator judgments. Good and wrong-
+quote variants tested; zero provider calls, no restart/reset/new wheel, 437 offline tests.
+Model trial remains failed: actual preset reached Qwen, but INFY handles were wrong
+and the missing-input case invented ExampleCorp. Preserve separate model/demo captures.
+
 **Latest source 0.8.2, 26 November:** plain URL anchors normalize with receipts; raw
 URL controls and unsafe changes reject. Outputs expose submission coverage separately
 from operation success. Numeric financial checking still rejects maturity unit=level.

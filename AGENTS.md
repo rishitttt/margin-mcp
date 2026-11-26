@@ -1,5 +1,12 @@
 # Working on Margin
 
+**26 November professor demo ready:** repo-only scripts/demo_mcp_review.py uses the
+installed 0.8.2 SDK/frontend over the existing zero-budget owner. Real saved input and
+operator judgments are private; no inferred labels/LLM/provider calls. Ten-call success
+and four-call wrong-quote stop checked; 437 offline tests pass. Keep demo why/reviewer
+events out of model-trial data. No backend restart, quota change or new wheel. The
+preset-assisted model failures remain separate and are not fixed by the demo client.
+
 **26 November latest host/demo scope:** 0.8.2 setup and anchor registration pass.
 Actual prediction settings confirm the 898-char preset was used by Qwen3-8B/30,183;
 empty chat-level prompt was inherited, not absent. INFY used URL as handle/droppeddate;
