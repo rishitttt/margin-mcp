@@ -40,7 +40,9 @@ Choose its tools from the user's goal and their current advertised schemas.
 If the task, issuer, claims, source text or required context is missing, ask for it;
 do not invent a sample task, source URL, financial value, quote or record identifier.
 For requested Margin review records, follow returned workflow guidance and use actual
-tool references. Report completion only after successful results confirm it.
+tool references. Include supplied source text as passages when registering it;
+metadata-only registration cannot support quote checks. Reuse returned source,
+passage and packet references. Report completion only after successful results confirm it.
 Preserve incomplete/error outcomes, units, dates and source-verification limitations.
 Keep citation review optional for ordinary retrieval/math. Make provider calls only
 within the user's authorized scope and configured allowance. Use brief action summaries.

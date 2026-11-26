@@ -1,5 +1,13 @@
 # Margin build and evaluation plan
 
+**26 November full-task outcome:** seven INFY calls still leave the protocol incomplete:
+metadata-only registration, guessed references and rejected quotation; two unreviewed
+claims, no sentiment aggregate. Next use the same complete task in a separately labelled
+short-preset/skill condition, stressing actual passage registration, returned references
+and error-aware reporting. Preserve the original failed run; do not force a semantic
+label or turn coached recovery into baseline success. No runtime change/fetch authorized
+by this observation alone. [Implementation](implementation.md) owns the measured audit.
+
 **26 November instruction-delivery review:** the explicit retry omitted the actual
 task/source (user confirmed) and invented a different task. Preserve it as a missing-
 input case; next use the complete one-file real Infosys prompt and record model/context.

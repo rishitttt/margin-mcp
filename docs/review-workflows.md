@@ -87,6 +87,13 @@ in implementation status. The ignored local file
 reports/private/lmstudio-081-missing-task-2026-11-26/complete-infy-prompt.txt now contains
 the complete real-text prompt in one block, without expected answers or credentials.
 Use the whole file for the next actual task trial; no restart or API request is needed.
+The later full-task attempt still registered metadata without passages, submitted
+unregistered passage IDs and reported results after rejection. Audit remained two
+unreviewed claims; no sentiment aggregate exists. Preserve that infy-incomplete trial.
+The proposed [short preset](mcp.md#skills-and-host-system-prompts) now explicitly states
+that supplied text must be registered as passages and returned references reused.
+Test this as a separate instruction condition, not a new core release or a passed
+baseline. No preset is installed automatically by editing this documentation.
 
 1. **Supplied text, zero-provider budget, review or full profile.** Prompt: "This is a
    fictional software test. ExampleCo's supplied announcement says: 'Demand improved,

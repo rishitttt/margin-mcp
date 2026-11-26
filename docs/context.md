@@ -1,5 +1,13 @@
 # Project context and handoff
 
+**Latest complete INFY test, 26 November:** seven recorded calls, three guard errors.
+The model omitted summary passages from registration, guessed handles/passage IDs,
+and ignored the missing-passage guidance. Audit remains incomplete/not_reviewed=2;
+sentiment preparation failed and no label/aggregate exists. Final success/neutral-tool
+claims are unsupported. New backend log has no status/version check; expected installed
+0.8.1, actual model/context still unknown. Preserve private infy-incomplete capture.
+Next compare short preset/skill with the same full task; no patch/refetch/restart/reset.
+
 **Latest host clarification, 26 November:** user supplied only the general MCP
 instruction on retry, omitting the Infosys task/text. Tools were used, but another
 task/source/quote was invented; guards rejected handles/quote/wrong packet kind, and

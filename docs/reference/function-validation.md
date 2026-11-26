@@ -1,5 +1,12 @@
 # Function validation status
 
+**26 November complete INFY task:** seven calls reach a new backend; guessed source
+handles fail, summary text is omitted from registration, and quote submission fails
+against an empty packet. Audit returns incomplete/not_reviewed=2. No sentiment packet/
+annotations/aggregate succeeded. Final accepted verdicts/neutral-tool attribution are
+unsupported. Guards work; actual model task-flow and final-answer fidelity still fail.
+Preserve private lmstudio-081-infy-incomplete evidence; no new runtime release or fetch.
+
 **26 November explicit-instruction retry:** user confirms the actual task/text was
 omitted. Reference, quote and packet-kind guards reject three invented/mismatched
 calls; audit remains incomplete/not_reviewed. No sentiment packet exists. This is a

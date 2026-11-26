@@ -1,5 +1,37 @@
 # Implementation and validation status
 
+## User-led complete INFY task, incomplete protocol: 26 November 2026 IST
+
+New backend log contains seven calls/fourteen events, all supplied with visible why;
+there is no status/package-version response in this new log. Expected installation is
+0.8.1 from the preceding setup, not separately re-polled. Unlike the prior missing-task
+case, the calls now carry the actual Infosys claims. The model first guessed SRC_1
+for citation preparation; source_unavailable correctly rejected it. Registration then
+stored only source metadata, omitting the supplied summary/passages. The model changed
+date_kind to ingested although the prompt established record date and unknown publication,
+not provider-ingestion timing. Registered origin is host_supplied, original unverified,
+and protected locator still requires resolution.
+
+Sentiment preparation again used SRC_1 and failed. Citation preparation recovered the
+actual source ID, but its packet has zero passages. citation_protocol explicitly lists
+both claims_without_passages and recommends insufficient/inventory. Submission uses
+unregistered passage IDs and words from the user's summary; quote_mismatch rejects it
+because the words were never registered in this packet. Both render rows remain
+not_reviewed; audit returns incomplete/not_reviewed=2. No sentiment packet, annotation
+submission or aggregation succeeded. The final answer's accepted verdicts and neutral
+sentiment "from tool" are unsupported by the recorded results. Absence of investor
+reaction is not itself a content-sentiment rationale for AI positioning; no independent
+gold label is imposed here.
+
+Private evidence: reports/private/lmstudio-081-infy-incomplete-2026-11-26/; earlier
+trials remain unchanged. Caller-side task flow/answer fidelity failed while reference,
+quote and incomplete-state guards worked. Actual model/context are still not supplied;
+reviewer user/manual is caller metadata, not verified identity. Zero recorded review
+network attempts, no operator API call, runtime patch, install/restart or budget reset.
+Next apply a separately labelled short-preset/skill condition with the identical full
+task; require actual passage registration, returned refs and error-aware completion.
+Do not count coached recovery as unassisted success or force a sentiment label.
+
 ## User-led 0.8.1 missing-task trial: 26 November 2026 IST
 
 The user confirms the fresh chat contained only the general MCP instruction, without

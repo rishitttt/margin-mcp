@@ -1,5 +1,11 @@
 # Margin: quick handoff
 
+**Latest complete INFY trial, 26 November:** tool calls now use the actual task, but
+registration omits passages and guessed references fail. Audit: two unreviewed claims;
+no sentiment result exists. Final completed/neutral-from-tool claims are unsupported.
+Core guards worked; model workflow/answer fidelity remains a failed host test. See
+[evidence](docs/implementation.md); no new runtime release, fetch or backend change.
+
 **Latest 26 November retry:** the user omitted the actual task/text, supplying only
 the MCP instruction. The model called tools with invented data; guards left citation
 unreviewed and rejected sentiment's wrong packet kind. Use the complete private Infosys

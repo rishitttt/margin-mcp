@@ -1,5 +1,13 @@
 # Working on Margin
 
+**26 November complete INFY trial:** seven calls/three guarded errors in a new log.
+The host omitted summary passages, guessed handles/passages, ignored missing-text
+guidance and claimed results despite rejection. Audit remains not_reviewed=2; no
+sentiment packet/aggregate exists. Preserve lmstudio-081-infy-incomplete evidence.
+Do not mark this successful or infer a schema/context defect. No new status/version
+probe, runtime patch, install/restart/reset or provider call in this audit. Next preset/
+skill condition must retain identical task/model settings and separate first attempts.
+
 **26 November missing-task clarification:** the explicit MCP retry omitted the actual
 Infosys task/text (user confirmed). Nine admitted calls invented another task/source/
 quote; three guards rejected handles, quote and wrong packet kind, leaving no accepted
