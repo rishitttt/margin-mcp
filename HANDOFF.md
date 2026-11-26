@@ -1,5 +1,11 @@
 # Margin: quick handoff
 
+**Actual 0.9.3 model previews:** status correct; both autonomous preview tasks fail.
+HUL's fresh preview works, but model misroutes and attempts unauthorized-by-task
+execution; zero allowance blocks HTTP. INFY picks legacy retained-data path and stops.
+No credits needed to preview; no reset/new wheel in this audit. [Call findings](docs/implementation.md)
+preserve first attempts separately from pending guided exact-tool diagnostics.
+
 **Current 0.9.3:** finance preview→same-tool bindings, precise plan-reference errors,
 readiness scope/DCF route and replay guidance implemented. 575 offline tests/source
 and installed-wheel SDK pass; nine saved-real workflows preserve calculation values (mock transport only).

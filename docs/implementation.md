@@ -1,5 +1,34 @@
 # Implementation and validation status
 
+## Actual 0.9.3 zero-request model previews: 27 November 2026 IST
+
+User status confirms 0.9.3/all37/recording/key configured, B0/D0. Freeze the original
+nine calls/eighteen events before any operator follow-up. Model/context/preset were
+not re-confirmed in this trial; do not infer them from the preceding cohort.
+
+Status inspection passes. HUL makes seven calls: legacy company_preview fails with
+source_required; fresh company_finance preview **succeeds**, returning the canonical
+same-tool binding/no plan ID/required key; model then uses that call ID as a generic
+plan ID (plan_unavailable), attempts execute=true despite the preview-only instruction
+(local request_budget blocks before HTTP), lists empty sources, sends ticker selectors
+to the explicit fact calculator (invalid_input), and replays the same blocked request.
+Its final account-credit/quota advice misstates a deliberate local zero allowance and
+omits the successful preview. No additional provider credits are needed for previews.
+
+INFY makes one legacy company_preview call, gets source_required and stops with false
+fetch-before-preview guidance. That legacy path needs retained data by default; the
+fresh convenience preview does not. Overlapping names and legacy recovery wording
+contribute to the model selection problem. New binding guidance is present but not
+reliably obeyed; do not score either autonomous preview task as passed.
+
+Four recorded error responses and two blocked result responses for one request;
+zero observed provider attempts. Backend logs do not establish whether the host had
+additional parser failures. No runtime change/new wheel/provider probe/owner restart
+or allowance reset in this audit. Private evidence: reports/private/lmstudio-093-finance-
+previews-2026-11-27. Preserve failed first attempts; next use a separately labelled
+guided execute=false diagnostic and evaluate the competing legacy/fresh tool surface
+before more autonomous or paid trials. No hidden thinking/debug was extracted.
+
 ## 0.9.3 finance workflow repairs: 27 November 2026 IST
 
 Plan eb6dbaf preceded implementation. Fresh-company previews now return next_steps

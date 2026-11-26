@@ -1,5 +1,13 @@
 # Test finance discovery through Margin
 
+**Actual 0.9.3 preview result:** status passes; both goal-only finance preview tasks
+fail model acceptance. HUL receives a successful fresh preview but tries generic run
+and execution despite preview-only scope; B0 guard prevents HTTP. INFY chooses legacy
+retained-data preview and stops. Do not raise budgets or purchase credits for these
+local previews. [Recorded call audit](implementation.md) distinguishes routing/final
+answer failures from passing software guards. Next exact-tool diagnostics are guided
+conditions, not a replacement for the frozen autonomous first attempts.
+
 **0.9.3 repair and next tests:** [manual B0/D0 setup and two fresh-chat preview tasks](mcp.md#finance-handoffs-and-readiness-093)
 exercise exact same-tool bindings and one-response readiness selection without paying
 for data. The old B3/D0 live batch is exhausted. Original/guided 0.9.2 results remain

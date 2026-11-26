@@ -1,5 +1,15 @@
 # Margin build and evaluation plan
 
+## Gate after actual 0.9.3 previews
+
+Both goal-only preview tasks fail host acceptance despite passing status and a
+successful fresh-company HUL preview. Zero allowance blocks the model's attempted
+execution; INFY selects the legacy route. Preserve nine admitted calls and final
+prose; do not reset budgets or infer account-credit shortage. Next run separately
+labelled exact-tool execute=false diagnostics at B0/D0. Evaluate overlapping legacy
+and fresh financial tool exposure/error recovery before another autonomous trial.
+No new runtime release is justified by changing allowance alone; no new wheel in audit.
+
 ## Current 0.9.3 acceptance gate
 
 The evaluated preview/readiness repairs are implemented. 575 offline tests/source SDK

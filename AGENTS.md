@@ -1,5 +1,16 @@
 # Working on Margin
 
+**Actual 0.9.3 preview trial:** active user upgraded to all37/keyconfigured/B0D0.
+Freeze private lmstudio-093-finance-previews evidence (9 calls/18 events), no operator
+status added. Status passes; HUL fresh preview succeeds after wrong legacy route,
+then model uses call_id as plan_id and attempts execution despite preview-only task;
+budget blocks, same-key replay no HTTP. INFY only legacy source_required; false fetch-
+first final prose. Both autonomous tasks fail; software guards/preview still work.
+No new provider/model calls, runtime/wheel/config/owner/reset in audit. Model/context/
+preset not re-confirmed. Next separate guided execute=false test; evaluate overlapping
+legacy/fresh tool surface before another autonomous release. Do not buy credits for
+local preview or claim instructions guarantee compliance. No thinking/debug extraction.
+
 **0.9.3 software checkpoint:** 575 tests/Ruff 101 files/skill/source SDK pass. Canonical
 finance next_steps require host key/auth and point to same tool; no plan/key mint.
 plan_unavailable distinguishes absent refs; genuine expiry/legacy replay retained.

@@ -1,5 +1,12 @@
 # Project context and handoff
 
+**Actual active 0.9.3:** user status all37/keyconfigured/B0D0; nine calls/eighteen
+events frozen. Both autonomous finance preview tasks fail: HUL ignores its successful
+fresh-company binding and attempts execution, INFY uses retained-data legacy route.
+Zero provider attempts; not account-credit exhaustion. No runtime/config/wheel change
+in this audit. Separate guided exact-tool diagnostics next; evaluate legacy/fresh
+surface ambiguity, not purchase credits or refill budgets. Model metadata not reconfirmed.
+
 **Latest source 0.9.3:** same-tool executable finance handoffs and missing-key/auth
 flags; no generic plan ID. Absent/expired generic plans are distinguished. Readiness
 scope clarifies unverified facts/intentional empty rows, DCF's explicit calculator
