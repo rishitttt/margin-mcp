@@ -1,5 +1,64 @@
 # Margin MCP adapter architecture and implementation plan
 
+## 0.9.0 review-flow repair plan: 26 November 2026
+
+User explicitly requests fixing the failures, skipping the demo. The preset reached
+Qwen, but it passed URLs/passage IDs as handles, discarded the known record date,
+selected inventory-only and claimed completion without assessments. Keep the original
+conditions/captures; do not solve these by weakening reference/quote/unit guards.
+
+### Selected implementation
+
+Add two core functions with generated typed MCP tools: review.prepare /
+margin_prepare_review and review.submit / margin_submit_review. Preparation accepts
+one supplied text, issuer/title/URL, explicit record/publication dates, ordered claim
+texts and optional sentiment scope. Margin registers the passage, assigns claim/source
+IDs and creates the existing immutable citation/sentiment packets internally. Return
+one opaque review_id, source text/declared dates, assessment targets and a bound next
+step. No source/passage/packet IDs, hashes or host_profile bookkeeping in model input.
+
+Submission takes that review_id, reviewer, ordered claim verdicts/exact quote strings/
+rationales and the optional sentiment annotation. Bind real child references internally;
+reuse the existing submission/quote/hash/issuer/date/aggregation/audit guards. Produce
+one compact report with input context, all verdict rows, support-audit status separately
+from assessment coverage, sentiment counts/balance and unverified-source limitations.
+Semantics remain host-supplied; Margin runs no LLM or browser.
+
+Store review sessions in the same bounded transient TTL/capacity policy, not a database.
+Preparation and submission are atomic across all review stores. Identical replay is
+idempotent; changed submissions conflict. No partial accepted citation when sentiment
+fails, no session lifetime extension and no hidden refetch. Validate the complete
+submission and preserve underlying frozen child packets/hashes.
+
+Keep all old functions and profiles. Full surface becomes 37 tools, advanced review
+16, and optional review-simple exposes only status/prepare/submit (three). Exclude raw
+registration/numeric/capability toggles from this frontend view; it is still not an
+authorization boundary. Scoped instructions demand actual user input, registered text,
+returned review_id and actual final reports. Error messages distinguish malformed URLs/
+claim IDs from issued handles; do not diagnose expiry for a never-issued identifier.
+
+### Dates, trust and honest limits
+
+Represent record_date and publication_date explicitly in the prepared context. Require
+the date selected for sentiment scope and reject unknown/missing selected dates before
+creating state; preserve unknown publication, never mark record date as publication.
+Submission order/count must match prepared claims. Missing fields fail before state;
+the host must ask the user rather than generate sample material. A model can still
+fabricate a syntactically valid task/source; the server cannot authenticate that origin
+without a trusted input channel. Do not claim missing-input honesty or final prose is
+guaranteed. No final-answer interception or independent source verifier is added.
+
+### Validation and release
+
+Test the logged URL-as-ID/date-loss/capability-toggle cases through the new contracts,
+partial or extra submissions, forged quotes, wrong/expired sessions, immutable replay,
+capacity rollback, safe sanitization, unsupported dates, ambiguous provenance and
+complete-but-insufficient outcomes. Verify profile/catalog/schema parity and shared
+owner state with SDK checks; replay real saved text separately as operator input, not
+model gold. Run required suite/lint, build/check/install a new immutable 0.9.0 wheel.
+No API purchase/call, active backend restart/install or allowance reset. The current
+installed 0.8.2 remains unchanged until a deliberate user upgrade and new model test.
+
 ## 0.8.2 plain-anchor registration repair: 26 November 2026
 
 The latest host run registered actual passages but both attempts failed sanitization.

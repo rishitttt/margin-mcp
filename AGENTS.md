@@ -1,5 +1,14 @@
 # Working on Margin
 
+**26 November review-flow fixes authorized:** user says fix failures, skipping demo.
+Follow the 0.9.0 plan in mcp-aggregation before edits. Add high-level prepare/submit
+with one review_id and internal source/packet/hash/date binding, atomic bounded sessions,
+and an optional three-tool review-simple view. Preserve old APIs, hashes, quotes,
+strict units/dates, TTL/capacity, private captures and honest host-supplied semantics.
+No brand/competence inference, sample-task generation, server LLM/browser, provider
+call, active upgrade/restart or budget reset. Missing-input/final-prose honesty is
+not guaranteed by an MCP alone; test it instead of claiming it fixed.
+
 **26 November professor demo ready:** repo-only scripts/demo_mcp_review.py uses the
 installed 0.8.2 SDK/frontend over the existing zero-budget owner. Real saved input and
 operator judgments are private; no inferred labels/LLM/provider calls. Ten-call success
