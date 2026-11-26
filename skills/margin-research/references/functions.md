@@ -125,7 +125,15 @@ Company-preview accepts `money_unit: "auto"` (default), explicit monetary scales
 The announcement schema's added extraction flag was reviewed. Margin explicitly defaults `include_extracted_information` to false and holds true; no generic executor or extraction branch is newly enabled. Query preview/receipts show the default. The runtime catalog owns connection/schema holds.
 
 
-## MCP transport, package 0.9.0
+## MCP transport, package 0.9.1
+
+Every profile advertises no-fabrication guidance. Use returned evidence or explicit
+user inputs; never invent calculator values/dates after an error. Growth compares
+periods, TTM sums eligible quarterly monetary flows and rejects EPS/stocks before
+fetching. Fresh/legacy/catalog TTM defaults are quarterly. Company CAGR uses exact
+calendar-year differences on matching annual anniversaries, otherwise a disclosed
+actual-days/365.25 convention. These guards do not authenticate arbitrary host inputs.
+
 
 37 full-profile tools, 16 advanced review-profile tools or 3 review-simple tools, unchanged 37 retrieval/finance
 operations and twelve review functions. Profiles are frontend views, not authorization

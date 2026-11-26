@@ -10,6 +10,7 @@ from mcp.shared.exceptions import MCPError
 
 from margin.core.contracts import encoded_size
 from margin.core.validation import validation_summary
+from margin.interfaces.mcp.policy import DATA_INSTRUCTIONS
 from margin.interfaces.mcp.tools import DIRECT_REVIEWS
 
 REVIEW_TOOLS = frozenset(DIRECT_REVIEWS) | {
@@ -19,7 +20,9 @@ REVIEW_TOOLS = frozenset(DIRECT_REVIEWS) | {
     "margin_review_sources",
 }
 SIMPLE_TOOLS = frozenset({"margin_status", "margin_prepare_review", "margin_submit_review"})
-SIMPLE_INSTRUCTIONS = """Margin review-simple exposes only status, prepare and submit.
+SIMPLE_INSTRUCTIONS = (
+    DATA_INSTRUCTIONS
+    + """Margin review-simple exposes only status, prepare and submit.
 Use the actual user's source text and task. If text, claims or required dates are
 missing, ASK the user; do not invent an example company/document or run a sample.
 Call margin_prepare_review with supplied text/metadata, ordered claim texts (or [] for
@@ -37,7 +40,10 @@ LLM/browser/provider call or original authentication. Host judgments are unverif
 Unknown/expired reviews stop; never restart, reset budgets or refetch to rescue them.
 Optional why is a visible brief action summary, not hidden reasoning.
 """
-REVIEW_INSTRUCTIONS = """Margin local review profile exposes only its advertised tools.
+)
+REVIEW_INSTRUCTIONS = (
+    DATA_INSTRUCTIONS
+    + """Margin local review profile exposes only its advertised tools.
 Prefer margin_prepare_review then margin_submit_review for supplied-text tasks; Margin
 binds dates/source/packet references and returns one report. Legacy tools are advanced.
 Citation review is optional, not a prerequisite for ordinary retrieval/math. The
@@ -72,6 +78,7 @@ Optional why is one brief visible summary, never hidden reasoning. Recording bel
 to the operator's backend; its logs do not capture host parser failures/final prose or
 this frontend's profile projection. Record the profile in experiment configuration.
 """
+)
 
 
 class ToolView:

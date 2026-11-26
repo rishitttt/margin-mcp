@@ -1,17 +1,22 @@
 # Margin
 
-**Current source release: 0.9.0 (26 November).** Supplied-text claim review and
-content sentiment now use two calls: prepare the actual task, then submit judgments
-with one returned review ID. Margin binds source/passage/packet references internally
-and returns the combined report. An optional `review-simple` profile exposes three
-tools; advanced review exposes 16 and full mode 37. Existing finance/retrieval tools
-remain available. No server LLM, document authentication or database is required.
-[Install and test](docs/mcp.md#two-step-review-090),
-[validation](docs/implementation.md),
-[wheel](releases/0.9.0/margin_research-0.9.0-py3-none-any.whl) and
-[checksum](releases/0.9.0/SHA256SUMS). The user has activated 0.9.0 and completed the new flow in advanced review mode
-with a recovered host error; the three-tool profile and missing-input tests remain.
-See validation for actual calls and remaining model-reporting issues.
+**Current source release: 0.9.1 (27 November).** MCP initialization, tool descriptions,
+status/catalog policy and financial errors explicitly prohibit fabricated company facts,
+numbers, dates and sources. Discovery distinguishes annual growth from quarterly TTM
+and directs company questions to company capabilities. These instructions guide the
+host; they do not authenticate arbitrary caller facts or guarantee model compliance.
+TTM defaults/metric guards and annual CAGR duration are repaired. Existing review,
+APIs and profile counts remain:
+37 full tools, 16 advanced review, three review-simple. No new profile or provider call.
+[Validation](docs/implementation.md),
+[wheel](releases/0.9.1/margin_research-0.9.1-py3-none-any.whl) and
+[checksum](releases/0.9.1/SHA256SUMS). Active user backend remains 0.9.0 until a deliberate
+upgrade; [instructions](docs/mcp.md#no-fabrication-guidance-091). Post-upgrade model test
+is still required; the failed 0.9.0 discovery trial remains preserved.
+
+**Historical release: 0.9.0.** Two-step supplied-text review and internally bound
+references remain available. Operator SDK checks and the recovered real-model review
+are distinct from the later failed autonomous finance-discovery test.
 
 **Historical release: 0.8.2.** Narrow plain-anchor registration normalization and
 assessment-coverage reporting remain in 0.9.0. Older dated checkpoints below are history.

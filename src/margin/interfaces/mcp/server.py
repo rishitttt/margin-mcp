@@ -26,6 +26,7 @@ from margin.core.service import ResearchService
 from margin.core.validation import validation_summary
 from margin.interfaces.agent.client import BridgeError
 from margin.interfaces.agent.local_config import read_provider_env
+from margin.interfaces.mcp.policy import DATA_INSTRUCTIONS, DATA_POLICY, FINANCIAL_RECOVERY
 from margin.interfaces.mcp.recording import ToolRecorder
 from margin.interfaces.mcp.tools import (
     CONTRACT,
@@ -36,7 +37,15 @@ from margin.interfaces.mcp.tools import (
     definitions,
 )
 
-INSTRUCTIONS = """Margin provides Indian-company research tools over one process-local core.
+INSTRUCTIONS = (
+    DATA_INSTRUCTIONS
+    + """Margin provides Indian-company research tools over one process-local core.
+For a ticker-based finance question discover group=company first, normally without
+schemas; then inspect only the selected schema. Annual revenue growth uses
+finance.company_growth (two periods), NOT company_ttm (four quarterly amounts).
+Prefer each company entry's fresh_mcp_execution for fresh data; its typed tool schema
+is distinct from legacy planning_schema. Do not load all calculation schemas to pick
+a company workflow. When discovery is enough, stop with proposed inputs and call bounds.
 For supplied-text claim/sentiment review prefer margin_prepare_review then
 margin_submit_review: one review_id, internal source/packet/hash/date binding and one
 final report. Ask for missing user material, never invent a task. Legacy primitives
@@ -126,6 +135,7 @@ Use packet expires_at for expiry; original_document_verified concerns authentici
 The optional --tool-profile review advertises only local review/retained-result tools
 over the same owner; switching only the frontend profile does not reset state/budgets.
 """
+)
 
 
 class MarginMCP:
@@ -260,6 +270,17 @@ class MarginMCP:
                 }
             }
             error = True
+        if error and (
+            name in DIRECT_FUNCTIONS
+            or name
+            in {
+                "margin_company_finance",
+                "margin_company_preview",
+                "margin_calculate",
+                "margin_facts",
+            }
+        ):
+            body["error"]["recovery_guidance"] = FINANCIAL_RECOVERY
         if event and request_logged:
             try:
                 self.recorder.append(
@@ -407,6 +428,7 @@ class MarginMCP:
             "routing_notice": "Catalog function identifiers are not callable MCP tools. Use each entry's mcp_execution.tool and bind; place inputs at inputs_at. Never replace dots with underscores. why is a top-level MCP argument.",
             "schema_lookup": "Generic calls MUST request one name/group with include_schemas=true and preserve that exact operation/function schema and nesting. Typed direct calls use their own MCP tools/list inputSchema, not the generic nested schema. Both originate from reviewed core contracts; do not guess from examples/provider docs. Unknown context stays unknown.",
             "availability_is_not_source_verification": True,
+            "data_policy": copy.deepcopy(DATA_POLICY),
         }
 
     def require_session(self, supplied):
@@ -440,6 +462,7 @@ class MarginMCP:
         if name == "margin_status":
             return self.service.status() | {
                 "package_version": VERSION,
+                "data_policy": copy.deepcopy(DATA_POLICY),
                 "state_owner": self.state_owner,
                 "state_lifetime": "Source TTL/eviction applies; stopping the state owner invalidates handles and does not renew upstream quota.",
                 "recording_enabled": self.recorder.path is not None,

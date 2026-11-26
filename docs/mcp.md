@@ -1,5 +1,41 @@
 # Run Margin as a local MCP server
 
+## No-fabrication guidance (0.9.1)
+
+Current source 0.9.1 explicitly tells every profile: use actual tool evidence or explicit
+user inputs; never invent company amounts, dates, units, source text or provenance.
+Hypotheticals are allowed only when the user supplies/requests them and their labels
+remain explicit. Errors/held access/missing context do not authorize synthetic fallback.
+Status/catalog expose data_policy; relevant tools repeat the rule, and financial errors
+return recovery_guidance. Company questions discover group=company before calculator
+schemas; annual growth compares periods while TTM sums four eligible quarters.
+
+The same patch repairs known finance contracts: TTM defaults to quarterly in fresh
+and legacy paths; TTM/CAGR period constraints are advertised; impossible non-flow TTM
+metrics are refused before fetching. Company CAGR uses exact calendar-anniversary
+years, otherwise a disclosed actual-days/365.25 convention. Readiness can report an
+unsupported TTM metric without failing other groups. No real provider call was used
+to implement these repairs.
+
+This is an instruction protocol, not automatic source authentication or proof that a
+model obeys. Financial/period/quote guards remain; hypothetical arithmetic remains
+available. No new tool/profile/count, Margin LLM or extra provider request is added.
+The active user installation stays 0.9.0 until manually replaced. Save the old ledger/
+logs before this explicit upgrade; stopping the owner invalidates old handles:
+
+```sh
+/Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.9.1/margin_research-0.9.1-py3-none-any.whl
+MARGIN_BHARATSTOCK_REQUESTS=0 MARGIN_DRISHTI_REQUESTS=0 MARGIN_DRISHTI_CREDITS=0 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --mode live --record-dir /Users/rishit/Desktop/mtest/logs
+```
+
+Keep the terminal running; reconnect the frontend (--tool-profile all) and start a
+fresh chat. Local discovery needs no provider key/allowance. Status must report 0.9.1
+and data_policy.fabricated_company_data_allowed=false. Repeat the same full discovery
+prompt in [finance tests](finance-agent-tests.md); preserve first attempts, parse errors
+and final prose. No new live requests are authorized by the version change. Old wheels
+remain immutable. No active install/restart/configuration edit is performed by the build.
+
 ## Two-step review (0.9.0)
 
 **Current: 0.9.0, 26 November 2026 IST.** 37 full tools, 16 advanced `review`

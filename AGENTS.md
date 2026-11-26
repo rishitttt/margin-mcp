@@ -1,5 +1,15 @@
 # Working on Margin
 
+**0.9.1 completed software checks:** 544 offline tests, Ruff 98 files and source SDK
+checks pass. New policy is advisory, not source authentication. Reproduced/fixed TTM
+catalog/legacy default disagreement, pre-fetch non-flow refusal (EPS/stocks), and
+company CAGR anniversary-year duration with explicit fractional fallback. Full saved
+HUL sources replay nine workflows: seven success/two correct scope-held partial; compact
+inputs alone still hit missing-period guard, never invent dates. Immutable 0.9.1 wheel/installed
+SDK checks pass (full/review/simple/shared), 53 matching source modules. Active 0.9.0 untouched; earlier B4 authorization exhausted, no new
+model/provider calls. Preserve old artifacts and private baseline/failing-regression
+captures. Actual model behavior still requires a fresh post-upgrade trial.
+
 **27 November no-fabrication patch authorized:** full-profile Qwen discovery failed
 with wrong annual-TTM selector, invented revenue/date and host JSON parse failure.
 Preserve lmstudio-090-finance-discovery private evidence (2 admitted calls/1 guarded

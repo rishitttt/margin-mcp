@@ -228,6 +228,20 @@ FIELDS = {
     "diluted_eps_adjusted": "Provider diluted EPS adjusted for subsequent bonus/split multiplier",
 }
 
+TTM_FLOW_METRICS = frozenset(
+    {
+        "revenue",
+        "net_profit",
+        "net_profit_attributable_to_owners",
+        "profit_from_continuing_operations",
+        "operating_profit",
+        "ebitda",
+        "ebit",
+        "cash_flow_operating",
+        "capex",
+    }
+)
+
 STOCK_FIELDS = {
     "current_assets": "Reported current assets at period end",
     "current_liabilities": "Reported current liabilities at period end",

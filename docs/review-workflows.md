@@ -1,5 +1,11 @@
 # Citation and sentiment handoffs
 
+**0.9.1 guidance:** every review/full profile now starts with a no-fabrication rule.
+Use actual supplied text/claims and tool-returned evidence; ask for missing material
+rather than inventing a source/task. Hypotheticals must be user-requested/supplied and
+labelled. The two-step review contract and all quote/packet/date guards are unchanged.
+This remains host guidance, not source authenticity or guaranteed model obedience.
+
 ## Two-step model acceptance (0.9.0)
 
 For supplied-text tasks prefer margin_prepare_review → margin_submit_review. The

@@ -1,5 +1,55 @@
 # Implementation and validation status
 
+## 0.9.1 guidance and function-safety repairs: 27 November 2026 IST
+
+Plan 1d0c925 preceded runtime edits; user additionally requested a broader audit/fixes.
+Full-profile model baseline failed (two admitted calls, one annual-TTM guard error,
+one caller-only malformed JSON attempt with invented amount/date). Original input,
+requests and metadata remain private in lmstudio-090-finance-discovery-2026-11-27;
+thinking/debug text is excluded. Qwen3-8B/context 30,183; last generation reports
+17,611 prompt/496 predicted tokens, not evidence of context overflow. The explicit
+annual-TTM choice was the model's error; catalog default defects are separate findings.
+
+No-fabrication guidance now leads all initialization profiles and appears in relevant
+tool descriptions, status/catalog data_policy and financial recovery_guidance. Use
+returned evidence or explicit user values, label user-requested hypotheticals, and
+stop on missing/held data rather than inventing calculator inputs. Company-first,
+selected-schema discovery and growth-vs-TTM semantics are explicit. Advisory protocol
+cannot authenticate arbitrary inputs or guarantee model/final-prose compliance.
+
+Four failing pre-fix tests reproduced three additional implementation issues:
+
+- TTM catalog/legacy defaults were annual. They now match fresh quarterly defaults;
+  fresh/legacy tool schemas express TTM-quarterly/CAGR-annual constraints.
+- Non-flow TTM metrics could cause an unnecessary request before refusal. A shared
+  eligible-flow set rejects EPS, ratios and balance-sheet stocks before fetching;
+  readiness still reports unsupported components without losing other groups.
+- Company CAGR used days/365.25 even for exact annual anniversaries. Exact matching
+  month/day endpoints now use calendar-year differences, so one-year CAGR equals
+  annual growth, including leap-year spans. Other endpoints retain a disclosed actual-
+  days/365.25 convention. Explicit-input CAGR math remains unchanged.
+
+**544 offline tests pass; Ruff lint/format pass (98 Python files).** Added cases span
+all fifteen local calculations, reviewed retrieval specs, all nine company defaults,
+known-invalid period/metric combinations, missing review input, policy consistency,
+HTTP TTM default behavior, leap/non-leap CAGR and partial readiness. Existing unit,
+null, quote/hash/TTL, duplicate/uncertainty and reporting tests remain green. Source
+SDK full/review/simple/shared checks pass with unchanged 37/16/3 tool counts. Saved
+real HUL responses replay across all nine company functions: seven success, two
+partial scope holds. One-year CAGR agrees with growth within Decimal rounding.
+No new real provider/model call; four earlier authorized live calls remain exhausted.
+
+The new immutable wheel is checked separately from the active user installation.
+Installed-wheel full/review/simple/shared SDK checks pass: 55/18/5/16 tool calls,
+110/34/10/32 recorded events respectively, unchanged 37/16/3 profile counts, stable
+shared ownership. The advanced check includes expected frontend/schema rejections.
+The wheel matches 53 source modules/63 archive entries, its build-time README metadata
+and secret scan; prior artifacts are unchanged. See private REPORT.json and
+FUNCTION_MATRIX.json in no-fabrication-2026-11-27. These software fixtures made zero
+real provider/model calls and use the existing pinned dependencies.
+Active user owner/version 0.9.0, model settings, provider keys and budgets stay untouched.
+No active upgrade/restart or new profile. A fresh post-upgrade model trial is required.
+
 ## Finance discovery and live SDK checks: 27 November 2026 IST
 
 No runtime release/active-owner change. 0.9.0 full37 advertises all nine company
@@ -25,7 +75,7 @@ company functions are previewed/eligibility-checked, not all separately called l
 
 Private REPORT.json/REPORT.md and per-function matrix live under reports/private/
 finance-discovery-2026-11-27; licensed payloads stay ignored. No hidden model thinking
-captured, active review backend remains version0.9.0/unconfigured/B0, and no old wheel
+captured, active review backend remains version 0.9.0/unconfigured/B0, and no old wheel
 was replaced. Validation: 470 offline tests pass, Ruff check/format pass (95 Python files), and
 the 14-case manifest/budgets, local documentation links and secret scans pass. Prior
 release checksums remain unchanged. Separate [goal-only tests](finance-agent-tests.md)

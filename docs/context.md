@@ -1,5 +1,14 @@
 # Project context and handoff
 
+**Latest source 0.9.1, 27 November:** explicit no-fabrication policy plus company-first
+and growth-vs-TTM guidance. Broader reproduced fixes: quarterly TTM defaults across
+interfaces, pre-fetch rejection of non-flow TTM metrics, exact-anniversary company
+CAGR years with disclosed fallback; unsupported readiness components stay partial.
+544 offline tests and source SDK checks pass; saved-real HUL replay yields seven success/two scope-held partial results. Active
+user 0.9.0 remains unchanged, earlier B4 allocation exhausted, no new model/provider
+calls. New wheel/manual upgrade followed by an identical goal-only test is next; do
+not claim the policy guarantees obedience or validates fabricated caller facts.
+
 **27 November finance acceptance:** existing 0.9.0 full37 has nine company workflows,
 six raw BharatStock operations and fifteen local calculations. All nine company previews
 pass; isolated B4/D0 real SDK run passes HUL margin, INFY growth/readiness and HUL quote.

@@ -3,6 +3,7 @@
 import asyncio
 import copy
 import json
+import sys
 from decimal import Decimal
 
 import httpx
@@ -94,6 +95,65 @@ def args(function="margins", **more):
         "idempotency_key": "fresh-test-" + function,
         **more,
     }
+
+
+@pytest.mark.parametrize("ends", [("2026-03-31", "2025-03-31"), ("2024-03-31", "2023-03-31")])
+async def test_one_anniversary_year_cagr_matches_growth_without_day_count_drift(
+    fresh_service, monkeypatch, ends
+):
+    service, _ = fresh_service
+    monkeypatch.setattr(
+        sys.modules[__name__], "rows", lambda: [row(ends[0], 1000000000), row(ends[1], 800000000)]
+    )
+    growth = await service.company_finance(**args("growth"))
+    cagr = await service.company_finance(**args("cagr"))
+    assert cagr["details"]["values"]["years"] == "1"
+    assert (
+        cagr["details"]["values"]["cagr_percent"]
+        == growth["details"]["values"]["percentage_change"]
+    )
+
+
+@pytest.mark.parametrize("metric", ["total_assets", "eps", "current_liabilities"])
+async def test_stock_ttm_is_rejected_before_a_provider_request(fresh_service, metric):
+    service, observed = fresh_service
+    with pytest.raises(DomainError):
+        await service.company_finance(**args("ttm", metric=metric))
+    assert observed == []
+
+
+async def test_quarterly_readiness_reports_unusable_ttm_metric_without_losing_other_groups(
+    fresh_service,
+):
+    service, _ = fresh_service
+    result = await service.company_finance(
+        **args("data_readiness", metric="total_assets", period_type="quarterly")
+    )
+    assert result["status"] == "success"
+    checks = result["details"]["values"]["calculation_readiness"]
+    assert checks["finance.company_ttm"]["status"] == "incomplete"
+    assert checks["finance.company_balance_sheet_metrics"]["status"] == "success"
+
+
+async def test_non_anniversary_cagr_discloses_day_count_convention(fresh_service, monkeypatch):
+    service, _ = fresh_service
+    monkeypatch.setattr(
+        sys.modules[__name__],
+        "rows",
+        lambda: [row("2026-03-31", 1000000000), row("2025-03-30", 800000000)],
+    )
+    result = await service.company_finance(**args("cagr"))
+    assert result["status"] == "success"
+    assert any("otherwise actual days / 365.25" in w for w in result["warnings"])
+
+
+async def test_legacy_ttm_omission_matches_function_default_without_fetching():
+    service = ResearchService(Settings())
+    try:
+        plan = service.plan_financial("finance.company_ttm", "SYNTHA", "NSE", fetch_missing=True)
+        assert plan["operations"][0]["arguments"]["period_type"] == "quarterly"
+    finally:
+        await service.close()
 
 
 @pytest.mark.parametrize("function", list(company.FUNCTIONS))

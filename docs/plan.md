@@ -1,5 +1,16 @@
 # Margin build and evaluation plan
 
+## Current 0.9.1 acceptance gate
+
+No-fabrication protocol and reproduced TTM/CAGR/default/metric fixes are implemented.
+544 offline tests, source SDK checks and saved-real-input replay pass. The immutable
+wheel and its installed SDK checks pass; next manually upgrade the still-
+active 0.9.0 owner and repeat the same full-profile discovery task. Also test missing
+facts/invalid periods, and explicit user hypothetical arithmetic. No live calls remain
+authorized; provider/API/model success must not be inferred from software guards.
+A focused company profile remains a possible later condition if measured behavior
+still fails. No new profile or server LLM is added in 0.9.1.
+
 ## Finance discovery and agent acceptance: 27 November 2026
 
 **Measured:** [operator checks](implementation.md) passed all nine previews and four

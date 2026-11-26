@@ -1,5 +1,15 @@
 # Test finance discovery through Margin
 
+**0.9.1 patch after the first model baseline:** full 0.9.0 discovery failed: wrong
+annual-TTM choice, then invented amount/date in malformed manual calculator JSON.
+No provider data call occurred. Qwen3-8B context 30,183; reported last-generation prompt
+17,611/generated496 does not establish context overflow. Preserve the original trial.
+Source 0.9.1 adds explicit no-fabrication policy and growth-vs-TTM/company-first guidance;
+no new profile or guaranteed behavior change. [Manual upgrade](mcp.md#no-fabrication-guidance-091),
+then repeat the identical goal-only prompt as a separate experimental condition. Keep
+model/preset/context/profile fixed and record first attempts. Old task/rubric baseline
+labels remain 0.9.0; record actual installed version for each new run.
+
 Current baseline: package 0.9.0, full profile (`all`), 37 advertised tools. No new wheel
 is needed. Review profiles intentionally hide BharatStock/finance execution. MCP hosts
 receive the advertised schemas and initialization guidance; the model still decides
@@ -99,6 +109,9 @@ Private capture: reports/private/finance-discovery-2026-11-27/REPORT.{json,md}, 
 The initial preview-01 stopped locally because the active owner had no key. It spent
 zero provider requests. The configured isolated test owner was closed after its four
 attempts; the user's active review owner was not changed. No model call was made.
+
+The checkout frontend/checker must match the running backend package version.
+Do not run a new 0.9.1 frontend over an old 0.9.0 owner; upgrade deliberately first.
 
 The scripts/check_finance_discovery.py checker attaches to an existing live owner and
 only permits status, catalog, preview and execute=false company calls. It stops if a

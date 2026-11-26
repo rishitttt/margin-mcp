@@ -1,5 +1,12 @@
 # Margin: quick handoff
 
+**Current source 0.9.1, 27 November:** no-fabrication guidance is explicit in the MCP.
+Safety audit also repairs TTM defaults/metric eligibility and company CAGR calendar-
+year duration. 544 offline tests and source SDK compatibility checks pass. All APIs/
+profile counts remain 37/16/3; no new model/provider call. Active 0.9.0 untouched;
+[manual upgrade](docs/mcp.md#no-fabrication-guidance-091) then repeat the same discovery
+prompt. The model failure and the implementation defects are separately documented.
+
 **27 November finance work:** [Full-profile goal-only tests](docs/finance-agent-tests.md)
 and a separate 14-case agent/reviewer pack are ready. Existing 0.9.0 needs no reinstall;
 select frontend all to expose finance. Nine previews pass and four authorized real SDK

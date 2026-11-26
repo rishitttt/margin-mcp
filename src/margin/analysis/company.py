@@ -4,24 +4,30 @@ from __future__ import annotations
 
 import copy
 from datetime import date
-from decimal import Decimal
+from decimal import Decimal, localcontext
 
 from jsonschema import Draft202012Validator, ValidationError
 
-from margin.analysis.facts import FIELDS, MONEY_UNITS, STOCK_FIELDS, prepare_financial_facts
+from margin.analysis.facts import (
+    FIELDS,
+    MONEY_UNITS,
+    STOCK_FIELDS,
+    TTM_FLOW_METRICS,
+    prepare_financial_facts,
+)
 from margin.analysis.service import calculate, obj
 from margin.core.contracts import DomainError
 
 FUNCTIONS = {
-    "finance.company_data_readiness": "Inspect retained fields and calculation readiness; no forecast assumptions",
+    "finance.company_data_readiness": "Inspect available fields and calculation readiness; no forecast assumptions",
     "finance.company_balance_sheet_metrics": "Point-in-time liquidity and borrowings metrics",
     "finance.company_cash_conversion": "CFO margins, capex intensity and cash conversion",
     "finance.company_profitability": "Defined group/owners/operating/EBITDA margins",
     "finance.company_margins": "Latest-period continuing-profit margin when supplied, otherwise reported group-profit margin with scope caveat",
     "finance.company_cashflow_metrics": "Latest-period operating cash flow minus capex and coverage",
-    "finance.company_growth": "Change between the latest two returned periods",
+    "finance.company_growth": "Absolute and percentage change between the latest two returned periods; not a TTM sum",
     "finance.company_cagr": "CAGR between two returned annual endpoints",
-    "finance.company_ttm": "Sum of four returned quarterly flows, if dates establish continuity",
+    "finance.company_ttm": "Sum of four eligible quarterly flows, not growth or balance-sheet stocks; requires continuity",
 }
 SCHEMA = obj(
     {
@@ -35,6 +41,29 @@ SCHEMA = obj(
         "source_run_id": {"type": ["string", "null"], "maxLength": 100},
     }
 )
+
+
+def default_period(function):
+    return "quarterly" if function == "finance.company_ttm" else "annual"
+
+
+def function_constraints():
+    return [
+        {
+            "if": {"properties": {"function": {"const": name}}, "required": ["function"]},
+            "then": {"properties": properties},
+        }
+        for name, properties in [
+            (
+                "finance.company_ttm",
+                {
+                    "period_type": {"const": "quarterly"},
+                    "metric": {"enum": [m for m in FIELDS if m in TTM_FLOW_METRICS]},
+                },
+            ),
+            ("finance.company_cagr", {"period_type": {"const": "annual"}}),
+        ]
+    ]
 
 
 def planning_capabilities():
@@ -52,24 +81,32 @@ def planning_capabilities():
         ),
         fetch_missing={"type": "boolean", "default": False},
     )
-    return [
-        {
-            "function": name,
-            "description": description,
-            "planning_schema": obj(
-                properties | {"function": {"const": name}}, ["function", "ticker", "exchange"]
-            ),
-            "defaults": {
-                "period_type": "annual",
-                "basis": "consolidated",
-                "money_unit": "auto",
-                "metric": "revenue",
-                "fetch_missing": False,
-            },
-            "note": "Reuse a matching retained source or explicitly preview one missing financials request.",
-        }
-        for name, description in FUNCTIONS.items()
-    ]
+    rows = []
+    for name, description in FUNCTIONS.items():
+        inputs = copy.deepcopy(properties)
+        inputs["period_type"]["default"] = default_period(name)
+        if name in {"finance.company_ttm", "finance.company_cagr"}:
+            inputs["period_type"]["enum"] = [default_period(name)]
+        if name == "finance.company_ttm":
+            inputs["metric"]["enum"] = [m for m in FIELDS if m in TTM_FLOW_METRICS]
+        rows.append(
+            {
+                "function": name,
+                "description": description,
+                "planning_schema": obj(
+                    inputs | {"function": {"const": name}}, ["function", "ticker", "exchange"]
+                ),
+                "defaults": {
+                    "period_type": default_period(name),
+                    "basis": "consolidated",
+                    "money_unit": "auto",
+                    "metric": "revenue",
+                    "fetch_missing": False,
+                },
+                "note": "Reuse a matching retained source or explicitly preview one missing financials request.",
+            }
+        )
+    return rows
 
 
 def validate(function, arguments):
@@ -85,6 +122,14 @@ def validate(function, arguments):
         raise DomainError("invalid_input", "Company CAGR requires annual financials.")
     if function == "finance.company_ttm" and arguments["period_type"] != "quarterly":
         raise DomainError("invalid_input", "Company TTM requires quarterly financials.")
+    if (
+        function == "finance.company_ttm"
+        and arguments.get("metric", "revenue") not in TTM_FLOW_METRICS
+    ):
+        raise DomainError(
+            "invalid_input",
+            "TTM requires monetary quarterly flows, not EPS, ratios or balance-sheet stocks.",
+        )
 
 
 def calculate_company(function, arguments, source):
@@ -129,7 +174,13 @@ def calculate_company(function, arguments, source):
                 or (name.endswith("_cagr") and arguments["period_type"] != "annual")
             ):
                 continue
-            assessed = calculate_company(name, arguments, source)
+            try:
+                assessed = calculate_company(name, arguments, source)
+            except DomainError as exc:
+                if exc.code != "invalid_input":
+                    raise
+                checks[name] = {"status": "incomplete", "issues": [exc.message]}
+                continue
             checks[name] = {
                 k: assessed[k] for k in ["status", "issues", "components"] if k in assessed
             }
@@ -218,10 +269,15 @@ def calculate_company(function, arguments, source):
                 "current": pick(arguments["metric"], dates[0]),
             }
             if function.endswith("_cagr"):
-                inputs["years"] = str(
-                    Decimal((date.fromisoformat(dates[0]) - date.fromisoformat(dates[1])).days)
-                    / Decimal("365.25")
-                )
+                current, previous = date.fromisoformat(dates[0]), date.fromisoformat(dates[1])
+                anniversary = (current.month, current.day) == (previous.month, previous.day)
+                with localcontext() as context:
+                    context.prec = 34
+                    inputs["years"] = str(
+                        Decimal(current.year - previous.year)
+                        if anniversary
+                        else Decimal((current - previous).days) / Decimal("365.25")
+                    )
     if not function.endswith("_data_readiness") or issues:
         output = (
             calculate(target, inputs)
@@ -246,6 +302,10 @@ def calculate_company(function, arguments, source):
         *prepared["warnings"],
         "Latest means latest within this bounded response; not independently established as the latest filing.",
     ]
+    if function.endswith("_cagr"):
+        output["warnings"].append(
+            "CAGR duration uses exact calendar-anniversary years when endpoints share month/day; otherwise actual days / 365.25, explicitly a day-count convention."
+        )
     if function.endswith("_cagr"):
         output["warnings"].append(
             "Elapsed years are derived from returned endpoint dates / 365.25; two annual endpoints are not a long-term growth history."

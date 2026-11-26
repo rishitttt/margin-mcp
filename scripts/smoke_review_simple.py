@@ -70,6 +70,8 @@ async def main(options):
                     return body["data"]
 
                 before = await call("margin_status")
+                assert initialized.instructions.startswith("Never fabricate")
+                assert before["data_policy"]["fabricated_company_data_allowed"] is False
                 assert before["tool_profile"] == "review-simple" and before["advertised_tools"] == 3
                 assert before["review_readiness"]["provider_auth_required"] is False
                 prepared = await call(

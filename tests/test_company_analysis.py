@@ -118,6 +118,18 @@ def test_financial_http_plans_and_local_functions_return_standard_result_cards()
         )
         assert bad.status_code == 400
         assert len(client.get("/api/analysis/company-functions").json()["functions"]) == 9
+        ttm = client.post(
+            "/api/analysis/plans",
+            json={
+                "function": "finance.company_ttm",
+                "ticker": "SYNTHA",
+                "exchange": "NSE",
+                "fetch_missing": True,
+            },
+            headers=headers,
+        )
+        assert ttm.status_code == 200
+        assert ttm.json()["operations"][0]["arguments"]["period_type"] == "quarterly"
         # An ordinary local FCFF function also uses preview/run/result retention.
         plan = client.post(
             "/api/plans",

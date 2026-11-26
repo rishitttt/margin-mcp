@@ -270,7 +270,7 @@ class ResearchService:
         function,
         ticker,
         exchange,
-        period_type="annual",
+        period_type=None,
         basis="consolidated",
         money_unit="auto",
         metric="revenue",
@@ -278,6 +278,8 @@ class ResearchService:
         fetch_missing=False,
     ):
         """Resolve reuse versus one data dependency before paid intent is submitted."""
+        if period_type is None:
+            period_type = company.default_period(function)
         if self.settings.mode == "live" and money_unit not in (None, "auto", "INR"):
             raise DomainError(
                 "unit_conflict",

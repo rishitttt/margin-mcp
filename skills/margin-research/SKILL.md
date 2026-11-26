@@ -5,6 +5,17 @@ description: Retrieve Indian listed-company financial and event data, run determ
 
 # Margin research
 
+Never fabricate company financial data, dates, units, quotes or provenance. Use tool
+results or explicit user values only. User-requested/supplied hypothetical examples
+must stay labelled. A missing/held/invalid call is not permission to create calculator
+facts. Discovery-only tasks return capabilities/proposed inputs, not invented amounts.
+For ticker questions inspect company capabilities first, then one selected schema.
+Annual growth compares two annual periods; TTM sums four eligible monetary quarters,
+not growth, EPS or stocks. TTM defaults to quarterly across fresh/legacy interfaces.
+Company CAGR uses exact anniversary years, otherwise a disclosed day-count convention.
+Margin 0.9.1 exposes this host guidance in initialization/status/catalog/errors; it is
+not independent authentication of caller facts or guaranteed host compliance.
+
 For Margin 0.9.0 supplied-text claim/sentiment tasks prefer margin_prepare_review,
 then margin_submit_review with the ONE returned review_id. Use actual user text,
 metadata and ordered claims; ask for missing material rather than inventing examples.

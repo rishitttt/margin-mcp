@@ -23,12 +23,22 @@ RESPONSE_VERSION = "margin.company_finance.v2"
 KEY = {"type": "string", "pattern": r"^[A-Za-z0-9_-]{8,100}$"}
 SCHEMA = obj(
     {
-        "function": {"enum": sorted(company.FUNCTIONS)},
+        "function": {
+            "enum": sorted(company.FUNCTIONS),
+            "description": "Choose by the user's goal. Annual growth is company_growth, not company_ttm. "
+            + "; ".join(
+                f"{name}: {description}" for name, description in company.FUNCTIONS.items()
+            ),
+        },
         "ticker": copy.deepcopy(company.SCHEMA["properties"]["ticker"]),
         "exchange": {"enum": ["NSE", "BSE"], "default": "NSE"},
         "period_type": {"enum": ["annual", "quarterly"]},
         "basis": {"enum": ["consolidated", "standalone"], "default": "consolidated"},
-        "metric": {"enum": list(FIELDS), "default": "revenue"},
+        "metric": {
+            "enum": list(FIELDS),
+            "default": "revenue",
+            "description": "Selected metric for growth/CAGR/TTM and readiness checks; other metric groups return their defined components. TTM cannot sum balance-sheet stocks.",
+        },
         "execute": {"type": "boolean", "default": False},
         "idempotency_key": KEY,
         "wait_seconds": {"type": "integer", "minimum": 0, "maximum": 30, "default": 30},
@@ -44,7 +54,8 @@ SCHEMA["allOf"] = [
     {
         "if": {"properties": {"execute": {"const": True}}, "required": ["execute"]},
         "then": {"required": ["idempotency_key"]},
-    }
+    },
+    *company.function_constraints(),
 ]
 
 
@@ -101,7 +112,7 @@ class CompanyFinance:
             "exchange": arguments.get("exchange", "NSE"),
             "basis": arguments.get("basis", "consolidated"),
             "period_type": arguments.get(
-                "period_type", "quarterly" if arguments["function"].endswith("_ttm") else "annual"
+                "period_type", company.default_period(arguments["function"])
             ),
             "metric": arguments.get("metric", "revenue"),
             "money_unit": "auto",

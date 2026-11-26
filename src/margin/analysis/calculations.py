@@ -5,7 +5,15 @@ from __future__ import annotations
 from datetime import date, timedelta
 from decimal import Decimal, localcontext
 
-from margin.analysis.facts import MONEY_UNITS, VERSION, check_compatibility, decimal, fact, wire
+from margin.analysis.facts import (
+    MONEY_UNITS,
+    TTM_FLOW_METRICS,
+    VERSION,
+    check_compatibility,
+    decimal,
+    fact,
+    wire,
+)
 from margin.core.contracts import DomainError
 
 
@@ -180,19 +188,10 @@ def calculate_ttm(facts):
         raise DomainError("invalid_input", "TTM needs exactly four explicit quarterly flow facts.")
     items = [fact(v) for v in facts]
     issues = check_compatibility(facts, "ttm")["issues"]
-    flows = {
-        "revenue",
-        "net_profit",
-        "net_profit_attributable_to_owners",
-        "profit_from_continuing_operations",
-        "operating_profit",
-        "ebitda",
-        "ebit",
-        "cash_flow_operating",
-        "capex",
-    }
     if any(
-        v["metric"] not in flows or v["period_type"] != "quarterly" or v["unit"] not in MONEY_UNITS
+        v["metric"] not in TTM_FLOW_METRICS
+        or v["period_type"] != "quarterly"
+        or v["unit"] not in MONEY_UNITS
         for v in items
     ):
         issues.append(

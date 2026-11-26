@@ -1,5 +1,12 @@
 # Financial facts and local calculations
 
+**0.9.1 duration/eligibility repair:** company CAGR uses integer calendar-year differences
+when annual endpoints share month/day; other endpoints use an explicitly disclosed
+actual-days/365.25 convention. Explicit-input CAGR still uses the caller's years. TTM
+defaults to quarterly in both fresh and legacy planning and rejects non-monetary/non-
+flow metrics (including EPS and stocks) before fetching. Missing component readiness
+remains partial rather than losing the whole report. No source authentication is implied.
+
 **0.6.1 metadata:** `finance.compare_periods` now includes per-metric `values.formulas`
 for absolute and percentage change; legacy `values.formula` remains the percentage
 formula. Arithmetic is unchanged. Company report rows carry the applicable formula,

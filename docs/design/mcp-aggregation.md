@@ -2,6 +2,11 @@
 
 ## 0.9.1 no-fabrication guidance plan: 27 November 2026
 
+**Implemented after plan 1d0c925; broader user-requested fixes included.** 544 offline
+tests and source SDK checks pass; saved real HUL replay covers all nine company
+functions (seven success/two correct partial scope holds), no new API call. See
+[implementation](../implementation.md) for findings and limits. Active 0.9.0 unchanged.
+
 The full-profile autonomous discovery trial failed: Qwen selected annual TTM instead
 of growth, then invented revenue/date in malformed calculator JSON. Two backend calls,
 one valid guarded error and one host parse failure; no provider data call. Actual
@@ -21,6 +26,14 @@ This is an advisory host protocol, not source authentication or a guarantee that
 comply. Do not block arbitrary numbers, infer provenance from model brand/why, run a
 server LLM, weaken math/period/unit guards or change any function/route/profile counts.
 A focused company profile remains a possible later experiment; do not claim one added.
+
+The user additionally requests a broader failure audit before testing. Reproduce
+catalog/default disagreements (especially TTM), impossible stock-to-TTM inputs that
+could waste a fetch, and one-year CAGR consistency against ordinary annual growth.
+Fix demonstrated issues, express known period constraints in schemas, and add adverse
+cases across all retrieval/calculation/company routes. Preserve valid hypotheses,
+units, quote/hash guards and distinction between software fixtures and actual source
+validation. Do not turn schema/help changes into guaranteed model semantic correctness.
 
 Test identical policy across initialization profiles/status/catalog, safe error recovery,
 explicit-user hypothetical math, annual-TTM refusal/no network, schema source and route

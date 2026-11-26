@@ -1,5 +1,41 @@
 # Function validation status
 
+## 0.9.1 saved-real company replay matrix
+
+Saved HUL provider responses from 24 November, reprocessed locally; **no fresh API
+requests or model judgments**. Software fixture tests remain a separate evidence class.
+
+| Company workflow | Saved-real replay | Interpretation |
+| --- | --- | --- |
+| Data readiness | success | Field eligibility; does not supply DCF assumptions |
+| Balance-sheet metrics | success | Point-in-time measures preserved |
+| Cash conversion | partial | CFO/group-profit component withheld for scope review |
+| Profitability | partial | Total/owners profit differs from continuing profit; affected margins withheld |
+| Margins | success | Continuing-profit definition preserved |
+| Cashflow metrics | success | CFO less cash capex, not automatically FCFF |
+| Growth | success | Returned-period comparison, not a quarterly sum |
+| CAGR | success | Annual-anniversary duration corrected; agrees with growth within Decimal rounding |
+| TTM | success | Eligible saved quarterly flows; EPS/stocks now refused before fetching |
+
+All fifteen explicit calculations retain software math/contract coverage. Retrieval
+and review malformed/held inputs preserve no-dispatch/state guards. Neither the matrix
+nor 544 offline tests establish every live entitlement, fresh data truth, host semantic
+judgments or autonomous model reliability. Private full matrix: no-fabrication-2026-
+11-27/FUNCTION_MATRIX.json. Missing period context in compact manual facts remains a
+hold; it is not filled with invented dates to make a test pass.
+
+**0.9.1 safety audit, 27 November:** 544 offline tests plus source SDK compatibility
+checks pass. Company TTM defaults now agree on quarterly data across catalog/fresh/
+legacy/HTTP; schemas reject annual TTM, quarterly CAGR and non-flow TTM metrics. EPS/
+stocks are refused before a data request. Readiness preserves other components. Company
+CAGR uses exact calendar-anniversary years, with an explicit day-count fallback.
+No-fabrication guidance is advertised across initialization/tools/status/catalog/errors;
+it is advisory, not authenticated input provenance. New adverse cases cover all local
+calculations, reviewed retrieval specs, nine company defaults and review inputs. Saved
+real HUL responses replay across all nine workflows: seven success/two scope-held
+partial; one-year CAGR agrees with growth within Decimal rounding. No new paid/model
+call or active upgrade. Function inventory/counts are unchanged; see implementation.
+
 **27 November finance discovery:** existing 0.9.0 full profile exposes all nine
 company workflows and six raw BharatStock routes. All nine company previews pass;
 HUL margins, INFY revenue growth, INFY annual readiness and HUL snapshot pass real SDK
