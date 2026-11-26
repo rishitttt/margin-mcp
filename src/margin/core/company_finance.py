@@ -24,6 +24,15 @@ EXECUTION_CONTRACT = {
     "version": "margin.company_execution.v1",
     "scope": "Fresh-company convenience workflow, not the legacy retained-source plan/run route.",
     "provider": "bharatstock",
+    "workflow_selection": {
+        "field_support_across_metric_groups": "finance.company_data_readiness",
+        "purpose": "Inspect profitability, cash-conversion, liquidity and other eligibility in one financial response; previews contain no fetched facts.",
+    },
+    "valuation": {
+        "explicit_function": "finance.calculate_dcf",
+        "valid_company_selector": False,
+        "requires_explicit_assumptions": True,
+    },
     "preview": {
         "execute": False,
         "maximum_provider_requests": {"bharatstock": 0, "drishti": 0},
@@ -178,7 +187,20 @@ class CompanyFinance:
             raise DomainError("invalid_input", "Credentials cannot be supplied as finance inputs.")
         return args, request
 
-    def preview(self, args, request):
+    def preview(self, args, request, submitted=None):
+        submitted = submitted or {}
+        bindings = {
+            key: copy.deepcopy(value) for key, value in args.items() if key in SCHEMA["properties"]
+        }
+        bindings.update(
+            {
+                key: copy.deepcopy(submitted[key])
+                for key in ("idempotency_key", "include_details", "wait_seconds")
+                if key in submitted
+            }
+        )
+        bindings["execute"] = True
+        required = [] if "idempotency_key" in bindings else ["idempotency_key"]
         return {
             "response_version": RESPONSE_VERSION,
             "status": "preview",
@@ -201,6 +223,20 @@ class CompanyFinance:
                 "estimated_drishti_credits"
             ],
             "company_execution_contract": execution_contract(),
+            "creates_plan_id": False,
+            "next_steps": [
+                {
+                    "kind": "execute_fresh_company_finance",
+                    "function": args["function"],
+                    "bound_arguments": bindings,
+                    "required_host_fields": required,
+                    "is_complete_input": not required,
+                    "requires_execution_authorization": True,
+                    "creates_plan_id": False,
+                    "schema_source": "Fresh company-finance input schema. Bindings are input-ready only after required fields are supplied; schema completeness is not execution permission.",
+                    "purpose": "Execute this same workflow only within existing user authorization and remaining allowance. This preview is not a generic plan; no plan ID or additional provider request has been created.",
+                }
+            ],
             "warnings": [
                 "No provider call has occurred. Set execute=true with a stable idempotency_key to fetch and calculate.",
                 "A new executed request fetches fresh page 1 only, even if other sources are retained. Enough usable rows are not guaranteed.",
@@ -215,7 +251,7 @@ class CompanyFinance:
             )
         args, request = self.prepare(arguments)
         if not arguments.get("execute", False):
-            return self.preview(args, request)
+            return self.preview(args, request, arguments)
         key = arguments["idempotency_key"]
         fingerprint = hashlib.sha256(json.dumps(args, sort_keys=True).encode()).hexdigest()
         existing = self.requests.get(key)
@@ -371,8 +407,18 @@ class CompanyFinance:
             if key in output
         }
         output["response_version"] = RESPONSE_VERSION
+        output["request_lifecycle"] = {
+            "state": "finished",
+            "success_is_reported_by": "status and component statuses; finished alone is not financial success",
+            "same_key_action": "Read this existing request result; not refreshed data or another workflow.",
+            "another_analysis_requires_separate_authorized_intent": True,
+        }
         try:
             output["report"] = company_report(output, details)
+            if args["function"] == "finance.company_data_readiness":
+                output["report"]["valuation_readiness"].update(
+                    copy.deepcopy(EXECUTION_CONTRACT["valuation"])
+                )
         except Exception:
             # Complete the task with a bounded answer, not an exception traceback
             # retaining local provider data or inviting another charged request.
@@ -385,6 +431,7 @@ class CompanyFinance:
                         "function",
                         "usage",
                         "idempotency_scope",
+                        "request_lifecycle",
                     )
                 },
                 "status": "failed",
@@ -403,6 +450,7 @@ class CompanyFinance:
                     "function",
                     "usage",
                     "idempotency_scope",
+                    "request_lifecycle",
                 )
             }
             output.update(

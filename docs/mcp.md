@@ -1,5 +1,72 @@
 # Run Margin as a local MCP server
 
+## Finance handoffs and readiness (0.9.3)
+
+A fresh-company preview returns next_steps with canonical bound_arguments, execute=true,
+actual same-tool mcp_execution, required_host_fields and is_complete_input. Caller key,
+wait/projection options are preserved when supplied; missing idempotency_key remains
+required. requires_execution_authorization stays true even when the JSON is complete.
+This is a template, not permission or an automatic call. No key/plan/nonce is minted,
+no paid intent is queued, and the binding excludes selection-only/internal fields.
+
+creates_plan_id=false and do_not_use_tools=[margin_run] distinguish this convenience
+route from a generic plan. Follow the next-step named tool only under the user's
+existing execution authorization and remaining allowance. Merge only the bindings
+and missing required fields; don't copy the whole result as arguments. Generic
+margin_preview/margin_company_preview → margin_run remains valid. An ID absent from
+this owner now yields plan_unavailable; a real retained plan older than its TTL still
+yields plan_expired. The error gives route-specific recovery without creating a plan.
+
+Readiness selection covers multiple metric groups using one financial response, not
+three independent previews. report.readiness_scope states assessment status, checked
+count, numeric_rows_expected=false and source_facts_verified=false. Even complete
+checked fields are not verified facts. No-data readiness stays incomplete/not_assessed;
+unknown null-field coverage stays null. Valuation metadata identifies finance.calculate_dcf
+through margin_calculate with explicit assumptions, not a company-finance selector.
+
+request_lifecycle.state=finished describes a task, not proof of calculation success:
+read status/component statuses. Same-key replay reads this request result, not refreshed
+data or another workflow. Raw audit details are not modified by reporting annotations.
+Metric descriptions avoid cash-cycle days, unsupported quick-ratio adjustments and
+invented accounting inclusions/exclusions. These are host instructions, not source
+authentication or guaranteed final-prose enforcement.
+
+### Manual zero-request upgrade and test
+
+The previous live B3/D0 allocation is exhausted. Existing logs/private captures preserve
+that usage. Do not restart with 3 as a repair. To test the new preview flow without
+spending provider requests, deliberately stop/upgrade/start with keys loaded and B0/D0:
+
+```sh
+/Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.9.3/margin_research-0.9.3-py3-none-any.whl
+MARGIN_BHARATSTOCK_REQUESTS=0 MARGIN_DRISHTI_REQUESTS=0 MARGIN_DRISHTI_CREDITS=0 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --mode live --credentials-file /Users/rishit/Desktop/mtest/.env --record-dir /Users/rishit/Desktop/mtest/logs
+```
+
+Keep the terminal running. Reconnect the MCP frontend with --tool-profile all, start
+a fresh chat and confirm version 0.9.3/37 tools/recording/key configured/B0/D0 via status.
+Old cached answers/handles are lost on owner restart; account usage is not reset.
+A configured key permits local financial preflight; no additional key probe is needed.
+
+Zero-request test 1: "Use the connected Margin MCP to preview HINDUNILVR (NSE) annual
+consolidated profit margin. Do not execute or fetch data. Explain the exact next tool,
+bound inputs and missing requirements. Do not invent a plan ID or financial values."
+Expected: same company tool, no generic run/plan ID, missing stable key if not supplied,
+authorization/allowance requirement, zero provider attempts.
+
+Fresh-chat test 2: "Use Margin MCP to preview one annual consolidated INFY financial
+response that would determine which profitability, cash-conversion and liquidity
+calculations the returned fields support. Do not fetch or calculate values yet. Explain
+how the later readiness result and valuation prerequisites would be read."
+Expected: the data-readiness workflow, one-response bound, readiness fields rather than
+invented numeric rows, and explicit-input DCF as a different calculator route. Preserve
+first attempts, model/context/preset, actual tool calls/parser errors and final prose.
+These preview tests do not establish successful live execution or model source truth.
+
+This build does not upgrade/restart the active 0.9.2 owner or change its keys/budget.
+All build checks use software fixtures or saved real responses through mock transport,
+not fresh API calls. A future live model trial needs a newly allocated remaining budget.
+
 ## Live finance acceptance (0.9.2)
 
 Current source 0.9.2 exposes one shared company_execution_contract in company catalog

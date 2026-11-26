@@ -2,6 +2,11 @@
 
 ## 0.9.3 evaluated finance handoff/readiness repair plan: 27 November 2026
 
+**Implemented after plan eb6dbaf.** 575 offline tests/source and installed-wheel SDK
+checks and saved-real handoff replay pass without new provider/model calls; active 0.9.2 untouched. See
+[implementation](../implementation.md) and [zero-budget tests](../mcp.md#finance-handoffs-and-readiness-093).
+The evaluated plan below remains the design record.
+
 User explicitly asks to evaluate/implement the remaining fixes. Source evidence:
 0.9.2 HUL convenience previews caused two invented generic plan references before
 recovery; autonomous readiness stopped at three separate previews; forced readiness
@@ -32,7 +37,7 @@ fetch/state creation, no extra data on replay, unknown/expired plan distinctions
 no-data readiness and unverified-scope consistency, strict schemas and unchanged
 review handoffs. Run full offline/Ruff plus source/isolated installed-wheel SDK checks
 and saved-real-response replay. Publish immutable0.9.3 wheel and migration/test docs;
-active0.9.2 untouched. First post-upgrade model checks should be zero-request previews
+active 0.9.2 untouched. First post-upgrade model checks should be zero-request previews
 with configured key and B0/D0; fresh live allowance must be explicitly allocated later.
 
 ## 0.9.2 execution-contract and live acceptance plan: 27 November 2026

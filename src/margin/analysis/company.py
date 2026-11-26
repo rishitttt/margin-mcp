@@ -19,9 +19,9 @@ from margin.analysis.service import calculate, obj
 from margin.core.contracts import DomainError
 
 FUNCTIONS = {
-    "finance.company_data_readiness": "Inspect available fields and calculation readiness; no forecast assumptions",
-    "finance.company_balance_sheet_metrics": "Point-in-time liquidity and borrowings metrics",
-    "finance.company_cash_conversion": "CFO margins, capex intensity and cash conversion",
+    "finance.company_data_readiness": "Which fields support profitability, cash-conversion and liquidity across groups in ONE financial response; no forecast assumptions or numeric report rows",
+    "finance.company_balance_sheet_metrics": "Liquidity and borrowings; current-assets-less-inventories ratio is not a fully adjusted quick ratio",
+    "finance.company_cash_conversion": "CFO ratios and capex intensity; not days-based cash-conversion-cycle metrics",
     "finance.company_profitability": "Defined group/owners/operating/EBITDA margins",
     "finance.company_margins": "Latest-period continuing-profit margin when supplied, otherwise reported group-profit margin with scope caveat",
     "finance.company_cashflow_metrics": "Latest-period operating cash flow minus capex and coverage",

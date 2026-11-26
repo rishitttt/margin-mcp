@@ -8,6 +8,7 @@ from decimal import Decimal
 
 import httpx
 import pytest
+from jsonschema import Draft202012Validator
 
 from margin.analysis import company
 from margin.core.company_finance import RESPONSE_LIMIT
@@ -95,6 +96,102 @@ def args(function="margins", **more):
         "idempotency_key": "fresh-test-" + function,
         **more,
     }
+
+
+@pytest.mark.parametrize("function", sorted(company.FUNCTIONS))
+async def test_preview_handoff_executes_same_workflow_without_generic_plan(fresh_service, function):
+    service, observed = fresh_service
+    adapter = MarginMCP(service)
+    preview = await adapter.call(
+        "margin_company_finance",
+        {"function": function, "ticker": "sYnthA", "include_details": True},
+    )
+    data = preview.structured_content["data"]
+    assert not observed and not service.plans and not service.company_finance_workflow.requests
+    assert data["creates_plan_id"] is False and "plan_id" not in data
+    step = data["next_steps"][0]
+    assert step["mcp_execution"] == {"tool": "margin_company_finance", "inputs_at": "top_level"}
+    assert step["requires_execution_authorization"] is True
+    assert step["required_host_fields"] == ["idempotency_key"] and not step["is_complete_input"]
+    assert step["do_not_use_tools"] == ["margin_run"]
+    values = step["bound_arguments"] | {"idempotency_key": "handoff-" + function.split(".")[-1]}
+    assert values["ticker"] == "SYNTHA" and values["execute"] is True
+    assert (
+        not {"money_unit", "source_run_id", "source_operation_id", "plan_id", "session_id"}
+        & values.keys()
+    )
+    Draft202012Validator(adapter.tools["margin_company_finance"].input_schema).validate(values)
+    # The test explicitly authorizes execution of its fictional transport only.
+    result = await adapter.call(step["mcp_execution"]["tool"], values)
+    assert not result.is_error and result.structured_content["data"]["status"] == "success"
+    assert len(observed) == 1 and not service.plans
+    reply = result.structured_content["data"]
+    assert reply["request_lifecycle"]["state"] == "finished"
+    assert "not refreshed data" in reply["request_lifecycle"]["same_key_action"]
+    if function.endswith("_data_readiness"):
+        assert not reply["report"]["rows"]
+        assert reply["report"]["readiness_scope"]["source_facts_verified"] is False
+        valuation = reply["report"]["valuation_readiness"]
+        assert (
+            valuation["requires_explicit_assumptions"] and not valuation["valid_company_selector"]
+        )
+        assert valuation["mcp_execution"] == adapter.execution_route(
+            "calculations", "finance.calculate_dcf"
+        )
+    result.structured_content["data"]["request_lifecycle"]["state"] = "changed_by_client"
+    duplicate = await adapter.call("margin_company_finance", values)
+    assert duplicate.structured_content["data"]["request_lifecycle"]["state"] == "finished"
+    assert len(observed) == 1
+
+
+async def test_preview_preserves_caller_key_and_controls_without_authorizing_itself(fresh_service):
+    service, observed = fresh_service
+    adapter = MarginMCP(service)
+    values = args("margins", execute=False, wait_seconds=0, include_details=False)
+    result = await adapter.call("margin_company_finance", values)
+    step = result.structured_content["data"]["next_steps"][0]
+    assert step["is_complete_input"] and step["required_host_fields"] == []
+    assert step["requires_execution_authorization"] and not step["creates_plan_id"]
+    assert step["bound_arguments"]["idempotency_key"] == values["idempotency_key"]
+    assert step["bound_arguments"]["wait_seconds"] == 0
+    assert step["bound_arguments"]["include_details"] is False
+    assert not observed and not service.company_finance_workflow.requests and not service.plans
+
+
+async def test_partial_handoff_cannot_execute_without_the_required_key(fresh_service):
+    service, observed = fresh_service
+    adapter = MarginMCP(service)
+    preview = await adapter.call(
+        "margin_company_finance", {"function": "finance.company_margins", "ticker": "SYNTHA"}
+    )
+    step = preview.structured_content["data"]["next_steps"][0]
+    rejected = await adapter.call(step["mcp_execution"]["tool"], step["bound_arguments"])
+    assert rejected.is_error and rejected.structured_content["error"]["code"] == "invalid_input"
+    assert not observed and not service.company_finance_workflow.requests
+
+
+async def test_readiness_handoff_metadata_does_not_change_raw_calculation_details(fresh_service):
+    service, _ = fresh_service
+    result = await service.company_finance(**args("data_readiness"))
+    assert result["report"]["valuation_readiness"]["explicit_function"] == "finance.calculate_dcf"
+    assert "explicit_function" not in result["details"]["values"]["valuation_readiness"]
+    assert "mcp_execution" not in result["details"]["values"]["valuation_readiness"]
+
+
+async def test_no_data_readiness_cannot_claim_verified_or_complete_fields(
+    fresh_service, monkeypatch
+):
+    service, observed = fresh_service
+    monkeypatch.setattr(sys.modules[__name__], "rows", lambda: [])
+    result = await service.company_finance(**args("data_readiness"))
+    assert result["status"] == "incomplete" and len(observed) == 1
+    report = result["report"]
+    assert report["readiness"] == [] and report["rows"] == []
+    assert report["valuation_readiness"]["status"] == "not_assessed"
+    assert report["readiness_scope"]["assessment_status"] == "incomplete"
+    assert report["readiness_scope"]["checked_calculations"] == 0
+    assert report["readiness_scope"]["source_facts_verified"] is False
+    assert report["null_fields_latest_period"] is None
 
 
 @pytest.mark.parametrize("ends", [("2026-03-31", "2025-03-31"), ("2024-03-31", "2023-03-31")])

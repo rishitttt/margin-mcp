@@ -125,7 +125,17 @@ Company-preview accepts `money_unit: "auto"` (default), explicit monetary scales
 The announcement schema's added extraction flag was reviewed. Margin explicitly defaults `include_extracted_information` to false and holds true; no generic executor or extraction branch is newly enabled. Query preview/receipts show the default. The runtime catalog owns connection/schema holds.
 
 
-## MCP transport, package 0.9.2
+## MCP transport, package 0.9.3
+
+Financial previews now expose same-tool next_steps with canonical bindings and missing
+host key. They create no generic plan_id and require execution authorization; never
+submit that convenience preview via margin_run. Unknown generic IDs produce
+plan_unavailable; actually expired retained plans keep plan_expired. Readiness is a
+one-response multi-group eligibility check; report scope marks facts unverified,
+empty numeric rows intentional, and missing-data assessment incomplete. Explicit DCF
+uses margin_calculate with its exact assumptions schema. Finished task replay is not
+fresh data or another workflow; raw audit details remain independent of annotations.
+
 
 Fresh company catalog/preview publishes shared company_execution_contract: source
 BharatStock, preview 0, execute=true + stable key/backend key/remaining allowance,

@@ -8,6 +8,28 @@ import pytest
 from margin.analysis.reporting import company_report, formatted_value
 
 
+def test_complete_checked_fields_do_not_authenticate_source_facts():
+    report = company_report(
+        output("data_readiness"),
+        {
+            "values": {
+                "periods_returned": ["2026-03-31"],
+                "null_fields_latest_period": [],
+                "calculation_readiness": {
+                    "finance.company_growth": {"status": "success", "issues": []}
+                },
+                "valuation_readiness": {"status": "needs_explicit_inputs"},
+            },
+            "inputs": [],
+        },
+    )
+    assert report["null_fields_latest_period"] == []
+    assert report["readiness_scope"]["source_facts_verified"] is False
+    assert report["readiness_scope"]["numeric_rows_expected"] is False
+    assert report["readiness_scope"]["checked_calculations"] == 1
+    assert report["readiness_scope"]["assessment_status"] == "success"
+
+
 @pytest.mark.parametrize(
     "raw,unit,value,display",
     [

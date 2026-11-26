@@ -1,5 +1,11 @@
 # Test finance discovery through Margin
 
+**0.9.3 repair and next tests:** [manual B0/D0 setup and two fresh-chat preview tasks](mcp.md#finance-handoffs-and-readiness-093)
+exercise exact same-tool bindings and one-response readiness selection without paying
+for data. The old B3/D0 live batch is exhausted. Original/guided 0.9.2 results remain
+separate; do not replay those live tasks or assume owner restart renews account quota.
+575 software tests/source SDK checks pass; new model behavior is pending, not guaranteed.
+
 **Current live step 0.9.2:** use the [key-enabled, three-request setup](mcp.md#live-finance-acceptance-092)
 and [three goal-only prompts](../research/finance-discovery/live-batch-0.9.2.json).
 User-reported remaining 57 corrects 3; cap this batch at B3/D0, do not spend all 57.

@@ -16,6 +16,16 @@ Company CAGR uses exact anniversary years, otherwise a disclosed day-count conve
 Margin 0.9.1 exposes this host guidance in initialization/status/catalog/errors; it is
 not independent authentication of caller facts or guaranteed host compliance.
 
+For 0.9.3 fresh-finance previews follow next_steps.mcp_execution.tool with bound_arguments
+and every required_host_field; same company tool, execute=true/key, NO margin_run or
+plan_id. Schema-complete does not mean authorized: obey the actual task and allowance.
+For which fields support multiple groups choose company_data_readiness, one response.
+Its report.readiness_scope describes mapped field eligibility, not verified source
+facts; empty numeric rows are intentional. Check status/checked count and valuation
+scope. Finished same-key replay returns this request, not refreshed data/new analysis.
+DCF's explicit-input calculator route is not a valid company selector. Preserve exact
+labels, units and partial holds; do not infer CCC days/full quick-ratio adjustments.
+
 For 0.9.2 fresh-company discovery, read company_execution_contract from the company
 catalog/preview. It states BharatStock only, preview 0/new execution max B1/D0, execute
 and stable-key/configuration/allowance requirements, no fresh-tool session_id and

@@ -1,5 +1,13 @@
 # Function validation status
 
+**0.9.3 repair matrix:** 575 offline cases and source SDK compatibility pass, including
+all nine fresh preview bindings. Unknown generic refs now plan_unavailable; real expiry
+and valid replay preserved. Readiness scope is explicit for no-data and available-field
+cases; raw audit details stay unchanged by metadata. Saved-real HUL mock-transport
+replay preserves all nine calculation values/statuses (seven success/two scope-held
+partial). No new real provider/model call; active spent B3/D0 unchanged. New fields are
+guidance, not independent source validation or proof of host obedience. See implementation.
+
 **0.9.2 guided readiness:** one explicit-tool execution succeeds on real INFY data,
 seven annual checks supported and valuation needs explicit inputs. This confirms backend
 readiness, not autonomous function selection. Numeric rows intentionally empty; provider

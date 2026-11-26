@@ -1,18 +1,23 @@
 # Margin
 
-**Current source release: 0.9.2 (27 November).** Company discovery and previews now
-share explicit execution metadata: BharatStock-only source, zero-call preview,
-one-request execution bound, stable key/configuration/allowance requirements and
-answer locations. Existing financial math, no-fabrication guidance and APIs remain;
-full/review/review-simple expose 37/16/3 tools. This metadata guides the host and does
-not authenticate source facts or guarantee model compliance.
-[Live three-case setup](docs/mcp.md#live-finance-acceptance-092),
+**Current source release: 0.9.3 (27 November).** Financial previews now return a
+same-tool execution binding, required caller key and authorization flag, without a
+generic plan ID. Plan errors distinguish unknown references from actual expiry.
+Readiness reports separate eligibility from source verification and name the explicit
+DCF route; request lifecycle metadata explains same-key replay. Financial math and
+full/review/review-simple tool counts remain unchanged at 37/16/3. Guidance remains
+advisory; actual post-upgrade model behavior still needs testing.
+[Upgrade and zero-request tests](docs/mcp.md#finance-handoffs-and-readiness-093),
 [validation](docs/implementation.md),
-[wheel](releases/0.9.2/margin_research-0.9.2-py3-none-any.whl) and
-[checksum](releases/0.9.2/SHA256SUMS). User activated 0.9.2 with keys: growth/margin executions match report math and a
-separate guided readiness call succeeds. The B3 of 3/D0 batch is exhausted. Autonomous
-readiness and [workflow/prose issues](docs/implementation.md) remain open.
-The build used no real calls; model trials are recorded separately.
+[wheel](releases/0.9.3/margin_research-0.9.3-py3-none-any.whl) and
+[checksum](releases/0.9.3/SHA256SUMS). 575 tests pass, source SDK checks pass, and saved
+real-response replay preserves calculation values. No real provider/model call during
+this build; active 0.9.2 and its spent B3/D0 allowance stay unchanged until manual setup.
+
+**Historical release: 0.9.2.** Shared execution contracts and actual live model results
+remain recorded: growth passes, margin recovers with prose issues, autonomous readiness
+fails, and a separate guided readiness call succeeds. These are development evidence,
+not general autonomous reliability or independently verified financial source truth.
 
 **Historical release: 0.9.1.** No-fabrication protocol, TTM safety/default repairs and
 CAGR calendar-year duration remain. Actual model discovery/recovery was partial;

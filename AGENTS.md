@@ -1,12 +1,20 @@
 # Working on Margin
 
+**0.9.3 software checkpoint:** 575 tests/Ruff 101 files/skill/source SDK pass. Canonical
+finance next_steps require host key/auth and point to same tool; no plan/key mint.
+plan_unavailable distinguishes absent refs; genuine expiry/legacy replay retained.
+Readiness scope/DCF routing/finished replay explicit, raw audit details deep-copied.
+Saved-real HUL mock replay preserves all nine values/statuses, no new live data call.
+Active 0.9.2 spent B3/D0 untouched. Immutable wheel/installed SDK checks pass; next manual
+key-loaded B0/D0 model previews. Do not claim metadata ensures host semantics/source truth.
+
 **0.9.3 authorized repair:** user says evaluate/do remaining finance handoffs/readiness.
 Follow new mcp-aggregation plan before runtime edits. Add canonical next_steps for
 same fresh tool (no plan_id/no key mint/authorization still required), unknown-versus-
 expired plan diagnostics, explicit readiness scope and finished-request replay guidance.
 Clarify metric/DCF labels without changing math or adding LLM/profiles/tools. Preserve
 input/auth/budget/quote/scope/replay guards and immutable old wheels. B3/D0 exhausted;
-no real provider/model call or active0.9.2 upgrade/restart/reset during build. Unit/SDK/
+no real provider/model call or active 0.9.2 upgrade/restart/reset during build. Unit/SDK/
 saved-real replay tests then new wheel; model preview checks at key-loaded B0/D0 first.
 
 **Latest guided 0.9.2 readiness:** exact operator-supplied tool/args execute successfully,

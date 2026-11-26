@@ -1,5 +1,55 @@
 # Implementation and validation status
 
+## 0.9.3 finance workflow repairs: 27 November 2026 IST
+
+Plan eb6dbaf preceded implementation. Fresh-company previews now return next_steps
+with canonical valid inputs, execute=true, preserved caller key/wait/details options,
+explicit missing-key fields and authorization requirement. No key/plan/nonce is minted,
+no paid intent is submitted and selection-only metadata is excluded. MCP decorates the
+step with the actual same tool/input schema and excludes margin_run. Complete input
+is not execution permission. Existing generic preview/run routes remain valid.
+
+An absent retained generic plan now yields plan_unavailable, with routing recovery;
+a real retained plan older than 600 seconds keeps plan_expired. Same-key replay of a
+valid submitted plan remains intact after expiry. This corrects diagnosis of the
+unissued references in the model trace without weakening identity/TTL/budget guards.
+
+Readiness descriptions select one financial response across metric groups. Reports
+expose readiness_scope: status/check count, intentional empty numeric rows and
+source_facts_verified=false. Empty/no-data assessment remains incomplete/not_assessed
+and null-field coverage unknown. Valuation metadata routes explicit assumptions to
+finance.calculate_dcf via margin_calculate, not the company selector. Lifecycle flags
+explain finished-task status and cached replay. Labels avoid invented income scope,
+CCC days and fully adjusted quick-ratio claims. These guide hosts; semantic correctness
+and final prose are not guaranteed by metadata. No server LLM or new profiles/tools.
+
+Reporting annotations are deep-copied, preserving raw calculation audit details.
+**575 offline tests pass; Ruff lint/format pass (101 Python files); skill validates.**
+New tests cover nine executable bindings, missing/provided keys, caller controls,
+no hidden calls/plan state, cached replay isolation, no-data/complete-field readiness,
+raw-details purity, absent/expired/valid plans and unchanged review projection.
+
+Source SDK full/review/simple/shared and a targeted finance flow pass. The targeted
+six-call/twelve-event fixture follows a returned binding, executes readiness, replays
+without extra work and checks unknown-plan diagnosis. No real provider/model calls.
+Saved 24 November real HUL responses replay through all nine new handoffs over explicit
+httpx.MockTransport: seven success/two correct partial scope holds; raw calculation
+values exactly match the previous capture. Nine simulated transport attempts are not
+live API usage. Provider facts remain unverified and old trial evidence stays frozen.
+
+The immutable 159,907-byte wheel contains 53 source-matching modules. Installed-wheel
+official SDK checks pass: full (55 calls/110 events), review (18/34), simple (5/10),
+shared (16/32 across four frontends) and targeted finance (6/12). Review's two expected
+frontend/schema rejections do not create recorded backend calls. Pinned dependencies
+were reused; this is isolated wheel loading, not a clean-machine installation test.
+[Release checksum and scope](../releases/0.9.3/README.md); private release report records
+the artifact scan, SDK results and saved-real replay. Active
+user 0.9.2/key/config/exhausted B3/D0 allowance remain untouched by the build. New model
+acceptance is pending manual zero-request setup, not inferred from fixture successes.
+Private evidence: reports/private/finance-handoff-2026-11-27, including saved-real-replay.
+[Upgrade/tests](mcp.md#finance-handoffs-and-readiness-093); unknown-plan error-code
+classification is the only changed error distinction for otherwise invalid submissions.
+
 ## Guided 0.9.2 readiness completion: 27 November 2026 IST
 
 Separate operator-directed prompt supplies exact tool/function/arguments, not an
@@ -43,7 +93,7 @@ Drishti 0 of 0; one configured request remains. Account-wide balance is not reme
 | --- | --- | --- |
 | INFY growth | One execute=true call, B1D0, successful report | Math/units/formulas match final answer; full fiscal end dates reduced to years; same-key replay does not mean fresh updates |
 | HUL margin | Three convenience previews, two margin_run calls with unissued plan IDs, then one correct execute=true call; B1D0 | Final amount/margin match exact report; workflow recovery inefficient; added accounting interpretations/normalization provenance unsupported |
-| INFY readiness | Three individual profitability/cash-conversion/balance-sheet previews, no execute=true, B0D0 | Not completed; no fetched-data readiness assessment; final capability/routing claims overstate contracts |
+| INFY readiness | Three individual profitability/cash-conversion/balance-sheet previews, no execute=true, B0/D0 | Not completed; no fetched-data readiness assessment; final capability/routing claims overstate contracts |
 
 The HUL IDs were not returned by margin_company_finance previews; this route creates
 no plan_id. The plan_expired code reflects unavailable references here, not observed

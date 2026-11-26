@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from decimal import ROUND_HALF_EVEN, Decimal, InvalidOperation, localcontext
 
 from margin.analysis.facts import MONEY_UNITS
@@ -208,8 +209,8 @@ def company_report(output, details):
         {
             "function": function,
             "status": item["status"],
-            "issues": item.get("issues", []),
-            "components": item.get("components", {}),
+            "issues": deepcopy(item.get("issues", [])),
+            "components": deepcopy(item.get("components", {})),
         }
         for function, item in readiness.items()
     ]
@@ -221,10 +222,26 @@ def company_report(output, details):
         "rows": rows,
         "period_ends": ends,
     }
-    if readiness_rows:
+    if readiness_rows or output.get("function") == "finance.company_data_readiness":
         report["readiness"] = readiness_rows
-        report["valuation_readiness"] = values.get("valuation_readiness", {})
-        report["null_fields_latest_period"] = values.get("null_fields_latest_period", [])
+        report["valuation_readiness"] = deepcopy(
+            values.get(
+                "valuation_readiness",
+                {
+                    "status": "not_assessed",
+                    "note": "No successful data-readiness assessment is available; no assumptions were inferred.",
+                },
+            )
+        )
+        report["null_fields_latest_period"] = deepcopy(values.get("null_fields_latest_period"))
+        report["readiness_scope"] = {
+            "kind": "mapped_field_and_calculation_eligibility",
+            "assessment_status": output.get("status"),
+            "checked_calculations": len(readiness_rows),
+            "numeric_rows_expected": False,
+            "source_facts_verified": False,
+            "meaning": "Per-check statuses describe computability from the returned mapped fields/context. Complete fields are not verified source facts or a complete financial-data inventory. Empty numeric rows are intentional for readiness, not caused by the selected revenue metric.",
+        }
     if unmapped:
         report["unmapped_fields"] = unmapped
     return report

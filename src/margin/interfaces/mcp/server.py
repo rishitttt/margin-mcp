@@ -19,6 +19,7 @@ from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.shared.exceptions import MCPError
 
+from margin.analysis.company import FUNCTIONS as COMPANY_FUNCTIONS
 from margin.analysis.company import planning_capabilities
 from margin.core.company_finance import execution_contract
 from margin.core.config import Settings
@@ -27,7 +28,12 @@ from margin.core.service import ResearchService
 from margin.core.validation import validation_summary
 from margin.interfaces.agent.client import BridgeError
 from margin.interfaces.agent.local_config import read_provider_env
-from margin.interfaces.mcp.policy import DATA_INSTRUCTIONS, DATA_POLICY, FINANCIAL_RECOVERY
+from margin.interfaces.mcp.policy import (
+    DATA_INSTRUCTIONS,
+    DATA_POLICY,
+    FINANCIAL_RECOVERY,
+    PLAN_RECOVERY,
+)
 from margin.interfaces.mcp.recording import ToolRecorder
 from margin.interfaces.mcp.tools import (
     CONTRACT,
@@ -50,6 +56,13 @@ a company workflow. When discovery is enough, stop with proposed inputs and call
 Read company_execution_contract for exact provider, preview/execution controls,
 request bounds and output fields. Do not speculate about Drishti or require session
 IDs for the fresh company tool. A credential hold does not prevent a catalog summary.
+Fresh-company previews create no plan_id; follow next_steps via the SAME company
+tool with execute=true/key when already authorized, never margin_run. For which
+fields support multiple metric groups choose company_data_readiness, one response.
+Readiness uses report.readiness/valuation_readiness; report.rows may be empty.
+DCF is an explicit-input calculator, not a company-finance selector. Preserve literal
+labels and source-unverified scope; do not infer cash-conversion-cycle days or full
+quick-ratio adjustments. Same-key replay is not a new workflow or fresh data.
 For supplied-text claim/sentiment review prefer margin_prepare_review then
 margin_submit_review: one review_id, internal source/packet/hash/date binding and one
 final report. Ask for missing user material, never invent a task. Legacy primitives
@@ -222,7 +235,7 @@ class MarginMCP:
             args = copy.deepcopy(arguments)
             args.pop("why", None)
             data = await self.dispatch(name, args)
-            data = self.review_handoffs(data)
+            data = self.workflow_handoffs(data)
             body = self.service.sanitizer.clean(base | {"data": data})
             if encoded_size(body) > self.service.settings.max_result_bytes + 64 * 1024:
                 raise DomainError(
@@ -285,6 +298,12 @@ class MarginMCP:
             }
         ):
             body["error"]["recovery_guidance"] = FINANCIAL_RECOVERY
+        if (
+            error
+            and name == "margin_run"
+            and body["error"]["code"] in {"plan_unavailable", "plan_expired"}
+        ):
+            body["error"]["recovery_guidance"] = PLAN_RECOVERY
         if event and request_logged:
             try:
                 self.recorder.append(
@@ -511,12 +530,28 @@ class MarginMCP:
             return self.service.review(args["function"], args["arguments"])
         return self.service.import_review_sources(**args)
 
-    @staticmethod
-    def review_handoffs(data):
-        if not isinstance(data, dict) or not data.get("next_steps"):
+    @classmethod
+    def workflow_handoffs(cls, data):
+        if not isinstance(data, dict) or not (
+            data.get("next_steps")
+            or data.get("company_execution_contract")
+            or isinstance(data.get("report"), dict)
+            and data["report"].get("valuation_readiness")
+        ):
             return data
         data = copy.deepcopy(data)
-        for action in data["next_steps"]:
+        if data.get("company_execution_contract"):
+            valuation = data["company_execution_contract"].get("valuation", {})
+            if valuation.get("explicit_function") == "finance.calculate_dcf":
+                valuation["mcp_execution"] = cls.execution_route(
+                    "calculations", valuation["explicit_function"]
+                )
+        valuation = data.get("report", {}).get("valuation_readiness", {})
+        if valuation.get("explicit_function") == "finance.calculate_dcf":
+            valuation["mcp_execution"] = cls.execution_route(
+                "calculations", valuation["explicit_function"]
+            )
+        for action in data.get("next_steps", []):
             tool = next(
                 (
                     name
@@ -525,6 +560,12 @@ class MarginMCP:
                 ),
                 None,
             )
+            if (
+                action.get("kind") == "execute_fresh_company_finance"
+                and action["function"] in COMPANY_FUNCTIONS
+            ):
+                tool = "margin_company_finance"
+                action["do_not_use_tools"] = ["margin_run"]
             if tool:
                 action["mcp_execution"] = {"tool": tool, "inputs_at": "top_level"}
                 action["schema_source"] = (

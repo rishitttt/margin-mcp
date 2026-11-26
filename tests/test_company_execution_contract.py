@@ -37,7 +37,10 @@ async def test_company_contract_matches_local_preview_without_spending_allowance
     ).structured_content["data"]
     row = catalog["groups"]["company"][0]
     contract = catalog["company_execution_contract"]
-    assert contract == execution_contract()
+    core_contract = copy.deepcopy(contract)
+    valuation_route = core_contract["valuation"].pop("mcp_execution")
+    assert core_contract == execution_contract()
+    assert valuation_route == owner.execution_route("calculations", "finance.calculate_dcf")
     assert row["fresh_mcp_execution"]["provider"] == contract["provider"] == "bharatstock"
     assert row["fresh_mcp_execution"]["maximum_provider_requests"] == {
         "bharatstock": 1,
@@ -83,7 +86,9 @@ async def test_no_key_catalog_still_explains_execution_and_returns_isolated_copy
         contract["execution"]["maximum_provider_requests"]["drishti"] = 100
         assert execution_contract() == baseline
         again = (await owner.call("margin_catalog", values)).structured_content["data"]
-        assert again["company_execution_contract"] == baseline
+        again_contract = again["company_execution_contract"]
+        again_contract["valuation"].pop("mcp_execution")
+        assert again_contract == baseline
         assert service.ledger.requests == {"bharatstock": 0, "drishti": 0}
     finally:
         await service.close()

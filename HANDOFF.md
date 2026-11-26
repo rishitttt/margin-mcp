@@ -1,5 +1,12 @@
 # Margin: quick handoff
 
+**Current 0.9.3:** finance preview→same-tool bindings, precise plan-reference errors,
+readiness scope/DCF route and replay guidance implemented. 575 offline tests/source
+and installed-wheel SDK pass; nine saved-real workflows preserve calculation values (mock transport only).
+[Upgrade and zero-request tests](docs/mcp.md#finance-handoffs-and-readiness-093).
+Active 0.9.2 remains unchanged, spent live batch not renewed. No new actual-provider
+call or model pass claimed; host prose is still advisory, not server-enforced truth.
+
 **Latest guided completion:** readiness now executes successfully with one real request;
 all seven checked annual calculations supported, DCF assumptions still explicit. Batch
 B3 of 3/D0 exhausted. Growth/margin/readiness backend paths are validated for these cases;

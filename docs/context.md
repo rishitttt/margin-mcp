@@ -1,5 +1,14 @@
 # Project context and handoff
 
+**Latest source 0.9.3:** same-tool executable finance handoffs and missing-key/auth
+flags; no generic plan ID. Absent/expired generic plans are distinguished. Readiness
+scope clarifies unverified facts/intentional empty rows, DCF's explicit calculator
+route and cached finished-request replay; raw details remain unmodified. 575 tests,
+Ruff 101 files/source and installed-wheel SDK checks and saved-real HUL replay pass with unchanged values. No new
+provider/model calls, profile count changes or active 0.9.2 restart. Spent B3/D0 remains.
+Next manual key-loaded B0/D0 upgrade and two goal-only preview checks; actual model
+success remains pending, and future live testing needs a fresh allocated allowance.
+
 **Latest guided readiness:** correct exact-argument call succeeds with B1D0; seven
 annual checks supported, explicit DCF inputs still needed. Batch now B3 of 3/D0, exhausted.
 Keep this separate from autonomous readiness failure; no new unguided-selection pass.

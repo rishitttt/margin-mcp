@@ -1,5 +1,14 @@
 # Margin build and evaluation plan
 
+## Current 0.9.3 acceptance gate
+
+The evaluated preview/readiness repairs are implemented. 575 offline tests/source SDK
+and nine saved-real handoff replays pass; no new provider/model calls. The immutable
+wheel passes all five installed SDK checks. Next manually upgrade with key loaded but B0/D0 for goal-only
+preview/handoff/readiness-selection tests. Keep model/context/preset/full profile and
+first attempts. No restarting with the old spent 3 allowance. Any next live test needs
+a newly allocated remaining budget; software/fixture success is not host compliance.
+
 ## Current gate after guided readiness
 
 The exact-tool readiness diagnostic succeeded, using the final batch request. B3 of 3/

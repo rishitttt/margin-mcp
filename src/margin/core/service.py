@@ -530,7 +530,12 @@ class ResearchService:
                 "capacity", "Run/control-record capacity reached; no paid intent was dispatched."
             )
         record = self.plans.get(plan_id)
-        if not record or time.monotonic() - record[0] > 600:
+        if not record:
+            raise DomainError(
+                "plan_unavailable",
+                "No matching plan is retained in this owner. Use an ID actually returned by a generic preview here; a convenience financial preview creates no generic plan. No automatic refetch.",
+            )
+        if time.monotonic() - record[0] > 600:
             raise DomainError("plan_expired", "Create a new local plan; no automatic refetch.")
         plan = copy.deepcopy(record[1])
         # Metadata can expire/change after preview. Reject before publishing paid intent.

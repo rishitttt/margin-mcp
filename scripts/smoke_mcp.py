@@ -396,8 +396,17 @@ async def main(args):
                     },
                 )
                 assert preview["data"]["status"] == "preview"
-                fresh = await call(session, "margin_company_finance", fresh_inputs)
+                step = preview["data"]["next_steps"][0]
+                assert step["mcp_execution"]["tool"] == "margin_company_finance"
+                assert step["required_host_fields"] == ["idempotency_key"]
+                assert step["requires_execution_authorization"] and not step["creates_plan_id"]
+                assert step["do_not_use_tools"] == ["margin_run"]
+                execution = step["bound_arguments"] | {
+                    "idempotency_key": fresh_inputs["idempotency_key"]
+                }
+                fresh = await call(session, step["mcp_execution"]["tool"], execution)
                 assert fresh["data"]["status"] == "success"
+                assert fresh["data"]["request_lifecycle"]["state"] == "finished"
                 duplicate = await call(session, "margin_company_finance", fresh_inputs)
                 assert duplicate["data"] == fresh["data"]
                 assert (

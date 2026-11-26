@@ -1,0 +1,19 @@
+{
+  "version": "finance-handoff-preview.0.9.3",
+  "maximum_provider_requests": {
+    "bharatstock": 0,
+    "drishti": 0
+  },
+  "fresh_chat_per_case": true,
+  "profile": "all",
+  "tasks": [
+    {
+      "id": "P093-HUL-HANDOFF",
+      "prompt": "Use the connected Margin MCP to preview HINDUNILVR (NSE) annual consolidated profit margin. Do not execute or fetch data. Explain the exact next tool, bound inputs and missing requirements. Do not invent a plan ID or financial values."
+    },
+    {
+      "id": "P093-INFY-READINESS",
+      "prompt": "Use the connected Margin MCP to preview one annual consolidated INFY financial response that would determine which profitability, cash-conversion and liquidity calculations the returned fields support. Do not fetch or calculate values yet. Explain how the later readiness result and valuation prerequisites would be read."
+    }
+  ]
+}
