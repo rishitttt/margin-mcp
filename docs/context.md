@@ -1,5 +1,15 @@
 # Project context and handoff
 
+**Latest user trial, 26 November:** active owner is now 0.9.0. Qwen3-8B/30,183,
+same actual 898-char preset; advanced review profile still has 16 tools. New prepare /
+submit completes both INFY claims and one content annotation with zero provider calls.
+Four admitted calls pass; caller captures one recovered legacy date_kind parse error.
+Unused registration incorrectly called record date published; actual high-level review
+preserves unknown publication. Reviewer user/none is model-supplied metadata, not true
+identity. Keep private lmstudio-090-review capture. No new patch/restart is needed;
+switch only the frontend to review-simple (3 tools), then fresh complete/missing-input
+trials. This is completed workflow with recovery, not clean-first-attempt autonomy.
+
 **Current source: 0.9.0, 26 November.** User skipped the demo and authorized fixes.
 Two-step review binds all source/passage/packet references internally behind one review_id;
 ordered host judgments produce a combined report. review-simple advertises three tools;

@@ -9,8 +9,9 @@ remain available. No server LLM, document authentication or database is required
 [Install and test](docs/mcp.md#two-step-review-090),
 [validation](docs/implementation.md),
 [wheel](releases/0.9.0/margin_research-0.9.0-py3-none-any.whl) and
-[checksum](releases/0.9.0/SHA256SUMS). The user's active 0.8.2 backend is unchanged;
-upgrade is manual. Software checks pass; a fresh model-host trial is still needed.
+[checksum](releases/0.9.0/SHA256SUMS). The user has activated 0.9.0 and completed the new flow in advanced review mode
+with a recovered host error; the three-tool profile and missing-input tests remain.
+See validation for actual calls and remaining model-reporting issues.
 
 **Historical release: 0.8.2.** Narrow plain-anchor registration normalization and
 assessment-coverage reporting remain in 0.9.0. Older dated checkpoints below are history.

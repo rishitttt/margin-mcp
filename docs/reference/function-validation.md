@@ -1,5 +1,14 @@
 # Function validation status
 
+**0.9.0 actual host outcome, 26 November:** prepare_review/submit_review pass in
+Qwen3-8B (30,183 context, same preset), advanced review16. Correct two-claim coverage,
+supported/insufficient verdicts, one positive content annotation and separate unknown
+publication date; zero provider calls. Initial legacy registration enum failure was
+host-rejected then recovered, and an extra unused registration mislabeled the date.
+Final reviewer identity/quote/bias phrasing remain model issues. This verifies completed
+workflow with recovery, not first-attempt or three-tool-profile reliability. See
+implementation and private lmstudio-090-review evidence; no runtime change this audit.
+
 **0.9.0, 26 November: two new local review functions.** review.prepare binds actual
 supplied text/metadata/ordered claims and optional sentiment to one review_id;
 review.submit validates host judgments and returns the combined report. Exact schemas

@@ -31,6 +31,12 @@ frontend reconnection preserves it only while the same owner and TTL survive. Fa
 prepare/submit rolls back its changes. A new backend loses old review IDs. It never
 fetches material to repair an unavailable review.
 
+**Latest user test:** 0.9.0 is now installed and the two-step review completed in
+advanced review16, with one recovered legacy-registration parse error. To test the
+three-tool condition, change only frontend --tool-profile from review to review-simple,
+reconnect and start a fresh chat. Do not reinstall/restart the owner or reset budgets
+for a profile-only change. [Measured outcome](implementation.md).
+
 ### Manual upgrade of the existing mtest installation
 
 The build does not upgrade or restart your active 0.8.2 backend. Save its ledger/logs

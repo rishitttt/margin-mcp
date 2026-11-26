@@ -1,5 +1,14 @@
 # Margin: quick handoff
 
+**Latest user activation/test, 26 November:** installed shared owner now runs 0.9.0.
+The INFY prepare/submit workflow completes with correct claim coverage and one content
+annotation, zero provider calls. Advanced review (16 tools) is still selected; one
+legacy registration parse failure recovered before the new flow. Switch only frontend
+args to --tool-profile review-simple (3 tools) and retry fresh chats; do not restart
+owner/reset budgets. [Actual calls/limits](docs/implementation.md) distinguish this
+model run from earlier operator SDK replays and preserve the remaining metadata/prose
+issues. Older active-0.8.2 build notes below are historical.
+
 **Current source 0.9.0 — review failures repair (26 November).**
 Two calls replace low-level reference bookkeeping for supplied-text tasks; the old
 finance/retrieval/review APIs stay. review-simple has three tools with flow instructions.

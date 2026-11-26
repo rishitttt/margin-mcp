@@ -1,5 +1,14 @@
 # Working on Margin
 
+**26 November user activated 0.9.0:** Qwen3-8B/30,183 + inherited 898-char preset,
+advanced review16. Four backend calls/eight events pass; caller captures one recovered
+legacy registration enum error. Actual high-level review correctly binds dates/ID,
+assesses both claims and one content source, zero HTTP. Preserve private lmstudio-090-
+review capture; no thinking/debug extraction. Extra unused source incorrectly published
+record date, reviewer user/none and final quote/bias prose remain host issues. Next is
+frontend-only review-simple3 then full/missing-input cases, not a runtime patch/new
+wheel or backend reset. Treat this as completed review with recovery, not clean pass.
+
 **26 November 0.9.0 delivered:** plan 9e43879 preceded two-step review plus one
 opaque review_id and internally bound references. Preserve 37 full/16 advanced/3 simple
 tool surfaces, all legacy APIs, separate caller-declared record/publication dates,

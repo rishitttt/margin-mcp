@@ -2,8 +2,9 @@
 
 ## Current next steps after the 0.9.0 review repair
 
-1. Deliberately install the new wheel/restart the owner with reconciled zero-provider
-   allowances, then use the three-tool review-simple profile and a complete actual task.
+1. User activated 0.9.0 and completed the new review flow in advanced review16 with
+   one recovered host error. Change only frontend --tool-profile to review-simple,
+   reconnect and test the complete task in a fresh chat; no owner restart/budget reset.
 2. Preserve a fresh first-attempt Qwen run plus missing-input/wrong-date/false-quote
    controls. Compare with the frozen 0.8.2 preset-assisted failures as a new condition;
    record context, profile and preset rather than attributing everything to context size.

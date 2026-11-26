@@ -1,5 +1,45 @@
 # Implementation and validation status
 
+## User-led 0.9.0 completed review: 26 November 2026 IST
+
+The user upgraded the shared owner to 0.9.0. LM Studio still uses advanced `review`
+(16 tools), confirmed by current MCP arguments and user-reported status; the backend
+log does not contain frontend profile projections. Qwen/qwen3-8b, configured context
+30,183; actual prediction settings retain the same 898-character preset fingerprint
+as the prior trial. Do not infer missing guidance from an empty chat-level prompt.
+
+Four admitted calls/eight recorded events: status, unnecessary register_sources,
+prepare_review and submit_review. All four backend calls succeed with visible why
+summaries; zero real provider HTTP attempts. The caller record additionally captures
+one initial host parse rejection: legacy registration used date_kind=record_date,
+which is not an allowed enum. The model recovered by using published in that extra
+registration, incorrectly labeling the record date. That source was not used by the
+new flow: prepare_review registered the exact text internally, retained record_date
+2026-11-25/publication_date=null, and submit_review reused its actual review_id.
+
+The resulting review is complete: both claims host-assessed, C1 supported with an
+exact substring and C2 insufficient_evidence. Support audit is incomplete because
+not every claim is supported, not because an assessment is missing. Content sentiment
+has one positive annotation, reviewed=1/total=1, no unannotated sources, record-date
+scope, global coverage_complete=false and investor_sentiment=false. All originals
+remain unverified; no independent source fetch or semantic verification occurred.
+
+Residual model reporting issues: reviewer was user/none rather than actual LM Studio/
+Qwen identity; final prose adds punctuation to an exact quote prefix and calls limited
+coverage positive bias without a measured bias estimate. Those claims are not server
+outputs. Bounded annotation coverage is complete; market coverage is not established.
+Record as completed workflow with a recovered host error, not a clean first-attempt
+pass or a successful review-simple trial. Next change only frontend profile to
+review-simple and retry a fresh complete task plus missing-input control, preserving
+model/context/preset. No backend restart, allowance reset, runtime patch or new wheel
+is needed for that profile-only switch.
+
+Private capture: reports/private/lmstudio-090-review-2026-11-26/{events.jsonl,
+caller-evidence.json,review.json}. Caller extraction retains user prompts, actual tool
+requests/parse failures, prediction metadata and final answers, excluding thinking/
+reasoning/debug blocks. No installed process or configuration was changed by this audit.
+Earlier source-build/activation notes below are historical.
+
 ## 0.9.0 review-flow repair: 26 November 2026 IST
 
 Plan **9e43879** preceded implementation. User skipped the demo and requested failure
