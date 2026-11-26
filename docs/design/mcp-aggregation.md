@@ -2,6 +2,11 @@
 
 ## 0.9.0 review-flow repair plan: 26 November 2026
 
+**Implemented after plan commit 9e43879.** 470 offline tests plus source/installed-wheel
+SDK checks pass; see [implementation](../implementation.md) and
+[manual install/test](../mcp.md#two-step-review-090). Active 0.8.2 remains untouched;
+real model acceptance is pending. The evaluated plan below remains the design record.
+
 User explicitly requests fixing the failures, skipping the demo. The preset reached
 Qwen, but it passed URLs/passage IDs as handles, discarded the known record date,
 selected inventory-only and claimed completion without assessments. Keep the original

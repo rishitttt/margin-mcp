@@ -38,14 +38,14 @@ def test_invalid_profile_is_rejected_before_any_startup():
 
 async def test_review_profile_is_small_local_and_catalog_only_advertises_callable_routes(owner):
     full, review = ToolView(owner), ToolView(owner, "review")
-    assert len(full.tools) == 35 and set(review.tools) == REVIEW_TOOLS and len(review.tools) == 14
+    assert len(full.tools) == 37 and set(review.tools) == REVIEW_TOOLS and len(review.tools) == 16
     assert "margin_review" not in review.tools and "margin_run" not in review.tools
     assert set(DIRECT_REVIEWS) <= set(review.tools)
     before = owner.service.ledger.snapshot()
     result = await call(review, "margin_catalog", {"group": "all", "include_schemas": True})
     assert set(result["data"]["groups"]) == {"review"}
     rows = result["data"]["groups"]["review"]
-    assert len(rows) == 10
+    assert len(rows) == 12
     assert all(row["mcp_execution"]["tool"] in review.tools for row in rows)
     assert all("generic_mcp_execution" not in row for row in rows)
     assert full.tools["margin_catalog"].input_schema["properties"]["group"]["enum"] == [
@@ -113,7 +113,7 @@ async def test_switching_frontend_view_preserves_sources_packets_and_identity(ow
     review = ToolView(owner, "review")
     status = await call(review, "margin_status")
     assert status["session_id"] == prepared["session_id"] == owner.session_id
-    assert status["data"]["tool_profile"] == "review" and status["data"]["advertised_tools"] == 14
+    assert status["data"]["tool_profile"] == "review" and status["data"]["advertised_tools"] == 16
     rendered = await call(
         review, "margin_render_citations", {k: packet[k] for k in ("packet_id", "packet_hash")}
     )

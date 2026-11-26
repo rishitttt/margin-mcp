@@ -1,5 +1,14 @@
 # Margin: quick handoff
 
+**Current source 0.9.0 — review failures repair (26 November).**
+Two calls replace low-level reference bookkeeping for supplied-text tasks; the old
+finance/retrieval/review APIs stay. review-simple has three tools with flow instructions.
+[Install/test](docs/mcp.md#two-step-review-090), [complete model task](docs/review-workflows.md#two-step-model-acceptance-090),
+[checks/limits](docs/implementation.md), [wheel](releases/0.9.0/margin_research-0.9.0-py3-none-any.whl).
+The user's active 0.8.2 instance was not changed. No subscription is needed for supplied
+text. Operator SDK success is separate from pending real-model acceptance; source
+originals and semantic truth remain unverified. The skipped demo below is historical.
+
 **Professor demo, 26 November:** [one-command SDK demo](docs/mcp.md#professor-demonstration-through-the-installed-mcp)
 uses installed 0.8.2, saved real text and explicit operator judgments. Good and wrong-
 quote variants tested; zero provider calls, no restart/reset/new wheel, 437 offline tests.

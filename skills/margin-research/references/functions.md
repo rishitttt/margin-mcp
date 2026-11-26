@@ -125,11 +125,20 @@ Company-preview accepts `money_unit: "auto"` (default), explicit monetary scales
 The announcement schema's added extraction flag was reviewed. Margin explicitly defaults `include_extracted_information` to false and holds true; no generic executor or extraction branch is newly enabled. Query preview/receipts show the default. The runtime catalog owns connection/schema holds.
 
 
-## MCP transport, package 0.8.0
+## MCP transport, package 0.9.0
 
-35 full-profile tools or 14 local review-profile tools, unchanged 37 retrieval/finance
-operations and ten review functions. Profiles are frontend views, not authorization
+37 full-profile tools, 16 advanced review-profile tools or 3 review-simple tools, unchanged 37 retrieval/finance
+operations and twelve review functions. Profiles are frontend views, not authorization
 boundaries; other full clients share the same backend/budgets.
+Prefer margin_prepare_review → margin_submit_review for supplied-text tasks. Inputs:
+actual source text/metadata, nullable record/publication dates, ordered claims, optional
+sentiment scope; submission uses only returned review_id and ordered exact-quote host
+judgments. The core functions are review.prepare/review.submit. Margin binds real
+source/passage/packet hashes internally and returns one combined report. review-simple
+exposes these tools plus margin_status; ask for missing user material, never synthesize
+a sample task. Atomic transient state, exact quote guards, TTL/capacity and immutable
+identical replay apply; originals and host judgments remain unverified.
+
 Four typed local previews map to reviewed Drishti operations: margin_preview_news →
 get_news, margin_preview_announcements → get_announcements, margin_preview_earnings →
 list_earnings, margin_preview_earnings_filing → get_earnings_filing. Use each tool's

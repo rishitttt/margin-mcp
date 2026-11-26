@@ -1,16 +1,21 @@
 # Margin
 
-**Current source release: 0.8.2 (26 November).** Registration accepts plain URL anchors
-with explicit normalization receipts; credentials, altered passage text and raw URL
-controls remain rejected. Review outputs expose assessment coverage separately from
-operation success. Numeric verification stays financial-only; certification levels
-use passage review. Full profile stays 35 tools; focused review stays 14. All 432
-offline tests pass. [Plan](docs/design/mcp-aggregation.md#082-plain-anchor-registration-repair-26-november-2026),
-[validation](docs/implementation.md), [wheel](releases/0.8.2/margin_research-0.8.2-py3-none-any.whl)
-and [checksum](releases/0.8.2/SHA256SUMS). Active mtest stays 0.8.1; no install/restart,
-provider call or quota reset. New host acceptance remains separate. Older notes are history.
+**Current source release: 0.9.0 (26 November).** Supplied-text claim review and
+content sentiment now use two calls: prepare the actual task, then submit judgments
+with one returned review ID. Margin binds source/passage/packet references internally
+and returns the combined report. An optional `review-simple` profile exposes three
+tools; advanced review exposes 16 and full mode 37. Existing finance/retrieval tools
+remain available. No server LLM, document authentication or database is required.
+[Install and test](docs/mcp.md#two-step-review-090),
+[validation](docs/implementation.md),
+[wheel](releases/0.9.0/margin_research-0.9.0-py3-none-any.whl) and
+[checksum](releases/0.9.0/SHA256SUMS). The user's active 0.8.2 backend is unchanged;
+upgrade is manual. Software checks pass; a fresh model-host trial is still needed.
 
-**Current source release: 0.7.0.** Four typed Drishti previews remove the query-wrapper
+**Historical release: 0.8.2.** Narrow plain-anchor registration normalization and
+assessment-coverage reporting remain in 0.9.0. Older dated checkpoints below are history.
+
+**Historical release: 0.7.0.** Four typed Drishti previews remove the query-wrapper
 translation from common event calls; exact schemas are generated from reviewed core
 contracts. Generic catalog routing remains compatible. Retrieval errors identify missing/
 allowed fields, and status exposes package_version separately from contract_version.
@@ -19,7 +24,7 @@ allowed fields, and status exposes package_version separately from contract_vers
 and [checksum](releases/0.7.0/SHA256SUMS). Active mtest remains 0.6.2; no live restart
 or allowance reset. Older dated source-release notes below are history.
 
-**Current source release: 0.6.2 (25 November).** Fresh INFY Drishti news, announcement
+**Historical release: 0.6.2 (25 November).** Fresh INFY Drishti news, announcement
 and earnings list/detail calls passed. The review importer now handles all four shapes
 and preserves protected links, row identity and source limitations. Citation/sentiment
 checks over saved real responses passed; judgments come from the host, without a
@@ -60,8 +65,8 @@ The [portable local test bundle](docs/portable-agent-bundle.md) adds relocatable
 
 ## Current state
 
-`main` has an installable core, two upstream adapters, 35 full-profile MCP tools, deterministic
-finance and ten citation/content-sentiment review functions. Synthetic mode defaults
+`main` has an installable core, two upstream adapters, 37 full-profile MCP tools, deterministic
+finance and twelve citation/content-sentiment review functions. Synthetic mode defaults
 to fictional software fixtures. Explicit live checks and user-led finance tests are
 documented separately from offline transport tests. Broad issuer accuracy, source
 authentication and cross-model benchmarking remain unverified. Current implementation

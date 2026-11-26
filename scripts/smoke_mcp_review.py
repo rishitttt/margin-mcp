@@ -54,7 +54,7 @@ async def main(options):
                 assert "local review profile" in initialized.instructions
                 tools = {tool.name: tool for tool in (await client.list_tools()).tools}
                 assert (
-                    len(tools) == 14 and "margin_review" not in tools and "margin_run" not in tools
+                    len(tools) == 16 and "margin_review" not in tools and "margin_run" not in tools
                 )
 
                 async def call(name, values=None, error=False):
@@ -219,6 +219,31 @@ async def main(options):
                     assert "margin_prepare_sentiment" in error.error.message
                 else:
                     raise AssertionError("Function-as-tool must not execute as an alias.")
+                high = await call(
+                    "margin_prepare_review",
+                    {
+                        "issuer": "NSE:EXAMPLE",
+                        "title": "Fictional high-level review",
+                        "source_url": "https://example.invalid/high-level",
+                        "source_text": "Demand improved.",
+                        "record_date": "2026-11-25",
+                        "claims": ["Demand improved."],
+                    },
+                )
+                high_result = await call(
+                    "margin_submit_review",
+                    {
+                        "review_id": high["review_id"],
+                        "claim_assessments": [
+                            {
+                                "verdict": "supported",
+                                "quote": "Demand improved.",
+                                "rationale": "Fictional host judgment.",
+                            }
+                        ],
+                    },
+                )
+                assert high_result["complete"]
                 final = await call("margin_status")
                 assert final["ledger"]["http_attempts"] == {"bharatstock": 0, "drishti": 0}
                 assert final["ledger"]["completed_estimated_credits"] == 0

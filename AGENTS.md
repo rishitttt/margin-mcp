@@ -1,5 +1,16 @@
 # Working on Margin
 
+**26 November 0.9.0 delivered:** plan 9e43879 preceded two-step review plus one
+opaque review_id and internally bound references. Preserve 37 full/16 advanced/3 simple
+tool surfaces, all legacy APIs, separate caller-declared record/publication dates,
+atomic rollback, strict quotes/hash/TTL/capacity and immutable identical replay.
+470 offline tests, Ruff, skill and source/installed-wheel SDK checks pass with zero
+real provider/model calls. Private review-flow-2026-11-26 captures distinguish initial
+smoke-driver failure, software fixtures and real-text operator replay. Active user
+mtest remains 0.8.2; upgrade only deliberately, never reset allowances to rescue tests.
+No server LLM/database/browser/original verifier. Model missing-input/final-prose
+reliability remains pending, not guaranteed by instructions or the new workflow.
+
 **26 November review-flow fixes authorized:** user says fix failures, skipping demo.
 Follow the 0.9.0 plan in mcp-aggregation before edits. Add high-level prepare/submit
 with one review_id and internal source/packet/hash/date binding, atomic bounded sessions,

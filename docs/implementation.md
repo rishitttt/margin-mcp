@@ -1,5 +1,48 @@
 # Implementation and validation status
 
+## 0.9.0 review-flow repair: 26 November 2026 IST
+
+Plan **9e43879** preceded implementation. User skipped the demo and requested failure
+fixes. New review.prepare/review.submit functions and generated margin_prepare_review /
+margin_submit_review tools bind source/passage/packet/hash details internally behind
+one review_id. Record/publication dates remain separate. Host submits ordered exact-quote
+judgments; Margin returns all claim rows, support audit, citations and content counts.
+No Margin LLM, provider request, database or independent original verifier is added.
+All old APIs remain. Full/advanced review/simple profiles expose 37/16/3 tools.
+
+**470 offline tests pass; Ruff lint/format pass (93 Python files); skill validates.**
+The new cases cover atomic preparation/submission rollback, missing dates/task fields,
+unsafe inputs, false quotes, scope/order counts, immutable identical replay/conflicts,
+TTL/capacity, unknown handles and version-matched shared-owner profile reconnects.
+
+Official SDK checks pass from source and a separately installed wheel using existing
+pinned dependencies: full 55 calls/110 events, advanced review 18 calls/34 events
+(includes one schema and one frontend rejection), simple five calls/ten events, and
+shared 16 calls/32 events across four frontends with stable identity/no duplicate
+provider dispatch. Fictional adapters exercise transport; no real provider/model calls.
+One early full-source smoke driver failed to supply inputs for newly added routes;
+the driver was corrected and the incomplete capture preserved separately from passes.
+
+Saved real INFY supplied-text replay passes both claims and content annotation with
+explicit operator judgments, including insufficient investor evidence and unknown
+publication date. This is software verification, not model semantic gold. Simple tool
+definitions are 6,470 UTF-8 bytes plus 1,409 instruction bytes; advanced/full definitions
+are 32,615/81,456 bytes by the same serialization. These are not token or context-fit
+measurements. Old 0.8.2 model failures remain frozen as a distinct condition.
+
+New 0.9.0 wheel has 62 entries/52 exact source modules; README metadata, known-secret
+and archive scan pass; all older artifacts/checksums remain unchanged. Private evidence:
+reports/private/review-flow-2026-11-26/{REPORT.json,REPORT.md,real-infy-replay.json,
+profile-sizes.json,wheel-check.json,sdk-*/}. No hidden model thinking collected.
+
+The user's active mtest remains 0.8.2: no install/restart, allowance reset or preset/model
+change. [Manual activation](mcp.md#two-step-review-090) and
+[complete model test](review-workflows.md#two-step-model-acceptance-090) are next.
+Missing-input honesty, semantic judgments and final prose still require real-host tests;
+MCP cannot authenticate whether a syntactically valid task came from the actual user.
+Original-unverified is distinct from unavailable/expired; complete review is distinct
+from all claims supported. Earlier checkpoints below are historical.
+
 ## Professor demo client: 26 November 2026 IST
 
 Plan 85f0c7f preceded the repo-only demo client; installed product/wheel remains 0.8.2.

@@ -12,7 +12,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.8.2"
+VERSION = "0.9.0"
 CONTRACT = "margin.mcp.v1"
 DIRECT_FUNCTIONS = {
     "margin_calculate_margins": "finance.calculate_margins",
@@ -29,6 +29,8 @@ DIRECT_PREVIEWS = {
     "margin_preview_earnings_filing": "drishti.get_earnings_filing",
 }
 DIRECT_REVIEWS = {
+    "margin_prepare_review": "review.prepare",
+    "margin_submit_review": "review.submit",
     "margin_review_workflows": "protocols.list_workflows",
     "margin_register_sources": "evidence.register_sources",
     "margin_prepare_verification": "evidence.prepare_verification",
@@ -41,6 +43,8 @@ DIRECT_REVIEWS = {
     "margin_aggregate_sentiment": "sentiment.aggregate",
 }
 REVIEW_HELP = {
+    "review.prepare": "PREFERRED supplied-text review entry point. Supply actual user text, metadata, ordered claim texts (or [] for sentiment only), separate record/publication dates and optional sentiment scope. Margin binds all source/passage/packet IDs internally and returns ONE review_id. Ask for missing input; never invent an example. No provider/LLM call.",
+    "review.submit": "Complete a prepared review using ONLY its returned review_id. Supply ordered claim verdicts, exact quote substrings or null, rationales and sentiment annotation when prepared. No source IDs, packet IDs, hashes, numeric units or host_profile. Margin validates and atomically renders/audits/aggregates; preserve its complete report and limitations. No provider/LLM call.",
     "protocols.list_workflows": "Discover optional local citation/sentiment protocols, host source-reading steps and capability fallbacks. Ordinary retrieval/math does not require citation review.",
     "evidence.register_sources": "Register supplied source locators/passages. No document download; unknown dates stay unknown.",
     "evidence.prepare_verification": "Optional claim-to-passage review protocol, not automatic original verification. Prepare claims with existing source_ids; optional host_profile declares reading/assessment access. Follow citation_protocol for no-reader/no-text fallbacks. Do not supply passage fields, packet IDs or hashes here; preparation returns real packet refs and passages.",
@@ -324,7 +328,7 @@ def definitions():
                 f"{REVIEW_HELP[function]} Use THIS advertised exact inputSchema at top level; no function/arguments wrapper. Follow next_steps and complete required host input. No provider/LLM call; semantic judgments are host reports, not original authentication.",
                 inputs,
                 readonly,
-                readonly,
+                readonly or function == "review.submit",
                 False,
             )
         )

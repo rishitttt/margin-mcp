@@ -1,5 +1,21 @@
 # Margin build and evaluation plan
 
+## Current next steps after the 0.9.0 review repair
+
+1. Deliberately install the new wheel/restart the owner with reconciled zero-provider
+   allowances, then use the three-tool review-simple profile and a complete actual task.
+2. Preserve a fresh first-attempt Qwen run plus missing-input/wrong-date/false-quote
+   controls. Compare with the frozen 0.8.2 preset-assisted failures as a new condition;
+   record context, profile and preset rather than attributing everything to context size.
+3. Test another capable model/host for end-to-end completion/final-answer fidelity.
+   Do not claim autonomy, semantic ground truth or source authentication from SDK checks.
+4. Keep finance/retrieval live tests separate with explicit remaining API allowances.
+   Further MCP distribution/hosting and the professor's independent benchmark remain later.
+
+Delivered now: internally bound two-step review, atomic transient sessions, immutable
+submissions and optional three-tool interface. No Margin LLM/browser, database, automatic
+original verifier or mandatory citation step for ordinary finance. User skipped demo.
+
 **Professor demo delivered, 26 November:** the repo-only SDK client and private real-
 text/operator-judgment input are ready; success and wrong-quote commands tested, 437
 offline checks pass. See MCP guide. Use this to show core behavior honestly while

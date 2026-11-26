@@ -37,6 +37,10 @@ from margin.interfaces.mcp.tools import (
 )
 
 INSTRUCTIONS = """Margin provides Indian-company research tools over one process-local core.
+For supplied-text claim/sentiment review prefer margin_prepare_review then
+margin_submit_review: one review_id, internal source/packet/hash/date binding and one
+final report. Ask for missing user material, never invent a task. Legacy primitives
+remain for advanced use. review-simple exposes just status/prepare/submit.
 Choose workflows from the user's goal; ordinary retrieval/math does not require citation
 review. Citation is an optional host-side protocol. Search access does not establish
 source-reading access. Declare only known host_profile capabilities, including optional
@@ -511,9 +515,9 @@ def create_server(
     expected_mode=None,
     tool_profile="all",
 ):
-    from margin.interfaces.mcp.profiles import REVIEW_INSTRUCTIONS, ToolView
+    from margin.interfaces.mcp.profiles import REVIEW_INSTRUCTIONS, SIMPLE_INSTRUCTIONS, ToolView
 
-    if tool_profile not in {"all", "review"}:
+    if tool_profile not in {"all", "review", "review-simple"}:
         raise ValueError("Unknown MCP tool profile.")
     if not backend_socket:
         settings = settings or Settings.from_env()
@@ -551,7 +555,11 @@ def create_server(
         "margin",
         version=VERSION,
         title="Margin Indian financial research",
-        instructions=INSTRUCTIONS if tool_profile == "all" else REVIEW_INSTRUCTIONS,
+        instructions={
+            "all": INSTRUCTIONS,
+            "review": REVIEW_INSTRUCTIONS,
+            "review-simple": SIMPLE_INSTRUCTIONS,
+        }[tool_profile],
         lifespan=lifespan,
         on_list_tools=list_tools,
         on_call_tool=call_tool,
@@ -583,7 +591,7 @@ def main(argv=None):
         description="Run the local Margin MCP server over stdio; stdout is reserved for protocol messages."
     )
     parser.add_argument("--mode", choices=["synthetic", "live"])
-    parser.add_argument("--tool-profile", choices=["all", "review"], default="all")
+    parser.add_argument("--tool-profile", choices=["all", "review", "review-simple"], default="all")
     parser.add_argument(
         "--backend-socket",
         help="Connect to an explicitly started private local backend; never autostart or retry",

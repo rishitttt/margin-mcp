@@ -81,7 +81,7 @@ async def test_real_stdio_preview_and_execution_survive_frontend_restarts(addres
             async with stdio_client(params, errlog=err) as (read, write):
                 async with ClientSession(read, write) as client:
                     await client.initialize()
-                    assert len((await client.list_tools()).tools) == 35
+                    assert len((await client.list_tools()).tools) == 37
                     preview = (
                         await client.call_tool(
                             "margin_preview",
@@ -197,7 +197,7 @@ async def test_shared_profile_switch_keeps_prepared_packet_without_provider_call
                 async with ClientSession(read, write) as client:
                     initialized = await client.initialize()
                     assert "local review profile" in initialized.instructions
-                    assert len((await client.list_tools()).tools) == 14
+                    assert len((await client.list_tools()).tools) == 16
                     current = (await client.call_tool("margin_status", {})).structured_content
                     assert (
                         current["session_id"] == status["session_id"] == backend.adapter.session_id
@@ -215,6 +215,52 @@ async def test_shared_profile_switch_keeps_prepared_packet_without_provider_call
                         await client.call_tool("margin_run", {})
                     assert caught.value.error.code == -32602
                     assert backend.recorder.sequence == before
+        assert backend.service.ledger.requests == {"bharatstock": 0, "drishti": 0}
+
+
+async def test_high_level_review_survives_full_to_simple_frontend_reconnect(address, tmp_path):
+    async with Backend(
+        address, Settings(bharatstock_requests=0, drishti_requests=0, drishti_credits=0)
+    ) as backend:
+        with (tmp_path / "simple-profile-stderr.txt").open("w") as err:
+            async with stdio_client(client_params(address), errlog=err) as (read, write):
+                async with ClientSession(read, write) as client:
+                    await client.initialize()
+                    prepared = (
+                        await client.call_tool(
+                            "margin_prepare_review",
+                            {
+                                "issuer": "NSE:EXAMPLE",
+                                "title": "Fictional reconnect test",
+                                "source_url": "https://example.invalid/reconnect",
+                                "source_text": "Demand improved.",
+                                "record_date": None,
+                                "claims": ["Demand improved."],
+                            },
+                        )
+                    ).structured_content["data"]
+            params = client_params(address)
+            params.args += ["--tool-profile", "review-simple"]
+            async with stdio_client(params, errlog=err) as (read, write):
+                async with ClientSession(read, write) as client:
+                    initialized = await client.initialize()
+                    assert "review-simple" in initialized.instructions
+                    assert len((await client.list_tools()).tools) == 3
+                    result = await client.call_tool(
+                        "margin_submit_review",
+                        {
+                            "review_id": prepared["review_id"],
+                            "claim_assessments": [
+                                {
+                                    "verdict": "supported",
+                                    "quote": "Demand improved.",
+                                    "rationale": "Fictional caller judgment.",
+                                }
+                            ],
+                        },
+                    )
+                    assert result.structured_content["data"]["complete"]
+                    assert result.structured_content["session_id"] == backend.adapter.session_id
         assert backend.service.ledger.requests == {"bharatstock": 0, "drishti": 0}
 
 

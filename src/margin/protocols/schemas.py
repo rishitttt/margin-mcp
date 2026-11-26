@@ -83,6 +83,66 @@ ANNOTATION = obj(
 )
 PACKET = {"packet_id": ID, "packet_hash": text(64)}
 SCHEMAS = {
+    "review.prepare": obj(
+        {
+            "issuer": text(100),
+            "title": text(400),
+            "source_url": text(2000),
+            "source_text": text(6000),
+            "source_kind": {
+                "enum": ["provider_summary", "original_document", "news_article"],
+                "default": "provider_summary",
+            },
+            "record_date": {
+                "type": ["string", "null"],
+                "format": "date",
+                "description": "Preserve the supplied record date; publication being unknown does not make record_date null.",
+            },
+            "publication_date": {"type": ["string", "null"], "format": "date"},
+            "claims": array(text(1500), 8),
+            "sentiment": obj(
+                {
+                    "aspect": text(200),
+                    "from": {"type": "string", "format": "date"},
+                    "to": {"type": "string", "format": "date"},
+                    "date_basis": {"enum": ["record_date", "published"]},
+                },
+                ["aspect", "from", "to", "date_basis"],
+            ),
+        },
+        ["issuer", "title", "source_url", "source_text", "record_date", "claims"],
+    ),
+    "review.submit": obj(
+        {
+            "review_id": {
+                "type": "string",
+                "pattern": "^rvw_[a-f0-9]{32}$",
+                "description": "Exact review_id returned by preparation, never a URL/source/passage/packet ID.",
+            },
+            "claim_assessments": array(
+                obj(
+                    {
+                        "verdict": ASSESSMENT["properties"]["verdict"],
+                        "quote": {"type": ["string", "null"], "minLength": 1, "maxLength": 2000},
+                        "rationale": text(1000),
+                    },
+                    ["verdict", "quote", "rationale"],
+                ),
+                8,
+            ),
+            "sentiment_annotation": obj(
+                {
+                    "relevant": {"type": "boolean"},
+                    "label": ANNOTATION["properties"]["label"],
+                    "quote": {"type": ["string", "null"], "minLength": 1, "maxLength": 2000},
+                    "rationale": text(1000),
+                },
+                ["relevant", "label", "quote", "rationale"],
+            ),
+            "reviewer": REVIEWER,
+        },
+        ["review_id", "claim_assessments"],
+    ),
     "protocols.list_workflows": obj({}),
     "evidence.register_sources": obj({"sources": array(SOURCE, 12, 1)}, ["sources"]),
     "evidence.prepare_verification": obj(

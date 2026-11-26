@@ -1,5 +1,14 @@
 # Project context and handoff
 
+**Current source: 0.9.0, 26 November.** User skipped the demo and authorized fixes.
+Two-step review binds all source/passage/packet references internally behind one review_id;
+ordered host judgments produce a combined report. review-simple advertises three tools;
+advanced review 16/full 37. Legacy functions remain. Separate dates, strict quotes/hash,
+TTL/capacity, atomic rollback and immutable replay apply. No database or Margin LLM.
+Active user backend remains 0.8.2; manual upgrade/test is in mcp.md. Software tests and
+SDK checks pass with zero real provider/model calls. Fresh Qwen trial, missing-input
+honesty and final prose still need evaluation. Older checkpoints below are historical.
+
 **Latest 26 November:** 0.8.2 setup/anchor normalization pass, but the preset-assisted
 Qwen3-8B/30,183 trial misused URLs/passage IDs, dropped record date and invented a missing
 ExampleCorp task. Actual prediction config confirms the 898-char preset was inherited;

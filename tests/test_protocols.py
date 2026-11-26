@@ -353,7 +353,7 @@ def test_http_cli_protocol_roundtrip_nonce_and_unknown_functions():
             return json.loads(output.getvalue())["data"]
 
         assert http.post("/api/protocols/invoke", json={}).status_code == 403
-        assert len(call("workflows")["functions"]) == 10
+        assert len(call("workflows")["functions"]) == 12
         registration = call(
             "review",
             "--json",

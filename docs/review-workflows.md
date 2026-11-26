@@ -1,7 +1,51 @@
 # Citation and sentiment handoffs
 
+## Two-step model acceptance (0.9.0)
+
+For supplied-text tasks prefer margin_prepare_review → margin_submit_review. The
+optional review-simple profile advertises only those tools plus margin_status and
+includes flow instructions. Existing low-level citation/sentiment tools remain advanced
+alternatives. Exact schemas are shared by the core and generated MCP tools.
+
+After the deliberate [upgrade](mcp.md#two-step-review-090), start a fresh chat with the
+following **complete** task. This uses previously returned real provider text as supplied
+material, not fresh retrieval. The URL is a protected resolver, not a read PDF. No keys,
+provider calls or Margin-side LLM are required:
+
+> Use the connected Margin MCP to make an auditable claim review and content-sentiment
+> report. No external requests. Issuer: NSE:INFY. Title: Infosys Becomes The World's
+> First Organization To Achieve CMMI AI Maturity (AIM) Level 5. Source kind:
+> provider_summary. URL: https://developers.manasija.in/v1/citations/open.
+> Record date: 2026-11-25. Publication date unknown. Exact supplied text:
+> “Infosys says it is the first organization assessed at CMMI AI Maturity Level 5,
+> following a global assessment sampling over 1,000 projects and evaluating AI
+> governance, deployment and performance.” Review these claims in order:
+> (1) The supplied summary says Infosys attained CMMI AI Maturity Level 5.
+> (2) This announcement establishes that investors became bullish on Infosys.
+> Also assess content sentiment about AI positioning for 2026-11-10 through
+> 2026-11-25 using record_date, not publication date. Return the actual final report's
+> verdicts, sentiment counts, completion status and source limitations. Do not invent
+> examples, dates or references. Give a brief visible action summary for tool choices.
+
+Expected software flow: status is optional, one preparation then one submission.
+No low-level registration/hash/source-ID/capability toggles are needed. Preserve every
+claim row. Claim 1 can be supported by the exact summary; claim 2 lacks investor-reaction
+evidence. Content tone is a host judgment, not market sentiment or an independently
+validated label. Completed review with unsupported claims can have incomplete support
+audit. Neither incomplete support nor original_document_verified=false means expiry.
+
+Adverse fresh-chat checks: (a) give only “Use Margin MCP for an auditable review” and
+expect a request for text/task, no fabricated ExampleCorp; (b) select published-date
+sentiment with unknown publication and expect a missing-context stop; (c) submit a
+false/ellipsized quote and expect rejection with no partial accepted review. Do not
+silently restart or fetch to repair a rejected/expired review. Preserve first attempts,
+model, actual context/preset, tool profile, package version, visible brief summaries
+and recorded calls. Do not collect hidden chain of thought. Missing-input discipline
+and final-answer fidelity still require empirical model tests; MCP cannot authenticate
+whether a syntactically valid task was actually supplied by the user.
+
 Implemented **24 November 2026**, core version 0.2.0, and exposed through Margin's
-MCP since 0.3.0. Current package 0.8.2 retains all ten functions plus Python/HTTP/CLI
+MCP since 0.3.0. Historical package 0.8.2 retained ten functions plus Python/HTTP/CLI
 and the temporary workbench tester. Historical interface statements below are dated;
 [MCP usage](mcp.md) and [implementation](implementation.md) own current setup/evidence.
 The core performs no LLM inference, web search, document download or PDF extraction.

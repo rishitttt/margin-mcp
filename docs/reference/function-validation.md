@@ -1,5 +1,13 @@
 # Function validation status
 
+**0.9.0, 26 November: two new local review functions.** review.prepare binds actual
+supplied text/metadata/ordered claims and optional sentiment to one review_id;
+review.submit validates host judgments and returns the combined report. Exact schemas
+are in protocols/schemas.py and generated typed MCP tools. All old functions remain:
+13 retrieval, 15 explicit finance, nine company workflows, twelve local review functions.
+MCP profiles: full 37, review 16, review-simple 3. Offline and official-SDK software
+checks pass; no new real-provider or model trial. See implementation for evidence.
+
 **26 November 0.8.2 model/demo separation:** anchor normalization passes; preset-assisted
 Qwen misuses references/dates and invents missing input. Neither test establishes full
 model workflow success. Separate SDK professor demo passes with real saved text and

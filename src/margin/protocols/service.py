@@ -18,6 +18,8 @@ from margin.core.contracts import DomainError, encoded_size
 from margin.core.validation import changed_schema_paths, validation_summary
 from margin.evidence.sanitize import REDACTED, Sanitizer
 from margin.protocols.handoffs import citation_guidance, citation_policy, packet_step, step
+from margin.protocols.review_flow import prepare as prepare_review
+from margin.protocols.review_flow import submit as submit_review
 from margin.protocols.schemas import SCHEMAS
 
 WARNING = "Host/provider text and judgments are unverified. Matching a supplied quote or valid JSON does not independently verify the original or the claim."
@@ -93,7 +95,7 @@ class ReviewService:
         self.sanitizer = sanitizer or Sanitizer()
         self.mode, self.ttl, self.max_records, self.max_bytes = mode, ttl, max_records, max_bytes
         self.timer = timer
-        self.sources, self.packets = {}, {}
+        self.sources, self.packets, self.sessions = {}, {}, {}
 
     def capabilities(self):
         return [
@@ -110,7 +112,7 @@ class ReviewService:
 
     def _expire(self):
         now = self.timer()
-        for store in (self.sources, self.packets):
+        for store in (self.sources, self.packets, self.sessions):
             for key, (created, _) in list(store.items()):
                 if now - created >= self.ttl:
                     del store[key]
@@ -118,8 +120,9 @@ class ReviewService:
     def _save(self, store, values):
         self._expire()
         # Capacity validation precedes all writes; an invalid batch cannot partly persist.
-        merged = self.sources.copy(), self.packets.copy()
-        target = merged[0] if store is self.sources else merged[1]
+        stores = (self.sources, self.packets, self.sessions)
+        merged = [item.copy() for item in stores]
+        target = next(merged[i] for i, item in enumerate(stores) if store is item)
         target.update({key: (self.timer(), value) for key, value in values.items()})
         if (
             sum(map(len, merged)) > self.max_records
@@ -137,6 +140,11 @@ class ReviewService:
 
     def _source(self, source_id):
         self._expire()
+        if not isinstance(source_id, str) or not source_id.startswith("src_"):
+            raise DomainError(
+                "source_unavailable",
+                "Invalid source reference: use the actual source_id returned by registration/import, not a URL, claim ID or passage ID. This input is not an issued source handle; no refetch occurred.",
+            )
         if source_id not in self.sources:
             raise DomainError(
                 "source_unavailable",
@@ -146,6 +154,11 @@ class ReviewService:
 
     def _packet(self, packet_id, packet_hash, kind):
         self._expire()
+        if not isinstance(packet_id, str) or not packet_id.startswith("pkt_"):
+            raise DomainError(
+                "packet_unavailable",
+                "Invalid packet reference: use the actual packet_id/hash from preparation, not a claim/source/run ID. No packet was recreated or fetched.",
+            )
         if packet_id not in self.packets:
             raise DomainError(
                 "packet_unavailable",
@@ -159,6 +172,12 @@ class ReviewService:
     def _plain_anchor_input(self, arguments):
         canonical = copy.deepcopy(arguments)
         changes = []
+        if isinstance(canonical, dict) and isinstance(canonical.get("source_url"), str):
+            normalized, items = self._plain_anchor_input(
+                {"sources": [{"url": canonical["source_url"]}]}
+            )
+            canonical["source_url"] = normalized["sources"][0]["url"]
+            return canonical, [{"path": "/source_url", "change": item["change"]} for item in items]
         if not isinstance(canonical, dict) or not isinstance(canonical.get("sources"), list):
             return canonical, changes
         for i, source in enumerate(canonical["sources"][:12]):
@@ -227,7 +246,7 @@ class ReviewService:
                 "Use finite JSON review arguments within the 64 KiB limit.",
             ) from None
         normalizations = []
-        if clean != arguments and function == "evidence.register_sources":
+        if clean != arguments and function in {"evidence.register_sources", "review.prepare"}:
             canonical, normalizations = self._plain_anchor_input(arguments)
             if canonical == clean:
                 arguments = canonical
@@ -248,6 +267,8 @@ class ReviewService:
                 + problem,
             )
         methods = {
+            "review.prepare": lambda **args: prepare_review(self, **args),
+            "review.submit": lambda **args: submit_review(self, **args),
             "protocols.list_workflows": self.workflows,
             "evidence.register_sources": self.register_sources,
             "evidence.prepare_verification": self.prepare_verification,
@@ -329,11 +350,17 @@ class ReviewService:
             "routing": "Declared application profile, not model brand or inferred reasoning ability.",
             "next_steps": [
                 step(
+                    "review.prepare",
+                    {},
+                    ["issuer", "title", "source_url", "source_text", "record_date", "claims"],
+                    purpose="Preferred supplied-text flow; Margin binds identifiers and dates. Supply actual user material, not an invented task.",
+                ),
+                step(
                     "evidence.register_sources",
                     {},
                     ["sources"],
                     purpose="Only if supplied sources are not registered; existing source handles can proceed to preparation.",
-                )
+                ),
             ],
         }
 
@@ -782,3 +809,4 @@ class ReviewService:
     def close(self):
         self.sources.clear()
         self.packets.clear()
+        self.sessions.clear()

@@ -67,9 +67,9 @@ def fcff():
     }
 
 
-def test_static_catalog_has_35_tools_and_accurate_annotations():
+def test_static_catalog_has_37_tools_and_accurate_annotations():
     tools = definitions()
-    assert len(tools) == 35
+    assert len(tools) == 37
     for tool in tools.values():
         Draft202012Validator.check_schema(tool.input_schema)
         Draft202012Validator.check_schema(tool.output_schema)
@@ -91,7 +91,7 @@ async def test_catalog_exposes_every_function_without_startup_or_listing_fetch(a
         13,
         15,
         9,
-        10,
+        12,
     ]
     assert all(
         "schema" not in entry and "planning_schema" not in entry
@@ -767,7 +767,7 @@ async def test_real_stdio_sdk_handshake_run_finance_and_shutdown(tmp_path):
                     and initialized.server_info.version == VERSION
                 )
                 tools = (await session.list_tools()).tools
-                assert len(tools) == 35
+                assert len(tools) == 37
                 status = (await session.call_tool("margin_status", {})).structured_content
                 assert status["mode"] == "synthetic" and status["data"]["ledger"][
                     "http_attempts"

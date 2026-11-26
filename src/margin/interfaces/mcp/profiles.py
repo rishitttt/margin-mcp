@@ -18,7 +18,28 @@ REVIEW_TOOLS = frozenset(DIRECT_REVIEWS) | {
     "margin_result",
     "margin_review_sources",
 }
+SIMPLE_TOOLS = frozenset({"margin_status", "margin_prepare_review", "margin_submit_review"})
+SIMPLE_INSTRUCTIONS = """Margin review-simple exposes only status, prepare and submit.
+Use the actual user's source text and task. If text, claims or required dates are
+missing, ASK the user; do not invent an example company/document or run a sample.
+Call margin_prepare_review with supplied text/metadata, ordered claim texts (or [] for
+sentiment only) and optional scope. Keep record_date separate from publication_date;
+unknown publication is null, not an unknown record date. Margin registers passages
+and binds all source/passage/packet references internally. Preparation is NOT completion.
+Read the returned text, assess claims in its order and annotate content sentiment
+only for the requested scope. Submit exact quote substrings without ellipses, verdicts
+and rationales with the ONE returned review_id via margin_submit_review. No URLs or
+invented IDs in that field. No financial numeric checker is needed for maturity levels.
+Submit sentiment exactly when prepared. Report only the final returned rows/counts,
+complete flag and source limits. A completed review may find insufficient/contradicted
+evidence; its support audit can be incomplete without missing assessments. No Margin
+LLM/browser/provider call or original authentication. Host judgments are unverified.
+Unknown/expired reviews stop; never restart, reset budgets or refetch to rescue them.
+Optional why is a visible brief action summary, not hidden reasoning.
+"""
 REVIEW_INSTRUCTIONS = """Margin local review profile exposes only its advertised tools.
+Prefer margin_prepare_review then margin_submit_review for supplied-text tasks; Margin
+binds dates/source/packet references and returns one report. Legacy tools are advanced.
 Citation review is optional, not a prerequisite for ordinary retrieval/math. The
 citation_protocol response distinguishes supplied-text review, host source-reading
 handoff and insufficient-evidence/inventory fallback. host_profile.host_read_sources
@@ -55,14 +76,18 @@ this frontend's profile projection. Record the profile in experiment configurati
 
 class ToolView:
     def __init__(self, inner, profile="all"):
-        if profile not in {"all", "review"}:
+        if profile not in {"all", "review", "review-simple"}:
             raise ValueError("Unknown MCP tool profile.")
         self.inner, self.profile = inner, profile
         self.tools = {
             name: copy.deepcopy(tool)
             for name, tool in inner.tools.items()
-            if profile == "all" or name in REVIEW_TOOLS
+            if profile == "all" or name in (REVIEW_TOOLS if profile == "review" else SIMPLE_TOOLS)
         }
+        if profile == "review-simple":
+            self.tools[
+                "margin_status"
+            ].description = "Inspect package/profile and recording. Supplied-text review works locally without provider keys or credits; disconnected providers do not block it. Requires actual user text/task, no Margin LLM or browser."
         if profile == "review":
             catalog = self.tools["margin_catalog"]
             catalog.input_schema["properties"]["group"] = {
@@ -72,14 +97,14 @@ class ToolView:
             catalog.description = "Discover exact local review function schemas and typed routes only. all means all review functions in this profile. Use each typed tool's advertised inputSchema, top-level; function identifiers are not callable tools. No provider calls."
 
     async def call(self, name, arguments):
-        if self.profile == "review" and (not isinstance(name, str) or name not in self.tools):
+        if self.profile != "all" and (not isinstance(name, str) or name not in self.tools):
             target = next(
                 (tool for tool, function in DIRECT_REVIEWS.items() if function == name), None
             )
             hint = (
                 f" Use {target} with its top-level advertised schema."
-                if target
-                else " Use margin_catalog to find the typed review tool."
+                if target in self.tools
+                else " Use the tools advertised in this profile; prepare a high-level review with actual user material."
             )
             raise MCPError(-32602, "Tool is not exposed in the review profile." + hint)
         forwarded = arguments
@@ -104,6 +129,13 @@ class ToolView:
         body = copy.deepcopy(result.structured_content)
         if name == "margin_status":
             body["data"].update(tool_profile=self.profile, advertised_tools=len(self.tools))
+            if self.profile == "review-simple":
+                body["data"]["review_readiness"] = {
+                    "local": True,
+                    "provider_auth_required": False,
+                    "server_llm_required": False,
+                    "user_material_required": True,
+                }
         elif self.profile == "review":
             for row in body["data"]["groups"].get("review", []):
                 row.pop("generic_mcp_execution", None)

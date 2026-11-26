@@ -58,14 +58,14 @@ async def main(args):
             async with ClientSession(read, write) as session:
                 initialized = await session.initialize()
                 tools = {tool.name: tool for tool in (await session.list_tools()).tools}
-                assert len(tools) == 35
+                assert len(tools) == 37
                 status = await call(session, "margin_status")
                 assert not any(status["data"]["ledger"]["http_attempts"].values())
                 session_id = status["session_id"]
                 catalog = (await call(session, "margin_catalog"))["data"]["groups"]
                 assert [
                     len(catalog[k]) for k in ["retrieval", "calculations", "company", "review"]
-                ] == [13, 15, 9, 10]
+                ] == [13, 15, 9, 12]
                 exact = await call(
                     session,
                     "margin_catalog",
@@ -370,7 +370,8 @@ async def main(args):
                 from margin.interfaces.mcp.tools import DIRECT_REVIEWS
 
                 for tool, function in DIRECT_REVIEWS.items():
-                    await call(session, tool, review_inputs[function])
+                    if function in review_inputs:
+                        await call(session, tool, review_inputs[function])
                 fresh_inputs = {
                     "function": "finance.company_margins",
                     "ticker": "SYNTHA",
@@ -401,6 +402,39 @@ async def main(args):
                 )
                 assert inspected["data"]["report"] == fresh["data"]["report"]
                 assert inspected["data"]["details"]["inputs"][1]["unit"] == "INR"
+                high = (
+                    await call(
+                        session,
+                        "margin_prepare_review",
+                        {
+                            "issuer": "NSE:EXAMPLE",
+                            "title": "Fictional high-level review",
+                            "source_url": "https://example.invalid/high-level",
+                            "source_text": "Demand improved.",
+                            "record_date": "2026-11-25",
+                            "claims": ["Demand improved."],
+                        },
+                    )
+                )["data"]
+                high_result = (
+                    await call(
+                        session,
+                        "margin_submit_review",
+                        {
+                            "review_id": high["review_id"],
+                            "claim_assessments": [
+                                {
+                                    "verdict": "supported",
+                                    "quote": "Demand improved.",
+                                    "rationale": "Fictional host judgment.",
+                                }
+                            ],
+                        },
+                    )
+                )["data"]
+                assert (
+                    high_result["complete"] and high_result["claims"][0]["verdict"] == "supported"
+                )
                 final = (await call(session, "margin_status"))["data"]
                 assert final["ledger"]["http_attempts"]["bharatstock"] == 2
                 assert {o["tool"] for o in observations} == set(tools)

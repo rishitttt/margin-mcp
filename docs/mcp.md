@@ -1,6 +1,72 @@
 # Run Margin as a local MCP server
 
-Current release **0.8.2**, 26 November 2026. Thirty-five full-profile MCP tools expose the existing
+## Two-step review (0.9.0)
+
+**Current: 0.9.0, 26 November 2026 IST.** 37 full tools, 16 advanced `review`
+tools, or three `review-simple` tools. The following older release/demo sections are
+historical or advanced alternatives. The core inventory is 13 retrieval operations,
+15 explicit calculations, nine company workflows and twelve local review functions.
+
+Use `margin_prepare_review` with the actual issuer, title, source_url, exact source_text,
+record_date (nullable), ordered claims (or [] for sentiment only), and optional
+publication_date/source_kind/sentiment scope. Source and date claims remain caller
+supplied. The exact inputSchema in tools/list is authoritative; do not add nested
+arguments, source IDs, packet hashes or host_profile. Missing text/task must be requested
+from the user. Missing selected sentiment dates are rejected before any state is saved.
+
+Read the prepared text and submit one verdict/quote/rationale per claim in the same
+order through `margin_submit_review`, using its one returned review_id. Include
+sentiment_annotation exactly when sentiment was prepared. Exact quote substrings are
+required where the existing evidence rules require them; an unsupported claim can
+use null. Preparation is incomplete; submission returns all claim rows, citations,
+support_audit and optional sentiment counts. `complete=true` means the requested
+review was submitted, not that all claims are supported or originals authenticated.
+Semantic judgments still come from the caller. No numeric comparator for CMMI levels.
+
+The server binds all old packet/source/passage IDs and hashes internally, preserves
+separate record/publication dates, and rejects partial or changed resubmissions.
+Identical submissions replay the stored result. State is bounded in-process memory
+(default 30 minutes, 200 records, 2 MiB combined across review stores), not a database;
+frontend reconnection preserves it only while the same owner and TTL survive. Failed
+prepare/submit rolls back its changes. A new backend loses old review IDs. It never
+fetches material to repair an unavailable review.
+
+### Manual upgrade of the existing mtest installation
+
+The build does not upgrade or restart your active 0.8.2 backend. Save its ledger/logs
+before stopping it; old review IDs will become unavailable. With the existing installed
+dependencies, run:
+
+```sh
+/Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --status
+/Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.9.0/margin_research-0.9.0-py3-none-any.whl
+MARGIN_BHARATSTOCK_REQUESTS=0 MARGIN_DRISHTI_REQUESTS=0 MARGIN_DRISHTI_CREDITS=0 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --mode live --record-dir /Users/rishit/Desktop/mtest/logs
+```
+
+Keep that terminal running. Local supplied-text review needs no keys or subscription.
+Set the LM Studio MCP entry to:
+
+```json
+{
+  "mcpServers": {
+    "margin": {
+      "command": "/Users/rishit/Desktop/mtest/.venv/bin/margin-mcp",
+      "args": ["--backend-socket", "/Users/rishit/Desktop/mtest/shared/core.sock", "--mode", "live", "--tool-profile", "review-simple"]
+    }
+  }
+}
+```
+
+Reconnect the MCP and start a fresh chat. Status must report package_version=0.9.0,
+tool_profile=review-simple, advertised_tools=3, recording_enabled=true and zero HTTP
+attempts. Disconnected/unconfigured providers do not block these local review actions.
+The initialization instructions carry the flow; a custom skill/preset is optional.
+Use the complete task/text in [the acceptance prompt](review-workflows.md#two-step-model-acceptance-090).
+A frontend-only profile switch preserves a matching shared owner's state; it is not an
+authorization boundary. Full mode remains appropriate for finance/retrieval.
+
+Historical 0.8.2 baseline: 35 full-profile tools exposed the existing
 37 retrieval/finance and ten review functions. Six common calculations now have directly
 advertised strict schemas. The core, CLI and workbench remain available independently.
 The [architecture](design/mcp-aggregation.md) owns the plan published before this change;

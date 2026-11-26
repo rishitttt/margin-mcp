@@ -5,6 +5,20 @@ description: Retrieve Indian listed-company financial and event data, run determ
 
 # Margin research
 
+For Margin 0.9.0 supplied-text claim/sentiment tasks prefer margin_prepare_review,
+then margin_submit_review with the ONE returned review_id. Use actual user text,
+metadata and ordered claims; ask for missing material rather than inventing examples.
+Keep record_date distinct from unknown publication_date; sentiment needs its selected
+date. Read the prepared text, submit ordered verdict/exact quote/rationale entries and
+sentiment exactly when prepared. Margin binds source/passage/packet refs internally;
+do not add these or host_profile. Return the final combined report, including unsupported
+claims, completion flag and original-unverified limits. quote=null is possible for
+insufficient evidence. Replaying identical submissions is safe until expiry; changed
+submissions conflict. No database, provider call or Margin LLM is required. Use the
+actual advertised schemas. review-simple exposes only status/prepare/submit (3 tools);
+review exposes 16 and full 37. Use exposed tools, do not change configuration to bypass
+a hold. Older low-level workflows below remain advanced alternatives.
+
 Choose functionality from the user's goal. Citation review is optional; ordinary
 retrieval/math does not require a citation packet. For 0.8.1+, follow citation_protocol
 guidance from workflow discovery/preparation. Declare only known host_profile fields:
@@ -31,7 +45,7 @@ For review in 0.8.0 prefer the actual exposed typed tools: `margin_register_sour
 
 Citation preparation takes claims with existing source_ids; sentiment preparation takes source_ids, issuer/aspect, flat from/to and date_basis, not text/window. Follow `next_steps[].mcp_execution.tool`; merge `bound_arguments` with every `required_host_field`, then check the advertised schema. A partial binding (`is_complete_input: false`) is not executable until completed. Preparation returns actual packet_id/hash: never reuse a run ID or invent a hash. The host supplies reviewer/judgments/quotes and actual final claim manifests. Sentiment uses submit_annotations, not submit_assessment. `expires_at` concerns packet TTL; original_document_verified concerns authenticity, not expiry. Never refetch/restart on expired refs.
 
-The optional `review` frontend profile exposes 14 local tools; status reports tool_profile/advertised_tools when available. It excludes provider connect/run, finance and generic margin_review. Catalog is review-only. Use only exposed tools; do not change profile/configuration to bypass missing setup. An operator can change only a version-matched frontend profile over the same backend without renewing budgets or losing unexpired handles. Profile projections and host parse/outer-schema failures may be absent from backend logs; record the profile and caller outcomes separately for evaluations. Schema/quote checks and host judgments are not authenticated original verification.
+The optional `review` frontend profile exposes 16 local tools; status reports tool_profile/advertised_tools when available. It excludes provider connect/run, finance and generic margin_review. Catalog is review-only. Use only exposed tools; do not change profile/configuration to bypass missing setup. An operator can change only a version-matched frontend profile over the same backend without renewing budgets or losing unexpired handles. Profile projections and host parse/outer-schema failures may be absent from backend logs; record the profile and caller outcomes separately for evaluations. Schema/quote checks and host judgments are not authenticated original verification.
 
 Typed tool schemas are already advertised by the MCP host. `tools/list` refers to protocol discovery, not another callable Margin tool; never invent that tool call. For older servers use only actually exposed tools and their current catalog contracts.
 
@@ -55,7 +69,7 @@ For each ordinary helper tool call, include `--why "<one brief sentence explaini
 
 Discover capabilities with `catalog`; narrow schemas with `catalog --name <substring>`. Retrieval entries include held reasons and estimated costs. Calculation schemas are explicit input contracts. Company functions have a separate planning schema. The catalog is local and does not connect to providers. Choose operations according to the user's question; there is no required company investigation sequence.
 
-Read [the function reference](references/functions.md) for the complete delivered inventory: 13 retrieval operations, 15 explicit-input calculations, nine company workflows, ten local review functions, fact preparation and control commands. Review schemas are discovered separately with `workflows --name <substring>`. The runtime catalog provides exact current schemas/availability. A portable bundle also includes `references/catalog.json` as an offline contract snapshot; it does not prove entitlement. Citation and content-sentiment handoffs are local tools; original-document verification, automatic DCF forecasting and replay are not delivered tools.
+Read [the function reference](references/functions.md) for the complete delivered inventory: 13 retrieval operations, 15 explicit-input calculations, nine company workflows, twelve local review functions, fact preparation and control commands. Review schemas are discovered separately with `workflows --name <substring>`. The runtime catalog provides exact current schemas/availability. A portable bundle also includes `references/catalog.json` as an offline contract snapshot; it does not prove entitlement. Citation and content-sentiment handoffs are local tools; original-document verification, automatic DCF forecasting and replay are not delivered tools.
 
 Provider retrieval and financial execution use preview then run (at most eight operations per plan):
 
@@ -68,7 +82,7 @@ For citation/sentiment handoffs, discover schemas with `workflows`. `review --fi
 
 Citation flow: register locators/passages read by the host or import retained provider text, prepare atomic claims, return evidence-linked host assessments, render citations and audit the final claim-ID manifest. Exact quote matching checks supplied text only, not the original website. Model judgments remain `host_reported`; never claim independently verified originals. If no browser/assessment is available, return locators and an incomplete/not-reviewed outcome. Margin neither runs an LLM nor calls other tools installed in the host.
 
-Sentiment flow: prepare explicit issuer/aspect/date scope, annotate eligible sources with supporting quotes and relevance, then aggregate. Unknown publication dates require explicit record-date scope or exclusion. Preserve mixed/unclear/unannotated items; missing labels are not neutral. Counts represent bounded deduplicated source annotations, not all investor sentiment. See the function reference for the ten functions and their limits.
+Sentiment flow: prepare explicit issuer/aspect/date scope, annotate eligible sources with supporting quotes and relevance, then aggregate. Unknown publication dates require explicit record-date scope or exclusion. Preserve mixed/unclear/unannotated items; missing labels are not neutral. Counts represent bounded deduplicated source annotations, not all investor sentiment. See the function reference for the twelve functions and their limits.
 
 Use `finance.company_data_readiness` to inspect available fields and supported calculations before selecting a finance workflow. The margin wrapper prefers non-null continuing profit when separately returned. When continuing and total profit differ, group/owners margin and cash/profit components require scope review; do not restore withheld values. Balance-sheet stocks use instant periods and cannot be summed as TTM flows. Partial metric groups report each unavailable component; do not fill it with zero. `finance.reconcile_facts` compares normalized values and declared definitions without selecting an authoritative source.
 
