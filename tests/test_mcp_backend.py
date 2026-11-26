@@ -36,6 +36,55 @@ ORIGINAL_CONNECT_EX = socket.socket.connect_ex
 pytestmark = pytest.mark.skipif(os.name != "posix", reason="Optional shared mode uses Unix sockets")
 
 
+async def test_finance_frontend_preview_and_replay_share_existing_owner(address, tmp_path):
+    settings = Settings(bharatstock_requests=1, drishti_requests=0, drishti_credits=0)
+    async with Backend(address, settings) as backend:
+        with (tmp_path / "finance-profile-stderr.txt").open("w") as err:
+            params = client_params(address)
+            params.args += ["--tool-profile", "finance"]
+            args = {
+                "function": "finance.company_margins",
+                "ticker": "SYNTHA",
+                "execute": True,
+                "idempotency_key": "fictional-shared-finance",
+            }
+            async with stdio_client(params, errlog=err) as (read, write):
+                async with ClientSession(read, write) as client:
+                    initialized = await client.initialize()
+                    assert "Margin finance has four tools" in initialized.instructions
+                    assert len((await client.list_tools()).tools) == 4
+                    preview = (
+                        await client.call_tool(
+                            "margin_company_finance",
+                            {
+                                "function": args["function"],
+                                "ticker": args["ticker"],
+                                "execute": False,
+                            },
+                        )
+                    ).structured_content
+                    assert (
+                        "call_id" not in preview
+                        and not backend.service.company_finance_workflow.requests
+                    )
+                    result = (
+                        await client.call_tool("margin_company_finance", args)
+                    ).structured_content["data"]
+                    assert result["status"] == "success"
+            identity = backend.adapter.session_id
+            async with stdio_client(client_params(address), errlog=err) as (read, write):
+                async with ClientSession(read, write) as client:
+                    await client.initialize()
+                    status = (await client.call_tool("margin_status", {})).structured_content
+                    assert status["session_id"] == identity
+                    assert status["data"]["ledger"]["http_attempts"]["bharatstock"] == 1
+                    replay = (
+                        await client.call_tool("margin_company_finance", args)
+                    ).structured_content["data"]
+                    assert replay == result
+            assert backend.service.ledger.requests == {"bharatstock": 1, "drishti": 0}
+
+
 @pytest.fixture(autouse=True)
 def unix_only(monkeypatch):
     def connect(sock, address):

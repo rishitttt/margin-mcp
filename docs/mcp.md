@@ -1,5 +1,88 @@
 # Run Margin as a local MCP server
 
+## Compact finance profile (0.9.4)
+
+The optional finance frontend advertises four tools: margin_status, margin_catalog,
+margin_company_finance and margin_calculate. Its short initialization instructions
+and scoped catalog remove competing retained-source/run/review routes. This is a
+discovery/projection choice, not an authorization boundary. Existing all/review/
+review-simple profiles and all underlying functions remain available.
+
+Company mcp_execution now consistently names the fresh margin_company_finance route
+in the full catalog too. Full mode preserves legacy_mcp_execution, legacy_defaults,
+legacy_note and planning_schema for explicit retained-source plans. Default company
+schemas/defaults describe the fresh tool. The finance catalog removes legacy fields,
+defaults to company, and all includes only company/calculations. Every advertised
+calculation route uses the exposed margin_calculate wrapper and exact selected schema.
+
+Preview responses add preview_summary: provider_requests_made=0, separately labelled
+planned_execution_maximum_provider_requests, missing_fields_for_preview versus
+missing_fields_for_execution, execution_input_complete and preview_authorizes_execution=false.
+MCP adds next_tool_for_execution and a deterministic display sentence. Copy that
+sentence; stop for preview-only requests. A complete preview can lack the execution
+key. In finance mode duplicate contract text and unrelated envelope IDs are omitted;
+the canonical next_steps binding, flags and source warnings remain. Execution reports
+and optional raw audit details are unchanged. Text and structuredContent agree, and
+the profile advertises its projected output schema. Backend logs retain canonical
+envelopes; save caller results/profile for exact projected-output evaluation.
+
+Legacy source_required recovery now distinguishes its retained-data route from a
+fresh no-data preview. A blocked execution's request_budget error explicitly concerns
+local_process_allowance; observed_account_balance is unknown. Do not purchase credits
+or reset budgets to complete a preview. Configured credentials remain a preflight
+requirement in live mode; a missing key returns a hold without network activity.
+
+### Upgrade and test with zero provider allowance
+
+Do not renew the old spent three-request allocation. Save current logs before stopping
+the owner; backend restart invalidates old handles. Upgrade only when ready to test:
+
+```sh
+/Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.9.4/margin_research-0.9.4-py3-none-any.whl
+MARGIN_BHARATSTOCK_REQUESTS=0 MARGIN_DRISHTI_REQUESTS=0 MARGIN_DRISHTI_CREDITS=0 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --mode live --credentials-file /Users/rishit/Desktop/mtest/.env --record-dir /Users/rishit/Desktop/mtest/logs
+```
+
+Leave the terminal running. In LM Studio, keep the existing command
+/Users/rishit/Desktop/mtest/.venv/bin/margin-mcp and set its arguments to:
+
+```json
+["--backend-socket", "/Users/rishit/Desktop/mtest/shared/core.sock", "--mode", "live", "--tool-profile", "finance"]
+```
+
+Reconnect and use fresh chats. Status should show package_version=0.9.4, finance,
+four tools, recording enabled, BharatStock configured, attempts=0/limits=0. Same shared
+owner/budgets survive frontend reconnects; package versions must match. The build
+does not silently upgrade the user's active 0.9.3 backend or change its profile.
+
+Use the two unchanged goal-only prompts in [preview batch](../research/finance-discovery/preview-batch-0.9.4.json).
+Do not supply exact function names for this autonomous condition. Expected HUL:
+successful preview, next tool margin_company_finance, missing execution idempotency_key,
+no generic plan, no execution. Expected INFY: company_data_readiness, one potential
+financial request, no fetched facts, readiness/valuation fields and explicit-input DCF.
+Check actual tool arguments and final prose independently. Keep model/context/preset
+fixed, record profile change as a separate condition, and retain first attempts.
+Metadata cannot guarantee obedience or source authenticity. No paid subscription is
+needed for these local preview checks; later live testing needs a fresh allocation.
+
+### Optional local model API harness
+
+scripts/check_finance_model.py uses an already loaded local LM Studio model through
+its API and an isolated official-SDK MCP subprocess. It does not load/switch models,
+use the app's chat preset, contact providers or change the user's backend. It supplies
+no real keys and hard-caps both provider allowances at zero. Example:
+
+```sh
+.venv/bin/python scripts/check_finance_model.py --model qwen/qwen3-8b --output reports/private/my-new-finance-model-trial
+```
+
+The output directory must be new. It records goal prompts, native tool calls, final
+prose and usage/loaded configuration, excluding reasoning_content/tagged thinking.
+Maximum six model turns per task and 2,400 output tokens per turn; no automatic retry
+on HTTP failure. The final operator status is outside the model-call cohort. This is
+a distinct API-harness experiment, not a replication of the user's app chat or a
+general benchmark pass. Review the saved answers; finished is not a correctness score.
+
 ## Finance handoffs and readiness (0.9.3)
 
 A fresh-company preview returns next_steps with canonical bound_arguments, execute=true,

@@ -1,0 +1,19 @@
+{
+  "kind": "goal_only_zero_provider_request_model_acceptance",
+  "version": "0.9.4",
+  "profile": "finance",
+  "tools": 4,
+  "provider_limits": {"bharatstock": 0, "drishti": 0},
+  "credentials": "Existing private backend file; never in prompts",
+  "conditions": "Fresh chats; same model/context/preset as prior user trial when possible. New profile and response projection are a separate condition. Save actual tool calls and final prose; no hidden reasoning.",
+  "tasks": [
+    {
+      "id": "hul-margin-preview",
+      "prompt": "Use the connected Margin MCP to preview HINDUNILVR (NSE) annual consolidated profit margin. Do not execute or fetch data. Explain the exact next tool, bound inputs and missing requirements. Do not invent a plan ID or financial values."
+    },
+    {
+      "id": "infy-readiness-preview",
+      "prompt": "Use Margin MCP to preview one annual consolidated INFY financial response that would determine which profitability, cash-conversion and liquidity calculations the returned fields support. Do not fetch or calculate values yet. Explain how the later readiness result and valuation prerequisites would be read."
+    }
+  ]
+}

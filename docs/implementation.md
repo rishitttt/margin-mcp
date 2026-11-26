@@ -1,5 +1,58 @@
 # Implementation and validation status
 
+## 0.9.4 compact finance surface: 27 November 2026 IST
+
+Plan e78c84f precedes runtime edits. A reproduced routing conflict is repaired: company
+catalog mcp_execution pointed to legacy planning while initialization preferred the
+secondary fresh route. It now consistently points to margin_company_finance with fresh
+schemas/defaults. Full mode preserves explicit legacy routes/schemas/defaults/notes;
+legacy source_required recovery explains the no-data preview without demanding a fetch.
+
+Optional finance profile exposes four tools with short initialization instructions.
+Its catalog is scoped to company/calculations and only callable routes. It omits
+unrelated envelope IDs and duplicate legacy/contract text; projected output schemas,
+JSON text and structuredContent agree. It remains a view of one backend, not an
+authorization/budget boundary. Existing full37/review16/review-simple3, other functions,
+canonical execution reports, raw audit details and financial math are preserved.
+
+Preview summary distinguishes missing preview/execution fields, zero requests made
+versus potential B1/D0 execution, and preparation versus fetched/assessed financial
+readiness. It supplies a copyable next-tool summary without creating a plan/permission.
+Budget errors identify local allowance and unknown account balance. Existing live key
+holds remain intact. 614 offline tests pass, including 39 new profile/shared checks;
+Ruff and source/installed-wheel SDK evidence belong to the private release report.
+All seven SDK groups pass for final source and the isolated wheel: full55 calls/110
+events, review18/34, simple5/10, shared16/32, targeted6/12, finance5/10 and zero-budget
+previews15/30. Wheel size163,165 bytes, 63 entries/53 source-matching Python modules;
+metadata/readme/known-private-key scan and old checksums pass. Installed checks reuse
+pinned dependencies, not a clean-machine installation. [Artifact](../releases/0.9.4/README.md).
+All nine saved-real HUL workflows preserve statuses/raw calculation values (seven
+success/two correct partials) through explicit mock transport, no new provider data.
+
+Actual local Qwen3-8B API-harness tests are separate conditions: already-loaded context
+30,183, temperature0, max2,400 output tokens, MCP initialization only, no app chat preset.
+First candidate: both use fresh execute=false and stop; HUL selects broader profitability,
+readiness prose falsely claims missing execution fields empty/financial data assessed.
+Final candidate: HUL selects company_margins and correctly reports same tool/missing
+key/no fetched facts; readiness selects company_data_readiness and stops but final prose
+still invents a numeric example, suggests imputing fields, implies numeric readiness
+rows/raw units and overstates quick-ratio scope. DCF's explicit-assumption requirement
+is mentioned. Each candidate uses two model tool calls/four generation requests; zero
+provider attempts. Final readiness answer fidelity fails despite correct invocation.
+
+Both candidate traces stay frozen separately. No hidden reasoning/debug was collected;
+the harness saves native tool calls/final prose/usage, not reasoning_content/tagged
+thinking. Its operator status is outside the model cohort; backend logs omit frontend
+projection, so caller results are retained too. These are not app-chat replication,
+independent source verification or general model reliability. Do not keep editing
+prompts until a lucky pass or count finished as correctness. A stronger-model comparison
+and deterministic client rendering are future options; no Margin-side LLM is added.
+
+Actual provider calls during this build: zero. Active user 0.9.3/config/allowance is
+untouched. Manual version-matched finance/B0D0 app-chat test remains next; live data
+tests need new allocation. Evidence: reports/private/finance-surface-2026-11-27.
+[Setup/profile/tests](mcp.md#compact-finance-profile-094).
+
 ## Guided 0.9.3 margin preview follow-up: 27 November 2026 IST
 
 Two subsequent admitted margin_company_finance calls (sequences 19–22) explicitly use

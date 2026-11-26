@@ -52,7 +52,8 @@ async def test_company_catalog_policy_preserves_both_routes_and_function_meaning
     body = response.structured_content["data"]
     assert body["data_policy"] == DATA_POLICY
     row = body["groups"]["company"][0]
-    assert row["mcp_execution"]["tool"] == "margin_company_preview"
+    assert row["mcp_execution"]["tool"] == "margin_company_finance"
+    assert row["legacy_mcp_execution"]["tool"] == "margin_company_preview"
     assert row["fresh_mcp_execution"]["tool"] == "margin_company_finance"
     hint = owner.tools["margin_company_finance"].input_schema["properties"]["function"][
         "description"

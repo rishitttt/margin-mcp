@@ -38,6 +38,8 @@ async def main(args):
             "margin.interfaces.mcp",
             "--mode",
             "synthetic",
+            "--tool-profile",
+            args.tool_profile,
             "--record-file",
             str(output / "tools.jsonl"),
         ],
@@ -95,17 +97,26 @@ async def main(args):
                 )
                 assert valuation["mcp_execution"]["tool"] == "margin_calculate"
                 assert (await call("margin_company_finance", inputs))["data"] == result
-                rejected = await call(
-                    "margin_run",
-                    {
-                        "session_id": initial["session_id"],
-                        "plan_id": "deliberately-unissued-plan",
-                        "idempotency_key": "fictional-unknown-plan",
-                    },
-                    error=True,
-                )
-                assert rejected["error"]["code"] == "plan_unavailable"
-                assert "creates NO generic plan_id" in rejected["error"]["recovery_guidance"]
+                if args.tool_profile == "all":
+                    rejected = await call(
+                        "margin_run",
+                        {
+                            "session_id": initial["session_id"],
+                            "plan_id": "deliberately-unissued-plan",
+                            "idempotency_key": "fictional-unknown-plan",
+                        },
+                        error=True,
+                    )
+                    assert rejected["error"]["code"] == "plan_unavailable"
+                    assert "creates NO generic plan_id" in rejected["error"]["recovery_guidance"]
+                else:
+                    assert set(tools) == {
+                        "margin_status",
+                        "margin_catalog",
+                        "margin_company_finance",
+                        "margin_calculate",
+                    }
+                    assert "session_id" not in initial
                 final = (await call("margin_status"))["data"]
                 assert final["ledger"]["http_attempts"] == {"bharatstock": 1, "drishti": 0}
     events = [json.loads(line) for line in (output / "tools.jsonl").read_text().splitlines()]
@@ -115,6 +126,7 @@ async def main(args):
         "kind": "fictional_software_fixtures_not_model_acceptance",
         "version": initialized.server_info.version,
         "tools": len(tools),
+        "tool_profile": args.tool_profile,
         "calls": len(observations),
         "recorded_events": len(events),
         "fixture_http_attempts": final["ledger"]["http_attempts"],
@@ -133,4 +145,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--package-root", type=Path)
+    parser.add_argument("--tool-profile", choices=["all", "finance"], default="all")
     asyncio.run(main(parser.parse_args()))

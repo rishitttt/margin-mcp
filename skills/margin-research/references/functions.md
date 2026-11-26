@@ -1,5 +1,13 @@
 # Delivered Margin functions
 
+Since 0.9.4, MCP company mcp_execution defaults to margin_company_finance; explicit
+legacy_mcp_execution retains margin_company_preview/plan/run in the full profile.
+finance profile exposes four tools (status, scoped catalog, company_finance, calculate).
+For preview-only requests copy preview_summary.display and STOP. Preview missing fields
+and execution missing fields differ; no plan ID or execution permission is created.
+The catalog in this profile only advertises callable company/calculation routes and
+their exact schemas. Canonical execution reports/math are unchanged.
+
 Use `catalog --name <name>` for exact schemas and current held reasons. This inventory describes implemented interfaces, not universal provider coverage or entitlement. `preview` handles retrieval/local calculations; `company-preview` handles company workflows.
 
 Citation functions are optional protocols, not prerequisites for retrieval/math.

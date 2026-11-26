@@ -300,6 +300,18 @@ class MarginMCP:
             body["error"]["recovery_guidance"] = FINANCIAL_RECOVERY
         if (
             error
+            and name == "margin_company_preview"
+            and body["error"]["code"] == "source_required"
+        ):
+            body["error"]["recovery_guidance"] = (
+                "This is the legacy retained-source route only. For a no-data preview use "
+                "margin_company_finance with the selected company function/ticker and execute=false. "
+                "Do not fetch first or execute when the user requested only a preview. "
+                "Use its exact advertised schema; no plan_id or margin_run is needed. "
+                "The legacy route remains available for explicit retained-source tasks."
+            )
+        if (
+            error
             and name == "margin_run"
             and body["error"]["code"] in {"plan_unavailable", "plan_expired"}
         ):
@@ -351,10 +363,9 @@ class MarginMCP:
             }
         if group == "company":
             return {
-                "tool": "margin_company_preview",
+                "tool": "margin_company_finance",
                 "bind": {"function": name},
                 "inputs_at": "top_level",
-                "then": "margin_run",
             }
         return {
             "tool": "margin_preview",
@@ -426,6 +437,25 @@ class MarginMCP:
                         "then": "margin_run",
                     }
                 if kind == "company":
+                    row["legacy_defaults"] = row["defaults"]
+                    row["legacy_note"] = row["note"]
+                    row["defaults"] = {
+                        "exchange": "NSE",
+                        "period_type": row["defaults"]["period_type"],
+                        "basis": "consolidated",
+                        "metric": "revenue",
+                        "execute": False,
+                    }
+                    row["note"] = (
+                        "Fresh preview needs no retained data and creates no generic plan. Stop for preview-only tasks. Later execution uses this same tool with execute=true/key within authorization and allowance."
+                    )
+                    row["schema"] = copy.deepcopy(self.tools["margin_company_finance"].input_schema)
+                    row["legacy_mcp_execution"] = {
+                        "tool": "margin_company_preview",
+                        "bind": {"function": identifier},
+                        "inputs_at": "top_level",
+                        "then": "margin_run",
+                    }
                     row["fresh_mcp_execution"] = {
                         "tool": "margin_company_finance",
                         "bind": {"function": identifier},
@@ -437,6 +467,9 @@ class MarginMCP:
                         ],
                         "execution_contract_ref": "company_execution_contract",
                     }
+                    row["schema_source"] = (
+                        "Use margin_company_finance's advertised inputSchema for the default fresh route. planning_schema is only for legacy_mcp_execution."
+                    )
             if not include_schemas:
                 rows = [
                     {
@@ -571,6 +604,21 @@ class MarginMCP:
                 action["schema_source"] = (
                     "Use the named tool's exact host-advertised inputSchema. Merge bound_arguments with required host fields; do not invent references or judgments."
                 )
+            if action.get("kind") == "execute_fresh_company_finance" and tool:
+                summary = data["preview_summary"]
+                summary["next_tool_for_execution"] = tool
+                missing = ", ".join(action["required_host_fields"]) or "none"
+                summary["display"] = (
+                    f"Preview prepared; no provider requests made. Next tool for a separately "
+                    f"authorized execution: {tool}. Missing execution inputs: {missing}. "
+                    "Stop here for a preview-only task; no generic plan was created."
+                )
+                if action["function"] == "finance.company_data_readiness":
+                    summary["display"] += (
+                        " No financial data was fetched or financial/valuation readiness assessed. "
+                        "After authorized execution read report.readiness and report.valuation_readiness; "
+                        "DCF requires separate explicit forecasts and assumptions."
+                    )
         for workflow in data.get("workflows", []):
             workflow["mcp_steps"] = [
                 {"function": function, "tool": tool, "inputs_at": "top_level"}
@@ -591,9 +639,14 @@ def create_server(
     expected_mode=None,
     tool_profile="all",
 ):
-    from margin.interfaces.mcp.profiles import REVIEW_INSTRUCTIONS, SIMPLE_INSTRUCTIONS, ToolView
+    from margin.interfaces.mcp.profiles import (
+        FINANCE_INSTRUCTIONS,
+        REVIEW_INSTRUCTIONS,
+        SIMPLE_INSTRUCTIONS,
+        ToolView,
+    )
 
-    if tool_profile not in {"all", "review", "review-simple"}:
+    if tool_profile not in {"all", "review", "review-simple", "finance"}:
         raise ValueError("Unknown MCP tool profile.")
     if not backend_socket:
         settings = settings or Settings.from_env()
@@ -635,6 +688,7 @@ def create_server(
             "all": INSTRUCTIONS,
             "review": REVIEW_INSTRUCTIONS,
             "review-simple": SIMPLE_INSTRUCTIONS,
+            "finance": FINANCE_INSTRUCTIONS,
         }[tool_profile],
         lifespan=lifespan,
         on_list_tools=list_tools,
@@ -667,7 +721,9 @@ def main(argv=None):
         description="Run the local Margin MCP server over stdio; stdout is reserved for protocol messages."
     )
     parser.add_argument("--mode", choices=["synthetic", "live"])
-    parser.add_argument("--tool-profile", choices=["all", "review", "review-simple"], default="all")
+    parser.add_argument(
+        "--tool-profile", choices=["all", "review", "review-simple", "finance"], default="all"
+    )
     parser.add_argument(
         "--backend-socket",
         help="Connect to an explicitly started private local backend; never autostart or retry",

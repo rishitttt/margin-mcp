@@ -1,5 +1,14 @@
 # Test finance discovery through Margin
 
+**Next 0.9.4 condition:** the new finance frontend has four tools and a scoped catalog;
+the full catalog also defaults company routing to the fresh convenience tool. Compact
+previews distinguish preview/execution missing fields and give a copyable summary.
+[Manual upgrade/profile setup](mcp.md#compact-finance-profile-094) uses configured
+keys with B0/D0; [same goal-only tasks](../research/finance-discovery/preview-batch-0.9.4.json)
+must be scored separately from the preceding all37 failures. Check tool invocation,
+preview-only adherence, missing-key/next-tool prose, no invented data and zero attempts.
+The optional local API harness is a separate host/preset condition, not app replication.
+
 **Actual 0.9.3 preview result:** status passes; both goal-only finance preview tasks
 fail model acceptance. HUL receives a successful fresh preview but tries generic run
 and execution despite preview-only scope; B0 guard prevents HTTP. INFY chooses legacy

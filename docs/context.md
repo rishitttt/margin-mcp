@@ -1,5 +1,14 @@
 # Project context and handoff
 
+**0.9.4:** compact finance profile (4 tools), consistent fresh catalog route with
+explicit legacy alternative, unambiguous preview/missing-key/no-data summaries and
+source-required/local-budget recovery. 614 tests and saved-real values pass; formulas
+and existing profiles preserved. Two separate local Qwen API candidate trials improve
+route/stopping; final HUL passes, readiness final prose still fails despite correct
+tool. No provider attempts or active user 0.9.3 change. Preserve both candidates and
+method limits; no app-chat replication/general reliability claim. Next manual finance/
+B0D0 test; compare stronger model or deterministic rendering for semantic fidelity.
+
 **Actual active 0.9.3:** user status all37/keyconfigured/B0D0; nine calls/eighteen
 events frozen. Both autonomous finance preview tasks fail: HUL ignores its successful
 fresh-company binding and attempts execution, INFY uses retained-data legacy route.

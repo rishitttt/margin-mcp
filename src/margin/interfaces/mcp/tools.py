@@ -12,7 +12,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.9.3"
+VERSION = "0.9.4"
 CONTRACT = "margin.mcp.v1"
 DIRECT_FUNCTIONS = {
     "margin_calculate_margins": "finance.calculate_margins",
@@ -170,7 +170,7 @@ def definitions():
         ),
         (
             "margin_company_preview",
-            "Preview one company finance workflow; defaults to reusing retained data and fetch_missing=false. Explicit fetch_missing=true can add one financials request, shown before execution. Use finance.company_data_readiness when field support is uncertain. No provider calls at preview.",
+            "LEGACY retained-source company workflow. Use margin_company_finance with execute=false for ordinary fresh-company previews; no retained data is needed there. This legacy path defaults to reusing retained data and fetch_missing=false; source_required does not mean fresh preview needs a fetch. Explicit fetch_missing=true can plan one request without executing it. Use only for retained-source/explicit generic-plan tasks, then margin_run with an actual returned plan ID.",
             company,
             False,
             False,

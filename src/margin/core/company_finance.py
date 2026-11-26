@@ -204,6 +204,25 @@ class CompanyFinance:
         return {
             "response_version": RESPONSE_VERSION,
             "status": "preview",
+            "preview_summary": {
+                "status": "preview",
+                "data_fetched": False,
+                "financial_readiness_assessed": False,
+                "result_fields_after_execution": (
+                    ["report.readiness", "report.valuation_readiness"]
+                    if args["function"] == "finance.company_data_readiness"
+                    else ["report.rows"]
+                ),
+                "provider_requests_made": {"bharatstock": 0, "drishti": 0},
+                "planned_execution_maximum_provider_requests": copy.deepcopy(
+                    EXECUTION_CONTRACT["execution"]["maximum_provider_requests"]
+                ),
+                "missing_fields_for_preview": [],
+                "missing_fields_for_execution": required.copy(),
+                "execution_input_complete": not required,
+                "preview_authorizes_execution": False,
+                "instruction": "Preview is complete. Stop here for a preview-only task. Execution is a separate authorized action with remaining allowance.",
+            },
             "function": args["function"],
             "selection": {
                 k: v
@@ -392,6 +411,14 @@ class CompanyFinance:
             "estimated_drishti_credits": 0,
             "uncertain_outcome": receipt.get("uncertain_outcome", False),
         }
+        if output.get("error", {}).get("code") == "request_budget":
+            output["error"]["scope"] = "local_process_allowance"
+            output["error"]["observed_account_balance"] = None
+            output["error"]["recovery_guidance"] = (
+                "This local execution allowance is not the provider account balance. "
+                "Do not buy credits or reset limits to complete a preview: use execute=false. "
+                "Preview-only tasks must stop without execution. A later live trial needs an operator-allocated remaining allowance."
+            )
         output = self.service.sanitizer.clean(output)
         details = {
             key: output.pop(key)

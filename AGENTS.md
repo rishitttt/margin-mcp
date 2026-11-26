@@ -1,5 +1,15 @@
 # Working on Margin
 
+**0.9.4 checkpoint:** 614 tests/Ruff104/source SDK pass, saved-real HUL all9 values/
+statuses preserved. Optional finance4 projection/default fresh catalog and explicit
+legacy routes, preview-vs-execution/key/data-readiness flags, no-data recovery/budget
+scope implemented after e78c84f. Actual local Qwen API initial/final candidates each
+2 tool calls/4 generations: both stop previews, final HUL correct, readiness prose
+still fails. Preserve partials separately; no hidden reasoning/debug. Not app-chat
+replication (no app preset), context30183/temp0/max2400. Provider calls0; active user
+0.9.3 untouched. Immutable wheel/installed SDK (all7 groups) pass; next manual finance/B0D0 test.
+No policy guarantees or lucky-retry grading; stronger-model/rendering options later.
+
 **0.9.4 authorized plan:** implement compact finance frontend (4 tools), canonical
 fresh company catalog routing with explicit legacy alternative, preview summary with
 separate preview/execution missing fields and request bounds, legacy source_required

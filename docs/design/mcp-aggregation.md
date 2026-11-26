@@ -2,6 +2,11 @@
 
 ## 0.9.4 finance surface and preview clarity plan: 27 November 2026
 
+Implemented after e78c84f: 614 tests, source SDK and saved-real replay pass. Separate
+local-model API trials improve routing/stopping, but readiness prose still fails;
+preserve both candidate traces. Active 0.9.3 untouched and provider calls zero. See
+[validation](../implementation.md) for method and remaining model limitations.
+
 User authorizes implementing the remaining simplification and related repairs, then
 testing. Actual 0.9.3 autonomous and guided traces show competing legacy/fresh routes
 and final summaries that ignore correct preview bindings. Catalog investigation finds

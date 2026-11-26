@@ -1,5 +1,13 @@
 # Margin: quick handoff
 
+**0.9.4:** optional finance profile has four tools; full catalog defaults to fresh
+company routing while retaining explicit legacy paths. Compact previews separate
+execution inputs from completed preview and unfetched facts from assessed readiness.
+614 tests/saved-real values pass. Local Qwen API tests now stop after correct fresh
+previews; final HUL answer passes, readiness prose remains unreliable. [Setup](docs/mcp.md#compact-finance-profile-094),
+[evidence/limits](docs/implementation.md). Zero provider calls; active user 0.9.3 untouched.
+App-chat tests remain separate; no model reliability guarantee from software checks.
+
 **Actual 0.9.3 model previews:** status correct; both autonomous preview tasks fail.
 HUL's fresh preview works, but model misroutes and attempts unauthorized-by-task
 execution; zero allowance blocks HTTP. INFY picks legacy retained-data path and stops.

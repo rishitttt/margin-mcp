@@ -1,18 +1,23 @@
 # Margin
 
-**Current source release: 0.9.3 (27 November).** Financial previews now return a
-same-tool execution binding, required caller key and authorization flag, without a
-generic plan ID. Plan errors distinguish unknown references from actual expiry.
-Readiness reports separate eligibility from source verification and name the explicit
-DCF route; request lifecycle metadata explains same-key replay. Financial math and
-full/review/review-simple tool counts remain unchanged at 37/16/3. Guidance remains
-advisory; actual post-upgrade model behavior still needs testing.
-[Upgrade and zero-request tests](docs/mcp.md#finance-handoffs-and-readiness-093),
+**Current source release: 0.9.4 (27 November).** An optional four-tool finance profile
+removes competing legacy routes and duplicate preview text. Company catalog routing
+now consistently defaults to the fresh workflow, with explicit legacy alternatives.
+Preview summaries separate preview/execution inputs, unfetched data and readiness
+assessment; budget errors distinguish local allowance from unknown account balance.
+Financial math and existing full/review/review-simple counts remain 37/16/3.
+[Upgrade/profile and zero-request tests](docs/mcp.md#compact-finance-profile-094),
 [validation](docs/implementation.md),
-[wheel](releases/0.9.3/margin_research-0.9.3-py3-none-any.whl) and
-[checksum](releases/0.9.3/SHA256SUMS). 575 tests pass, source SDK checks pass, and saved
-real-response replay preserves calculation values. No real provider/model call during
-this build; active 0.9.2 and its spent B3/D0 allowance stay unchanged until manual setup.
+[wheel](releases/0.9.4/margin_research-0.9.4-py3-none-any.whl) and
+[checksum](releases/0.9.4/SHA256SUMS). 614 tests/source SDK checks pass and saved real
+responses preserve calculation values. Separate local Qwen API trials improve tool
+choice/stopping; HUL final candidate passes, readiness final prose remains unreliable.
+These are not app-chat replication or guaranteed model correctness. Actual provider
+calls remain zero; active user 0.9.3/config/allowances are untouched by this build.
+
+**Historical release: 0.9.3.** Same-tool handoffs, precise unknown/expired-plan errors,
+readiness scope and replay guidance remain. Actual autonomous and guided model traces
+showed route/prose failures despite correct fresh previews; see validation history.
 
 **Historical release: 0.9.2.** Shared execution contracts and actual live model results
 remain recorded: growth passes, margin recovers with prose issues, autonomous readiness

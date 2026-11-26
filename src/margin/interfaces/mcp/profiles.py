@@ -20,6 +20,38 @@ REVIEW_TOOLS = frozenset(DIRECT_REVIEWS) | {
     "margin_review_sources",
 }
 SIMPLE_TOOLS = frozenset({"margin_status", "margin_prepare_review", "margin_submit_review"})
+FINANCE_TOOLS = frozenset(
+    {"margin_status", "margin_catalog", "margin_company_finance", "margin_calculate"}
+)
+FINANCE_INSTRUCTIONS = (
+    DATA_INSTRUCTIONS
+    + """Margin finance has four tools. For ticker questions choose a company function
+from margin_catalog(group=company). Use margin_company_finance: execute=false is a
+local preview, not a generic plan. No retained source is needed. For a preview-only
+request STOP after preview; quote preview_summary.display without expanding it into
+unfetched financial facts. A single profit margin uses company_margins; company_profitability
+returns multiple profitability measures. missing_fields_for_preview
+and missing_fields_for_execution are different. A later execution uses the SAME
+margin_company_finance tool, execute=true and a stable idempotency_key, only when the
+user actually requested execution and allowance remains. Do not call margin_run or
+invent plan IDs: neither is part of this profile. A zero local allowance is not the
+provider account balance and does not prevent a configured fresh-company preview.
+Annual growth compares two annual periods; TTM sums four eligible monetary quarters.
+For available-field support across profitability/cash-conversion/liquidity, choose
+finance.company_data_readiness once. Read report.readiness and valuation_readiness;
+empty numeric rows are intentional and computability does not verify source facts.
+For results copy report.rows displays, exact dates, definitions, units and partial holds.
+Same inputs/key read the existing result, not fresh data/new analysis; no new key retry
+after an uncertain dispatch. include_details is projection only with that same key.
+margin_calculate is local explicit-input math, not a ticker fetch. Discover one exact
+calculation schema before calling it; do not fabricate facts to rescue missing data.
+DCF requires explicit forecasts/assumptions here, never automatic company valuation.
+Provider keys/positive allowance are needed only as declared by execution preflight;
+never reset budgets/restart or ask to buy credits to finish a local preview.
+Optional why is a brief visible tool-choice summary, not hidden reasoning. Profiles
+change advertised tools/projection only; they do not grant execution authorization.
+"""
+)
 SIMPLE_INSTRUCTIONS = (
     DATA_INSTRUCTIONS
     + """Margin review-simple exposes only status, prepare and submit.
@@ -83,14 +115,31 @@ this frontend's profile projection. Record the profile in experiment configurati
 
 class ToolView:
     def __init__(self, inner, profile="all"):
-        if profile not in {"all", "review", "review-simple"}:
+        if profile not in {"all", "review", "review-simple", "finance"}:
             raise ValueError("Unknown MCP tool profile.")
         self.inner, self.profile = inner, profile
         self.tools = {
             name: copy.deepcopy(tool)
             for name, tool in inner.tools.items()
-            if profile == "all" or name in (REVIEW_TOOLS if profile == "review" else SIMPLE_TOOLS)
+            if profile == "all"
+            or name
+            in {"review": REVIEW_TOOLS, "review-simple": SIMPLE_TOOLS, "finance": FINANCE_TOOLS}[
+                profile
+            ]
         }
+        if profile == "finance":
+            catalog = self.tools["margin_catalog"]
+            catalog.input_schema["properties"]["group"] = {
+                "enum": ["all", "company", "calculations"],
+                "default": "company",
+            }
+            catalog.description = "Discover company functions (default) or one explicit calculation schema. all means company and calculations only. Follow mcp_execution; company schemas are the fresh tool inputs, never retained-source planning. No requests."
+            for tool in self.tools.values():
+                for key in ("session_id", "call_id"):
+                    tool.output_schema["required"].remove(key)
+            self.tools[
+                "margin_company_finance"
+            ].description = "Ticker-based finance. execute=false previews without fetching or retained data; STOP for preview-only tasks and copy preview_summary.display. Preview needs no idempotency_key; later execution requires it. execute=true performs at most one BharatStock request, zero Drishti, only within user authorization/allowance. No generic plan or margin_run. Use report.rows displays verbatim; readiness uses report.readiness/valuation_readiness. Same inputs/key read the same result without refetch; preserve definitions/holds and source-unverified scope."
         if profile == "review-simple":
             self.tools[
                 "margin_status"
@@ -111,11 +160,15 @@ class ToolView:
             hint = (
                 f" Use {target} with its top-level advertised schema."
                 if target in self.tools
-                else " Use the tools advertised in this profile; prepare a high-level review with actual user material."
+                else (
+                    " Use margin_company_finance for company data; margin_calculate for explicit supplied inputs."
+                    if self.profile == "finance"
+                    else " Use the tools advertised in this profile; prepare a high-level review with actual user material."
+                )
             )
-            raise MCPError(-32602, "Tool is not exposed in the review profile." + hint)
+            raise MCPError(-32602, f"Tool is not exposed in the {self.profile} profile." + hint)
         forwarded = arguments
-        if self.profile == "review" and name == "margin_catalog":
+        if self.profile in {"review", "finance"} and name == "margin_catalog":
             forwarded = copy.deepcopy(arguments) if arguments is not None else {}
             try:
                 if not isinstance(forwarded, dict) or encoded_size(forwarded) > 65536:
@@ -126,9 +179,19 @@ class ToolView:
                 ) from None
             problem = validation_summary(self.tools[name].input_schema, forwarded)
             if problem:
-                raise MCPError(-32602, "Review-profile catalog arguments are invalid. " + problem)
-            forwarded["group"] = "review"
+                raise MCPError(
+                    -32602, f"{self.profile}-profile catalog arguments are invalid. " + problem
+                )
+            if self.profile == "review":
+                forwarded["group"] = "review"
+            elif forwarded.get("group", "company") == "all":
+                # all is projected after one local catalog lookup; no data work.
+                forwarded["group"] = "all"
+            else:
+                forwarded.setdefault("group", "company")
         result = await self.inner.call(name, forwarded)
+        if self.profile == "finance":
+            return self.finance_result(name, result, forwarded or {})
         if result.is_error or not isinstance(result.structured_content, dict):
             return result
         if name not in {"margin_status", "margin_catalog"}:
@@ -150,6 +213,78 @@ class ToolView:
                 "Use the selected typed review tool's exact host-advertised inputSchema at top level. These schemas derive from reviewed core contracts; no generic wrapper is exposed in this profile."
             )
             body["data"]["tool_profile"] = "review"
+        return types.CallToolResult(
+            content=[types.TextContent(type="text", text=json.dumps(body, allow_nan=False))],
+            structured_content=body,
+            is_error=result.is_error,
+        )
+
+    def finance_result(self, name, result, arguments):
+        if not isinstance(result.structured_content, dict):
+            return result
+        body = copy.deepcopy(result.structured_content)
+        body.pop("session_id", None)
+        body.pop("call_id", None)
+        data = body.get("data", {})
+        if name == "margin_status" and not result.is_error:
+            data.update(tool_profile="finance", advertised_tools=len(self.tools))
+        elif name == "margin_catalog" and not result.is_error:
+            data["groups"] = {
+                k: v for k, v in data["groups"].items() if k in {"company", "calculations"}
+            }
+            if arguments.get("name") and not any(data["groups"].values()):
+                raise MCPError(-32602, "No matching function in the finance profile.")
+            for kind, rows in data["groups"].items():
+                for row in rows:
+                    if kind == "company":
+                        row.pop("planning_schema", None)
+                        row.pop("legacy_mcp_execution", None)
+                        row.pop("legacy_defaults", None)
+                        row.pop("legacy_note", None)
+                        row.pop("fresh_mcp_execution", None)
+                        row["schema_source"] = "margin_company_finance advertised inputSchema"
+                        if arguments.get("include_schemas"):
+                            row["schema"] = copy.deepcopy(
+                                self.tools["margin_company_finance"].input_schema
+                            )
+                    else:
+                        row["mcp_execution"] = {
+                            "tool": "margin_calculate",
+                            "bind": {"function": row["function"]},
+                            "inputs_at": "arguments",
+                        }
+            data.pop("company_execution_contract", None)
+            data["tool_profile"] = "finance"
+            data["schema_lookup"] = (
+                "Company uses the advertised margin_company_finance schema; calculations use the selected row's exact schema inside margin_calculate.arguments."
+            )
+        elif name == "margin_company_finance" and data.get("status") == "preview":
+            body["data"] = {
+                key: data[key]
+                for key in (
+                    "response_version",
+                    "status",
+                    "function",
+                    "selection",
+                    "preview_summary",
+                    "data_operation",
+                    "creates_plan_id",
+                    "next_steps",
+                    "warnings",
+                )
+                if key in data
+            }
+            for step in body["data"]["next_steps"]:
+                step.pop("purpose", None)
+                step.pop("schema_source", None)
+        elif name == "margin_company_finance" and "report" in data:
+            valuation = data["report"].get("valuation_readiness", {})
+            if valuation.get("explicit_function") == "finance.calculate_dcf":
+                valuation["mcp_execution"] = {
+                    "tool": "margin_calculate",
+                    "bind": {"function": "finance.calculate_dcf"},
+                    "inputs_at": "arguments",
+                }
         return types.CallToolResult(
             content=[types.TextContent(type="text", text=json.dumps(body, allow_nan=False))],
             structured_content=body,

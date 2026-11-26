@@ -5,6 +5,15 @@ description: Retrieve Indian listed-company financial and event data, run determ
 
 # Margin research
 
+For 0.9.4 the optional finance frontend exposes only status/catalog/company_finance/
+calculate. Catalog's default company mcp_execution is now the fresh convenience route;
+legacy_mcp_execution and planning_schema are advanced full-profile alternatives.
+Preview-only tasks STOP after execute=false; copy preview_summary.display and distinguish
+missing_fields_for_preview from missing_fields_for_execution. No generic plan is made.
+Zero local allowance is not the provider account balance. Finance projection omits
+session/call IDs and legacy metadata but preserves canonical execution reports/holds.
+Do not switch the host's profile or allowance yourself to bypass missing setup.
+
 Never fabricate company financial data, dates, units, quotes or provenance. Use tool
 results or explicit user values only. User-requested/supplied hypothetical examples
 must stay labelled. A missing/held/invalid call is not permission to create calculator
@@ -16,7 +25,7 @@ Company CAGR uses exact anniversary years, otherwise a disclosed day-count conve
 Margin 0.9.1 exposes this host guidance in initialization/status/catalog/errors; it is
 not independent authentication of caller facts or guaranteed host compliance.
 
-For 0.9.3 fresh-finance previews follow next_steps.mcp_execution.tool with bound_arguments
+For separately authorized execution after a fresh-finance preview, follow next_steps.mcp_execution.tool with bound_arguments
 and every required_host_field; same company tool, execute=true/key, NO margin_run or
 plan_id. Schema-complete does not mean authorized: obey the actual task and allowance.
 For which fields support multiple groups choose company_data_readiness, one response.

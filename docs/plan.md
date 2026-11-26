@@ -1,5 +1,17 @@
 # Margin build and evaluation plan
 
+## 0.9.4 acceptance gate
+
+Finance profile/default routing/compact preview and recovery repairs are implemented
+after plan e78c84f. 614 offline tests/saved-real values pass; source and installed SDK
+checks pass on the immutable wheel. Two separate local Qwen API trials improve
+tool choice/stopping, but final readiness prose fails; HUL final candidate passes.
+Do not repeat until lucky or infer semantic correctness from API completion. Next
+manual finance/B0D0 app-chat tests, then stronger-model comparison or deterministic
+client rendering if needed. Active user 0.9.3 remains unchanged, provider calls zero;
+live finance/event regressions need newly allocated remaining allowance. Benchmarking
+requires repetitions/negative cases and separate host/profile/preset conditions.
+
 ## Gate after actual 0.9.3 previews
 
 Both goal-only preview tasks fail host acceptance despite passing status and a

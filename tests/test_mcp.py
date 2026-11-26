@@ -174,7 +174,9 @@ async def test_every_catalog_entry_has_an_explicit_callable_mcp_route(adapter):
             if group in {"calculations", "review"}:
                 assert route["inputs_at"] in {"arguments", "top_level"} and "then" not in route
             elif group == "company":
-                assert route["inputs_at"] == "top_level" and route["then"] == "margin_run"
+                assert route["inputs_at"] == "top_level" and "then" not in route
+                assert route["tool"] == "margin_company_finance"
+                assert row["legacy_mcp_execution"]["then"] == "margin_run"
             else:
                 assert route["inputs_at"] == "operations[0].arguments"
                 assert route["then"] == "margin_run"

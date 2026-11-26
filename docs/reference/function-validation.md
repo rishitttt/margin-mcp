@@ -1,5 +1,12 @@
 # Function validation status
 
+**0.9.4:** 614 offline tests; all nine company preview summaries/key bindings and
+scoped finance routes checked. Existing formulas/statuses preserved on saved-real HUL
+replay (seven success/two partial). Four-tool finance profile and corrected full catalog
+keep legacy routes explicit. Local-model API invocation/stopping improves; readiness
+final prose still fails. SDK/software success is separate from model-answer fidelity.
+[Detailed evidence](../implementation.md), [setup](../mcp.md#compact-finance-profile-094).
+
 **0.9.3 repair matrix:** 575 offline cases and source SDK compatibility pass, including
 all nine fresh preview bindings. Unknown generic refs now plan_unavailable; real expiry
 and valid replay preserved. Readiness scope is explicit for no-data and available-field
