@@ -11,6 +11,8 @@
 
 647 offline tests, browser/DOM, nine installed-wheel SDK groups and clean macOS installation pass. Hosted Windows/Ubuntu/macOS wheel/standalone jobs [all passed](https://github.com/rishitttt/margin-mcp/actions/runs/45976665943). Full current evidence is in [acceptance](docs/product-acceptance.md).
 
+Next: a separate chat handles [first public PyPI packaging](docs/pypi-handoff.md); this chat continues development. [Users supply their own keys](docs/local-credentials.md). Name availability, license/public metadata, sdist inspection and publication remain for that chat; no upload has occurred. Small-context behavior is parked, not proven to be the sole cause of the observed host failures.
+
 ## Historical section links
 
 <a id="what-is-on-main"></a>[Historical: What is on main](docs/archive/2026-11-27-handoff.md#what-is-on-main)

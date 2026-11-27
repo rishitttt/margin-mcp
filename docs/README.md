@@ -10,6 +10,8 @@ Read current guides first. Historical debugging/release notes are preserved in [
 | [product-completion.md](product-completion.md) | Approved product-only plan and acceptance scope |
 | [product-reports.md](product-reports.md) | Status/DCF report contracts, raw values versus displays, direct rendering |
 | [api-testing.md](api-testing.md) | Bounded operator live commands, exact allocations and private evidence |
+| [pypi-handoff.md](pypi-handoff.md) | Separate-chat first public release preparation and outstanding metadata/artifact checks |
+| [local-credentials.md](local-credentials.md) | Users supplying their own keys, file/environment precedence, owner versus proxy |
 | [release-checks.md](release-checks.md) | Wheel, clean install, SDK/platform checks and publication boundaries |
 | [financial-analysis.md](financial-analysis.md) | Functions, required facts, scopes, units and DCF assumptions |
 | [review-workflows.md](review-workflows.md) | Citation/sentiment host handoffs, quotes, capabilities and limits |

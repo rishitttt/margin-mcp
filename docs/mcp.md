@@ -11,6 +11,8 @@ python3.12 -m venv .venv
 
 On Windows use .venv\Scripts\python.exe and standalone mode. No npm installation is required for Margin. Workbench is optional: install the wheel with its workbench extra. [Clean-install/platform evidence](release-checks.md).
 
+For public users, [bring-your-own-key setup](local-credentials.md) explains credential files/environment variables, limits and the shared-owner distinction. PyPI publication is being prepared separately; [release handoff](pypi-handoff.md).
+
 ## Standalone stdio
 
 Configure the MCP host command as the absolute installed margin-mcp executable, with:
