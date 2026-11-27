@@ -57,7 +57,7 @@ finance6/review16/simple3 and generic/legacy interfaces remain available.
 
 ## Progress
 
-Implemented and validated as0.10.0. All644 offline tests, Ruff, nine source SDK groups,
+Implemented and validated as0.10.0. All647 offline tests, Ruff, nine source SDK groups,
 nine installed-wheel SDK groups, browser/DOM and clean-venv macOS checks pass. Review
 contracts pass20 local calls with real passages and explicit host judgments. Live pass
 finished B2/DrHTTP10/estimated credits7. Guides consolidated, archives preserved; source

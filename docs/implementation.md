@@ -25,7 +25,7 @@ Private evidence: reports/private/product-live-2026-11-27 (ignored). Credentials
 
 ## Software, review and installation acceptance
 
-**644 offline tests pass**, Ruff passes (110 Python files), nine source SDK groups and
+**647 offline tests pass**, Ruff passes (111 Python files), nine source SDK groups and
 nine installed-wheel groups pass. Browser/Node DOM checks pass, including canonical
 DCF rendering. A true fresh venv passes dependency/CLI/all39/DCF checks on macOS with
 Python3.12.10. Review handoffs pass20 local calls using real passages and explicit host

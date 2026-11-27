@@ -6,8 +6,8 @@ Git. Provider facts and host semantic judgments are not independently authentica
 
 | Area | Observed outcome | Scope and limits |
 | --- | --- | --- |
-| Offline regression | 644 passed | Includes schemas, budget/replay, units, periods, scope and review guards; no external sockets |
-| Lint/format | passed, 110 Python files formatted | Current src/tests/scripts |
+| Offline regression | 647 passed | Includes schemas, budget/replay, units, periods, scope and review guards; no external sockets |
+| Lint/format | passed, 111 Python files formatted | Current src/tests/scripts |
 | Source SDK | nine groups passed | All39, review16, simple3, shared reconnect, generic/finance, previews, typed all/finance; fictional software fixtures |
 | Installed-wheel SDK | same nine groups passed | Fresh venv, actual packaged code; no provider/model calls |
 | Workbench | browser and Node DOM checks passed | Explicit DCF canonical rows, finance/retrieval/review, escaping, mobile layouts; labelled synthetic fixtures |
@@ -50,3 +50,11 @@ Failed first attempts are retained privately: a stale browser unit-warning asser
 a stale review catalog-count wait (replaced by exact runtime catalog comparison), and a
 restricted-sandbox unit run whose 15 Unix-socket tests passed after local-socket access.
 No runtime financial guard was weakened to make these checks pass.
+
+The first hosted macOS job passed. Initial Linux failure was a test using monotonic
+timestamp zero to simulate expiry on a freshly booted runner; the test now expires
+relative to its recorded timestamp. Initial Windows test setup blocked Python's
+stdlib socketpair self-pipe. The fixture now permits only that synchronous loopback
+operation; three guard tests retain ordinary loopback/external-connect rejection.
+Application/wheel code is unchanged by these portability fixes. Updated jobs are
+pending observation. Official Actions versions were refreshed after a runtime warning.

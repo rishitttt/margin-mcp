@@ -217,7 +217,8 @@ async def test_schema_drift_quarantines_only_changed_nested_operation():
             adapter.assert_ready(Registry(settings).spec("drishti.get_earnings_filing"))
             with pytest.raises(DomainError, match="not approved"):
                 adapter.assert_ready(Registry(settings).spec("drishti.get_news"))
-            adapter.refreshed = 0
+            # Expire relative to the recorded monotonic clock, even on a newly booted runner.
+            adapter.refreshed -= settings.metadata_ttl + 1
             with pytest.raises(DomainError, match="Refresh"):
                 adapter.assert_ready(Registry(settings).spec("drishti.get_earnings_filing"))
             assert "execute_tool" not in calls

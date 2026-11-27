@@ -33,8 +33,8 @@ Workbench extra is optional and checked separately; Node is optional for DOM tes
 with Python3.12. Standalone MCP is the portable path; shared Unix sockets are macOS/Linux
 only. Cross-platform product-contract tests run everywhere and full suite on Unix.
 Remote CI results must be observed before claiming a platform pass. The workflow uses
-the official [checkout](https://github.com/actions/checkout/tree/v4) and
-[setup-python](https://github.com/actions/setup-python/tree/v5) actions.
+the official [checkout](https://github.com/actions/checkout/releases/tag/v7.0.1) and
+[setup-python](https://github.com/actions/setup-python/releases/tag/v7.1.0) actions.
 
 ## Evidence for this release
 
@@ -44,7 +44,7 @@ report. Do not treat an added CI workflow as an observed remote pass. No financi
 are passed to CI. Review host-reader/operator-assessment evidence is distinct from
 automatic model behavior and the professor's excluded evaluation.
 
-Observed local results: 644 offline tests, Ruff, browser/Node DOM, nine source and nine
+Observed local results: 647 offline tests, Ruff, browser/Node DOM, nine source and nine
 installed-wheel SDK groups pass. True fresh-venv installation passed on macOS/Python3.12.10.
 [Acceptance matrix](product-acceptance.md) separates live-provider/operator-reader/fixture
 checks and remaining platform/model limits.

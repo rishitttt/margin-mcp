@@ -12,7 +12,7 @@ must request include_diagnostics=true and read data.diagnostics; core status is 
 [Install/upgrade](../../docs/mcp.md), [acceptance](../../docs/product-acceptance.md),
 [report contracts](../../docs/product-reports.md), [checksum](SHA256SUMS).
 
-644 offline tests, lint/format, browser/DOM, nine source SDK groups, nine installed-wheel
+647 offline tests, lint/format, browser/DOM, nine source SDK groups, nine installed-wheel
 groups and clean macOS/Python3.12.10 installation pass. Selected real provider tests
 used B2/DrHTTP10/estimated credits7. No account balances/source authenticity or arbitrary
 host-model prose are verified. Hosted Linux/Windows results remain to be observed.
