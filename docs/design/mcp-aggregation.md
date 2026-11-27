@@ -1,5 +1,40 @@
 # Margin MCP adapter architecture and implementation plan
 
+## 0.9.5 typed readiness and valuation plan: 27 November 2026
+
+User confirms item3 was INFY and requests fixes/next tests. The 0.9.4/all37 audit
+remains valid: correct HUL preview, INFY selects profitability instead of cross-group
+readiness, final invents DCF tools and conflates key with authorization. Do not erase
+that first attempt or classify it as untested based on the transient correction.
+
+Add two typed aliases using existing core functions, not new calculations or a Margin
+LLM: margin_company_data_readiness pins company_data_readiness and removes the function
+selector; margin_calculate_dcf exposes the exact existing explicit-input DCF schema at
+top level. Keep generic company_finance/calculate and all legacy interfaces. all becomes
+39 tools; optional finance6 includes both aliases, review16/simple3 unchanged. Respect
+the user's all preference; no profile switch/config/backend restart during build.
+
+Catalog/company schemas, function-route recovery, preview bindings and valuation
+handoffs must name the actual callable tool and input shape. A typed readiness preview
+returns same typed-tool bindings without function; generic readiness keeps its generic
+same-tool binding. Both share one core request/key store and B1/D0 execution cap.
+Existing execute=false/key/auth/budget/period/unit/partial guards remain intact.
+
+Expose a bounded machine-readable readiness-versus-profitability purpose/result-field
+distinction and actual explicit DCF route in previews. State that no assumptions/data
+have been assessed/generated and idempotency keys grant no authorization. Make DCF
+required inputs come from its reviewed schema; no invented example/forecasts/facts.
+Actual workflow identifiers must stay literal even if host prose later mislabels them.
+
+Tests: alias schemas/defaults, wrong selectors/nesting, execute/key requirements,
+typed/generic preview bindings and shared-key replay, key conflict/zero-budget/no-data
+cases, exact DCF versus existing core math and guard errors, callable scoped catalog
+and all existing interfaces. Full pytest/Ruff, source/installed SDK, saved-real replay
+and immutable0.9.5 wheel checks precede release. Real provider calls remain zero.
+Run a bounded goal-only all-profile local model API trial if already loaded; record
+native calls/final prose without hidden thinking, separate from app-chat conditions.
+No iterative lucky-pass grading. Publish actual limitations and manual all/B0D0 tests.
+
 ## 0.9.4 finance surface and preview clarity plan: 27 November 2026
 
 Implemented after e78c84f: 614 tests, source SDK and saved-real replay pass. Separate

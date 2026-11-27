@@ -1,5 +1,14 @@
 # Working on Margin
 
+**0.9.5 authorized:** user rechecked item3 was INFY, so 0.9.4 audit stays valid.
+Implement typed readiness alias (fixed core function, no selector) and typed existing
+DCF calculator, exact catalog/handoff schemas, auth-vs-key/purpose/result fields.
+Plan in mcp-aggregation precedes edits. all39/finance6, review16/simple3; generic and
+legacy stay. Preserve core math/guards/shared-key replay; no Margin LLM/forecasts.
+Test all profile, zero allowance, source/wheel SDK/saved-real/explicit DCF arithmetic.
+Optional bounded local model API all-profile trial is a separate condition. No paid
+calls, active user0.9.4 upgrade/restart/reset/profile switch or hidden thinking capture.
+
 **Actual active 0.9.4/all37 app-chat trial:** freeze private lmstudio-094-all-finance-
 previews (3 calls/6 events), zero provider attempts/errors, no operator calls added.
 HUL picks correct company_margins/execute=false; final largely correct, key != auth.
