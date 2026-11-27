@@ -5,8 +5,10 @@ from __future__ import annotations
 import argparse
 import asyncio
 import importlib.metadata
+import importlib.util
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -22,7 +24,8 @@ async def main(args):
     root = Path(margin.__file__).resolve().parents[1]
     if "site-packages" not in str(root):
         raise ValueError("Run with the clean installed wheel, not an editable/source import.")
-    version = importlib.metadata.version("margin-research")
+    version = importlib.metadata.version("margin-mcp")
+    assert version == margin.__version__
     if args.expected_version and version != args.expected_version:
         raise ValueError("Installed version differs from requested release.")
     env = {
@@ -34,20 +37,27 @@ async def main(args):
     env.update(
         MARGIN_BHARATSTOCK_REQUESTS="0", MARGIN_DRISHTI_REQUESTS="0", MARGIN_DRISHTI_CREDITS="0"
     )
-    for module in (
-        "margin.interfaces.mcp",
-        "margin.interfaces.agent.cli",
-        "margin.interfaces.mcp.backend",
-    ):
+    commands = ["margin-mcp", "margin-agent", "margin-backend"]
+    if args.workbench:
+        commands.append("margin-workbench")
+    bindir = Path(sys.executable).parent
+    for command in commands:
+        executable = shutil.which(command, path=str(bindir))
+        if executable is None:
+            raise ValueError(f"Installed console script missing: {command}")
         completed = subprocess.run(
-            [sys.executable, "-m", module, "--help"], env=env, capture_output=True, timeout=20
+            [executable, "--help"],
+            env=env,
+            capture_output=True,
+            timeout=20,
+            cwd=tempfile.gettempdir(),
         )
         if completed.returncode:
             raise ValueError("Installed entrypoint help failed; raw output withheld.")
     with tempfile.TemporaryDirectory(prefix="margin-installed-") as tmp:
         params = StdioServerParameters(
             command=sys.executable,
-            args=["-m", "margin.interfaces.mcp", "--mode", "live", "--tool-profile", "all"],
+            args=["-I", "-m", "margin.interfaces.mcp", "--mode", "live", "--tool-profile", "all"],
             env=env,
             cwd=tmp,
         )
@@ -92,6 +102,23 @@ async def main(args):
                     assert rows["enterprise_value"]["display"] == "₹100.00"
                     assert rows["terminal_value"]["display"] == "₹100.00"
                     assert rows["terminal_present_value"]["display"] == "₹75.13"
+    if args.workbench:
+        from fastapi.testclient import TestClient
+
+        from margin.core.config import Settings
+        from margin.interfaces.agent.client import AgentClient
+        from margin.interfaces.workbench.app import create_app
+
+        settings = Settings(bharatstock_requests=0, drishti_requests=0, drishti_credits=0)
+        with TestClient(create_app(settings), base_url="http://127.0.0.1") as http:
+            assert http.get("/").status_code == 200
+            for asset in ("app.js", "style.css", "favicon.svg"):
+                assert http.get("/static/" + asset).status_code == 200
+            assert AgentClient(http=http).status()["mode"] == "synthetic"
+    else:
+        assert importlib.util.find_spec("fastapi") is None, (
+            "Base-install check needs a minimal venv"
+        )
     subprocess.run(
         [sys.executable, "-m", "pip", "check"], env=env, check=True, capture_output=True, timeout=30
     )
@@ -105,6 +132,7 @@ async def main(args):
         "provider_requests": 0,
         "entrypoints": "help passed",
         "pip_check": "passed",
+        "workbench": args.workbench,
     }
     if args.output:
         args.output.write_text(json.dumps(summary, indent=2) + "\n")
@@ -115,4 +143,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--expected-version")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--workbench", action="store_true")
     asyncio.run(main(parser.parse_args()))

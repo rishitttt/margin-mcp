@@ -13,7 +13,7 @@ from margin.interfaces.mcp.profiles import ToolView
 from margin.interfaces.mcp.server import MarginMCP
 
 module = importlib.util.spec_from_file_location(
-    "professor_demo", Path(__file__).parents[1] / "scripts/demo_mcp_review.py"
+    "professor_demo", Path(__file__).parents[2] / "scripts/demo_mcp_review.py"
 )
 demo = importlib.util.module_from_spec(module)
 module.loader.exec_module(demo)

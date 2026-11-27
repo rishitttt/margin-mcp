@@ -11,6 +11,9 @@ Read current guides first. Historical debugging/release notes are preserved in [
 | [product-reports.md](product-reports.md) | Status/DCF report contracts, raw values versus displays, direct rendering |
 | [api-testing.md](api-testing.md) | Bounded operator live commands, exact allocations and private evidence |
 | [pypi-handoff.md](pypi-handoff.md) | Separate-chat first public release preparation and outstanding metadata/artifact checks |
+| [pypi-release-plan.md](pypi-release-plan.md) | Reviewed packaging plan, owner-selected MIT/authors, archive findings and public-release gates |
+| [pypi-package-review.md](pypi-package-review.md) | Final local package review, resolved findings, test evidence and candidate hashes |
+| [pypi-release.md](pypi-release.md) | Release commit, hosted validation, publisher setup and observed index publication record |
 | [local-credentials.md](local-credentials.md) | Users supplying their own keys, file/environment precedence, owner versus proxy |
 | [release-checks.md](release-checks.md) | Wheel, clean install, SDK/platform checks and publication boundaries |
 | [financial-analysis.md](financial-analysis.md) | Functions, required facts, scopes, units and DCF assumptions |

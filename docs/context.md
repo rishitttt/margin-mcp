@@ -12,7 +12,7 @@ No Margin LLM/browser/forecast generator. Financial facts retain units, dates, b
 
 Product completion0.10.0: clear status allowances/optional diagnostics, explicit valuation inputs, deterministic DCF report/renderer, real provider checks, review-host contracts, clean installation and consolidated docs. Professor evaluation is excluded; research remains an independent consumer, not a runtime/release dependency.
 
-User decision: first public release will be on PyPI, prepared in another chat; this chat remains for product development. See [release handoff](pypi-handoff.md) and [own-key setup](local-credentials.md). Small-context behavior is parked for now; observed failures remain documented. No public upload has occurred.
+Public packaging candidate: margin-mcp0.10.1, MIT, with four author names in metadata. Public onboarding, wheel/sdist guards, fresh-install checks and manual Trusted Publishing workflows are implemented. Index upload/account setup and the new hosted run remain pending. See [release handoff](pypi-handoff.md) and [own-key setup](local-credentials.md). Small-context behavior is parked for now; observed failures remain documented. No public upload has occurred.
 
 ## Evidence and operating state
 

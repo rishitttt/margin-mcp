@@ -259,7 +259,7 @@ def main():
         stdout=subprocess.DEVNULL,
         check=True,
     )
-    wheel = max((root / "dist").glob("margin_research-*.whl"), key=lambda p: p.stat().st_mtime)
+    wheel = max((root / "dist").glob("margin_mcp-*.whl"), key=lambda p: p.stat().st_mtime)
     print(json.dumps(build(root, args.output_dir.resolve(), wheel, args.gold_file)))
 
 

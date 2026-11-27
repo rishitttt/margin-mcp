@@ -1,18 +1,47 @@
 [build-system]
-requires = ["setuptools>=75"]
+requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "margin-research"
-version = "0.10.0"
-description = "Indian financial research, deterministic analysis and local MCP interfaces"
+name = "margin-mcp"
+dynamic = ["version"]
+description = "Local MCP server for Indian financial research and deterministic analysis"
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    {name = "Rishit Anand"},
+    {name = "Advait Sharma"},
+    {name = "Arsalaan Alam"},
+    {name = "Tanvi Sanghai"},
+]
 requires-python = ">=3.12"
+keywords = ["mcp", "finance", "india", "financial-analysis", "research"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial",
+]
 dependencies = ["httpx==0.28.1", "httpx2==2.13.1", "mcp==2.2.0", "jsonschema==4.26.0"]
 
+[project.urls]
+Homepage = "https://github.com/rishitttt/margin-mcp"
+Documentation = "https://github.com/rishitttt/margin-mcp/blob/main/docs/mcp.md"
+Repository = "https://github.com/rishitttt/margin-mcp"
+Issues = "https://github.com/rishitttt/margin-mcp/issues"
+Changelog = "https://github.com/rishitttt/margin-mcp/blob/main/CHANGELOG.md"
+
 [project.optional-dependencies]
-workbench = ["fastapi==0.155.0", "uvicorn==0.53.0"]
+workbench = ["fastapi==0.155.0", "starlette==1.7.0", "uvicorn==0.53.0"]
 dev = ["pytest==9.1.1", "pytest-asyncio==1.4.0", "ruff==0.16.8", "playwright==1.64.0", "build==1.6.1"]
+release = ["build==1.6.1", "twine==7.0.0"]
 
 [project.scripts]
 margin-workbench = "margin.interfaces.workbench.app:main"
@@ -22,6 +51,11 @@ margin-backend = "margin.interfaces.mcp.backend:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["margin", "margin.*"]
+namespaces = false
+
+[tool.setuptools.dynamic]
+version = {attr = "margin.__version__"}
 
 [tool.setuptools.package-data]
 "margin.resources" = ["*.json"]

@@ -5,6 +5,7 @@ from copy import deepcopy
 
 from mcp import types
 
+from margin import __version__
 from margin.analysis.company import FUNCTIONS, function_constraints, planning_capabilities
 from margin.analysis.service import SPECS, obj
 from margin.core.company_finance import SCHEMA as COMPANY_FINANCE_SCHEMA
@@ -12,7 +13,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.10.0"
+VERSION = __version__
 CONTRACT = "margin.mcp.v1"
 DIRECT_FUNCTIONS = {
     "margin_calculate_margins": "finance.calculate_margins",

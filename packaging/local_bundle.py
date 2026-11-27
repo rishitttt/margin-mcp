@@ -40,7 +40,7 @@ def setup(root, arguments):
     parser.add_argument(
         "--skip-install",
         action="store_true",
-        help="Testing/managed runtime only: interpreter already has margin-research[workbench]",
+        help="Testing/managed runtime only: interpreter already has margin-mcp[workbench]",
     )
     parser.add_argument(
         "--target",
@@ -82,7 +82,9 @@ def setup(root, arguments):
         venv.EnvBuilder(with_pip=True).create(location)
         python = location / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
     if not args.skip_install:
-        wheels = list((root / "runtime").glob("margin_research-*.whl"))
+        wheels = list((root / "runtime").glob("margin_mcp-*.whl")) + list(
+            (root / "runtime").glob("margin_research-*.whl")
+        )
         if len(wheels) != 1:
             parser.error("Bundle must contain exactly one Margin runtime wheel.")
         subprocess.run(

@@ -1,6 +1,6 @@
 # Local users: bring your own provider keys
 
-Margin 0.10.0 already supports each user supplying their own BharatStock and/or Drishti
+Margin 0.10.1 supports each user supplying their own BharatStock and/or Drishti
 key. The package contains no provider credentials. Provider access/limits belong to the
 user's account; installing Margin does not include a provider subscription.
 

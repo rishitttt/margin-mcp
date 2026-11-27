@@ -1,8 +1,27 @@
 # Current implementation and validation
 
-Current source/release target0.10.0. Runtime: Python3.12+, BharatStock REST and upstream Drishti MCP, shared core calculations/review, local stdio MCP (all39), optional shared Unix backend/CLI/skill/workbench. No product LLM, market database or automatic forecast/source-authentication service.
+Current source/public candidate margin-mcp0.10.1; prior local release0.10.0. Runtime: Python3.12+, BharatStock REST and upstream Drishti MCP, shared core calculations/review, local stdio MCP (all39), optional shared Unix backend/CLI/skill/workbench. No product LLM, market database or automatic forecast/source-authentication service.
 
-## Product changes
+## Public packaging candidate — 27 November 2026
+
+margin-mcp0.10.1 adds MIT/four-author metadata, public own-key installation docs,
+a self-contained sdist and dedicated Trusted Publishing workflows. Runtime financial
+logic is unchanged; the software version is shared by metadata and MCP initialization.
+The old margin-research distribution and new margin-mcp must use separate environments.
+
+Local checks: 654 full repository tests pass in both development and newly resolved
+release environments; 637 extracted-sdist product tests pass. Ruff passes (117 files),
+isolated wheel/sdist build and strict Twine checks pass, and three new venvs pass
+base-wheel/base-sdist/workbench installed-product checks (all39, actual CLI scripts,
+pip check, hypothetical DCF and static/HTTP checks). Both archives pass metadata,
+content/runtime parity, token-pattern and exact configured-provider-secret scans.
+Both workflows pass actionlint. No provider calls or active-owner changes were made.
+
+[Package review](pypi-package-review.md) records resolved findings, hashes and failed
+first attempts. New hosted-platform validation, account/environment setup and actual
+TestPyPI/PyPI uploads remain pending; previous hosted results below belong to0.10.0.
+
+## Product changes in0.10.0
 
 Status returns a deterministic local-allowance report; capacity/history/receipt diagnostics are opt-in in MCP. Ledger/provider/identity fields remain available; core status is unchanged. DCF returns exact labelled report rows, input definitions and deterministic Markdown while retaining raw math. Workbench renders canonical DCF rows directly. See [report contracts](product-reports.md).
 
@@ -23,7 +42,7 @@ A news result returned under the INFY filter described other issuers. Provider f
 
 Private evidence: reports/private/product-live-2026-11-27 (ignored). Credentials/identity/raw licensed data are not published. Historical0.9.5 app-chat evidence remains separate: typed selection/DCF math passed, quota/accounting prose did not. The new product reports reduce ambiguity; arbitrary model prose is not guaranteed.
 
-## Software, review and installation acceptance
+## Prior0.10.0 software, review and installation acceptance
 
 **647 offline tests pass**, Ruff passes (111 Python files), nine source SDK groups and
 nine installed-wheel groups pass. Browser/Node DOM checks pass, including canonical

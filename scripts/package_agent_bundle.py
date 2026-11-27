@@ -235,7 +235,7 @@ def main():
                 check=True,
             )
             wheels = sorted(
-                (root / "dist").glob("margin_research-*.whl"), key=lambda p: p.stat().st_mtime
+                (root / "dist").glob("margin_mcp-*.whl"), key=lambda p: p.stat().st_mtime
             )
             wheel = wheels[-1]
         print(

@@ -1,6 +1,6 @@
 # Margin quick handoff
 
-- Source/release0.10.0; all39 default, finance6/review16/simple3 optional. Python>=3.12, B REST+Dr MCP, no Margin LLM/database.
+- Source/public candidate margin-mcp0.10.1; prior local release0.10.0; all39 default, finance6/review16/simple3 optional. Python>=3.12, B REST+Dr MCP, no Margin LLM/database.
 - Status now has a canonical local-allowance report; internal capacity/history only via include_diagnostics. Core status remains compatible.
 - DCF has exact labelled report rows and deterministic Markdown; workbench renders those rows. Forecast/debt definitions forbid automatic CFO/liabilities substitutions. Arithmetic remains unchanged.
 - Live pass: B2/DrHTTP10/estimated credits7. INFY typed readiness, HUL quarterly, four Dr events succeed. All nine local company functions work on the two captured responses. Five source records imported. No account probes/retries/user-owner changes.
@@ -11,7 +11,12 @@
 
 647 offline tests, browser/DOM, nine installed-wheel SDK groups and clean macOS installation pass. Hosted Windows/Ubuntu/macOS wheel/standalone jobs [all passed](https://github.com/rishitttt/margin-mcp/actions/runs/45976665943). Full current evidence is in [acceptance](docs/product-acceptance.md).
 
-Next: a separate chat handles [first public PyPI packaging](docs/pypi-handoff.md); this chat continues development. [Users supply their own keys](docs/local-credentials.md). Name availability, license/public metadata, sdist inspection and publication remain for that chat; no upload has occurred. Small-context behavior is parked, not proven to be the sole cause of the observed host failures.
+PyPI preparation is implemented under the public name margin-mcp0.10.1, MIT, with
+Rishit Anand, Advait Sharma, Arsalaan Alam and Tanvi Sanghai credited. See
+[release checks](docs/release-checks.md) for artifact validation, fresh installs and the
+manual TestPyPI→PyPI Trusted Publishing workflow. Account/environment setup, new hosted
+CI observation and index uploads remain. [Users supply their own keys](docs/local-credentials.md).
+Small-context behavior remains parked; the user's owner is unchanged.
 
 ## Historical section links
 

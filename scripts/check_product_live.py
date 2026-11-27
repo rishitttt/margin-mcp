@@ -14,6 +14,7 @@ import os
 from dataclasses import asdict
 from pathlib import Path
 
+from margin import __version__
 from margin.analysis.company import FUNCTIONS, calculate_company
 from margin.analysis.reporting import company_report
 from margin.core.config import Settings
@@ -91,7 +92,7 @@ async def main(args):
     captures, observations, imports = [], [], []
     summary = {
         "kind": "operator_product_acceptance_not_model_or_source_verification",
-        "version": "0.10.0",
+        "version": __version__,
         "limits": {
             "bharatstock_http": 2,
             "drishti_http_including_lifecycle": 16,

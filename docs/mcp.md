@@ -1,15 +1,17 @@
 # Run Margin locally
 
-Version0.10.0, Python>=3.12. Use the committed wheel; publishing to PyPI or deploying a remote server is separate. all is the default supported profile (39 tools). finance6, review16 and review-simple3 are optional, not authorization boundaries.
+Candidate 0.10.1, Python>=3.12. Distribution: margin-mcp (import: margin). Public upload is pending; use the candidate wheel or install from source until published. all is the default supported profile (39 tools). finance6, review16 and review-simple3 are optional, not authorization boundaries.
 
 ## Install
 
 ```sh
 python3.12 -m venv .venv
-.venv/bin/python -m pip install /absolute/path/margin_research-0.10.0-py3-none-any.whl
+.venv/bin/python -m pip install /absolute/path/margin_mcp-0.10.1-py3-none-any.whl
 ```
 
 On Windows use .venv\Scripts\python.exe and standalone mode. No npm installation is required for Margin. Workbench is optional: install the wheel with its workbench extra. [Clean-install/platform evidence](release-checks.md).
+
+After publication, install with `python -m pip install margin-mcp`. Optional UI/API: `python -m pip install "margin-mcp[workbench]"`.
 
 For public users, [bring-your-own-key setup](local-credentials.md) explains credential files/environment variables, limits and the shared-owner distinction. PyPI publication is being prepared separately; [release handoff](pypi-handoff.md).
 
@@ -39,17 +41,16 @@ Keep it running. MCP frontend command is the installed margin-mcp, with:
 
 Backend/frontend package versions must match. Frontend reconnect/profile changes preserve the same owner/allowance; owner restart loses transient handles and duplicate protection. It does not renew provider quota. Unix socket directories must be private and paths short. Windows uses standalone mode; no Unix-backend parity claim.
 
-## Upgrade the current mtest installation
+## Upgrade from a local margin-research wheel
 
-The user has now manually upgraded mtest to0.10.0. The commands below are retained for upgrading an older0.9.5 installation; do not rerun them simply to inspect a result. Save logs before an intentional owner restart. Older records are under logs~ and new records under logs. Do not reuse a spent allowance.
+The public distribution is now margin-mcp. In a new virtual environment, install
+margin-mcp (or its local candidate wheel). Do not install both distributions into the
+same environment: they own the same margin import and console scripts. Repoint your
+MCP host to the new executable when ready. Existing running owners are not upgraded
+by installing into a different environment. Shared frontend/backend versions must match.
 
-```sh
-/Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
-/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.10.0/margin_research-0.10.0-py3-none-any.whl
-MARGIN_BHARATSTOCK_REQUESTS=0 MARGIN_DRISHTI_REQUESTS=0 MARGIN_DRISHTI_CREDITS=0 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --mode live --credentials-file /Users/rishit/Desktop/mtest/.env --record-dir /Users/rishit/Desktop/mtest/logs
-```
-
-Keep the existing frontend command/args with --tool-profile all, reconnect and load your model. Status should show0.10.0/all39/recording enabled and local B0D0. Fresh schema discovery occurs on reconnect; old conversations may retain old tool definitions.
+The development installation remains at 0.10.0 and is not automatically restarted.
+Historical machine-specific upgrade instructions are retained in the archived guide.
 
 ## Tool flow
 

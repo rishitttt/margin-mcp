@@ -16,9 +16,15 @@ Follow [product-completion](product-completion.md) and [release checks](release-
 
 Remaining operator steps after the package is ready: manually upgrade the user's installation, test ordinary fresh-chat use with its preferred model, and allocate any further live requests explicitly. A deterministic report is reliable output from the product; arbitrary host prose can still misstate it.
 
+## Public packaging
+
+margin-mcp0.10.1 is prepared and locally reviewed; see [package review](pypi-package-review.md)
+and [release checks](release-checks.md). Remaining: reviewed commit, new hosted workflow,
+owner account/environment setup and observed staging/production uploads.
+
 ## Separate later actions
 
-Public PyPI publication, remote hosting/multi-user auth and provider redistribution rights are separate decisions. DCF remains explicit-assumption/non-financial-company only. Original-source reading happens through host tools; no automatic source-authentication promise. The independent professor evaluation can consume the product later without becoming its dependency.
+Remote hosting/multi-user auth and provider redistribution rights are separate decisions. DCF remains explicit-assumption/non-financial-company only. Original-source reading happens through host tools; no automatic source-authentication promise. The independent professor evaluation can consume the product later without becoming its dependency.
 
 [Historical plans](archive/2026-11-27-docs-plan.md) retain earlier gates and failures. Do not repeat old paid commands or treat earlier allocations as renewed.
 

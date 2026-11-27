@@ -1,52 +1,109 @@
 # Release and installation checks
 
-Version0.10.0 is a local wheel release. Public PyPI publication, hosted transport and
-multi-user authorization are separate future actions; no external deployment/purchase
-is implied. Old committed wheels/checksums remain immutable.
+The first public candidate is **margin-mcp 0.10.1**, Python 3.12+, MIT. The Python
+import remains margin and the default MCP profile remains all39. Old local wheels
+under releases/ are immutable. Public upload and the new hosted CI run are pending.
 
-## Required local checks
+## Local preparation
+
+Use a new environment; do not upgrade the active 0.10.0 development owner as a release
+check. Do not install legacy margin-research and margin-mcp into the same environment,
+since they own the same import and commands.
 
 ```sh
-.venv/bin/ruff check src tests scripts
-.venv/bin/ruff format --check src tests scripts
-.venv/bin/pytest -q
-.venv/bin/python -m build --wheel --no-isolation
+python3.12 -m venv .release-venv
+.release-venv/bin/python -m pip install -c requirements-dev.lock ".[dev,workbench,release]"
+.release-venv/bin/python -m ruff check src tests scripts
+.release-venv/bin/python -m ruff format --check src tests scripts
+.release-venv/bin/python -m pytest -q
+.release-venv/bin/python -m build
+.release-venv/bin/python -m twine check --strict dist/*
+.release-venv/bin/python scripts/check_distributions.py --version 0.10.1
+.release-venv/bin/python scripts/check_release_install.py --version 0.10.1
 ```
 
-SDK scripts exercise all39, optional profiles, typed/generic handoffs, quote/reference
-guards and shared reconnects with fictional software fixtures only. Live data checks
-are separate [bounded commands](api-testing.md). Unit/SDK success is not host semantic
-accuracy, source authentication or entitlement for untested operations.
+Use a clean checkout/staging tree and empty dist/ for a new artifact build. On Windows
+use Scripts/python.exe and run the portable tests from product-smoke.yml; the full
+suite contains Unix-socket contracts. No build should read a provider credential file.
+A release venv may be placed outside the checkout; .release-venv is ignored locally.
 
-## True fresh-venv installation
+check_distributions.py checks metadata, four authors, MIT files, entrypoints, exact
+version, JSON/static assets, runtime parity between archives, forbidden paths and known
+credential patterns. Review provider-specific secrets and licensed content separately.
+The sdist deliberately excludes research, private-bundle tooling, skills and historical
+release artifacts. Product tests and their helper scripts remain self-contained;
+repository-only research/bundle tests remain under tests/repository and run in the
+full repository regression.
 
-Create a new venv without system-site packages, install the wheel and pinned runtime
-dependencies, run pip check and scripts/check_installed_product.py with that interpreter
-from outside the source tree. The script rejects editable/source imports, checks three
-core CLI entrypoints, initializes standalone live/zero-budget MCP, checks all39/status
-report and explicit hypothetical DCF. It loads no keys and makes no provider calls.
-Workbench extra is optional and checked separately; Node is optional for DOM tests.
+check_release_install.py creates three venvs **without system-site packages** and runs
+from outside the checkout: wheel/base, sdist/base (isolated wheel build), and
+wheel/workbench. It verifies actual installed console scripts, package/server version,
+pip check, all39 zero-allowance live-mode status and hypothetical DCF. Base environments
+must have no FastAPI; uvicorn can be installed transitively by the MCP SDK. Workbench checks include its entrypoint, static assets and
+CLI-client HTTP contract using fictional data. The extracted sdist's product suite runs
+in the workbench venv (portable subset on Windows). Provider keys and MARGIN_* values
+are removed from child environments. No live-provider smoke is part of this process.
 
-## Platform matrix
+## GitHub workflows
 
-.github/workflows/product-smoke.yml builds/installs the wheel on Linux/macOS/Windows
-with Python3.12. Standalone MCP is the portable path; shared Unix sockets are macOS/Linux
-only. Cross-platform product-contract tests run everywhere and full suite on Unix.
-Remote CI results must be observed before claiming a platform pass. The workflow uses
-the official [checkout](https://github.com/actions/checkout/releases/tag/v7.0.1) and
-[setup-python](https://github.com/actions/setup-python/releases/tag/v7.1.0) actions.
+product-smoke.yml runs on PRs/main/manual dispatch and builds both artifacts. It checks
+portable contracts on Windows/Linux/macOS, full regression on Unix, metadata/archive
+validation and all three fresh installation routes.
 
-## Evidence for this release
+release.yml is manual. Run it first with version=0.10.1 and **publish=false**. It builds
+once on Linux, stores the two distribution files and hashes, and checks those exact
+artifacts on all three operating systems. Nothing is uploaded to an index in this mode.
+The official actions are pinned to verified release commit hashes.
 
-Final unit/SDK/DOM/clean-install/platform outcomes and artifact hash are recorded in the
-current [implementation status](implementation.md) and ignored private product-release
-report. Do not treat an added CI workflow as an observed remote pass. No financial keys
-are passed to CI. Review host-reader/operator-assessment evidence is distinct from
-automatic model behavior and the professor's excluded evaluation.
+With publish=true, only a run from main can enter the index-publishing jobs. The
+sequence is build → three-platform installation → TestPyPI → exact staging-wheel hash
+and installed smoke → protected PyPI environment → production hash and installed smoke.
+No rebuild occurs between indexes. The production smoke checks base and workbench
+installations. Build/test jobs have no OIDC publishing permissions; only the dedicated
+index-upload jobs receive id-token: write.
 
-Observed local results: 647 offline tests, Ruff, browser/Node DOM, nine source and nine
-installed-wheel SDK groups pass. True fresh-venv installation passed on macOS/Python3.12.10.
-[Acceptance matrix](product-acceptance.md) separates live-provider/operator-reader/fixture
-checks and remaining platform/model limits.
+If a staging upload or later gate fails, preserve the failed run and artifacts. Investigate
+before rerunning; the same filename cannot be replaced on the index. Bump the candidate
+version if artifact content changes. No publishing retries or skip-existing behavior
+conceal a mismatched candidate.
 
-Hosted Windows, Ubuntu and macOS checks passed on application/test commit ac49544: [observed run](https://github.com/rishitttt/margin-mcp/actions/runs/45976665943). This includes wheel build/install and zero-budget standalone smoke on each OS, with full647 regression on Unix.
+## One-time account setup
+
+Before the first publish=true run, configure these exact pending-publisher fields on
+**both** indexes, using their separate accounts and required account security:
+
+| Field | TestPyPI | PyPI |
+| --- | --- | --- |
+| Project name | margin-mcp | margin-mcp |
+| GitHub owner | rishitttt | rishitttt |
+| Repository | margin-mcp | margin-mcp |
+| Workflow filename | release.yml | release.yml |
+| GitHub environment | testpypi | pypi |
+
+- [TestPyPI publishing settings](https://test.pypi.org/manage/account/publishing/)
+- [PyPI publishing settings](https://pypi.org/manage/account/publishing/)
+- [GitHub environment settings](https://github.com/rishitttt/margin-mcp/settings/environments)
+
+Create the two GitHub environments and restrict production to the intended release
+branch. Add an appropriate release approval rule to pypi where available. A pending
+publisher does not reserve the project name. No long-lived PyPI API token is needed.
+Author metadata does not invite collaborators or grant account access.
+
+TestPyPI dependency installation uses production PyPI separately; the staged wheel is
+fetched with --no-deps and --only-binary=:all:. Do not combine indexes with
+--extra-index-url. Index installation and rendering must be observed before marking
+publication complete. README installation commands describe the public interface;
+current publication status is recorded here and in implementation.md.
+
+## Evidence and limits
+
+[Implementation status](implementation.md) records the candidate's actual local checks.
+The [0.10.0 acceptance matrix](product-acceptance.md) is prior product evidence, including
+[the old hosted run](https://github.com/rishitttt/margin-mcp/actions/runs/45976665943).
+It is not a platform result for the new name/version/workflows. No new provider budget
+has been allocated or spent by packaging. Host-model accuracy and broader company or
+provider coverage remain separate from installation acceptance.
+
+[Packaging plan](pypi-release-plan.md),
+[official Trusted Publishing guide](https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/),
+[TestPyPI guidance](https://packaging.python.org/en/latest/guides/using-testpypi/).

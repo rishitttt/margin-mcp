@@ -1,14 +1,14 @@
-include requirements-dev.lock AGENTS.md .env.example
-recursive-include docs *.md *.json
-recursive-include tests *.py
-include scripts/smoke_workbench.py
-include scripts/install_agent_skill.py scripts/package_agent_bundle.py scripts/smoke_agent.py scripts/smoke_agent_bundle.py
-include packaging/local_bundle.py research/pilot.py
-recursive-include skills *.md *.py
-recursive-exclude skills connection.json
-
-include scripts/check_core_live.py
-include scripts/audit_functions.py
-include scripts/check_finance_repairs.py
-include scripts/smoke_mcp.py
-include scripts/smoke_mcp_shared.py
+include LICENSE README.md CHANGELOG.md pyproject.toml requirements-dev.lock
+graft src/margin
+graft tests
+include scripts/check_drishti_review.py
+include scripts/check_installed_product.py scripts/check_distributions.py scripts/check_release_install.py
+prune tests/repository
+prune research
+prune packaging
+prune reports
+prune releases
+prune skills
+prune .github
+global-exclude __pycache__ *.py[cod] .DS_Store
+global-exclude .env .env.* providers.env connection.json *.pem *.key *.sqlite *.sqlite3

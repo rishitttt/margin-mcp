@@ -8,9 +8,8 @@ from zipfile import ZipFile
 import pytest
 
 from margin.interfaces.agent.client import BridgeError
-from margin.interfaces.agent.local_config import read_provider_env
 
-ROOT = Path(__file__).parents[1]
+ROOT = Path(__file__).parents[2]
 
 
 def load_module(name, path):
@@ -25,21 +24,6 @@ def wheel(tmp_path, content="no credentials"):
     with ZipFile(path, "w") as archive:
         archive.writestr("margin/__init__.py", content)
     return path
-
-
-def test_credential_file_is_data_and_only_loads_provider_names(tmp_path):
-    path = tmp_path / "providers.env"
-    path.write_text(
-        "# local test\nexport BHARATSTOCK_API_KEY='literal-$(not-a-command)'\nDRISHTI_API_KEY=fictional-drishti-test\nOTHER_SECRET=ignored\n"
-    )
-    values = read_provider_env(path)
-    assert values == {
-        "BHARATSTOCK_API_KEY": "literal-$(not-a-command)",
-        "DRISHTI_API_KEY": "fictional-drishti-test",
-    }
-    path.write_text("BHARATSTOCK_API_KEY='broken-quote\n")
-    with pytest.raises(BridgeError, match="valid local provider"):
-        read_provider_env(path)
 
 
 def test_bundle_keeps_authorized_keys_only_in_private_file_and_has_no_machine_paths(tmp_path):
