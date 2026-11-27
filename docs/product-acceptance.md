@@ -38,7 +38,7 @@ list/detail can overlap. Host relevance and deduplication remain necessary.
 
 ## Remaining checks/actions
 
-- User upgrades the separate mtest installation manually; it remains0.9.5/B0D0 here.
+- User upgraded mtest to0.10.0; the observed host smoke below records remaining behavior gaps. No automatic upgrade/restart was performed by Codex.
 - Fresh-chat smoke in the user's selected host/model, checking actual calls and canonical
   reports rather than prose alone. Do not claim tool use from a plausible answer.
 - Hosted platform checks passed for application/test commit ac49544: [actual run](https://github.com/rishitttt/margin-mcp/actions/runs/45976665943). Documentation-only follow-ups do not alter the wheel.
@@ -59,3 +59,28 @@ operation; three guard tests retain ordinary loopback/external-connect rejection
 Application/wheel code is unchanged by these portability fixes. The remaining Windows DOM test required explicit UTF-8 for the rupee symbol instead
 of its default code page. Final jobs all passed. Official Actions versions were refreshed
 after a runtime warning.
+
+## User host smoke after upgrade
+
+LM Studio/Qwen3-8B, package0.10.0, observed27 November; context setting not supplied.
+Two private backend logs were frozen under reports/private/client-smoke-2026-11-27-1005.
+This is a product smoke observation, not the professor's benchmark.
+
+- Status correctly distinguished local limits and unknown account balance. Internal
+  retention capacity appeared because the caller explicitly requested diagnostics.
+- INFY annual consolidated growth executed successfully: B1/D0, canonical rows agree
+  with the pasted final answer. The model's margin_result(request_id) follow-up is
+  unsupported; fresh-company details use the same original inputs/key with include_details.
+- HUL margin task selected readiness and stopped at execute=false/default preview;
+  B0/D0. No margin calculation completed. Correct route is company_margins through
+  margin_company_finance. Tool selection/execution remains a host acceptance gap.
+- No DCF call appears in these two logs. The pasted hand-calculated answer does not
+  test Margin's DCF engine and omits equity/per-share outputs.
+- Two-step source review completed: supported/insufficient-evidence claims, one positive
+  host annotation, original authenticity false. Bounded annotation coverage is not
+  market coverage. The model's financial-impact follow-up is unsupported.
+
+No provider requests, owner restart/configuration change or runtime fix was performed
+while inspecting these records. New guided retries must be labelled separately from
+unguided discovery; use confirmed remaining allowance and never refetch to inspect
+an existing result.

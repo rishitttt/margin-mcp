@@ -39,7 +39,7 @@ installation and software checks.
 
 ## Operating state and limits
 
-The user's separate mtest installation remains0.9.5/B0D0, with prior logs under logs~. This build does not upgrade/restart it or refill budgets. Current product keys worked for the selected live pass; broader endpoint/company/entitlement coverage is not established. Additional live checks need a new remaining allocation. Public publishing/deployment is not performed.
+The user manually upgraded mtest to0.10.0. New logs are under logs, older logs~ remain. [Observed host smoke](product-acceptance.md#user-host-smoke-after-upgrade): INFY growth succeeded B1/D0; HUL stopped at readiness preview; no DCF call appears in the two inspected logs. Codex did not restart/configure the owner or make new provider calls while checking them. Current product keys worked for the selected live pass; broader endpoint/company/entitlement coverage is not established. Additional live checks need a new remaining allocation. Public publishing/deployment is not performed.
 
 [Install/upgrade](mcp.md), [active plan](plan.md), [full historical evidence](archive/2026-11-27-docs-implementation.md).
 

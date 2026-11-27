@@ -6,7 +6,7 @@
 - Live pass: B2/DrHTTP10/estimated credits7. INFY typed readiness, HUL quarterly, four Dr events succeed. All nine local company functions work on the two captured responses. Five source records imported. No account probes/retries/user-owner changes.
 - Provider-filtered news included other issuers; host relevance filtering is required. Citation/sentiment are host assessments, not source authenticity or market-wide sentiment.
 - See [implementation](docs/implementation.md) for actual tests/remaining limits, [install](docs/mcp.md), [release checks](docs/release-checks.md), [current plan](docs/plan.md).
-- User mtest owner remains0.9.5/B0D0 with logs at logs~. Upgrade manually when ready; do not renew the spent test allocation.
+- User manually upgraded mtest to0.10.0; new logs are under logs (older logs~ preserved). Host smoke: INFY growth B1/D0 succeeds; HUL selects readiness preview, and no DCF call appears. See acceptance for remaining model-behavior gaps. Do not infer/refill budgets or restart the owner.
 - No professor evaluation work or public publishing/deployment in this pass. [Historical handoff](docs/archive/2026-11-27-handoff.md).
 
 647 offline tests, browser/DOM, nine installed-wheel SDK groups and clean macOS installation pass. Hosted Windows/Ubuntu/macOS wheel/standalone jobs [all passed](https://github.com/rishitttt/margin-mcp/actions/runs/45976665943). Full current evidence is in [acceptance](docs/product-acceptance.md).

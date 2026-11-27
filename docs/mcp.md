@@ -39,7 +39,7 @@ Backend/frontend package versions must match. Frontend reconnect/profile changes
 
 ## Upgrade the current mtest installation
 
-The product build does not change your active0.9.5 owner. Save logs (currently logs~) before stopping it. Do not reuse a spent allowance.
+The user has now manually upgraded mtest to0.10.0. The commands below are retained for upgrading an older0.9.5 installation; do not rerun them simply to inspect a result. Save logs before an intentional owner restart. Older records are under logs~ and new records under logs. Do not reuse a spent allowance.
 
 ```sh
 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop

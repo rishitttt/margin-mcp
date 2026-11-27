@@ -16,7 +16,7 @@ Product completion0.10.0: clear status allowances/optional diagnostics, explicit
 
 The approved isolated pass used B2/DrHTTP10/estimated credits7. INFY annual readiness/HUL quarterly/four Dr event calls succeeded. Local reuse of two responses exercised all nine company functions; not nine live fresh-wrapper calls. Provider facts remain unverified. Details and residual coverage are in [implementation](implementation.md).
 
-The user's independent mtest backend is0.9.5, B0D0; do not upgrade/reset it automatically. Its logs folder has a trailing tilde. Live allocations are process bounds, not account balance; no balance query was made. Further requests need new scope, not a restart of spent limits.
+The user manually upgraded mtest to0.10.0; new logs are under logs and older logs~ remain. INFY growth executed B1/D0; HUL stopped at readiness preview, and no DCF call appears in the observed host-smoke logs. See acceptance for model-behavior limits. Do not upgrade/reset the owner automatically. Live allocations are process bounds, not account balance; no balance query was made. Further requests need new scope, not a restart of spent limits.
 
 [Current plan](plan.md), [product pass](product-completion.md), [release checks](release-checks.md), [documentation ownership](README.md), [historical context](archive/2026-11-27-docs-context.md).
 
