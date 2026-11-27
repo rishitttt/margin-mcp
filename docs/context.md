@@ -1,5 +1,12 @@
 # Project context and handoff
 
+**Actual user0.9.5/all39:** status/catalog/typed readiness/typed DCF,4 calls/8 events,
+no backend errors/provider attempts. Correct selection/preview stopping and DCF math.
+Final quota200/500 false (ledgerB0D0); FCFF/debt mapping and terminal-PV labels need
+correction. Log is mtest/logs~, not earlier logs; model metadata not reconfirmed.
+No runtime/wheel/reset in audit; live readiness needs one new allocated request.
+Private captures preserved without hidden thinking; no blanket semantic acceptance.
+
 **Latest0.9.5:** typed readiness (fixed function/no selector) and typed existing DCF
 aliases, exact catalog/bindings, purpose/result fields and key!=authorization. all39/
 finance6; review16/simple3 and generic/legacy/core math stay. 633 tests/source SDK and

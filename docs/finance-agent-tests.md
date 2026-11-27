@@ -1,5 +1,12 @@
 # Test finance discovery through Margin
 
+**Actual0.9.5/all39:** fixed typed readiness chosen, no fetch; typed DCF explicit
+hypothetical returns100/83/8.3. Tool invocation/math pass; status quota interpretation
+and some readiness accounting prose fail. ActualB0D0,4 calls/8 events; log in logs~.
+[Audit](implementation.md) preserves this app-chat condition separately from no-model
+API probe. Next one newly allocated real readiness request can test returned eligibility;
+do not treat a successful preview as fetched/verified financial data.
+
 **0.9.5 next:** keep all (39 tools); typed readiness/DCF make selection/input shape
 explicit without removing generic interfaces. [Upgrade](mcp.md#typed-readiness-and-dcf-095),
 [same goal-only tasks](../research/finance-discovery/preview-batch-0.9.5.json). Optional

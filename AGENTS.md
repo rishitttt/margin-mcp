@@ -1,5 +1,15 @@
 # Working on Margin
 
+**Actual active0.9.5/all39:** four calls/eight events frozen in private lmstudio-095-
+all-readiness-dcf. Log at mtest/logs~ (trailing tilde); don't confuse old logs folder.
+Status/allcatalog/typed readiness preview/typed DCF succeed, provider calls0. Actual
+limitsB0D0;200 capacity !=credits,500 not ledger. Readiness picks correct function/stops;
+final incorrectly maps CFO->forecast FCFF,total_liabilities->debt/broad quick ratio.
+Hypothetical DCF math100/83/8.3 passes;75.13 is terminal PV,terminal value100. Model/
+context/preset not reconfirmed, no hidden thinking. Audit docs only; no wheel/owner/
+budget reset. Next one explicitly allocated live readiness request; no source/auth
+assessment yet. Grade selection/math separately from failed prose/quota interpretation.
+
 **0.9.5 checkpoint:**633 tests/Ruff105/skill/source SDK9 groups pass, saved-real HUL
 all9 raw values/statuses unchanged. Typed readiness/DCF aliases preserve math and
 shared-core keys; full39/finance6/review16/simple3. Actual model probe made0 generations:

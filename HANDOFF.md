@@ -1,5 +1,11 @@
 # Margin: quick handoff
 
+**Actual0.9.5/all39:** correct typed readiness preview and explicit DCF100/83/8.3;
+4 calls/8 events, provider requests0. Final status falsely says200/500 credits (actual
+B0D0), readiness invents CFO/FCFF and liabilities/debt mapping;75.13 is terminal PV.
+[Call audit](docs/implementation.md) separates tool/math pass from prose failures.
+Logs at mtest/logs~; no runtime/reset/new wheel. One budgeted live readiness test next.
+
 **Current0.9.5:** two typed aliases expose existing readiness/DCF with exact schemas;
 all39 is supported, finance6 optional. No selector for typed readiness; generic and
 legacy APIs/math remain. 633 tests, source SDK and saved-real values pass. [Install/tests](docs/mcp.md#typed-readiness-and-dcf-095),

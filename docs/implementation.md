@@ -1,5 +1,42 @@
 # Implementation and validation status
 
+## Actual 0.9.5/all39 app-chat readiness and DCF: 27 November 2026 IST
+
+Four calls/eight events: status, all-schema catalog, typed readiness preview, typed
+DCF. Zero backend errors/provider attempts; no operator calls added to this cohort.
+Active log is in mtest/logs~ (literal trailing tilde), not the previous logs folder.
+No files/processes moved. Model/context/preset not reconfirmed. Keep actual app-chat
+evidence separate from the earlier no-loaded-model API probe and source SDK fixtures.
+
+Version/all39/recording are correct. Actual local provider HTTP limits are B0/D0 and
+credit estimate0; account balance unknown. Final200/500-credit claims are incorrect:
+200 is compact-request control capacity, not BharatStock allowance;500 is not the
+observed provider credit limit. Catalog contains49 function entries across groups,
+not39 tools. Fetching all schemas was unnecessary for tool count; this alone does not
+establish context truncation or cause of final-prose errors.
+
+Readiness selection passes: margin_company_data_readiness pins the intended function,
+annual/consolidated INFY, execute omitted=false. No fetch/valuation occurred. Final
+reports correct result fields and actual DCF name/explicit assumptions, but wrongly
+suggests forecast FCFF directly from CFO and debt from total liabilities. Neither is
+implemented by Margin: DCF takes explicit future FCFF and reviewed debt/cash inputs;
+the FCFF calculator uses explicit EBIT/tax/noncash/capex/working-capital inputs. Limited
+inventory-adjusted liquidity is not a fully adjusted quick ratio. No available-field
+support has actually been assessed until an authorized financial response is fetched.
+
+DCF invocation/math pass: supplied hypothetical forecasts10/10/10, WACC0.1/growth0,
+debt20/cash5/adjustment-2/shares10 give EV100/equity83/per-share8.3 INR. Forecast PV
+24.8685... and terminal PV75.13148... sum to100; undiscounted year3 terminal value100.
+The final75.13 label should say discounted terminal value. Assumptions remain caller
+supplied, not verified source facts or market valuation. No arithmetic defect found.
+
+Overall: typed selection, preview-only stopping and DCF math pass in this measured
+run; quota interpretation and some final accounting explanation still fail. Preserve
+private lmstudio-095-all-readiness-dcf-2026-11-27, no hidden thinking/debug. No runtime/
+wheel/key/config/profile/owner reset in audit. Next real-data readiness test needs one
+deliberately allocated remaining request; current local allowance0. Score actual tool
+results and host explanation separately; no blanket model-reliability claim.
+
 ## 0.9.5 typed readiness/DCF repair: 27 November 2026 IST
 
 Plan c58414d precedes edits. User rechecked and confirmed item3 was INFY; the original

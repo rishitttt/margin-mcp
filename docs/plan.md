@@ -1,5 +1,14 @@
 # Margin build and evaluation plan
 
+## Gate after actual 0.9.5 typed-tool trial
+
+Actual all39 readiness selection/preview-only stop and explicit DCF arithmetic pass,
+zero provider attempts. Status quota and some final financial mappings still false.
+Preserve4-call cohort/no hidden thinking. No source/math defect justifies a new wheel
+from this result. Next one allocated live readiness request (currentB0D0), then assess
+actual component eligibility/units and faithful final reporting. Distinguish caller
+assumptions from retrieved facts and model prose from deterministic tool results.
+
 ## 0.9.5 acceptance gate
 
 Typed readiness/DCF aliases and schema/route/purpose/auth-key fixes implemented after
