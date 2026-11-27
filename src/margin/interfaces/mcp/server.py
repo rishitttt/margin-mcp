@@ -21,6 +21,7 @@ from mcp.shared.exceptions import MCPError
 
 from margin.analysis.company import FUNCTIONS as COMPANY_FUNCTIONS
 from margin.analysis.company import planning_capabilities
+from margin.analysis.product_reports import input_contract, status_report
 from margin.core.company_finance import execution_contract
 from margin.core.config import Settings
 from margin.core.contracts import DomainError, encoded_size
@@ -541,7 +542,15 @@ class MarginMCP:
         if name in DIRECT_FUNCTIONS:
             return self.service.calculate(DIRECT_FUNCTIONS[name], args)
         if name == "margin_status":
-            return self.service.status() | {
+            status = self.service.status()
+            diagnostics = {
+                key: status.pop(key)
+                for key in ("last_historical_balance", "company_finance_requests", "receipt_count")
+            }
+            status["report"] = status_report(status)
+            if args.get("include_diagnostics", False):
+                status["diagnostics"] = diagnostics
+            return status | {
                 "package_version": VERSION,
                 "data_policy": copy.deepcopy(DATA_POLICY),
                 "state_owner": self.state_owner,
@@ -637,6 +646,7 @@ class MarginMCP:
                     summary["valuation_prerequisites"] = {
                         "status": "not_assessed",
                         "assumptions_generated": False,
+                        "input_contract": input_contract(),
                         "explicit_function": "finance.calculate_dcf",
                         "mcp_execution": cls.execution_route(
                             "calculations", "finance.calculate_dcf"

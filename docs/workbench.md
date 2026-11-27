@@ -217,3 +217,7 @@ Optional browser acceptance, with the synthetic server running on port 8765 and 
 Use a fresh synthetic process for repeatable counters/headroom. The script verifies mode before data actions, blocks external page requests, uses a fresh headless profile and saves fictional screenshots only when requested. Playwright is a dev dependency; no browser binary is automatically downloaded by installation. Default executable selection requires an already installed Playwright browser if `--browser` is omitted.
 
 Known gaps: authenticated new-client compatibility/access/billing and measured live coverage; clean installation on other platforms; original-source/citation resolution; fuller output layouts; semantic transcript search; broader source-backed financial mappings and automated valuation inputs; downstream Margin MCP and actual model-host evaluation. Complete the small live/source gate before expanding operations or claiming the initial pilot finished.
+
+## Canonical DCF display (0.10.0)
+
+Explicit-input DCF results render their canonical report rows directly, including terminal value at the forecast horizon and discounted terminal PV as separate rows. Raw exact calculation details remain available separately. This display does not use model-generated prose or new provider calls.

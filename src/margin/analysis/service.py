@@ -7,6 +7,7 @@ from decimal import DecimalException
 
 from margin.analysis import calculations, ratios
 from margin.analysis.facts import FACT_SCHEMA, MONEY_UNITS, check_compatibility, convert_units
+from margin.analysis.product_reports import input_contract
 from margin.core.contracts import DomainError
 from margin.core.validation import validation_summary
 from margin.finance import dcf
@@ -37,6 +38,19 @@ MODEL_SCHEMA = obj(
         "company_type": {"enum": ["non_financial"]},
     }
 )
+for _field, _contract in input_contract().items():
+    if _field in MODEL_SCHEMA["properties"]:
+        MODEL_SCHEMA["properties"][_field]["description"] = (
+            _contract["definition"]
+            + " "
+            + _contract.get("origin", "")
+            + " "
+            + (
+                "Not equivalent to: " + ", ".join(_contract["not_equivalent_to"])
+                if _contract.get("not_equivalent_to")
+                else ""
+            )
+        )
 PAIR = {"previous": FACT_SCHEMA, "current": FACT_SCHEMA}
 SPECS = {
     **{

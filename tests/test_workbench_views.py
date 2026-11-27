@@ -96,6 +96,15 @@ assert(ids.get('access-note').textContent.includes('not a provider subscription 
 const news=descendants(ids.get('modules'),'input').find(input=>input.value==='news');
 assert.equal(news.disabled,true);
 assert.deepEqual(fetches,['/api/status']); // Rendering/hold explanation dispatch no data request.
+// Canonical DCF display must win over raw scalar fields and preserve timing labels.
+cards.replaceChildren();
+context.calc={values:{terminal_value:999999},report:{version:'margin.dcf_report.v1',title:'Explicit DCF',input_origin:'caller-supplied',warnings:[],rows:[
+ {label:'Terminal value at horizon (undiscounted)',display:'₹100.00',unit:'INR',status:'success'},
+ {label:'Present value of terminal value (discounted)',display:'₹75.13',unit:'INR',status:'success'}]}};
+vm.runInContext('renderCalculation(document.getElementById("cards"),calc)',context);
+assert(cards.textContent.includes('undiscounted'));
+assert(cards.textContent.includes('₹75.13'));
+assert(!cards.textContent.includes('999999'));
 console.log('Financial field rendering, null/zero fidelity, unknown shape fallback and local hold explanation passed.');
 
 (async () => {

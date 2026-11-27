@@ -77,7 +77,7 @@ async def main(args):
                         )
                     return body["data"]
 
-                before = await call("margin_status")
+                before = await call("margin_status", {"include_diagnostics": True})
                 assert before["mode"] == "live" and before["tool_profile"] == "all"
                 catalog = await call("margin_catalog", {"group": "company"})
                 company = catalog["groups"]["company"]
@@ -149,9 +149,12 @@ async def main(args):
                     },
                 )
                 assert plan["plan_id"]
-                after = await call("margin_status")
+                after = await call("margin_status", {"include_diagnostics": True})
                 assert before["ledger"] == after["ledger"]
-                assert before["company_finance_requests"] == after["company_finance_requests"]
+                assert (
+                    before["diagnostics"]["company_finance_requests"]
+                    == after["diagnostics"]["company_finance_requests"]
+                )
                 summary = {
                     "status": "passed",
                     "kind": "operator_sdk_discovery_and_preview_not_model_acceptance",

@@ -5,7 +5,7 @@ description: Retrieve Indian listed-company financial and event data, run determ
 
 # Margin research
 
-For 0.9.5 prefer margin_company_data_readiness for which fields/calculations are
+For 0.10.0 prefer margin_company_data_readiness for which fields/calculations are
 supported across profitability/cash conversion/liquidity. It has no function selector;
 company_profitability is only a numeric profitability group. Typed readiness previews
 bind the same typed tool without function. Generic company_finance still works with
@@ -15,6 +15,16 @@ explicit-input schema at top level. It neither fetches nor generates assumptions
 Do not call DCF just because readiness asks about valuation prerequisites. A stable
 idempotency key is duplicate control, not authorization. all39/finance6 retain generic
 and legacy APIs; review16/simple3 are unchanged. Use the user's selected profile.
+
+For status, copy the canonical report rows/display: HTTP and estimated-credit allowances
+are local process bounds, never an observed account balance. Account balance is unknown
+unless separately observed. Internal capacity/history/receipt diagnostics require
+margin_status(include_diagnostics=true); ordinary status needs no provider calls.
+For DCF copy report.rows (or report.markdown) directly: terminal_value is undiscounted
+at the horizon, terminal_present_value is discounted to valuation date. Do not substitute
+CFO for forecast FCFF or total liabilities for reviewed debt. Preserve caller amount_unit
+and the distinct INR_per_share row. Input definitions are in the advertised schemas and
+company_execution_contract. No source authentication follows from correct math.
 
 The optional finance frontend exposes status/catalog/company_finance/calculate plus
 typed readiness/DCF. Catalog's default company mcp_execution is the fresh route;

@@ -232,6 +232,45 @@ async def main(args):
             await run_plan()
             assert (await calculation())["values"]["fcff"] == "60.00"
             assert await ledger() == first
+            # DCF uses canonical timing/unit labels, not raw scalar auto-formatting.
+            await page.locator("#analysis-function").select_option("finance.calculate_dcf")
+            await page.locator("#analysis-arguments").fill(
+                json.dumps(
+                    {
+                        "forecast_fcff": [10, 10, 10],
+                        "wacc": 0.1,
+                        "terminal_growth": 0,
+                        "debt": 20,
+                        "cash": 5,
+                        "other_equity_adjustments": -2,
+                        "diluted_shares": 10,
+                        "amount_unit": "INR",
+                        "valuation_date": "2026-11-27",
+                        "company_type": "non_financial",
+                    }
+                )
+            )
+            await page.locator("#analysis-run").click()
+            await page.locator("#plan:not([hidden])").wait_for()
+            await run_plan()
+            assert (await calculation())["report"]["version"] == "margin.dcf_report.v1"
+            assert (
+                "₹100.00"
+                in await page.locator("#analysis-values tr")
+                .filter(has_text="undiscounted")
+                .inner_text()
+            )
+            assert (
+                "₹75.13"
+                in await page.locator("#analysis-values tr")
+                .filter(has_text="Present value of terminal value")
+                .inner_text()
+            )
+            assert await ledger() == first
+            if args.output:
+                args.output.mkdir(parents=True, exist_ok=True)
+                await page.screenshot(path=str(args.output / "dcf-canonical.png"), full_page=True)
+
             # Invalid JSON cannot submit a plan or dispatch a request.
             await page.locator("#analysis-arguments").fill("{")
             assert not await page.locator("#plan").is_visible()
@@ -296,7 +335,7 @@ async def main(args):
             text = await page.locator("#cards").inner_text()
             assert (
                 "requires authorized resolution" in text
-                and "Returned normalized revenue and raw revenue differ" in text
+                and "Normalized/raw revenue units are missing or different" in text
             )
             assert "synthetic-private-key-never-forward" not in text and "api_key=" not in text
             await page.evaluate(
@@ -313,10 +352,21 @@ async def main(args):
                 await page.set_viewport_size({"width": 1400, "height": 1000})
             await page.locator("#review-tester > summary").click()
             before_review = await ledger()
+            expected_review = {
+                spec["function"]
+                for spec in (await (await page.request.get(root + "/api/protocols")).json())[
+                    "functions"
+                ]
+            }
             await page.locator("#review-catalog").click()
             await page.wait_for_function(
-                "() => document.getElementById('review-function').options.length === 11"
+                "expected => document.getElementById('review-function').options.length === expected + 1",
+                arg=len(expected_review),
             )
+            displayed_review = await page.locator("#review-function option").evaluate_all(
+                "options => options.map(option => option.value).filter(Boolean)"
+            )
+            assert set(displayed_review) == expected_review
             await page.locator("#review-function").select_option("protocols.list_workflows")
             await page.locator("#review-starter").click()
             assert json.loads(await page.locator("#review-arguments").input_value()) == {}

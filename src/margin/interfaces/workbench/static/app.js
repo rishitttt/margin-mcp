@@ -547,6 +547,14 @@ function showCalculation(result) {
 }
 function renderCalculation(parent, result, includeWarnings = true) {
   if (!result) return;
+  if (result.report?.version === "margin.dcf_report.v1") {
+    parent.append(node("p", result.report.title, "context"));
+    table(parent, result.report.rows, ["label", "display", "unit", "status"]);
+    parent.append(node("p", "Input origin: " + result.report.input_origin, "small"));
+    if (includeWarnings) for (const warning of result.report.warnings || []) parent.append(node("p", warning, "small"));
+    return;
+  }
+
   if (result.selection) {
     const s = result.selection, dates = Array.isArray(result.inputs) ? [...new Set(result.inputs.map(f => f.period_end).filter(Boolean))].sort().join(" → ") : "";
     parent.append(node("p", [s.ticker + " / " + s.exchange, s.basis, s.period_type, dates, s.money_unit === "auto" ? "documented provider units" : s.money_unit ? s.money_unit + " · caller-declared scale" : "units unknown"].filter(Boolean).join(" · "), "context"));

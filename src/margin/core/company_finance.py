@@ -12,6 +12,7 @@ from uuid import uuid4
 from margin.analysis import company
 from margin.analysis.facts import FIELDS
 from margin.analysis.presentation import metric_entry
+from margin.analysis.product_reports import input_contract
 from margin.analysis.reporting import company_report
 from margin.analysis.service import obj
 from margin.core.contracts import DomainError, OperationRequest, encoded_size
@@ -32,6 +33,7 @@ EXECUTION_CONTRACT = {
         "explicit_function": "finance.calculate_dcf",
         "valid_company_selector": False,
         "requires_explicit_assumptions": True,
+        "input_contract": input_contract(),
     },
     "preview": {
         "execute": False,

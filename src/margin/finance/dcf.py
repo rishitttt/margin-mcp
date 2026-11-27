@@ -8,6 +8,7 @@ from decimal import localcontext
 
 from margin.analysis.calculations import result
 from margin.analysis.facts import MONEY_UNITS, decimal
+from margin.analysis.product_reports import dcf_report
 from margin.core.contracts import DomainError
 
 
@@ -156,6 +157,7 @@ def calculate_dcf(
     out["warnings"].append(
         "Assumption-dependent valuation, not an observed price or independently verified company valuation."
     )
+    out["report"] = dcf_report(out)
     return out
 
 

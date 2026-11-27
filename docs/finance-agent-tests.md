@@ -1,172 +1,39 @@
-# Test finance discovery through Margin
+# Product smoke tasks
 
-**Actual0.9.5/all39:** fixed typed readiness chosen, no fetch; typed DCF explicit
-hypothetical returns100/83/8.3. Tool invocation/math pass; status quota interpretation
-and some readiness accounting prose fail. ActualB0D0,4 calls/8 events; log in logs~.
-[Audit](implementation.md) preserves this app-chat condition separately from no-model
-API probe. Next one newly allocated real readiness request can test returned eligibility;
-do not treat a successful preview as fetched/verified financial data.
+These are product checks, not the professor benchmark. Keep all if preferred. Record actual calls/results separately from final prose; no hidden reasoning. Start fresh chats after upgrade/reconnect and keep the model/context/preset recorded when comparing behavior.
 
-**0.9.5 next:** keep all (39 tools); typed readiness/DCF make selection/input shape
-explicit without removing generic interfaces. [Upgrade](mcp.md#typed-readiness-and-dcf-095),
-[same goal-only tasks](../research/finance-discovery/preview-batch-0.9.5.json). Optional
-explicit hypothetical DCF is local. New model acceptance is pending (none loaded for
-probe), not inferred from 633 tests/SDK. Do not spend provider quota or change profile
-to perform these B0D0 checks; retain first calls and final prose separately.
+## Zero-provider status
 
-**Actual 0.9.4/all37:** 3 calls/6 events, correct HUL margin preview and wrong INFY
-profitability selector for requested cross-group readiness. Both stop before fetch;
-no backend errors/credits used. INFY final falsely attributes readiness and names
-nonadvertised DCF tools. [Audit](implementation.md) records this separately from
-API-harness finance4 results. Optional same-goal finance4 or stronger-model comparison
-at B0D0 should preserve first attempts and actual model/context/preset; no paid quota
-is required. Passing preview execution is not passing function selection/final prose.
+Prompt: Use the connected Margin MCP to inspect version, profile, tool count and local provider allowances. Make no provider requests.
 
-**Next 0.9.4 condition:** the new finance frontend has four tools and a scoped catalog;
-the full catalog also defaults company routing to the fresh convenience tool. Compact
-previews distinguish preview/execution missing fields and give a copyable summary.
-[Manual upgrade/profile setup](mcp.md#compact-finance-profile-094) uses configured
-keys with B0/D0; [same goal-only tasks](../research/finance-discovery/preview-batch-0.9.4.json)
-must be scored separately from the preceding all37 failures. Check tool invocation,
-preview-only adherence, missing-key/next-tool prose, no invented data and zero attempts.
-The optional local API harness is a separate host/preset condition, not app replication.
+Expected0.10.0/all39. Read canonical report: local HTTP allowance/estimated Dr credit budget, account balance unknown. Internal capacities require include_diagnostics and are not credits. No catalog schema dump is needed for tool count.
 
-**Actual 0.9.3 preview result:** status passes; both goal-only finance preview tasks
-fail model acceptance. HUL receives a successful fresh preview but tries generic run
-and execution despite preview-only scope; B0 guard prevents HTTP. INFY chooses legacy
-retained-data preview and stops. Do not raise budgets or purchase credits for these
-local previews. [Recorded call audit](implementation.md) distinguishes routing/final
-answer failures from passing software guards. Next exact-tool diagnostics are guided
-conditions, not a replacement for the frozen autonomous first attempts.
+## Preview-only readiness
 
-**0.9.3 repair and next tests:** [manual B0/D0 setup and two fresh-chat preview tasks](mcp.md#finance-handoffs-and-readiness-093)
-exercise exact same-tool bindings and one-response readiness selection without paying
-for data. The old B3/D0 live batch is exhausted. Original/guided 0.9.2 results remain
-separate; do not replay those live tasks or assume owner restart renews account quota.
-575 software tests/source SDK checks pass; new model behavior is pending, not guaranteed.
+Prompt: Use Margin MCP to preview one annual consolidated INFY financial response that would determine which profitability, cash-conversion and liquidity calculations the returned fields support. Do not fetch or calculate values yet. Explain how the later readiness result and valuation prerequisites would be read.
 
-**Current live step 0.9.2:** use the [key-enabled, three-request setup](mcp.md#live-finance-acceptance-092)
-and [three goal-only prompts](../research/finance-discovery/live-batch-0.9.2.json).
-User-reported remaining 57 corrects 3; cap this batch at B3/D0, do not spend all 57.
-No operator provider calls during the metadata build. The new shared execution contract
-makes provider/bounds/execute/key/output rules explicit. Active0.9.1 is not silently
-replaced. Fresh chats, same owner, preserve first attempts and actual reports.
+Expected typed readiness or correct generic data_readiness, execute=false, no fetch. Later result fields report.readiness/report.valuation_readiness; missing execution key is not missing preview input. No CFO->FCFF, liabilities->debt mapping or generated DCF assumptions.
 
-**0.9.1 patch after the first model baseline:** full 0.9.0 discovery failed: wrong
-annual-TTM choice, then invented amount/date in malformed manual calculator JSON.
-No provider data call occurred. Qwen3-8B context 30,183; reported last-generation prompt
-17,611/generated496 does not establish context overflow. Preserve the original trial.
-Source 0.9.1 adds explicit no-fabrication policy and growth-vs-TTM/company-first guidance;
-no new profile or guaranteed behavior change. [Manual upgrade](mcp.md#no-fabrication-guidance-091),
-then repeat the identical goal-only prompt as a separate experimental condition. Keep
-model/preset/context/profile fixed and record first attempts. Old task/rubric baseline
-labels remain 0.9.0; record actual installed version for each new run.
+## Explicit local DCF
 
-Current baseline: package 0.9.0, full profile (`all`), 37 advertised tools. No new wheel
-is needed. Review profiles intentionally hide BharatStock/finance execution. MCP hosts
-receive the advertised schemas and initialization guidance; the model still decides
-whether to call a tool and how well to follow that guidance. That is the behavior under
-test, not an MCP guarantee.
+Prompt: Use Margin MCP for an explicitly hypothetical DCF: annual forecast FCFF [10,10,10] INR; WACC0.10; terminal growth0; debt20 INR; cash5 INR; other equity adjustments-2 INR; diluted shares10; valuation date2026-11-27; company type non_financial. Make no provider calls. Report enterprise, equity and per-share values using the canonical report.
 
-## What is already available
+Expected EV100/equity83/per-share8.3 INR. Terminal value at year3 is100; its discounted PV75.13. Assumptions are supplied, not retrieved/source-verified. Optional negative inputs should reject, never trigger a data fetch.
 
-- Six BharatStock retrieval operations: search_stocks, get_stock_quote,
-  get_stock_fundamentals, get_financials, get_stock_prices and get_corporate_actions.
-  Catalog exposure does not establish access to every endpoint.
-- Nine company finance workflows: data readiness, margins, revenue/other metric growth,
-  CAGR, TTM, cashflow metrics, profitability, cash conversion and balance-sheet metrics.
-  The fresh-company tool fetches at most one financials page and computes internally;
-  it needs no prior source/fact handle. Defaults are preview-only; execution needs a
-  stable request key. Same inputs/key replay; a new key can fetch again.
-- Fifteen explicit-input calculation functions, including supplied-assumption valuation.
-  These are local and do not discover company forecasts. DCF requires explicit inputs.
+## Real-provider checks
 
-Full catalog entries give descriptions and exact operation schemas. Company entries
-retain the legacy mcp_execution route for retained data and expose fresh_mcp_execution
-for the preferred fresh-fetch tool. Its actual tools/list schema is authoritative;
-legacy planning_schema fields such as fetch_missing are not fresh-tool inputs. Function
-identifiers are selectors, not callable tool names. Generic raw retrieval needs exact
-catalog schema nesting and preview → run → result. Do not turn a successful preview
-into a claim that data has been retrieved.
+Use [bounded API tests](api-testing.md) only with a new allocation. Current completed pass is B2/DrHTTP10/estimated credits7. [Function status](reference/function-validation.md) distinguishes live, local replay and software fixtures. [Historical agent tasks/results](archive/2026-11-27-docs-finance-agent-tests.md) remain frozen.
 
-## Immediate no-call model test
+## Historical section links
 
-Change the Margin frontend args from --tool-profile review/review-simple to:
+<a id="test-finance-discovery-through-margin"></a>[Historical: Test finance discovery through Margin](archive/2026-11-27-docs-finance-agent-tests.md#test-finance-discovery-through-margin)
 
-```json
-"--tool-profile", "all"
-```
+<a id="what-is-already-available"></a>[Historical: What is already available](archive/2026-11-27-docs-finance-agent-tests.md#what-is-already-available)
 
-Reconnect only the frontend; keep the current backend running. Open a fresh chat with
-Margin enabled. No key, allowance or backend restart is needed to inspect local catalog:
+<a id="immediate-no-call-model-test"></a>[Historical: Immediate no-call model test](archive/2026-11-27-docs-finance-agent-tests.md#immediate-no-call-model-test)
 
-```text
-Use the connected Margin MCP to inspect the financial capabilities available to you.
-Even if live retrieval is unavailable, discover which capability fits a question about
-Infosys annual consolidated revenue growth. Explain its purpose, the inputs needed,
-and the maximum provider calls it would require. Do not fetch data or invent values.
-Give a brief visible explanation for your tool choices.
-```
+<a id="live-model-tasks-and-prerequisites"></a>[Historical: Live model tasks and prerequisites](archive/2026-11-27-docs-finance-agent-tests.md#live-model-tasks-and-prerequisites)
 
-Expected: identify the relevant company capability from actual discovery, distinguish
-fresh/legacy paths and local discovery from missing live auth/quota, preserve the
-one-request bound. It must not claim a financial answer or call an imagined tool.
-Return expanded calls/results and final prose, including failed first attempts.
+<a id="set-margin_bharatstock_requests-to-the-newly-authorized-remaining-test-allocation"></a>[Historical: Set MARGIN_BHARATSTOCK_REQUESTS to the newly authorized remaining test allocation.](archive/2026-11-27-docs-finance-agent-tests.md#set-margin_bharatstock_requests-to-the-newly-authorized-remaining-test-allocation)
 
-## Live model tasks and prerequisites
-
-Use [tasks.json](../research/finance-discovery/tasks.json) one prompt per fresh chat.
-Keep [rubric.json](../research/finance-discovery/rubric.json) with the reviewer, not in the
-agent prompt. D00/G01–G03 use no data calls. F01–F04 need a separately authorized four-
-request allowance; E01–E06 need six additional requests. Live values are not fixed gold.
-
-The 27 November operator run already consumed its entire four-request authorization.
-A still-zero active backend cannot execute these live tasks, even if the account has
-requests remaining. When a new model-test allowance is confirmed, save the old ledger,
-stop the owner explicitly and start a live owner with the private credentials file:
-
-```sh
-/Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --status
-/Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
-# Set MARGIN_BHARATSTOCK_REQUESTS to the newly authorized remaining test allocation.
-MARGIN_BHARATSTOCK_REQUESTS=0 MARGIN_DRISHTI_REQUESTS=0 MARGIN_DRISHTI_CREDITS=0 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --mode live --credentials-file /Users/rishit/Desktop/mtest/.env --record-dir /Users/rishit/Desktop/mtest/logs
-```
-
-The safe example deliberately permits zero provider attempts until the new allocation
-is set. Do not repeat a spent four-request allowance or restart to rescue an expired
-handle. Keys are read as data; never paste them into prompts/config tool arguments.
-No paid plan was needed for the measured operator run; future account balance and
-endpoint entitlement must be checked rather than inferred from those successes.
-
-Score discovery, schema validity, budget/duplicate control, math, source scope, units,
-holds and final prose separately. Capture actual model/context/preset/profile and brief
-visible choice summaries; tool logs omit some host parse failures and final prose.
-Do not capture hidden thinking or treat a choice explanation as privileged reasoning.
-
-## Measured operator checks — 27 November
-
-All nine company previews pass; all six raw BharatStock routes are discoverable.
-Fourteen local discovery/preview calls leave the ledger unchanged. Live HUL margin,
-INFY growth, INFY annual readiness and HUL snapshot all succeed, exactly four BharatStock
-attempts, no Drishti. Exact decimal math and canonical value/unit/display checks pass
-for margin/growth. Same-key repeats do not fetch again.
-
-INFY annual readiness reports seven supported calculations; its numeric rows array is
-empty by design. It still has readiness and valuation_readiness output. These are
-field-eligibility results, not seven separately called company workflows. TTM requires
-compatible quarterly data. Automatic DCF is unsupported without explicit assumptions.
-Source originals, current account balance and autonomous model choice are unverified.
-
-Private capture: reports/private/finance-discovery-2026-11-27/REPORT.{json,md}, live-01/.
-The initial preview-01 stopped locally because the active owner had no key. It spent
-zero provider requests. The configured isolated test owner was closed after its four
-attempts; the user's active review owner was not changed. No model call was made.
-
-The checkout frontend/checker must match the running backend package version.
-Do not run a new 0.9.1 frontend over an old 0.9.0 owner; upgrade deliberately first.
-
-The scripts/check_finance_discovery.py checker attaches to an existing live owner and
-only permits status, catalog, preview and execute=false company calls. It stops if a
-preview is held; it never repairs setup. scripts/check_finance_live.py is an explicit,
-isolated four-request operator diagnostic; do not rerun without a new authorization.
-Results are operator SDK evidence, not autonomous-model acceptance or issuer truth.
+<a id="measured-operator-checks--27-november"></a>[Historical: Measured operator checks — 27 November](archive/2026-11-27-docs-finance-agent-tests.md#measured-operator-checks--27-november)

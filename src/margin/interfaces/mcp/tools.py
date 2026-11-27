@@ -12,7 +12,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.9.5"
+VERSION = "0.10.0"
 CONTRACT = "margin.mcp.v1"
 DIRECT_FUNCTIONS = {
     "margin_calculate_margins": "finance.calculate_margins",
@@ -138,7 +138,15 @@ def definitions():
         (
             "margin_status",
             "Inspect package_version (software, distinct from contract_version), mode, process/session ID, provider readiness and remaining process allowances. No connection or provider calls. Read this first; process counters are not account-wide balances.",
-            schema(),
+            schema(
+                {
+                    "include_diagnostics": {
+                        "type": "boolean",
+                        "default": False,
+                        "description": "Show internal record capacities/receipt counts and stale historical snapshots under diagnostics; these are not current quotas or account credits.",
+                    }
+                }
+            ),
             True,
             True,
             False,
