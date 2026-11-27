@@ -1,5 +1,50 @@
 # Implementation and validation status
 
+## 0.9.5 typed readiness/DCF repair: 27 November 2026 IST
+
+Plan c58414d precedes edits. User rechecked and confirmed item3 was INFY; the original
+0.9.4/all37 audit remains valid. Additive typed tools address selection/input-shape
+failures: margin_company_data_readiness pins the existing cross-group function and
+removes the selector; margin_calculate_dcf uses the existing calculator's exact schema.
+No new financial math/source fetching/forecasts/LLM. all39 and finance6 include aliases;
+review16/simple3 unchanged. Generic and retained-source interfaces remain compatible.
+
+Catalog/function-route recovery prefers the typed readiness/DCF tools with matching
+schemas. Typed preview bindings omit function and name the typed tool; generic preview
+keeps its generic binding. Equivalent typed/generic executions share one core request
+key/fingerprint/result and do not refetch. Changed intent conflicts. Readiness preview
+identifies purpose/function, nonnumeric result fields and actual DCF route; no financial
+or valuation readiness/assumptions are assessed/generated. Key schema/display explicitly
+states duplicate control is not authorization; execute/key/budget/task scope still apply.
+
+633 offline tests pass (19 new alias checks), Ruff covers105 Python files, source skill
+validates. Tests reject injected selector/nesting/missing key, preserve generic bindings,
+check shared-key replay/conflict and no-data holds, and compare typed DCF schema/math to
+the original core. Independent explicit fixture: constant annual FCFF10, WACC0.1,
+terminal growth0 gives EV100; debt20/cash5/other adjustment-2 gives equity83 and10
+shares gives8.3 INR/share. Missing/invalid DCF assumptions never trigger fetching.
+
+Source/installed SDK and immutable-wheel evidence are in the private release report.
+All nine SDK groups pass for both final source and installed wheel: full57 calls/114
+events, review18/34, simple5/10, shared16/32, generic6/12, finance5/10, previews15/30,
+typed-all8/16 and typed-finance7/14. Wheel164,607 bytes/63entries/53 source-matching
+modules; metadata/readme/known-key scan and prior checksums pass. Pinned dependencies
+are reused, not a clean-machine dependency install. [Artifact](../releases/0.9.5/README.md).
+Full coverage exercises both new tools; typed handoffs execute readiness/replay via
+both aliases and calculate DCF locally. Saved-real HUL mock replay retains all nine
+raw calculation values/statuses (seven success/two existing accounting-scope partials),
+including typed readiness/generic replay. No new real-provider requests or account
+balance observation. Prior wheels/captures are preserved. Private evidence:
+reports/private/typed-readiness-2026-11-27; [upgrade/tests](mcp.md#typed-readiness-and-dcf-095).
+
+The bounded local model API probe generated no tokens: Qwen was no longer loaded,
+and a read-only inventory showed no loaded model. Auto-loading/configuration change
+was refused. Do not grade this as a model failure/pass or reuse earlier-model results.
+Actual all39 app-chat selection/final-answer fidelity remains pending after manual
+upgrade. Active user0.9.4/backend/keys/allowances stay untouched; real provider calls0.
+No new hidden thinking/debug capture. Next compare identical goal-only tasks on all,
+plus an optional explicit hypothetical DCF at B0D0; live tests need new allocation.
+
 ## Actual LM Studio 0.9.4/all37 previews: 27 November 2026 IST
 
 User confirms version0.9.4/full37/recording/key configured/B0D0. Three calls/six events:

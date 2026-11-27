@@ -1,5 +1,13 @@
 # Project context and handoff
 
+**Latest0.9.5:** typed readiness (fixed function/no selector) and typed existing DCF
+aliases, exact catalog/bindings, purpose/result fields and key!=authorization. all39/
+finance6; review16/simple3 and generic/legacy/core math stay. 633 tests/source SDK and
+saved-real values pass; release/installed SDK evidence in private typed-readiness report.
+Actual model trial not run because none loaded; no auto-load/config change. Active
+user0.9.4 unchanged, provider calls0; manual all/B0D0 tests next. User reconfirmed INFY,
+so0.9.4 app-chat audit remains valid; no hidden thinking or rewritten failed attempts.
+
 **Actual user active 0.9.4/all37:** status/HUL margin preview/INFY profitability preview,
 3 calls/6 events, zero provider attempts. HUL invocation passes; INFY chooses wrong
 function for requested cross-group readiness and final invents DCF tool names. Not

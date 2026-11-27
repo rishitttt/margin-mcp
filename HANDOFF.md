@@ -1,5 +1,11 @@
 # Margin: quick handoff
 
+**Current0.9.5:** two typed aliases expose existing readiness/DCF with exact schemas;
+all39 is supported, finance6 optional. No selector for typed readiness; generic and
+legacy APIs/math remain. 633 tests, source SDK and saved-real values pass. [Install/tests](docs/mcp.md#typed-readiness-and-dcf-095),
+[evidence](docs/implementation.md). Provider calls0, active user0.9.4 untouched. No model
+was loaded for the local probe; actual all39 app-chat test is pending, not a claimed pass.
+
 **Actual 0.9.4/all37 user trial:** correct HUL margin preview, wrong INFY profitability
 selector for cross-group readiness; both stop execute=false, no provider attempts.
 Final INFY prose misattributes readiness and invents DCF tools. [Call audit](docs/implementation.md)

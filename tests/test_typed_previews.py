@@ -186,7 +186,7 @@ async def test_catalog_keeps_generic_schema_and_explains_flat_alternative(adapte
 async def test_status_distinguishes_package_version_from_contract_without_network(adapter):
     before = adapter.service.ledger.snapshot()
     status = await call(adapter, "margin_status", {})
-    assert status["data"]["package_version"] == VERSION == "0.9.4"
+    assert status["data"]["package_version"] == VERSION == "0.9.5"
     assert status["contract_version"] == CONTRACT == "margin.mcp.v1"
     assert adapter.service.ledger.snapshot() == before
 

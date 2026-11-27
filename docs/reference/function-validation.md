@@ -1,5 +1,11 @@
 # Function validation status
 
+**0.9.5:** 633 offline cases and source SDK checks. New typed readiness/DCF aliases
+preserve core functions/math. Strict schemas, same-key cross-alias replay/conflict,
+empty readiness, DCF reference arithmetic/guard failures covered. all39/finance6,
+review16/simple3; saved-real HUL nine values/statuses unchanged. Model not loaded,
+so no new model outcome. [Setup](../mcp.md#typed-readiness-and-dcf-095), [evidence](../implementation.md).
+
 **0.9.4:** 614 offline tests; all nine company preview summaries/key bindings and
 scoped finance routes checked. Existing formulas/statuses preserved on saved-real HUL
 replay (seven success/two partial). Four-tool finance profile and corrected full catalog

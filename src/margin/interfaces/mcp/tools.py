@@ -12,7 +12,7 @@ from margin.core.config import Settings
 from margin.core.registry import Registry
 from margin.protocols.schemas import SCHEMAS
 
-VERSION = "0.9.4"
+VERSION = "0.9.5"
 CONTRACT = "margin.mcp.v1"
 DIRECT_FUNCTIONS = {
     "margin_calculate_margins": "finance.calculate_margins",
@@ -21,7 +21,9 @@ DIRECT_FUNCTIONS = {
     "margin_calculate_cashflow_metrics": "finance.calculate_cashflow_metrics",
     "margin_calculate_profitability": "finance.calculate_profitability",
     "margin_calculate_balance_sheet_metrics": "finance.calculate_balance_sheet_metrics",
+    "margin_calculate_dcf": "finance.calculate_dcf",
 }
+DIRECT_COMPANY = {"margin_company_data_readiness": "finance.company_data_readiness"}
 DIRECT_PREVIEWS = {
     "margin_preview_news": "drishti.get_news",
     "margin_preview_announcements": "drishti.get_announcements",
@@ -89,6 +91,23 @@ def schema(properties=None, required=()):
     return obj((properties or {}) | {"why": WHY}, list(required))
 
 
+def fresh_company_schema(function=None):
+    exact = deepcopy(COMPANY_FINANCE_SCHEMA)
+    exact["properties"]["why"] = deepcopy(WHY)
+    if function is not None:
+        if function not in DIRECT_COMPANY.values():
+            raise ValueError("Review the typed company projection before adding an alias.")
+        exact["properties"].pop("function")
+        exact["required"].remove("function")
+        # Readiness has no TTM/CAGR period specialization; preserve the key guard.
+        exact["allOf"] = [
+            clause
+            for clause in exact["allOf"]
+            if "function" not in clause.get("if", {}).get("required", [])
+        ]
+    return exact
+
+
 def preview_schema(operation, registry):
     """Project the reviewed core schema; never maintain a parallel provider contract."""
     exact = deepcopy(registry.spec(operation).schema)
@@ -114,8 +133,7 @@ def definitions():
     company["properties"]["function"] = {"enum": sorted(FUNCTIONS)}
     company["properties"]["why"] = WHY
     company["allOf"] = function_constraints()
-    fresh_company = deepcopy(COMPANY_FINANCE_SCHEMA)
-    fresh_company["properties"]["why"] = WHY
+    fresh_company = fresh_company_schema()
     rows = [
         (
             "margin_status",
@@ -162,7 +180,7 @@ def definitions():
         ),
         (
             "margin_company_finance",
-            "Preferred for ticker-based finance: one fresh BharatStock request plus deterministic math, no previous facts/handles. Default execute=false previews; execute=true requires a stable idempotency_key. Supports nine company functions, no automatic DCF. Response v2 report.rows has matching value/unit/display: money INR_crore, EPS INR_per_share, percent/ratios distinct. Use report.rows[].display VERBATIM; do not rescale or invent facts/dates. Raw calculation fields are absent by default; include_details=true adds separate audit details using the SAME key, without another fetch. Repeat the SAME financial inputs/key to wait/read a pending/lost reply (30s max); new keys fetch again. Preserve holds and source caveats. Zero Drishti calls/credits. No margin_result/run_id is provided. Duplicate protection lasts only in this core process.",
+            "For cross-group field support prefer margin_company_data_readiness. For other ticker-based finance: one fresh BharatStock request plus deterministic math, no previous facts/handles. Default execute=false previews; execute=true requires a stable idempotency_key. Supports nine company functions, no automatic DCF. Response v2 report.rows has matching value/unit/display: money INR_crore, EPS INR_per_share, percent/ratios distinct. Use report.rows[].display VERBATIM; do not rescale or invent facts/dates. Raw calculation fields are absent by default; include_details=true adds separate audit details using the SAME key, without another fetch. Repeat the SAME financial inputs/key to wait/read a pending/lost reply (30s max); new keys fetch again. Preserve holds and source caveats. Zero Drishti calls/credits. No margin_result/run_id is provided. Duplicate protection lasts only in this core process.",
             fresh_company,
             False,
             True,
@@ -346,6 +364,17 @@ def definitions():
                 False,
             )
         )
+    for name, function in DIRECT_COMPANY.items():
+        rows.append(
+            (
+                name,
+                "Inspect WHICH fields/calculations are supported across profitability, cash conversion and liquidity in ONE company financial response. Prefer this for data availability/readiness questions; company_profitability only computes profitability measures. Fixed readiness workflow: no function selector. execute=false previews and STOPs without data calls. Later execute=true needs a stable idempotency_key plus user authorization and allowance; at most one BharatStock request, zero Drishti. No numeric readiness report.rows: read report.readiness and report.valuation_readiness. No forecasts, assumptions, imputation or source verification. DCF is separate margin_calculate_dcf with explicit inputs. Follow this tool's exact top-level schema and same-tool next_steps; no generic plan/run.",
+                fresh_company_schema(function),
+                False,
+                True,
+                True,
+            )
+        )
     return {
         name: types.Tool(
             name=name,
@@ -353,6 +382,7 @@ def definitions():
                 "Use only returned evidence or explicit user-supplied values; never fabricate data to recover from an error. "
                 + description
                 if name in DIRECT_FUNCTIONS
+                or name in DIRECT_COMPANY
                 or name
                 in {
                     "margin_company_finance",

@@ -58,7 +58,7 @@ async def main(args):
             async with ClientSession(read, write) as session:
                 initialized = await session.initialize()
                 tools = {tool.name: tool for tool in (await session.list_tools()).tools}
-                assert len(tools) == 37
+                assert len(tools) == 39
                 status = await call(session, "margin_status")
                 assert not any(status["data"]["ledger"]["http_attempts"].values())
                 session_id = status["session_id"]
@@ -80,6 +80,36 @@ async def main(args):
                 }
                 assert contract["execution"]["session_id_required"] is False
                 assert contract["preview"]["execute"] is False
+                ready_preview = (
+                    await call(
+                        session,
+                        "margin_company_data_readiness",
+                        {"ticker": "SYNTHA", "execute": False},
+                    )
+                )["data"]
+                assert (
+                    ready_preview["next_steps"][0]["mcp_execution"]["tool"]
+                    == "margin_company_data_readiness"
+                )
+                local_dcf = (
+                    await call(
+                        session,
+                        "margin_calculate_dcf",
+                        {
+                            "forecast_fcff": ["10", "10", "10"],
+                            "wacc": "0.1",
+                            "terminal_growth": "0",
+                            "debt": "20",
+                            "cash": "5",
+                            "other_equity_adjustments": "-2",
+                            "diluted_shares": "10",
+                            "amount_unit": "INR",
+                            "valuation_date": "2026-11-27",
+                            "company_type": "non_financial",
+                        },
+                    )
+                )["data"]
+                assert abs(float(local_dcf["values"]["enterprise_value"]) - 100) < 1e-10
 
                 async def run(plan, key):
                     args = {

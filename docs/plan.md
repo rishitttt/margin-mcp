@@ -1,5 +1,15 @@
 # Margin build and evaluation plan
 
+## 0.9.5 acceptance gate
+
+Typed readiness/DCF aliases and schema/route/purpose/auth-key fixes implemented after
+c58414d. 633 tests/source SDK/saved-real values and immutable-wheel installed SDK
+checks pass; next manual all39/B0D0 app-chat prompts. Model probe found none loaded and
+made no generations; never auto-load or score it as an answer outcome. Keep earlier
+failures frozen. Test natural readiness selection, preview-only stopping, result-field/
+DCF-route fidelity and optional explicit hypothetical DCF. User can keep all; no paid
+credits needed. Live regressions still require fresh allocated remaining allowance.
+
 ## Gate after actual 0.9.4/full-profile previews
 
 HUL selects the correct fresh margin workflow; INFY selects profitability instead of

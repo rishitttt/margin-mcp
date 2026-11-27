@@ -72,7 +72,11 @@ def execution_contract():
     return copy.deepcopy(EXECUTION_CONTRACT)
 
 
-KEY = {"type": "string", "pattern": r"^[A-Za-z0-9_-]{8,100}$"}
+KEY = {
+    "type": "string",
+    "pattern": r"^[A-Za-z0-9_-]{8,100}$",
+    "description": "Stable duplicate-control identifier for one intended execution; not user authorization, a credential, or permission to fetch.",
+}
 SCHEMA = obj(
     {
         "function": {
@@ -91,7 +95,11 @@ SCHEMA = obj(
             "default": "revenue",
             "description": "Selected metric for growth/CAGR/TTM and readiness checks; other metric groups return their defined components. TTM cannot sum balance-sheet stocks.",
         },
-        "execute": {"type": "boolean", "default": False},
+        "execute": {
+            "type": "boolean",
+            "default": False,
+            "description": "False previews only. True requires the actual user's execution authorization, stable idempotency_key and remaining allowance; a key/preview does not grant permission.",
+        },
         "idempotency_key": KEY,
         "wait_seconds": {"type": "integer", "minimum": 0, "maximum": 30, "default": 30},
         "include_details": {
@@ -206,6 +214,11 @@ class CompanyFinance:
             "status": "preview",
             "preview_summary": {
                 "status": "preview",
+                "workflow_function": args["function"],
+                "workflow_purpose": company.FUNCTIONS[args["function"]],
+                "cross_group_readiness_workflow": args["function"]
+                == "finance.company_data_readiness",
+                "idempotency_key_is_authorization": False,
                 "data_fetched": False,
                 "financial_readiness_assessed": False,
                 "result_fields_after_execution": (

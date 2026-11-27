@@ -1,5 +1,13 @@
 # Working on Margin
 
+**0.9.5 checkpoint:**633 tests/Ruff105/skill/source SDK9 groups pass, saved-real HUL
+all9 raw values/statuses unchanged. Typed readiness/DCF aliases preserve math and
+shared-core keys; full39/finance6/review16/simple3. Actual model probe made0 generations:
+none loaded, no auto-load. Active user0.9.4/config/allowance unchanged, provider calls0.
+Immutable wheel/installed SDK9 groups pass; next manual ALL/B0D0 goal-only tasks and optional
+explicit hypothetical DCF. User prefers all; don't impose finance profile. No model
+acceptance/source-auth claim from software checks; keep original INFY failure valid.
+
 **0.9.5 authorized:** user rechecked item3 was INFY, so 0.9.4 audit stays valid.
 Implement typed readiness alias (fixed core function, no selector) and typed existing
 DCF calculator, exact catalog/handoff schemas, auth-vs-key/purpose/result fields.

@@ -69,7 +69,7 @@ async def main(args):
                 "--mode",
                 "live",
                 "--tool-profile",
-                "finance",
+                args.tool_profile,
                 "--record-file",
                 str(output / "tools.jsonl"),
             ],
@@ -82,7 +82,7 @@ async def main(args):
                 async with ClientSession(read, write) as mcp:
                     init = await mcp.initialize()
                     advertised = (await mcp.list_tools()).tools
-                    assert len(advertised) == 4
+                    assert len(advertised) == (39 if args.tool_profile == "all" else 6)
                     tools = [
                         {
                             "type": "function",
@@ -206,7 +206,7 @@ async def main(args):
             "model": args.model,
             "loaded_config": instance.get("config"),
             "version": init.server_info.version,
-            "profile": "finance",
+            "profile": args.tool_profile,
             "tools": len(tools),
             "app_chat_preset": "not supplied; initialization instructions only",
             "temperature": 0,
@@ -228,6 +228,7 @@ async def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", required=True)
+    parser.add_argument("--tool-profile", choices=["all", "finance"], default="all")
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--package-root", type=Path)
     asyncio.run(main(parser.parse_args()))

@@ -38,7 +38,7 @@ def test_invalid_profile_is_rejected_before_any_startup():
 
 async def test_review_profile_is_small_local_and_catalog_only_advertises_callable_routes(owner):
     full, review = ToolView(owner), ToolView(owner, "review")
-    assert len(full.tools) == 37 and set(review.tools) == REVIEW_TOOLS and len(review.tools) == 16
+    assert len(full.tools) == 39 and set(review.tools) == REVIEW_TOOLS and len(review.tools) == 16
     assert "margin_review" not in review.tools and "margin_run" not in review.tools
     assert set(DIRECT_REVIEWS) <= set(review.tools)
     before = owner.service.ledger.snapshot()

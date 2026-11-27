@@ -1,5 +1,12 @@
 # Test finance discovery through Margin
 
+**0.9.5 next:** keep all (39 tools); typed readiness/DCF make selection/input shape
+explicit without removing generic interfaces. [Upgrade](mcp.md#typed-readiness-and-dcf-095),
+[same goal-only tasks](../research/finance-discovery/preview-batch-0.9.5.json). Optional
+explicit hypothetical DCF is local. New model acceptance is pending (none loaded for
+probe), not inferred from 633 tests/SDK. Do not spend provider quota or change profile
+to perform these B0D0 checks; retain first calls and final prose separately.
+
 **Actual 0.9.4/all37:** 3 calls/6 events, correct HUL margin preview and wrong INFY
 profitability selector for requested cross-group readiness. Both stop before fetch;
 no backend errors/credits used. INFY final falsely attributes readiness and names

@@ -2,6 +2,10 @@
 
 ## 0.9.5 typed readiness and valuation plan: 27 November 2026
 
+Implemented after c58414d:633 tests/source SDK and saved-real replay pass with no
+provider calls. Model probe refused auto-load because none loaded; actual all39 test
+pending. [Validation](../implementation.md) keeps prior failures and current limits.
+
 User confirms item3 was INFY and requests fixes/next tests. The 0.9.4/all37 audit
 remains valid: correct HUL preview, INFY selects profitability instead of cross-group
 readiness, final invents DCF tools and conflates key with authorization. Do not erase

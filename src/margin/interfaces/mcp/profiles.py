@@ -11,7 +11,7 @@ from mcp.shared.exceptions import MCPError
 from margin.core.contracts import encoded_size
 from margin.core.validation import validation_summary
 from margin.interfaces.mcp.policy import DATA_INSTRUCTIONS
-from margin.interfaces.mcp.tools import DIRECT_REVIEWS
+from margin.interfaces.mcp.tools import DIRECT_COMPANY, DIRECT_FUNCTIONS, DIRECT_REVIEWS
 
 REVIEW_TOOLS = frozenset(DIRECT_REVIEWS) | {
     "margin_status",
@@ -21,11 +21,23 @@ REVIEW_TOOLS = frozenset(DIRECT_REVIEWS) | {
 }
 SIMPLE_TOOLS = frozenset({"margin_status", "margin_prepare_review", "margin_submit_review"})
 FINANCE_TOOLS = frozenset(
-    {"margin_status", "margin_catalog", "margin_company_finance", "margin_calculate"}
+    {
+        "margin_status",
+        "margin_catalog",
+        "margin_company_finance",
+        "margin_calculate",
+        "margin_company_data_readiness",
+        "margin_calculate_dcf",
+    }
 )
 FINANCE_INSTRUCTIONS = (
     DATA_INSTRUCTIONS
-    + """Margin finance has four tools. For ticker questions choose a company function
+    + """Margin finance has six tools. For available-field support across profitability,
+cash conversion and liquidity prefer margin_company_data_readiness, a fixed typed
+workflow with no function selector. Profitability alone is not cross-group readiness.
+DCF uses margin_calculate_dcf with explicit supplied inputs, never generated assumptions.
+An idempotency_key controls duplicates; it grants no execution authorization.
+For other ticker questions choose a company function
 from margin_catalog(group=company). Use margin_company_finance: execute=false is a
 local preview, not a generic plan. No retained source is needed. For a preview-only
 request STOP after preview; quote preview_summary.display without expanding it into
@@ -37,8 +49,7 @@ user actually requested execution and allowance remains. Do not call margin_run 
 invent plan IDs: neither is part of this profile. A zero local allowance is not the
 provider account balance and does not prevent a configured fresh-company preview.
 Annual growth compares two annual periods; TTM sums four eligible monetary quarters.
-For available-field support across profitability/cash-conversion/liquidity, choose
-finance.company_data_readiness once. Read report.readiness and valuation_readiness;
+For available-field support use the typed readiness tool once. Read report.readiness and valuation_readiness;
 empty numeric rows are intentional and computability does not verify source facts.
 For results copy report.rows displays, exact dates, definitions, units and partial holds.
 Same inputs/key read the existing result, not fresh data/new analysis; no new key retry
@@ -139,7 +150,7 @@ class ToolView:
                     tool.output_schema["required"].remove(key)
             self.tools[
                 "margin_company_finance"
-            ].description = "Ticker-based finance. execute=false previews without fetching or retained data; STOP for preview-only tasks and copy preview_summary.display. Preview needs no idempotency_key; later execution requires it. execute=true performs at most one BharatStock request, zero Drishti, only within user authorization/allowance. No generic plan or margin_run. Use report.rows displays verbatim; readiness uses report.readiness/valuation_readiness. Same inputs/key read the same result without refetch; preserve definitions/holds and source-unverified scope."
+            ].description = "For cross-group data readiness prefer margin_company_data_readiness. Other ticker-based finance: execute=false previews without fetching or retained data; STOP for preview-only tasks and copy preview_summary.display. Preview needs no idempotency_key; later execution requires it. execute=true performs at most one BharatStock request, zero Drishti, only within user authorization/allowance. No generic plan or margin_run. Use report.rows displays verbatim; readiness uses report.readiness/valuation_readiness. Same inputs/key read the same result without refetch; preserve definitions/holds and source-unverified scope."
         if profile == "review-simple":
             self.tools[
                 "margin_status"
@@ -242,23 +253,37 @@ class ToolView:
                         row.pop("legacy_defaults", None)
                         row.pop("legacy_note", None)
                         row.pop("fresh_mcp_execution", None)
-                        row["schema_source"] = "margin_company_finance advertised inputSchema"
+                        row["schema_source"] = "mcp_execution.tool advertised inputSchema"
                         if arguments.get("include_schemas"):
                             row["schema"] = copy.deepcopy(
-                                self.tools["margin_company_finance"].input_schema
+                                self.tools[row["mcp_execution"]["tool"]].input_schema
                             )
                     else:
-                        row["mcp_execution"] = {
-                            "tool": "margin_calculate",
-                            "bind": {"function": row["function"]},
-                            "inputs_at": "arguments",
-                        }
+                        direct = next(
+                            (
+                                tool
+                                for tool, function in DIRECT_FUNCTIONS.items()
+                                if function == row["function"] and tool in self.tools
+                            ),
+                            None,
+                        )
+                        row["mcp_execution"] = (
+                            {"tool": direct, "bind": {}, "inputs_at": "top_level"}
+                            if direct
+                            else {
+                                "tool": "margin_calculate",
+                                "bind": {"function": row["function"]},
+                                "inputs_at": "arguments",
+                            }
+                        )
             data.pop("company_execution_contract", None)
             data["tool_profile"] = "finance"
             data["schema_lookup"] = (
-                "Company uses the advertised margin_company_finance schema; calculations use the selected row's exact schema inside margin_calculate.arguments."
+                "Company uses mcp_execution.tool and its exact advertised schema. Typed DCF inputs are top-level; generic calculations use the selected exact schema inside margin_calculate.arguments."
             )
-        elif name == "margin_company_finance" and data.get("status") == "preview":
+        elif (
+            name in {"margin_company_finance", *DIRECT_COMPANY} and data.get("status") == "preview"
+        ):
             body["data"] = {
                 key: data[key]
                 for key in (
@@ -277,13 +302,13 @@ class ToolView:
             for step in body["data"]["next_steps"]:
                 step.pop("purpose", None)
                 step.pop("schema_source", None)
-        elif name == "margin_company_finance" and "report" in data:
+        elif name in {"margin_company_finance", *DIRECT_COMPANY} and "report" in data:
             valuation = data["report"].get("valuation_readiness", {})
             if valuation.get("explicit_function") == "finance.calculate_dcf":
                 valuation["mcp_execution"] = {
-                    "tool": "margin_calculate",
-                    "bind": {"function": "finance.calculate_dcf"},
-                    "inputs_at": "arguments",
+                    "tool": "margin_calculate_dcf",
+                    "bind": {},
+                    "inputs_at": "top_level",
                 }
         return types.CallToolResult(
             content=[types.TextContent(type="text", text=json.dumps(body, allow_nan=False))],

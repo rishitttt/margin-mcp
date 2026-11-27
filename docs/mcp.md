@@ -1,5 +1,76 @@
 # Run Margin as a local MCP server
 
+## Typed readiness and DCF (0.9.5)
+
+The full all profile remains the default and now advertises 39 tools. Two typed aliases
+make existing capabilities directly discoverable: margin_company_data_readiness pins
+finance.company_data_readiness and takes no function selector; margin_calculate_dcf
+uses the existing DCF calculator's exact schema at top level. No new financial formulas,
+provider APIs, forecasts, Margin LLM or mandatory profile change. Optional finance has
+six tools; review16/review-simple3 remain unchanged. Generic company_finance/calculate
+and legacy interfaces still work.
+
+For which fields/calculations are supported across profitability/cash conversion/
+liquidity, use typed readiness. company_profitability is only a numeric profitability
+group. A preview returns its actual workflow_function/purpose, cross-group flag and
+eventual result fields. No data/financial readiness is assessed before execution.
+Readiness execution uses report.readiness and report.valuation_readiness, not numeric
+report.rows. Its preview includes the actual typed DCF route with status not_assessed
+and assumptions_generated=false. DCF needs separately supplied explicit forecasts,
+discount rate and other required inputs; obtain its advertised schema, never impute
+or invent them from a preview. Mentioning valuation does not request DCF execution.
+
+Typed readiness next_steps bind the same typed tool without function. Generic readiness
+still binds the generic tool with function. Both use the SAME core key/fingerprint
+store, so repeating equivalent inputs/key across aliases reads the same result without
+another fetch. A changed intent under the same key conflicts. Preview-only tasks STOP;
+execute=true/key/remaining allowance are required for later authorized retrieval.
+The key is duplicate control, not execution authorization. No plan ID is created.
+Full company catalog mcp_execution and exact schema default to the typed readiness
+tool for that function. Other company functions remain generic. DCF catalog/valuation
+routes now point to margin_calculate_dcf; the generic wrapper remains compatible.
+
+### Upgrade while keeping all
+
+Installing/reconnecting is an operator action; the build does not change the active
+0.9.4 owner. Save current logs. Restart with B0/D0, not the old spent allocation:
+
+```sh
+/Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --stop
+/Users/rishit/Desktop/mtest/.venv/bin/python -m pip install --no-deps --force-reinstall /Users/rishit/Desktop/margin/margin-mcp/releases/0.9.5/margin_research-0.9.5-py3-none-any.whl
+MARGIN_BHARATSTOCK_REQUESTS=0 MARGIN_DRISHTI_REQUESTS=0 MARGIN_DRISHTI_CREDITS=0 /Users/rishit/Desktop/mtest/.venv/bin/margin-backend --socket /Users/rishit/Desktop/mtest/shared/core.sock --mode live --credentials-file /Users/rishit/Desktop/mtest/.env --record-dir /Users/rishit/Desktop/mtest/logs
+```
+
+Keep that terminal running; LM Studio command stays
+/Users/rishit/Desktop/mtest/.venv/bin/margin-mcp, with arguments:
+
+```json
+["--backend-socket", "/Users/rishit/Desktop/mtest/shared/core.sock", "--mode", "live", "--tool-profile", "all"]
+```
+
+Reconnect and load your chosen model. In a fresh chat, inspect status: 0.9.5/all39,
+recording enabled, configured BharatStock and zero attempts/allowances. Configured but
+unverified is not failed auth; local limits do not reveal provider account balance.
+Run the two unchanged [goal-only previews](../research/finance-discovery/preview-batch-0.9.5.json)
+in separate chats. Readiness should choose the typed tool or the correct generic
+data-readiness function, stop at preview, report the missing execution key, correct
+eventual result fields and explicit-input DCF route. No financial values or DCF call.
+HUL remains company_margins. Retain actual calls and final prose independently.
+
+Optional third zero-provider task: "Use Margin MCP for an explicitly hypothetical DCF:
+forecast FCFF [10,10,10] INR in the next three annual periods; WACC0.10, terminal
+growth0, debt20 INR, cash5 INR, other equity adjustments -2 INR, diluted shares10,
+valuation date2026-11-27, non_financial company. Make no provider calls. Report the
+enterprise/equity/per-share values and input origin." Expected100/83/8.3 INR, with
+caller-supplied hypothetical assumptions; verify against actual tool output.
+
+Model acceptance remains pending: the local probe found no loaded model and refused
+to auto-load one, so no generation occurred. Software fixtures/saved-real replay do
+not prove an arbitrary model follows the task or reports outputs faithfully. No paid
+subscription is needed for these previews/local explicit calculations. Live financial
+requests need a newly allocated remaining allowance. The API harness now supports
+--tool-profile all (default) or finance; its host/preset remains a separate condition.
+
 ## Compact finance profile (0.9.4)
 
 The optional finance frontend advertises four tools: margin_status, margin_catalog,

@@ -66,15 +66,20 @@ async def main(args):
                     return body
 
                 initial = await call("margin_status")
+                company_tool = (
+                    "margin_company_data_readiness" if args.typed else "margin_company_finance"
+                )
                 preview = (
                     await call(
-                        "margin_company_finance",
-                        {"function": "finance.company_data_readiness", "ticker": "SYNTHA"},
+                        company_tool,
+                        {"ticker": "SYNTHA"}
+                        if args.typed
+                        else {"function": "finance.company_data_readiness", "ticker": "SYNTHA"},
                     )
                 )["data"]
                 step = preview["next_steps"][0]
                 assert preview["creates_plan_id"] is False and "plan_id" not in preview
-                assert step["mcp_execution"]["tool"] == "margin_company_finance"
+                assert step["mcp_execution"]["tool"] == company_tool
                 assert step["required_host_fields"] == ["idempotency_key"]
                 assert step["requires_execution_authorization"] and not step["is_complete_input"]
                 assert step["do_not_use_tools"] == ["margin_run"]
@@ -95,8 +100,34 @@ async def main(args):
                     not valuation["valid_company_selector"]
                     and valuation["requires_explicit_assumptions"]
                 )
-                assert valuation["mcp_execution"]["tool"] == "margin_calculate"
-                assert (await call("margin_company_finance", inputs))["data"] == result
+                assert valuation["mcp_execution"]["tool"] == "margin_calculate_dcf"
+                assert (await call(company_tool, inputs))["data"] == result
+                if args.typed:
+                    assert (
+                        await call(
+                            "margin_company_finance",
+                            inputs | {"function": "finance.company_data_readiness"},
+                        )
+                    )["data"] == result
+                    dcf = (
+                        await call(
+                            "margin_calculate_dcf",
+                            {
+                                "forecast_fcff": ["10", "10", "10"],
+                                "wacc": "0.1",
+                                "terminal_growth": "0",
+                                "debt": "20",
+                                "cash": "5",
+                                "other_equity_adjustments": "-2",
+                                "diluted_shares": "10",
+                                "amount_unit": "INR",
+                                "valuation_date": "2026-11-27",
+                                "company_type": "non_financial",
+                            },
+                        )
+                    )["data"]
+                    assert abs(float(dcf["values"]["enterprise_value"]) - 100) < 1e-10
+                    assert abs(float(dcf["values"]["equity_value"]) - 83) < 1e-10
                 if args.tool_profile == "all":
                     rejected = await call(
                         "margin_run",
@@ -113,6 +144,8 @@ async def main(args):
                     assert set(tools) == {
                         "margin_status",
                         "margin_catalog",
+                        "margin_company_data_readiness",
+                        "margin_calculate_dcf",
                         "margin_company_finance",
                         "margin_calculate",
                     }
@@ -127,6 +160,7 @@ async def main(args):
         "version": initialized.server_info.version,
         "tools": len(tools),
         "tool_profile": args.tool_profile,
+        "typed_readiness_and_dcf": args.typed,
         "calls": len(observations),
         "recorded_events": len(events),
         "fixture_http_attempts": final["ledger"]["http_attempts"],
@@ -146,4 +180,5 @@ if __name__ == "__main__":
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--package-root", type=Path)
     parser.add_argument("--tool-profile", choices=["all", "finance"], default="all")
+    parser.add_argument("--typed", action="store_true")
     asyncio.run(main(parser.parse_args()))

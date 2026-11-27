@@ -46,10 +46,10 @@ async def test_profile_is_small_and_owner_config_is_unchanged(owner):
     baseline = owner.service.ledger.snapshot()
     original = copy.deepcopy(owner.tools)
     full, finance = ToolView(owner), ToolView(owner, "finance")
-    assert set(finance.tools) == FINANCE_TOOLS and len(finance.tools) == 4
-    assert len(full.tools) == 37
+    assert set(finance.tools) == FINANCE_TOOLS and len(finance.tools) == 6
+    assert len(full.tools) == 39
     status = (await call(finance, "margin_status"))["data"]
-    assert status["tool_profile"] == "finance" and status["advertised_tools"] == 4
+    assert status["tool_profile"] == "finance" and status["advertised_tools"] == 6
     assert status["ledger"]["http_limits"] == {"bharatstock": 0, "drishti": 0}
     assert owner.service.ledger.snapshot() == baseline
     assert owner.tools == original
@@ -119,15 +119,26 @@ async def test_catalog_only_returns_callable_routes_and_exact_schemas(owner, gro
             route = row["mcp_execution"]
             assert route["tool"] in view.tools
             assert route["tool"] == (
-                "margin_company_finance" if kind == "company" else "margin_calculate"
+                (
+                    "margin_company_data_readiness"
+                    if row["function"] == "finance.company_data_readiness"
+                    else "margin_company_finance"
+                )
+                if kind == "company"
+                else (
+                    "margin_calculate_dcf"
+                    if row["function"] == "finance.calculate_dcf"
+                    else "margin_calculate"
+                )
             )
-            assert route["bind"]["function"] == row["function"]
+            if route["bind"]:
+                assert route["bind"]["function"] == row["function"]
             if kind == "company":
                 assert "planning_schema" not in row and "legacy_mcp_execution" not in row
                 assert "fetch_missing" not in row["defaults"]
                 assert row["defaults"]["execute"] is False
                 assert "legacy_note" not in row and "legacy_defaults" not in row
-                assert row["schema"] == view.tools["margin_company_finance"].input_schema
+                assert row["schema"] == view.tools[route["tool"]].input_schema
     assert owner.service.ledger.requests == {"bharatstock": 0, "drishti": 0}
 
 
@@ -168,7 +179,11 @@ async def test_hidden_name_cannot_leak_from_all_catalog(owner):
 async def test_default_company_route_and_legacy_recovery_agree(owner):
     catalog = (await owner.call("margin_catalog", {"group": "company"})).structured_content["data"]
     for row in catalog["groups"]["company"]:
-        assert row["mcp_execution"]["tool"] == "margin_company_finance"
+        assert row["mcp_execution"]["tool"] == (
+            "margin_company_data_readiness"
+            if row["function"] == "finance.company_data_readiness"
+            else "margin_company_finance"
+        )
         assert row["legacy_mcp_execution"]["tool"] == "margin_company_preview"
         assert owner.function_route(row["function"]) == row["mcp_execution"]
     error = await owner.call(
@@ -238,7 +253,7 @@ async def test_explicit_calculator_and_execution_projection_preserve_canonical_r
         original = (await owner.call("margin_company_finance", args)).structured_content["data"]
         assert projected == original
         route = projected["report"]["valuation_readiness"]["mcp_execution"]
-        assert route["tool"] == "margin_calculate"
+        assert route["tool"] == "margin_calculate_dcf"
         assert projected["report"]["readiness_scope"]["source_facts_verified"] is False
         assert service.ledger.requests == {"bharatstock": 1, "drishti": 0}
         fact = {

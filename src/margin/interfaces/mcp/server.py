@@ -37,6 +37,7 @@ from margin.interfaces.mcp.policy import (
 from margin.interfaces.mcp.recording import ToolRecorder
 from margin.interfaces.mcp.tools import (
     CONTRACT,
+    DIRECT_COMPANY,
     DIRECT_FUNCTIONS,
     DIRECT_PREVIEWS,
     DIRECT_REVIEWS,
@@ -50,7 +51,13 @@ INSTRUCTIONS = (
 For a ticker-based finance question discover group=company first, normally without
 schemas; then inspect only the selected schema. Annual revenue growth uses
 finance.company_growth (two periods), NOT company_ttm (four quarterly amounts).
-Prefer each company entry's fresh_mcp_execution for fresh data; its typed tool schema
+For WHICH fields support profitability, cash conversion and liquidity prefer the
+fixed typed margin_company_data_readiness, not company_profitability. Read
+report.readiness/report.valuation_readiness; no numeric readiness rows are expected.
+DCF uses margin_calculate_dcf with its exact top-level schema and explicit supplied
+forecasts/assumptions. It fetches nothing; do not call it for a readiness-only task.
+A key controls duplicates, not authorization; obey preview-only scope.
+Follow each company entry's mcp_execution for fresh data; its typed tool schema
 is distinct from legacy planning_schema. Do not load all calculation schemas to pick
 a company workflow. When discovery is enough, stop with proposed inputs and call bounds.
 Read company_execution_contract for exact provider, preview/execution controls,
@@ -235,7 +242,7 @@ class MarginMCP:
             args = copy.deepcopy(arguments)
             args.pop("why", None)
             data = await self.dispatch(name, args)
-            data = self.workflow_handoffs(data)
+            data = self.workflow_handoffs(data, name)
             body = self.service.sanitizer.clean(base | {"data": data})
             if encoded_size(body) > self.service.settings.max_result_bytes + 64 * 1024:
                 raise DomainError(
@@ -289,6 +296,7 @@ class MarginMCP:
             error = True
         if error and (
             name in DIRECT_FUNCTIONS
+            or name in DIRECT_COMPANY
             or name
             in {
                 "margin_company_finance",
@@ -362,6 +370,11 @@ class MarginMCP:
                 "inputs_at": "arguments",
             }
         if group == "company":
+            direct = next(
+                (tool for tool, function in DIRECT_COMPANY.items() if function == name), None
+            )
+            if direct:
+                return {"tool": direct, "bind": {}, "inputs_at": "top_level"}
             return {
                 "tool": "margin_company_finance",
                 "bind": {"function": name},
@@ -449,7 +462,9 @@ class MarginMCP:
                     row["note"] = (
                         "Fresh preview needs no retained data and creates no generic plan. Stop for preview-only tasks. Later execution uses this same tool with execute=true/key within authorization and allowance."
                     )
-                    row["schema"] = copy.deepcopy(self.tools["margin_company_finance"].input_schema)
+                    row["schema"] = copy.deepcopy(
+                        self.tools[row["mcp_execution"]["tool"]].input_schema
+                    )
                     row["legacy_mcp_execution"] = {
                         "tool": "margin_company_preview",
                         "bind": {"function": identifier},
@@ -468,7 +483,7 @@ class MarginMCP:
                         "execution_contract_ref": "company_execution_contract",
                     }
                     row["schema_source"] = (
-                        "Use margin_company_finance's advertised inputSchema for the default fresh route. planning_schema is only for legacy_mcp_execution."
+                        "Use mcp_execution.tool's advertised inputSchema for the default fresh route. planning_schema is only for legacy_mcp_execution."
                     )
             if not include_schemas:
                 rows = [
@@ -511,6 +526,8 @@ class MarginMCP:
         return state
 
     async def dispatch(self, name, args):
+        if name in DIRECT_COMPANY:
+            return await self.service.company_finance(function=DIRECT_COMPANY[name], **args)
         if name in DIRECT_REVIEWS:
             return self.service.review(DIRECT_REVIEWS[name], args)
         if name in DIRECT_PREVIEWS:
@@ -564,7 +581,7 @@ class MarginMCP:
         return self.service.import_review_sources(**args)
 
     @classmethod
-    def workflow_handoffs(cls, data):
+    def workflow_handoffs(cls, data, tool_name=None):
         if not isinstance(data, dict) or not (
             data.get("next_steps")
             or data.get("company_execution_contract")
@@ -598,6 +615,9 @@ class MarginMCP:
                 and action["function"] in COMPANY_FUNCTIONS
             ):
                 tool = "margin_company_finance"
+                if DIRECT_COMPANY.get(tool_name) == action["function"]:
+                    tool = tool_name
+                    action["bound_arguments"].pop("function", None)
                 action["do_not_use_tools"] = ["margin_run"]
             if tool:
                 action["mcp_execution"] = {"tool": tool, "inputs_at": "top_level"}
@@ -611,13 +631,22 @@ class MarginMCP:
                 summary["display"] = (
                     f"Preview prepared; no provider requests made. Next tool for a separately "
                     f"authorized execution: {tool}. Missing execution inputs: {missing}. "
-                    "Stop here for a preview-only task; no generic plan was created."
+                    "The key controls duplicates, not authorization. Stop here for a preview-only task; no generic plan was created."
                 )
                 if action["function"] == "finance.company_data_readiness":
+                    summary["valuation_prerequisites"] = {
+                        "status": "not_assessed",
+                        "assumptions_generated": False,
+                        "explicit_function": "finance.calculate_dcf",
+                        "mcp_execution": cls.execution_route(
+                            "calculations", "finance.calculate_dcf"
+                        ),
+                        "instruction": "Separate local explicit-input calculator; obtain exact advertised schema, use real supplied forecasts/assumptions, never infer/impute missing inputs from this preview.",
+                    }
                     summary["display"] += (
                         " No financial data was fetched or financial/valuation readiness assessed. "
                         "After authorized execution read report.readiness and report.valuation_readiness; "
-                        "DCF requires separate explicit forecasts and assumptions."
+                        "DCF uses margin_calculate_dcf with separately supplied forecasts and assumptions; no assumptions or numeric readiness rows were generated."
                     )
         for workflow in data.get("workflows", []):
             workflow["mcp_steps"] = [

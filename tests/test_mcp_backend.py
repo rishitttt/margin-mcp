@@ -51,8 +51,8 @@ async def test_finance_frontend_preview_and_replay_share_existing_owner(address,
             async with stdio_client(params, errlog=err) as (read, write):
                 async with ClientSession(read, write) as client:
                     initialized = await client.initialize()
-                    assert "Margin finance has four tools" in initialized.instructions
-                    assert len((await client.list_tools()).tools) == 4
+                    assert "Margin finance has six tools" in initialized.instructions
+                    assert len((await client.list_tools()).tools) == 6
                     preview = (
                         await client.call_tool(
                             "margin_company_finance",
@@ -130,7 +130,7 @@ async def test_real_stdio_preview_and_execution_survive_frontend_restarts(addres
             async with stdio_client(params, errlog=err) as (read, write):
                 async with ClientSession(read, write) as client:
                     await client.initialize()
-                    assert len((await client.list_tools()).tools) == 37
+                    assert len((await client.list_tools()).tools) == 39
                     preview = (
                         await client.call_tool(
                             "margin_preview",

@@ -1,8 +1,16 @@
 # Delivered Margin functions
 
-Since 0.9.4, MCP company mcp_execution defaults to margin_company_finance; explicit
+0.9.5 adds typed aliases, not new financial formulas: margin_company_data_readiness
+pins the cross-group eligibility workflow with no function field; margin_calculate_dcf
+exposes the exact existing explicit DCF schema at top level. Both are in all39 and
+finance6; use catalog mcp_execution and the actual advertised schemas. Preview and
+execution bindings differ by entry tool but share duplicate protection in one core.
+Neither a key nor a prepared preview authorizes execution. No data/assumptions are
+generated in readiness previews; results later use report.readiness/valuation_readiness.
+
+MCP company mcp_execution uses typed readiness or generic margin_company_finance; explicit
 legacy_mcp_execution retains margin_company_preview/plan/run in the full profile.
-finance profile exposes four tools (status, scoped catalog, company_finance, calculate).
+finance profile exposes six tools (status, scoped catalog, generic finance/calculate and typed readiness/DCF).
 For preview-only requests copy preview_summary.display and STOP. Preview missing fields
 and execution missing fields differ; no plan ID or execution permission is created.
 The catalog in this profile only advertises callable company/calculation routes and

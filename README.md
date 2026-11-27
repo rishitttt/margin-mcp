@@ -1,19 +1,24 @@
 # Margin
 
-**Current source release: 0.9.4 (27 November).** An optional four-tool finance profile
-removes competing legacy routes and duplicate preview text. Company catalog routing
-now consistently defaults to the fresh workflow, with explicit legacy alternatives.
-Preview summaries separate preview/execution inputs, unfetched data and readiness
-assessment; budget errors distinguish local allowance from unknown account balance.
-Financial math and existing full/review/review-simple counts remain 37/16/3.
-[Upgrade/profile and zero-request tests](docs/mcp.md#compact-finance-profile-094),
+**Current source release: 0.9.5 (27 November).** Two typed aliases expose existing core
+capabilities directly: margin_company_data_readiness for cross-group field eligibility
+without a function selector, and margin_calculate_dcf with the exact explicit-input
+schema. Generic and legacy APIs remain; no new formulas, forecasts or Margin LLM.
+Catalog schemas/preview bindings name the actual callable tool. A key is explicitly
+duplicate control, not authorization. all39/finance6/review16/review-simple3 are available;
+keeping all is supported.
+[Upgrade and zero-request tests](docs/mcp.md#typed-readiness-and-dcf-095),
 [validation](docs/implementation.md),
-[wheel](releases/0.9.4/margin_research-0.9.4-py3-none-any.whl) and
-[checksum](releases/0.9.4/SHA256SUMS). 614 tests/source SDK checks pass and saved real
-responses preserve calculation values. Separate local Qwen API trials improve tool
-choice/stopping; HUL final candidate passes, readiness final prose remains unreliable.
-These are not app-chat replication or guaranteed model correctness. Actual provider
-calls remain zero; active user 0.9.3/config/allowances are untouched by this build.
+[wheel](releases/0.9.5/margin_research-0.9.5-py3-none-any.whl) and
+[checksum](releases/0.9.5/SHA256SUMS). 633 offline tests/source SDK checks pass; saved
+real HUL responses preserve calculation values/statuses. Actual provider calls remain
+zero, active user0.9.4/config/allowances unchanged. The model probe found no loaded
+model and refused auto-loading, so actual 0.9.5 model acceptance is pending. Software
+success is not source verification or guaranteed model prose fidelity.
+
+**Historical release: 0.9.4.** Compact finance profile and consistent catalog routes
+improved preview selection/stopping; actual app-chat INFY still selected profitability
+instead of readiness. Both local API partials and app-chat failures remain documented.
 
 **Historical release: 0.9.3.** Same-tool handoffs, precise unknown/expired-plan errors,
 readiness scope and replay guidance remain. Actual autonomous and guided model traces

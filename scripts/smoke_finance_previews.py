@@ -53,7 +53,7 @@ async def main(args):
             async with ClientSession(read, write) as client:
                 init = await client.initialize()
                 tools = {t.name: t for t in (await client.list_tools()).tools}
-                assert len(tools) == 4 and len(init.instructions.encode()) < 3600
+                assert len(tools) == 6 and len(init.instructions.encode()) < 3600
 
                 async def call(name, values=None):
                     values = values or {}
@@ -71,7 +71,11 @@ async def main(args):
                 rows = (await call("margin_catalog"))["groups"]["company"]
                 assert len(rows) == 9
                 for row in rows:
-                    assert row["mcp_execution"]["tool"] == "margin_company_finance"
+                    assert row["mcp_execution"]["tool"] == (
+                        "margin_company_data_readiness"
+                        if row["function"] == "finance.company_data_readiness"
+                        else "margin_company_finance"
+                    )
                     preview = await call(
                         "margin_company_finance",
                         {"function": row["function"], "ticker": "SYNTHA", "execute": False},

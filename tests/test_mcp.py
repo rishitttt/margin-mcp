@@ -69,7 +69,7 @@ def fcff():
 
 def test_static_catalog_has_37_tools_and_accurate_annotations():
     tools = definitions()
-    assert len(tools) == 37
+    assert len(tools) == 39
     for tool in tools.values():
         Draft202012Validator.check_schema(tool.input_schema)
         Draft202012Validator.check_schema(tool.output_schema)
@@ -170,12 +170,20 @@ async def test_every_catalog_entry_has_an_explicit_callable_mcp_route(adapter):
                 name in route["bind"].values()
                 or DIRECT_FUNCTIONS.get(route["tool"]) == name
                 or DIRECT_REVIEWS.get(route["tool"]) == name
+                or (
+                    route["tool"] == "margin_company_data_readiness"
+                    and name == "finance.company_data_readiness"
+                )
             )
             if group in {"calculations", "review"}:
                 assert route["inputs_at"] in {"arguments", "top_level"} and "then" not in route
             elif group == "company":
                 assert route["inputs_at"] == "top_level" and "then" not in route
-                assert route["tool"] == "margin_company_finance"
+                assert route["tool"] == (
+                    "margin_company_data_readiness"
+                    if name == "finance.company_data_readiness"
+                    else "margin_company_finance"
+                )
                 assert row["legacy_mcp_execution"]["then"] == "margin_run"
             else:
                 assert route["inputs_at"] == "operations[0].arguments"
@@ -769,7 +777,7 @@ async def test_real_stdio_sdk_handshake_run_finance_and_shutdown(tmp_path):
                     and initialized.server_info.version == VERSION
                 )
                 tools = (await session.list_tools()).tools
-                assert len(tools) == 37
+                assert len(tools) == 39
                 status = (await session.call_tool("margin_status", {})).structured_content
                 assert status["mode"] == "synthetic" and status["data"]["ledger"][
                     "http_attempts"

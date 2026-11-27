@@ -5,8 +5,19 @@ description: Retrieve Indian listed-company financial and event data, run determ
 
 # Margin research
 
-For 0.9.4 the optional finance frontend exposes only status/catalog/company_finance/
-calculate. Catalog's default company mcp_execution is now the fresh convenience route;
+For 0.9.5 prefer margin_company_data_readiness for which fields/calculations are
+supported across profitability/cash conversion/liquidity. It has no function selector;
+company_profitability is only a numeric profitability group. Typed readiness previews
+bind the same typed tool without function. Generic company_finance still works with
+its function selector. Read actual workflow_function/result fields; don't relabel it.
+margin_calculate_dcf is now an advertised typed local calculator with the existing
+explicit-input schema at top level. It neither fetches nor generates assumptions.
+Do not call DCF just because readiness asks about valuation prerequisites. A stable
+idempotency key is duplicate control, not authorization. all39/finance6 retain generic
+and legacy APIs; review16/simple3 are unchanged. Use the user's selected profile.
+
+The optional finance frontend exposes status/catalog/company_finance/calculate plus
+typed readiness/DCF. Catalog's default company mcp_execution is the fresh route;
 legacy_mcp_execution and planning_schema are advanced full-profile alternatives.
 Preview-only tasks STOP after execute=false; copy preview_summary.display and distinguish
 missing_fields_for_preview from missing_fields_for_execution. No generic plan is made.
@@ -53,7 +64,7 @@ claims, completion flag and original-unverified limits. quote=null is possible f
 insufficient evidence. Replaying identical submissions is safe until expiry; changed
 submissions conflict. No database, provider call or Margin LLM is required. Use the
 actual advertised schemas. review-simple exposes only status/prepare/submit (3 tools);
-review exposes 16 and full 37. Use exposed tools, do not change configuration to bypass
+review exposes 16, full39 and finance6. Use exposed tools, do not change configuration to bypass
 a hold. Older low-level workflows below remain advanced alternatives.
 
 Choose functionality from the user's goal. Citation review is optional; ordinary

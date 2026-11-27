@@ -94,7 +94,7 @@ async def main(args):
                 async with stdio_client(params, errlog=stderr) as (read, write):
                     async with ClientSession(read, write) as client:
                         initialized = await client.initialize()
-                        assert len((await client.list_tools()).tools) == 37
+                        assert len((await client.list_tools()).tools) == 39
                         status = await call(client, "margin_status")
                         assert status["data"]["state_owner"] == "shared_backend_process"
                         assert not any(status["data"]["ledger"]["http_attempts"].values())
