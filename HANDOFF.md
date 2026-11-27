@@ -9,6 +9,8 @@
 - User mtest owner remains0.9.5/B0D0 with logs at logs~. Upgrade manually when ready; do not renew the spent test allocation.
 - No professor evaluation work or public publishing/deployment in this pass. [Historical handoff](docs/archive/2026-11-27-handoff.md).
 
+647 offline tests, browser/DOM, nine installed-wheel SDK groups and clean macOS installation pass. Hosted Windows/Ubuntu/macOS wheel/standalone jobs [all passed](https://github.com/rishitttt/margin-mcp/actions/runs/45976665943). Full current evidence is in [acceptance](docs/product-acceptance.md).
+
 ## Historical section links
 
 <a id="what-is-on-main"></a>[Historical: What is on main](docs/archive/2026-11-27-handoff.md#what-is-on-main)

@@ -48,3 +48,5 @@ Observed local results: 647 offline tests, Ruff, browser/Node DOM, nine source a
 installed-wheel SDK groups pass. True fresh-venv installation passed on macOS/Python3.12.10.
 [Acceptance matrix](product-acceptance.md) separates live-provider/operator-reader/fixture
 checks and remaining platform/model limits.
+
+Hosted Windows, Ubuntu and macOS checks passed on application/test commit ac49544: [observed run](https://github.com/rishitttt/margin-mcp/actions/runs/45976665943). This includes wheel build/install and zero-budget standalone smoke on each OS, with full647 regression on Unix.

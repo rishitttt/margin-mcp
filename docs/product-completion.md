@@ -61,5 +61,5 @@ Implemented and validated as0.10.0. All647 offline tests, Ruff, nine source SDK 
 nine installed-wheel SDK groups, browser/DOM and clean-venv macOS checks pass. Review
 contracts pass20 local calls with real passages and explicit host judgments. Live pass
 finished B2/DrHTTP10/estimated credits7. Guides consolidated, archives preserved; source
-skill validates. See [acceptance](product-acceptance.md). Hosted CI outcomes and user-side
+skill validates. See [acceptance](product-acceptance.md). Hosted Windows/Ubuntu/macOS checks all passed. User-side
 upgrade/fresh-chat checks remain explicit follow-ups; no public deployment/evaluation.

@@ -21,7 +21,7 @@ Git. Provider facts and host semantic judgments are not independently authentica
 | Capability fallbacks | reader/no-reader/unknown/inventory-only contracts passed | Declarations exercised locally, not four independent host/model trials |
 | Relevance | unrelated provider-filtered news excluded | Unannotated/irrelevant does not become neutral; empty balance denominator stays unknown |
 | Skill | validator passed | Source skill updated; no global install or model behavior guarantee |
-| Linux/Windows hosted CI | workflow added; remote pass not yet observed | Python3.12 standalone matrix; shared Unix backend remains macOS/Linux only |
+| Hosted platform CI | Windows, Ubuntu and macOS all passed | Python3.12 wheel install/standalone smoke; portable contracts on all, full647 regression on Unix; shared Unix backend remains macOS/Linux only |
 
 ## Actual live usage
 
@@ -41,7 +41,7 @@ list/detail can overlap. Host relevance and deduplication remain necessary.
 - User upgrades the separate mtest installation manually; it remains0.9.5/B0D0 here.
 - Fresh-chat smoke in the user's selected host/model, checking actual calls and canonical
   reports rather than prose alone. Do not claim tool use from a plausible answer.
-- Observe the new hosted platform workflow before claiming remote Linux/Windows passes.
+- Hosted platform checks passed for application/test commit ac49544: [actual run](https://github.com/rishitttt/margin-mcp/actions/runs/45976665943). Documentation-only follow-ups do not alter the wheel.
 - Broader companies/endpoints need a new explicit live allocation. Automatic forecasting,
   source authenticity, market-wide sentiment, public PyPI/hosting and professor evaluation
   are outside this release.
@@ -56,5 +56,6 @@ timestamp zero to simulate expiry on a freshly booted runner; the test now expir
 relative to its recorded timestamp. Initial Windows test setup blocked Python's
 stdlib socketpair self-pipe. The fixture now permits only that synchronous loopback
 operation; three guard tests retain ordinary loopback/external-connect rejection.
-Application/wheel code is unchanged by these portability fixes. Updated jobs are
-pending observation. Official Actions versions were refreshed after a runtime warning.
+Application/wheel code is unchanged by these portability fixes. The remaining Windows DOM test required explicit UTF-8 for the rupee symbol instead
+of its default code page. Final jobs all passed. Official Actions versions were refreshed
+after a runtime warning.

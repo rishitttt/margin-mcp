@@ -32,7 +32,7 @@ Python3.12.10. Review handoffs pass20 local calls using real passages and explic
 judgments, including relevance and actual host-reader material. No product LLM is used.
 
 See the [acceptance matrix](product-acceptance.md) for evidence/limits and failed first
-attempts. A Linux/macOS/Windows CI workflow is added; remote outcomes are not yet observed.
+attempts. Hosted Windows, Ubuntu and macOS wheel/install/standalone checks [all passed](https://github.com/rishitttt/margin-mcp/actions/runs/45976665943). Portable contract tests run on all three; the full647 suite also passes on both Unix runners.
 The source skill validates. These are product checks, not automatic model benchmark or
 source-authentication results. [Release checks](release-checks.md) document reproducible
 installation and software checks.

@@ -15,5 +15,5 @@ must request include_diagnostics=true and read data.diagnostics; core status is 
 647 offline tests, lint/format, browser/DOM, nine source SDK groups, nine installed-wheel
 groups and clean macOS/Python3.12.10 installation pass. Selected real provider tests
 used B2/DrHTTP10/estimated credits7. No account balances/source authenticity or arbitrary
-host-model prose are verified. Hosted Linux/Windows results remain to be observed.
+host-model prose are verified. Hosted Windows/Ubuntu/macOS wheel installation and standalone checks [passed](https://github.com/rishitttt/margin-mcp/actions/runs/45976665943).
 The user's independent mtest backend is unchanged; save logs before a manual upgrade.
