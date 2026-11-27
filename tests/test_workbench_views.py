@@ -162,6 +162,7 @@ console.log('Financial field rendering, null/zero fidelity, unknown shape fallba
 
 """,
         text=True,
+        encoding="utf-8",
         capture_output=True,
         timeout=10,
     )
