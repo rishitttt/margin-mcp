@@ -18,9 +18,9 @@ Remaining operator steps after the package is ready: manually upgrade the user's
 
 ## Public packaging
 
-margin-mcp0.10.1 is prepared and locally reviewed; see [package review](pypi-package-review.md)
-and [release checks](release-checks.md). Remaining: reviewed commit, new hosted workflow,
-owner account/environment setup and observed staging/production uploads.
+margin-mcp0.10.1 is published and verified on PyPI. See [publication record](pypi-release.md)
+for source commits, hosted results and hashes; [release checks](release-checks.md)
+governs future versions. TestPyPI is optional; this release used direct production.
 
 ## Separate later actions
 

@@ -1,16 +1,16 @@
 # PyPI package review — margin-mcp 0.10.1
 
 Reviewed locally on 27 November 2026, macOS arm64 / Python 3.12.10. These are local
-candidate results. Index publication and the new hosted three-platform workflow
-have not been observed.
+candidate results. Subsequent hosted/public verification and publication are recorded
+in the [publication record](pypi-release.md).
 
 ## Review result
 
 No unresolved packaging defect was found in the reviewed local candidate. The wheel
 and source archive install independently of the checkout, share identical runtime
-files, and expose the intended commands and 39-tool default. The release still needs
-an identified reviewed commit, hosted validation and owner-side publisher setup before
-an observed TestPyPI/PyPI release can be recorded.
+files, and expose the intended commands and 39-tool default. The release was subsequently published from4ef3d0e after hosted validation; independent
+public-index installation also passed. The publication record distinguishes these
+final results and hashes from the earlier local candidate below.
 
 ## Findings resolved
 
@@ -76,13 +76,14 @@ promoted unchanged between TestPyPI and PyPI.
 | margin_mcp-0.10.1-py3-none-any.whl | b76be395b0238964458a016deb9db7c9e2a4de535f9b45bad21fd0ba9733d7f9 |
 | margin_mcp-0.10.1.tar.gz | c0d601a3090fbf699157f5225bd53565a1de02e262860885d3d49db8d99d36fe |
 
-## Remaining release gates
+## Completed external release gates
 
-- Review/commit the intended source and observe the new hosted workflow. The older
-  0.10.0 hosted results do not establish a 0.10.1 hosted pass.
-- Configure the PyPI pending publisher; TestPyPI setup is optional. Follow the exact [release-check fields](release-checks.md#one-time-account-setup).
-- Run the publishing workflow and observe the requested index installations and pages.
-  Do not mark an unobserved upload complete or reuse a filename for changed artifacts.
+Release source4ef3d0e passed Windows/Linux/macOS checks and was uploaded through
+Trusted Publishing. Independent public-index base/workbench installations and both
+artifact hashes passed. TestPyPI was optional and skipped. The original dependent
+post-upload check was skipped through optional-ancestor propagation; its explicit
+condition was fixed and the independent verification workflow passed. Exact evidence
+is in the [publication record](pypi-release.md).
 
 No live provider requests, model evaluations, source-authentication claims or provider
 redistribution rights follow from these packaging checks. Public email addresses and

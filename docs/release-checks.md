@@ -1,9 +1,9 @@
 # Release and installation checks
 
-The first public candidate is **margin-mcp 0.10.1**, Python 3.12+, MIT. The Python
+The first public release is **margin-mcp 0.10.1**, Python 3.12+, MIT. The Python
 import remains margin and the default MCP profile remains all39. Old local wheels
-under releases/ are immutable. The new hosted product checks passed on all three
-platforms; see [publication status](pypi-release.md) for the current upload state.
+under releases/ are immutable. Hosted product checks passed on all three platforms and public-index installs passed;
+see the [publication record](pypi-release.md) for exact source, runs and hashes.
 
 ## Local preparation
 
@@ -54,7 +54,9 @@ validation and all three fresh installation routes.
 release.yml is manual. Run it first with version=0.10.1 and **publish=false**. It builds
 once on Linux, stores the two distribution files and hashes, and checks those exact
 artifacts on all three operating systems. Nothing is uploaded to an index in this mode.
-The official actions are pinned to verified release commit hashes.
+The official actions are pinned to verified release commit hashes. For an already
+published version, verify-published.yml accepts its version and successful source-run ID
+and checks public hashes/installations without uploading again.
 
 With publish=true, only a run from main can enter the index-publishing jobs. The
 default route is build → three-platform installation → main-restricted PyPI environment
@@ -96,7 +98,9 @@ Author metadata does not invite collaborators or grant account access.
 TestPyPI dependency installation uses production PyPI separately; the staged wheel is
 fetched with --no-deps and --only-binary=:all:. Do not combine indexes with
 --extra-index-url. Index installation and rendering must be observed before marking
-publication complete. README installation commands describe the public interface;
+publication complete; both were observed for0.10.1. The production-install job uses an
+explicit successful-upload/non-cancelled condition so optional staging skips do not
+suppress it. The independent published-release workflow provides recovery verification. README installation commands describe the public interface;
 current publication status is recorded here and in implementation.md.
 
 ## Evidence and limits

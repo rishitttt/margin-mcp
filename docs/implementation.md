@@ -1,8 +1,8 @@
 # Current implementation and validation
 
-Current source/public candidate margin-mcp0.10.1; prior local release0.10.0. Runtime: Python3.12+, BharatStock REST and upstream Drishti MCP, shared core calculations/review, local stdio MCP (all39), optional shared Unix backend/CLI/skill/workbench. No product LLM, market database or automatic forecast/source-authentication service.
+Current source/public release margin-mcp0.10.1; prior local release0.10.0. Runtime: Python3.12+, BharatStock REST and upstream Drishti MCP, shared core calculations/review, local stdio MCP (all39), optional shared Unix backend/CLI/skill/workbench. No product LLM, market database or automatic forecast/source-authentication service.
 
-## Public packaging candidate — 27 November 2026
+## Published PyPI release — 27 November 2026
 
 margin-mcp0.10.1 adds MIT/four-author metadata, public own-key installation docs,
 a self-contained sdist and dedicated Trusted Publishing workflows. Runtime financial
@@ -17,12 +17,14 @@ pip check, hypothetical DCF and static/HTTP checks). Both archives pass metadata
 content/runtime parity, token-pattern and exact configured-provider-secret scans.
 Both workflows pass actionlint. No provider calls or active-owner changes were made.
 
-[Package review](pypi-package-review.md) records resolved findings, hashes and failed
-first attempts. [Hosted product checks for50c3131](https://github.com/rishitttt/margin-mcp/actions/runs/45988193730)
-passed on Windows/Linux/macOS. The owner confirmed the PyPI publisher and main-only
-GitHub environments are configured. Direct PyPI publication is in progress, with
-TestPyPI optional. See the [publication record](pypi-release.md); hosted results below
-belong to0.10.0.
+[Package review](pypi-package-review.md) records local findings and failed first attempts.
+[Hosted checks for the published source4ef3d0e](https://github.com/rishitttt/margin-mcp/actions/runs/45988881853)
+passed on Windows/Linux/macOS. [PyPI publication](https://pypi.org/project/margin-mcp/0.10.1/)
+succeeded, and [independent public-index verification](https://github.com/rishitttt/margin-mcp/actions/runs/45989748057)
+passed for artifact hashes, base/workbench installations and MCP/CLI/DCF smoke.
+See [publication record](pypi-release.md) for commits, final hashes and the post-upload
+workflow correction. TestPyPI is optional and was skipped. Older hosted evidence below
+belongs to0.10.0.
 
 ## Product changes in0.10.0
 
@@ -61,7 +63,7 @@ installation and software checks.
 
 ## Operating state and limits
 
-The user manually upgraded mtest to0.10.0. New logs are under logs, older logs~ remain. [Observed host smoke](product-acceptance.md#user-host-smoke-after-upgrade): INFY growth succeeded B1/D0; HUL stopped at readiness preview; no DCF call appears in the two inspected logs. Codex did not restart/configure the owner or make new provider calls while checking them. Current product keys worked for the selected live pass; broader endpoint/company/entitlement coverage is not established. Additional live checks need a new remaining allocation. Public publishing/deployment is not performed.
+The user manually upgraded mtest to0.10.0. New logs are under logs, older logs~ remain. [Observed host smoke](product-acceptance.md#user-host-smoke-after-upgrade): INFY growth succeeded B1/D0; HUL stopped at readiness preview; no DCF call appears in the two inspected logs. Codex did not restart/configure the owner or make new provider calls while checking them. Current product keys worked for the selected live pass; broader endpoint/company/entitlement coverage is not established. Additional live checks need a new remaining allocation. PyPI publishing is complete; remote hosting/deployment is not provided.
 
 [Install/upgrade](mcp.md), [active plan](plan.md), [full historical evidence](archive/2026-11-27-docs-implementation.md).
 

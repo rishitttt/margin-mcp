@@ -1,19 +1,19 @@
 # Run Margin locally
 
-Candidate 0.10.1, Python>=3.12. Distribution: margin-mcp (import: margin). Public upload is pending; use the candidate wheel or install from source until published. all is the default supported profile (39 tools). finance6, review16 and review-simple3 are optional, not authorization boundaries.
+Published 0.10.1, Python>=3.12. Distribution: [margin-mcp on PyPI](https://pypi.org/project/margin-mcp/) (import: margin). all is the default supported profile (39 tools). finance6, review16 and review-simple3 are optional, not authorization boundaries.
 
 ## Install
 
 ```sh
 python3.12 -m venv .venv
-.venv/bin/python -m pip install /absolute/path/margin_mcp-0.10.1-py3-none-any.whl
+.venv/bin/python -m pip install margin-mcp==0.10.1
 ```
 
 On Windows use .venv\Scripts\python.exe and standalone mode. No npm installation is required for Margin. Workbench is optional: install the wheel with its workbench extra. [Clean-install/platform evidence](release-checks.md).
 
-After publication, install with `python -m pip install margin-mcp`. Optional UI/API: `python -m pip install "margin-mcp[workbench]"`.
+Install with `python -m pip install margin-mcp`. Optional UI/API: `python -m pip install "margin-mcp[workbench]"`.
 
-For public users, [bring-your-own-key setup](local-credentials.md) explains credential files/environment variables, limits and the shared-owner distinction. PyPI publication is being prepared separately; [release handoff](pypi-handoff.md).
+For public users, [bring-your-own-key setup](local-credentials.md) explains credential files/environment variables, limits and the shared-owner distinction. [Publication record](pypi-release.md) and [release handoff](pypi-handoff.md).
 
 ## Standalone stdio
 
@@ -44,7 +44,7 @@ Backend/frontend package versions must match. Frontend reconnect/profile changes
 ## Upgrade from a local margin-research wheel
 
 The public distribution is now margin-mcp. In a new virtual environment, install
-margin-mcp (or its local candidate wheel). Do not install both distributions into the
+margin-mcp (or the matching release wheel). Do not install both distributions into the
 same environment: they own the same margin import and console scripts. Repoint your
 MCP host to the new executable when ready. Existing running owners are not upgraded
 by installing into a different environment. Shared frontend/backend versions must match.

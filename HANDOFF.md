@@ -1,23 +1,24 @@
 # Margin quick handoff
 
-- Source/public candidate margin-mcp0.10.1; prior local release0.10.0; all39 default, finance6/review16/simple3 optional. Python>=3.12, B REST+Dr MCP, no Margin LLM/database.
+- Source/public release margin-mcp0.10.1; prior local release0.10.0; all39 default, finance6/review16/simple3 optional. Python>=3.12, B REST+Dr MCP, no Margin LLM/database.
 - Status now has a canonical local-allowance report; internal capacity/history only via include_diagnostics. Core status remains compatible.
 - DCF has exact labelled report rows and deterministic Markdown; workbench renders those rows. Forecast/debt definitions forbid automatic CFO/liabilities substitutions. Arithmetic remains unchanged.
 - Live pass: B2/DrHTTP10/estimated credits7. INFY typed readiness, HUL quarterly, four Dr events succeed. All nine local company functions work on the two captured responses. Five source records imported. No account probes/retries/user-owner changes.
 - Provider-filtered news included other issuers; host relevance filtering is required. Citation/sentiment are host assessments, not source authenticity or market-wide sentiment.
 - See [implementation](docs/implementation.md) for actual tests/remaining limits, [install](docs/mcp.md), [release checks](docs/release-checks.md), [current plan](docs/plan.md).
 - User manually upgraded mtest to0.10.0; new logs are under logs (older logs~ preserved). Host smoke: INFY growth B1/D0 succeeds; HUL selects readiness preview, and no DCF call appears. See acceptance for remaining model-behavior gaps. Do not infer/refill budgets or restart the owner.
-- No professor evaluation work or public publishing/deployment in this pass. [Historical handoff](docs/archive/2026-11-27-handoff.md).
+- No professor evaluation work or remote hosting in this pass. PyPI publication is complete. [Historical handoff](docs/archive/2026-11-27-handoff.md).
 
-647 offline tests, browser/DOM, nine installed-wheel SDK groups and clean macOS installation pass. Hosted Windows/Ubuntu/macOS wheel/standalone jobs [all passed](https://github.com/rishitttt/margin-mcp/actions/runs/45976665943). Full current evidence is in [acceptance](docs/product-acceptance.md).
+Prior0.10.0 evidence: 647 offline tests, browser/DOM, nine installed-wheel SDK groups and clean macOS installation pass. Hosted Windows/Ubuntu/macOS wheel/standalone jobs [all passed](https://github.com/rishitttt/margin-mcp/actions/runs/45976665943). Full current evidence is in [acceptance](docs/product-acceptance.md).
 
-PyPI preparation is implemented under the public name margin-mcp0.10.1, MIT, with
-Rishit Anand, Advait Sharma, Arsalaan Alam and Tanvi Sanghai credited. See
-[release checks](docs/release-checks.md) for artifact validation, fresh installs and the
-manual Trusted Publishing workflow (direct PyPI by default, TestPyPI optional).
-Release preparation is committed as50c3131; hosted checks/publication are in progress.
-The owner confirmed the PyPI publisher; main-only GitHub environments are configured. [Users supply their own keys](docs/local-credentials.md).
-Small-context behavior remains parked; the user's owner is unchanged.
+margin-mcp0.10.1 is published on PyPI, MIT, with Rishit Anand, Advait Sharma,
+Arsalaan Alam and Tanvi Sanghai credited. Release source4ef3d0e passed hosted checks;
+production upload and independent public base/workbench installations passed. Current
+local counts: 654 repository tests / 637 public-sdist tests. See the
+[publication record](docs/pypi-release.md) for final hashes, run links and the corrected
+post-upload job condition. TestPyPI is optional and was skipped; both GitHub environments
+are restricted to main. [Users supply their own keys](docs/local-credentials.md).
+Small-context behavior remains parked; the active0.10.0 owner is unchanged.
 
 ## Historical section links
 
