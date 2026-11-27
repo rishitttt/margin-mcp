@@ -9,7 +9,11 @@ on:
         default: '0.10.1'
         type: string
       publish:
-        description: Publish through TestPyPI and then the protected PyPI environment
+        description: Publish validated artifacts to the PyPI environment
+        default: false
+        type: boolean
+      testpypi:
+        description: Rehearse on TestPyPI before publishing (requires a separate account)
         default: false
         type: boolean
 
@@ -95,7 +99,7 @@ jobs:
           path: install-check.json
 
   testpypi:
-    if: inputs.publish && github.ref == 'refs/heads/main'
+    if: inputs.publish && inputs.testpypi && github.ref == 'refs/heads/main'
     needs: [build, install]
     runs-on: ubuntu-latest
     environment:
@@ -157,7 +161,11 @@ jobs:
               subprocess.run([str(python), '-I', str(smoke), '--expected-version', version, '--workbench'], check=True, cwd=root)
 
   pypi:
-    needs: staging-install
+    needs: [build, install, staging-install]
+    if: >-
+      ${{ !cancelled() && inputs.publish && github.ref == 'refs/heads/main' &&
+          needs.build.result == 'success' && needs.install.result == 'success' &&
+          (!inputs.testpypi || needs.staging-install.result == 'success') }}
     runs-on: ubuntu-latest
     environment:
       name: pypi

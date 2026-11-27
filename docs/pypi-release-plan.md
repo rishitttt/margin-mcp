@@ -18,7 +18,7 @@ preparation results and remaining account/publishing steps; no upload is implied
 | First public version | **0.10.1**, a new packaging release after local 0.10.0 |
 | Build backend | Retain setuptools and the existing src layout |
 | Artifacts | One pure-Python wheel plus one source distribution |
-| Publishing | GitHub Actions Trusted Publishing, staging on TestPyPI first |
+| Publishing | GitHub Actions Trusted Publishing; direct PyPI by default, optional TestPyPI rehearsal |
 
 The public name was changed to margin-mcp during implementation: it matches the repo
 and primary console command. margin-research remains the separate host-skill name.
@@ -95,6 +95,10 @@ stale egg-info into the public build. No old artifact was overwritten.
 Trial artifacts/logs are under the local temporary directory
 `/var/folders/x2/10xdwkwd71j_wtx1zw8b9v080000gn/T/margin-pypi-review-yqd7a_m8`.
 They are diagnostic 0.10.0 builds, not approved upload artifacts.
+
+The implemented workflow makes TestPyPI optional. Direct publication still requires
+all build/platform gates; selecting staging requires its successful completion before
+production. See [publication record](pypi-release.md) for the owner-confirmed publisher.
 
 ## Implementation sequence
 

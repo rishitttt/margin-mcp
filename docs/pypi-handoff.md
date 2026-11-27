@@ -22,5 +22,6 @@ Research evaluation and private-bundle material stay out of the public sdist/run
 Users supply their own keys; [credential guide](local-credentials.md).
 
 Before publishing, commit/review the intended source, observe the new hosted validation,
-complete the two pending-publisher/environment setups, and use the release workflow.
+confirm the PyPI pending publisher (and TestPyPI only if staging is selected), and use
+the release workflow. Both GitHub environments are configured for main only.
 Record release commit, artifact hashes, index URLs and actual production installation.

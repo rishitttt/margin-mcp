@@ -2,7 +2,8 @@
 
 The first public candidate is **margin-mcp 0.10.1**, Python 3.12+, MIT. The Python
 import remains margin and the default MCP profile remains all39. Old local wheels
-under releases/ are immutable. Public upload and the new hosted CI run are pending.
+under releases/ are immutable. The new hosted product checks passed on all three
+platforms; see [publication status](pypi-release.md) for the current upload state.
 
 ## Local preparation
 
@@ -56,9 +57,11 @@ artifacts on all three operating systems. Nothing is uploaded to an index in thi
 The official actions are pinned to verified release commit hashes.
 
 With publish=true, only a run from main can enter the index-publishing jobs. The
-sequence is build → three-platform installation → TestPyPI → exact staging-wheel hash
-and installed smoke → protected PyPI environment → production hash and installed smoke.
-No rebuild occurs between indexes. The production smoke checks base and workbench
+default route is build → three-platform installation → main-restricted PyPI environment
+→ production artifact hashes and installed smoke. TestPyPI is optional: testpypi=true
+adds a staging upload and exact staging-wheel hash/installed smoke before production.
+A failed requested staging check prevents production publication. A cancelled run does
+not publish. No rebuild occurs between validation and upload or between indexes. The production smoke checks base and workbench
 installations. Build/test jobs have no OIDC publishing permissions; only the dedicated
 index-upload jobs receive id-token: write.
 
@@ -69,8 +72,9 @@ conceal a mismatched candidate.
 
 ## One-time account setup
 
-Before the first publish=true run, configure these exact pending-publisher fields on
-**both** indexes, using their separate accounts and required account security:
+Before the first publish=true run, configure the PyPI pending publisher. Configure
+TestPyPI only if using the optional testpypi=true route; it has a separate account.
+Use these exact fields and the index account's required security:
 
 | Field | TestPyPI | PyPI |
 | --- | --- | --- |
@@ -84,8 +88,8 @@ Before the first publish=true run, configure these exact pending-publisher field
 - [PyPI publishing settings](https://pypi.org/manage/account/publishing/)
 - [GitHub environment settings](https://github.com/rishitttt/margin-mcp/settings/environments)
 
-Create the two GitHub environments and restrict production to the intended release
-branch. Add an appropriate release approval rule to pypi where available. A pending
+The pypi and testpypi GitHub environments are configured with main-only branch policies.
+Only pypi is required for a direct release. Add an appropriate release approval rule to pypi where available. A pending
 publisher does not reserve the project name. No long-lived PyPI API token is needed.
 Author metadata does not invite collaborators or grant account access.
 

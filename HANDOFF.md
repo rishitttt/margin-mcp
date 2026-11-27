@@ -14,8 +14,9 @@
 PyPI preparation is implemented under the public name margin-mcp0.10.1, MIT, with
 Rishit Anand, Advait Sharma, Arsalaan Alam and Tanvi Sanghai credited. See
 [release checks](docs/release-checks.md) for artifact validation, fresh installs and the
-manual TestPyPI→PyPI Trusted Publishing workflow. Account/environment setup, new hosted
-CI observation and index uploads remain. [Users supply their own keys](docs/local-credentials.md).
+manual Trusted Publishing workflow (direct PyPI by default, TestPyPI optional).
+Release preparation is committed as50c3131; hosted checks/publication are in progress.
+The owner confirmed the PyPI publisher; main-only GitHub environments are configured. [Users supply their own keys](docs/local-credentials.md).
 Small-context behavior remains parked; the user's owner is unchanged.
 
 ## Historical section links

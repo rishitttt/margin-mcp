@@ -18,8 +18,11 @@ content/runtime parity, token-pattern and exact configured-provider-secret scans
 Both workflows pass actionlint. No provider calls or active-owner changes were made.
 
 [Package review](pypi-package-review.md) records resolved findings, hashes and failed
-first attempts. New hosted-platform validation, account/environment setup and actual
-TestPyPI/PyPI uploads remain pending; previous hosted results below belong to0.10.0.
+first attempts. [Hosted product checks for50c3131](https://github.com/rishitttt/margin-mcp/actions/runs/45988193730)
+passed on Windows/Linux/macOS. The owner confirmed the PyPI publisher and main-only
+GitHub environments are configured. Direct PyPI publication is in progress, with
+TestPyPI optional. See the [publication record](pypi-release.md); hosted results below
+belong to0.10.0.
 
 ## Product changes in0.10.0
 

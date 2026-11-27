@@ -63,11 +63,13 @@ failures are separate from code defects; the suite passed with local socket acce
 
 Artifacts are under dist/pypi-0.10.1. They were built from a clean temporary staging
 copy of the reviewed working files based on commit
-80182334f5020d309fbb18476b46e46e079520c4. There is no release commit yet. Input hashes,
+80182334f5020d309fbb18476b46e46e079520c4, before the release preparation was committed
+as 50c3131. See [publication record](pypi-release.md) for current hosted/index status. Input hashes,
 install reports, the failed first install log and final build/validation logs are
 retained under ignored reports/private/pypi-0.10.1. The hosted workflow must build and
 validate its own artifacts from the eventual reviewed commit; those hashes can differ
-from this local candidate. It promotes the same bytes between TestPyPI and PyPI.
+from this local candidate. The same built bytes pass validation and upload; when staging is selected, they are
+promoted unchanged between TestPyPI and PyPI.
 
 | Artifact | SHA256 |
 | --- | --- |
@@ -78,9 +80,8 @@ from this local candidate. It promotes the same bytes between TestPyPI and PyPI.
 
 - Review/commit the intended source and observe the new hosted workflow. The older
   0.10.0 hosted results do not establish a 0.10.1 hosted pass.
-- Configure separate PyPI/TestPyPI accounts, matching pending publishers and GitHub
-  environments using the exact [release-check fields](release-checks.md#one-time-account-setup).
-- Run the staged publishing workflow and observe both index installations and pages.
+- Configure the PyPI pending publisher; TestPyPI setup is optional. Follow the exact [release-check fields](release-checks.md#one-time-account-setup).
+- Run the publishing workflow and observe the requested index installations and pages.
   Do not mark an unobserved upload complete or reuse a filename for changed artifacts.
 
 No live provider requests, model evaluations, source-authentication claims or provider
