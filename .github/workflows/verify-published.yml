@@ -1,0 +1,64 @@
+name: Verify published PyPI release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Published version to verify
+        required: true
+        default: '0.10.1'
+        type: string
+      source_run:
+        description: Successful publishing run containing the validated artifacts
+        required: true
+        default: '45988924022'
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      RELEASE_VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: python-distributions
+          path: dist/
+          run-id: ${{ inputs.source_run }}
+          github-token: ${{ github.token }}
+      - name: Verify production hashes and base/workbench installations
+        shell: python
+        run: |
+          import hashlib, json, os, pathlib, subprocess, tempfile, urllib.request, venv
+          version = os.environ['RELEASE_VERSION']
+          expected = pathlib.Path(f'dist/margin_mcp-{version}-py3-none-any.whl').resolve()
+          smoke = pathlib.Path('scripts/check_installed_product.py').resolve()
+          with urllib.request.urlopen(f'https://pypi.org/pypi/margin-mcp/{version}/json', timeout=30) as response:
+              published = json.load(response)
+          for artifact in pathlib.Path('dist').iterdir():
+              record = next(item for item in published['urls'] if item['filename'] == artifact.name)
+              assert record['digests']['sha256'] == hashlib.sha256(artifact.read_bytes()).hexdigest()
+          with tempfile.TemporaryDirectory() as temp:
+              root = pathlib.Path(temp)
+              venv.EnvBuilder(with_pip=True).create(root / 'venv')
+              python = root / 'venv/bin/python'
+              def run(*args):
+                  subprocess.run([str(python), '-m', 'pip', '--isolated', *map(str, args)], check=True, cwd=root)
+              run('download', '--index-url', 'https://pypi.org/simple', '--no-deps', '--only-binary=:all:', '--dest', root, f'margin-mcp=={version}')
+              wheel = next(root.glob('*.whl'))
+              assert hashlib.sha256(wheel.read_bytes()).digest() == hashlib.sha256(expected.read_bytes()).digest()
+              run('install', '--index-url', 'https://pypi.org/simple', wheel)
+              subprocess.run([str(python), '-I', str(smoke), '--expected-version', version], check=True, cwd=root)
+              run('install', '--index-url', 'https://pypi.org/simple', str(wheel) + '[workbench]')
+              subprocess.run([str(python), '-I', str(smoke), '--expected-version', version, '--workbench'], check=True, cwd=root)

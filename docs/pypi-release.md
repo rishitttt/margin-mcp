@@ -21,8 +21,8 @@ workflow builds artifacts from the committed source and records their own hashes
 - Release preparation commit: [50c3131](https://github.com/rishitttt/margin-mcp/commit/50c3131f0b75e70d102217300f3cb434a2688faf), pushed to main.
 - Hosted Windows/Linux/macOS validation: [product checks passed on Windows/Linux/macOS](https://github.com/rishitttt/margin-mcp/actions/runs/45988193730); [non-publishing release rehearsal running](https://github.com/rishitttt/margin-mcp/actions/runs/45988484694).
 - GitHub environments: pypi and testpypi created, each restricted to main; no API tokens or provider secrets added. The owner confirmed that the PyPI pending publisher is saved. TestPyPI is optional and was not requested for this first production upload.
-- PyPI upload: not performed yet. TestPyPI will be skipped for this release.
-- Public-index installation checks and final artifact hashes: pending upload.
+- PyPI upload: **published** [margin-mcp0.10.1](https://pypi.org/project/margin-mcp/0.10.1/) via [production run45988924022](https://github.com/rishitttt/margin-mcp/actions/runs/45988924022) from commit4ef3d0e. TestPyPI was skipped.
+- Public-index metadata and both archive hashes match the hosted build. Independent published-install verification is in progress; see the workflow correction below.
 
 The owner has a PyPI account and offered to complete website steps. Website setup
 registers the pending publisher; the GitHub workflow performs the actual upload.
@@ -40,3 +40,13 @@ direct publication after all build/platform-install gates. The optional testpypi
 retains staging for later use and enforces a successful staging check when selected.
 Production checks still compare both archive hashes against index metadata and verify
 base/workbench installations from the published wheel.
+
+## Post-upload workflow correction
+
+The production upload succeeded. Its dependent production-install job was skipped
+because GitHub propagated the optional staging skip through the default job condition.
+The job now explicitly requires a successful PyPI job and a non-cancelled run, matching
+the release gate's handling of skipped optional ancestors. No package source/artifact
+was changed or re-uploaded. verify-published.yml provides a separate read-only check
+against the exact artifacts from a selected publishing run; it is being run for this
+release to verify public-index base/workbench installs and both artifact hashes.
