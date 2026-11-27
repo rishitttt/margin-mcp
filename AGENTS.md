@@ -1,5 +1,14 @@
 # Working on Margin
 
+**Product-only completion authorized:** follow docs/product-completion.md before code.
+Target0.10.0: deterministic status/DCF reports and valuation input definitions, direct
+workbench rendering, fresh provider checks, review-host contracts, clean installation
+and concise current docs with preserved history. User approves B2/DrHTTP16/credits8
+for isolated live checks including lifecycle/cleanup. No outside-ledger account GET,
+retry/fallback/pagination, active0.9.5 owner upgrade/reset, professor evaluation work,
+public publishing/hosting or paid purchases. Save real captures privately, distinguish
+live requests/replays/operator judgments/platform coverage. Preserve formulas/guards.
+
 **Actual active0.9.5/all39:** four calls/eight events frozen in private lmstudio-095-
 all-readiness-dcf. Log at mtest/logs~ (trailing tilde); don't confuse old logs folder.
 Status/allcatalog/typed readiness preview/typed DCF succeed, provider calls0. Actual
