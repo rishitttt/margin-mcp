@@ -74,18 +74,21 @@ calculations, explicit-assumption valuation, claim review, content sentiment, an
 handling missing data or incompatible units/periods. The scored questions and answer
 keys will be fixed before the main experiment; answer keys will not be shown to models.
 
-Our initial model cohort will be:
+Our proposed cohort is not restricted to previously installed models:
 
-| Model | Purpose |
+| Model | Role |
 | --- | --- |
-| [Qwen3-4B](https://huggingface.co/Qwen/Qwen3-4B) | Small-model test and comparison with the same family's 8B model |
-| [Qwen3-8B](https://huggingface.co/Qwen/Qwen3-8B) | Continuity with our existing local trials |
-| [Llama-3.1-8B-Instruct](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | An already-installed model from another family |
-| [gpt-oss-20b](https://huggingface.co/openai/gpt-oss-20b) | A different reasoning/tool-use architecture, also already installed |
+| [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) | Small local model, quantized |
+| [Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B) | Same-family larger local comparison |
+| [gpt-oss-20b](https://huggingface.co/openai/gpt-oss-20b) | Local alternative reasoning/tool-use architecture |
+| [Inkling 2 Mini](https://thinkingmachines.ai/model-card/inkling-2-mini/) | Looped-model comparison; Q4_K_M weights already downloaded |
+| [GPT-6 Luna](https://developers.openai.com/api/docs/models/gpt-6-luna) | Hosted reference for efficient models |
+| [GPT-6.2 Sol](https://developers.openai.com/api/docs/models/gpt-6.2-sol) | Second hosted reference |
 
-A hosted model such as [GPT-6.2 Sol](https://developers.openai.com/api/docs/models/gpt-6.2-sol)
-can be added as a separately budgeted reference. These are proposed comparisons, not
-claims about which model will perform best.
+The local machine is an M4 Pro with 24 GB memory. Local candidates must pass memory,
+context and tool-call preflight, especially Inkling; download alone is not validation.
+Luna and Sol run through a hosted client/API, not locally downloaded weights. These
+are planned comparisons, not claims about which model will perform best.
 
 Each model will receive the **same questions with and without Margin**, in fresh
 contexts, with matched settings and three repetitions. Supplied-data tasks will give

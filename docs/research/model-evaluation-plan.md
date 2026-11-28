@@ -22,53 +22,86 @@ observations, not this benchmark's results.
 
 ## Recommended model cohort
 
-Use four local configurations first. Three were shown installed in the user's earlier
-inventory; exact files and current availability must still be checked at preflight.
-This is a practical, reproducible starting cohort, not a latest-model leaderboard.
+Updated after the user's request to include Luna, Sol and Inkling and to consider new
+local downloads. Plan four local candidates plus two hosted references; final inclusion
+requires preflight, not success on held-out questions. Model choice is not limited to
+what was installed during the earlier trials.
 
-| Candidate | Reason for inclusion | Control required |
+### Hardware and actual installed Inkling
+
+Read-only checks on 28 November found an Apple M4 Pro with 24 GiB unified memory
+(25,769,803,776 bytes). The installed artifact is:
+
+- lmstudio-community/Inkling-2-Mini-GGUF/Inkling-2-Mini-Q4_K_M.gguf
+- Model file 17,478,094,048 bytes (about 17.48 GB /16.28 GiB).
+- Separate image projector 641,805,888 bytes. These are file sizes, not measured runtime RAM.
+
+No model was loaded or queried. No model files/configuration were changed. Downloaded
+weights do not establish that tool calls and the chosen context run reliably.
+
+| Planned candidate | Where/how to run | Role and feasibility judgment |
 | --- | --- | --- |
-| Qwen/Qwen3-4B | Adds a small model; same-family contrast with 8B | Pin the original hybrid-thinking checkpoint, not an ambiguously named newer variant |
-| Qwen/Qwen3-8B | Existing local model and observed discovery/context issues | Pin revision, quantization, template and thinking setting |
-| meta-llama/Llama-3.1-8B-Instruct | Existing, older cross-family control at a similar nominal size | Validate actual runtime tool parsing; no assumption of a dedicated thinking channel |
-| openai/gpt-oss-20b | Existing alternative reasoning/tool-use architecture | Preserve its Harmony-compatible template and fixed reasoning effort |
+| Qwen/Qwen3.5-4B | Local, supported 4-bit MLX or GGUF build | Small-model starting point; comparatively more memory headroom on this Mac |
+| Qwen/Qwen3.5-9B | Local, supported 4-bit MLX or GGUF build | Same-family larger comparison; a practical candidate on 24 GiB, pending measured context use |
+| openai/gpt-oss-20b | Local, existing compatible quantized build | Different MoE/reasoning architecture; preserve Harmony and fixed reasoning effort |
+| thinkingmachines/Inkling-2-Mini | Local, existing Q4_K_M GGUF | Requested looped-model comparison; conditional on full tool/context memory preflight |
+| gpt-6-luna | Hosted client/API; not a local weights download | Lower-cost hosted reference |
+| gpt-6.2-sol | Hosted client/API; not a local weights download | A second hosted reference with a different cost/capability role |
 
-The [Qwen 4B](https://huggingface.co/Qwen/Qwen3-4B) and
-[Qwen 8B](https://huggingface.co/Qwen/Qwen3-8B) cards document thinking controls and
-agentic use. [Meta's model card](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct)
-documents tool-use formats. The [gpt-oss card](https://huggingface.co/openai/gpt-oss-20b)
-documents native tool use, reasoning effort and Harmony. Its approximately 21B total/
-3.6B active parameters do not make it a simple dense-model size comparison. The card's
-16GB memory claim is not a guarantee for this host with a large context/KV cache.
+The [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) and
+[Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B) cards document tool use and thinking
+controls. A [community 9B MLX conversion](https://huggingface.co/mlx-community/Qwen3.5-9B-MLX-4bit)
+is about 5.6 GB on disk; actual RAM includes runtime/cache overhead. Choose a maintained
+conversion supported by the installed runtime, then pin its revision/hash. Do not
+infer memory use from a misleading quantized-parameter count on a model listing.
+The [gpt-oss card](https://huggingface.co/openai/gpt-oss-20b) documents Harmony/native
+tool use. Its 21B total/3.6B active parameters are not a dense-model size comparison;
+the published 16 GB memory claim does not guarantee large-context operation here.
 
-Match quantization/runtime formats where feasible, but interpret different weights,
-templates or backends as different configurations; do not attribute all differences
-to parameter count. Freeze settings within each model's with/without pair.
+**Inkling distinction and feasibility:** the requested local candidate is Inkling 2 Mini,
+not the original 975B Inkling or 594B Inkling 2 Small shown on the
+[official family page](https://thinkingmachines.ai/inkling/). The Mini
+[official card](https://thinkingmachines.ai/model-card/inkling-2-mini/) describes a
+looped MoE and recommends 32 GB Apple Silicon for the original approximately 20 GB checkpoint.
+The [LM Studio listing](https://lmstudio.ai/models/inkling-2-mini) separately lists
+an approximately 17.50 GB quantized download and 18 GB minimum RAM. The user's artifact
+matches that quantized size. On 24 GiB it is a reasonable candidate to preflight, not a
+promise of stable 32K context: the OS, host, runtime and KV cache also need memory.
+Run one local model at a time, use text-only tasks, and measure peak memory/swap and
+latency. Do not equate its advertised 1M context with practical capacity on this laptop.
+If it cannot meet the main context allocation, report that and optionally run a
+separately labelled lower-context condition; do not silently shrink all conditions.
 
-**Extensions, not prerequisites:**
+**Hosted references:** [Luna](https://developers.openai.com/api/docs/models/gpt-6-luna)
+and [Sol](https://developers.openai.com/api/docs/models/gpt-6.2-sol) have documented
+function-calling support. Use the Responses API for the controlled API route. Luna's
+Chat Completions tool route restricts reasoning to none, so mixing that route with
+reasoning-enabled Sol would change the experiment. Access through a supported host
+is also possible where the user's account provides it, but record host differences;
+UI trials and an API runner are distinct configurations. API access is not confirmed
+and no inference budget is spent by this plan.
 
-- [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) and
-  [Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B) offer a newer small-model pair.
-  Add them if the installed runtime supports their architecture/templates. Select them
-  before scoring; do not replace a poorly performing model after seeing held-out results.
-- [GPT-6.2 Sol](https://developers.openai.com/api/docs/models/gpt-6.2-sol) is an optional
-  hosted reference. Its current API documentation supports function calling; use the
-  [Responses API](https://developers.openai.com/api/docs/guides/deployment-checklist).
-  Budget inference separately from provider credits. The local client can dispatch
-  emitted function calls to a local stdio MCP client; no public Margin endpoint is
-  needed. API envelopes may differ, but preserve tool semantics and record schema hashes.
-- The already-installed R1 distills can be supplementary reasoning tests, subject to
-  tool-call preflight. The [14B card](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B)
-  is not evidence that a particular LM Studio template parses every Margin call.
-  Do not infer unsupported tool use from the distill's mathematics performance or
-  treat the user's truncated model labels as exact checkpoint identifiers.
-- GPT-5 mini was considered but its [current official page](https://developers.openai.com/api/docs/models/gpt-5-mini)
-  marks it deprecated; it is not the preferred new hosted reference.
+A local controller can translate the model's function calls into local stdio MCP
+calls; no publicly hosted Margin endpoint is needed. Budget model inference separately
+from financial-provider usage. The official current model pages list standard per 1M
+input/output rates of $0.10/$0.50 for Luna and $2/$10 for Sol; verify at execution time.
+A task can make multiple model calls, and reasoning tokens/continued prompts affect
+billing. Estimate from calibration usage, not a one-call-per-question assumption.
 
-These are recommendations inferred from documented capabilities and the existing
-inventory, not comparative performance findings. Obtain/pin exact available versions;
-if a hosted service exposes only a mutable alias, record returned model ID/date and
-acknowledge service drift rather than promising immutable weights.
+Match quantization/runtime formats where feasible; freeze them within each pair.
+Thinking settings for Qwen3.5 use the documented API/template controls, not a presumed
+Qwen3 /think soft switch. Do not treat architecture, quantization or runtime effects
+as pure parameter-count effects. The [Qwen3-8B](https://huggingface.co/Qwen/Qwen3-8B)
+and [Llama-3.1-8B](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) configurations
+can remain legacy continuity controls rather than mandatory primary models. R1 distills
+are supplementary candidates only after tool-call preflight; ambiguous UI labels must
+be resolved to exact checkpoints. [GPT-5 mini](https://developers.openai.com/api/docs/models/gpt-5-mini)
+is currently marked deprecated and is not the new hosted reference.
+
+These choices are recommendations, not measured Margin benchmark rankings. Pin exact
+available versions; if a hosted service exposes only a mutable alias, record returned
+model ID/date and acknowledge drift. Do not replace a weak model after seeing scored
+answers. Final cohort and common settings are frozen after calibration.
 
 ## Master set and reference answers
 
@@ -112,9 +145,10 @@ common instructions, evidence access, output format, decoding/reasoning settings
 context limit and time/action budgets matched within the pair. The declared Margin
 tools/instructions necessarily differ; record that difference. Use fresh conversations
 and isolated experiment state, randomize condition order, and run three repetitions.
-Four models × 40 tasks × two conditions × three repetitions = 960 scored responses before
-calibration or optional extensions. This is a proposed model-run count, not an estimate
-of paid API requests or provider credits.
+Six models × 40 tasks × two conditions × three repetitions = 1,440 scored responses
+if all four local candidates and both hosted references are admitted. Four local models
+alone would be 960. Exclude calibration/declared extensions from these counts. This is
+a proposed model-run count, not an estimate of paid API requests or provider credits.
 
 The shared question should not demand “use Margin” when that interface is absent in
 one arm. Use neutral goal-based questions and a common instruction allowing available
@@ -158,12 +192,13 @@ provider's permissions. No capture/redistribution permission is presumed.
   different model. Calibrate with the eight separate tasks, then freeze configuration.
 - Target a common 32K context only if the hardware and full prompt/tool inventory fit,
   including answer/reasoning headroom. Measure actual token usage; do not assume 4K is
-  enough. Qwen3's card documents native 32,768 tokens. No silent truncation or unnoticed
-  RoPE-scaling change. If full 39 cannot fit, report the incompatibility; a focused
+  enough. This is a study allocation, not any model's advertised maximum. No silent
+  truncation or unnoticed RoPE-scaling change. If full 39 cannot fit, report the incompatibility; a focused
   profile is a separately declared study condition, not an unreported rescue.
 - Preserve model-specific supported sampling settings rather than imposing an invalid
-  universal temperature. For example, Qwen's thinking-mode card discourages greedy
-  decoding. Keep choices and reasoning effort identical across that model's pair;
+  universal temperature. For example, follow each Qwen version's thinking-mode guidance
+  rather than assuming greedy decoding is appropriate. Keep choices and reasoning
+  effort identical across that model's pair;
   seeds are recorded only where honored, not presented as guaranteed determinism.
 - Use no hints or edits mid-scored task. Do not change Margin/model settings after
   seeing test answers. Freeze the study release; evaluate fixes as a new version.
@@ -211,9 +246,12 @@ This is a documented command, not an executed collection in this proposal. Scope
 to the isolated study host; it may expose unrelated chats if used on a shared desktop
 session. Model-I/O text alone is not a substitute for structured execution receipts.
 
-Qwen's emitted thinking blocks and gpt-oss's exposed analysis can be retained when the
-runtime provides them. Llama may have no dedicated reasoning channel: mark it
-unavailable, not “no reasoning.” For hosted OpenAI models, request supported
+Qwen's emitted thinking blocks, gpt-oss's exposed analysis and Inkling's exposed thinking
+can be retained when the runtime provides them. Inkling's looped computation makes
+visible token length an especially poor proxy for total reasoning work; the official
+[release discussion](https://thinkingmachines.ai/news/inkling-2-mini/) addresses monitorability.
+Legacy Llama controls may have no dedicated reasoning channel: mark it unavailable,
+not “no reasoning.” For hosted OpenAI models, request supported
 [reasoning summaries](https://developers.openai.com/api/docs/guides/reasoning#reasoning-summaries)
 if desired; raw internal reasoning is not returned. Opaque/encrypted continuity data
 is not readable reasoning and should not be decoded or scored as such.

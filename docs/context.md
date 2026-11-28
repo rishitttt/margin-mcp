@@ -12,7 +12,10 @@ No Margin LLM/browser/forecast generator. Financial facts retain units, dates, b
 
 28 November: the professor note now includes a researched evaluation proposal. See
 [paired model evaluation](research/model-evaluation-plan.md) for the proposed local
-cohort, master questions, matched-evidence controls and action/reasoning capture.
+cohort (Qwen3.5-4B/9B, gpt-oss-20b, installed Inkling 2 Mini), Luna/Sol hosted references,
+master questions, matched-evidence controls and action/reasoning capture. Read-only
+hardware inspection found an M4 Pro with 24 GiB; actual local inference remains untested
+for this proposed cohort.
 Only documentation/research is performed; no new model/provider calls, task/gold set
 or benchmark runner. Product runtime and public release remain unchanged.
 

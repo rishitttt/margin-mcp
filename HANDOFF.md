@@ -2,7 +2,8 @@
 
 28 November: [professor reference](docs/updates/professor-reference-2026-11-28.md) revised
 to include [evaluation planning](docs/research/model-evaluation-plan.md): four local
-models, optional hosted reference, master questions with/without Margin, matched data
+candidates (including installed Inkling 2 Mini), Luna/Sol hosted references, master
+questions with/without Margin, matched data
 controls and observable traces. Research/proposal only; no new benchmark or paid calls.
 
 - Source/public release margin-mcp0.10.1; prior local release0.10.0; all39 default, finance6/review16/simple3 optional. Python>=3.12, B REST+Dr MCP, no Margin LLM/database.
