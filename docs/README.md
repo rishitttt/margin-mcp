@@ -4,6 +4,7 @@ Read current guides first. Historical debugging/release notes are preserved in [
 
 | File | Purpose / update when |
 | --- | --- |
+| [Professor reference](updates/professor-reference-2026-11-28.md) | Short, self-contained snapshot of the product, workflow, use case and current limits |
 | [mcp.md](mcp.md) | Current install, profiles, canonical tool flow and upgrade commands |
 | [implementation.md](implementation.md) | Delivered version, actual checks, live usage and unverified gates |
 | [plan.md](plan.md) | Active priorities and remaining product work |
