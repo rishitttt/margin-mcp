@@ -5,6 +5,7 @@ Read current guides first. Historical debugging/release notes are preserved in [
 | File | Purpose / update when |
 | --- | --- |
 | [Professor reference](updates/professor-reference-2026-11-28.md) | Short, self-contained snapshot of the product, workflow, use case and current limits |
+| [Model evaluation proposal](research/model-evaluation-plan.md) | Researched cohort, paired master-set design, reference answers, trace capture and scoring; not a completed study |
 | [mcp.md](mcp.md) | Current install, profiles, canonical tool flow and upgrade commands |
 | [implementation.md](implementation.md) | Delivered version, actual checks, live usage and unverified gates |
 | [plan.md](plan.md) | Active priorities and remaining product work |
@@ -26,7 +27,7 @@ Read current guides first. Historical debugging/release notes are preserved in [
 | [reference/drishti-functions.md](reference/drishti-functions.md) / [JSON](reference/drishti-functions.json) | Reviewed native/nested/REST map; update together from measured contracts |
 | [design](design/mcp-aggregation.md) | Architectural decisions and dated plans; current setup belongs above |
 
-After runtime changes update contracts, tests and status; after live checks record actual attempts/estimates, never inferred account debits. Keep raw licensed captures and credentials ignored/private. Agent work rules live in [../AGENTS.md](../AGENTS.md). The separate professor research proposal/evaluation docs remain historical/optional consumers; no product import may depend on study tasks or gold.
+After runtime changes update contracts, tests and status; after live checks record actual attempts/estimates, never inferred account debits. Keep raw licensed captures and credentials ignored/private. Agent work rules live in [../AGENTS.md](../AGENTS.md). The 28 November evaluation proposal is current planning; older research documents remain historical. Evaluation is an optional product consumer; no product import may depend on study tasks or gold.
 
 ## Historical section links
 

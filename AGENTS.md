@@ -2,7 +2,7 @@
 
 ## Start here
 
-Read [README](README.md), [context](docs/context.md), [implementation status](docs/implementation.md) and the [documentation index](docs/README.md). Inspect branch/worktree state and preserve unrelated changes. Current work is product completion; professor evaluation is excluded. Historical agent notes are [archived](docs/archive/2026-11-27-agents.md), not current instructions.
+Read [README](README.md), [context](docs/context.md), [implementation status](docs/implementation.md) and the [documentation index](docs/README.md). Inspect branch/worktree state and preserve unrelated changes. The user additionally authorized evaluation research/planning on 28 November: [current proposal](docs/research/model-evaluation-plan.md). This documentation request does not authorize model/provider runs or a new harness implementation. Historical agent notes are [archived](docs/archive/2026-11-27-agents.md), not current instructions.
 
 ## Scope and engineering
 
@@ -29,7 +29,7 @@ Read [README](README.md), [context](docs/context.md), [implementation status](do
 
 ## Separate optional research
 
-Normal src/margin code must not import research tasks, gold, model runners or study capture. The professor harness is independent of product installation/release. Do not expand this product-only task into benchmark/model comparisons or gold creation. Provider capture/redistribution and external-model processing rights remain scoped; no public raw-data service follows from an API subscription.
+Normal src/margin code must not import research tasks, gold, model runners or study capture. The professor harness is independent of product installation/release. Keep the newly requested evaluation plan under docs/research; actual task/gold construction and experiment execution remain future scoped work. Existing research code is not evidence of a completed new benchmark. Provider capture/redistribution and external-model processing rights remain scoped; no public raw-data service follows from an API subscription.
 
 ## Historical section links
 

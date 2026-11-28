@@ -1,6 +1,9 @@
 # Current product plan
 
-This pass is product-only. The professor benchmark, tasks/gold, model comparisons and reasoning-pattern research are excluded.
+The product remains independent of the optional evaluation. On 28 November the user
+authorized [model/evaluation research and planning](research/model-evaluation-plan.md),
+summarized in the professor reference note. Task/gold creation, model/provider trials
+and capture implementation have not started under that request.
 
 ## Delivered in0.10.0
 

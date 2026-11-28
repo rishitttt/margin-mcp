@@ -10,6 +10,12 @@ No Margin LLM/browser/forecast generator. Financial facts retain units, dates, b
 
 ## Current work
 
+28 November: the professor note now includes a researched evaluation proposal. See
+[paired model evaluation](research/model-evaluation-plan.md) for the proposed local
+cohort, master questions, matched-evidence controls and action/reasoning capture.
+Only documentation/research is performed; no new model/provider calls, task/gold set
+or benchmark runner. Product runtime and public release remain unchanged.
+
 Product completion0.10.0: clear status allowances/optional diagnostics, explicit valuation inputs, deterministic DCF report/renderer, real provider checks, review-host contracts, clean installation and consolidated docs. Professor evaluation is excluded; research remains an independent consumer, not a runtime/release dependency.
 
 Public release margin-mcp0.10.1 is published on PyPI, MIT, with four author names.

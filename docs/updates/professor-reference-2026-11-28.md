@@ -63,8 +63,44 @@ These checks establish selected-case functionality, not universal company covera
 The product is usable for local research and demonstrations. Provider facts remain
 unverified against original filings. Host models can still choose the wrong tool or
 misstate a correct result, particularly when context is constrained. Broader coverage
-and controlled comparisons across models remain future work. The professor’s proposed
-evaluation is separate from the product itself.
+and controlled comparisons across models remain future work.
 
-[Package](https://pypi.org/project/margin-mcp/0.10.1/) ·
-[Repository and documentation](https://github.com/rishitttt/margin-mcp)
+## Proposed evaluation
+
+We will create a master set with independently checked reference answers, initially
+covering Infosys and Hindustan Unilever. A proposed starting size is 40 scored questions
+plus eight separate calibration questions. Tasks will cover retrieval, financial
+calculations, explicit-assumption valuation, claim review, content sentiment, and
+handling missing data or incompatible units/periods. The scored questions and answer
+keys will be fixed before the main experiment; answer keys will not be shown to models.
+
+Our initial model cohort will be:
+
+| Model | Purpose |
+| --- | --- |
+| [Qwen3-4B](https://huggingface.co/Qwen/Qwen3-4B) | Small-model test and comparison with the same family's 8B model |
+| [Qwen3-8B](https://huggingface.co/Qwen/Qwen3-8B) | Continuity with our existing local trials |
+| [Llama-3.1-8B-Instruct](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | An already-installed model from another family |
+| [gpt-oss-20b](https://huggingface.co/openai/gpt-oss-20b) | A different reasoning/tool-use architecture, also already installed |
+
+A hosted model such as [GPT-6.2 Sol](https://developers.openai.com/api/docs/models/gpt-6.2-sol)
+can be added as a separately budgeted reference. These are proposed comparisons, not
+claims about which model will perform best.
+
+Each model will receive the **same questions with and without Margin**, in fresh
+contexts, with matched settings and three repetitions. Supplied-data tasks will give
+both conditions identical evidence; live retrieval tasks will be reported separately,
+with common source access where feasible. This separates calculation/review assistance
+from the benefit of obtaining data. We will score answer accuracy, units and reporting
+scope, evidence support, task completion, latency and tool/provider usage. Context
+overflow and tool-selection failures will remain visible in the results.
+
+For reasoning-trace analysis, we will retain prompts, final answers, actual tool calls,
+arguments, responses, errors, timestamps and one-line explanations of important choices.
+We will additionally capture model-emitted thinking where exposed by the local runtime;
+[LM Studio's streaming API](https://lmstudio.ai/docs/developer/rest/streaming-events)
+provides reasoning and tool events. Hosted APIs may expose only
+[summaries](https://developers.openai.com/api/docs/guides/reasoning#reasoning-summaries). Explanations
+will be labelled as model self-reports, not guaranteed internal reasoning. We will
+analyze patterns in tool selection, error recovery, evidence use and unsupported claims,
+and relate these to task success.
