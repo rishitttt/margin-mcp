@@ -74,21 +74,19 @@ calculations, explicit-assumption valuation, claim review, content sentiment, an
 handling missing data or incompatible units/periods. The scored questions and answer
 keys will be fixed before the main experiment; answer keys will not be shown to models.
 
-Our proposed cohort is not restricted to previously installed models:
+The planned models cover several sizes and architectures:
 
 | Model | Role |
 | --- | --- |
-| [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) | Small local model, quantized |
-| [Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B) | Same-family larger local comparison |
-| [gpt-oss-20b](https://huggingface.co/openai/gpt-oss-20b) | Local alternative reasoning/tool-use architecture |
-| [Inkling 2 Mini](https://thinkingmachines.ai/model-card/inkling-2-mini/) | Looped-model comparison; Q4_K_M weights already downloaded |
+| [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) | Small-model baseline |
+| [Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B) | Same-family comparison at a larger scale |
+| [gpt-oss-20b](https://huggingface.co/openai/gpt-oss-20b) | Alternative reasoning/tool-use architecture |
+| [Inkling 2 Mini](https://thinkingmachines.ai/model-card/inkling-2-mini/) | Looped-transformer comparison |
 | [GPT-6 Luna](https://developers.openai.com/api/docs/models/gpt-6-luna) | Hosted reference for efficient models |
 | [GPT-6.2 Sol](https://developers.openai.com/api/docs/models/gpt-6.2-sol) | Second hosted reference |
 
-The local machine is an M4 Pro with 24 GB memory. Local candidates must pass memory,
-context and tool-call preflight, especially Inkling; download alone is not validation.
-Luna and Sol run through a hosted client/API, not locally downloaded weights. These
-are planned comparisons, not claims about which model will perform best.
+The cohort spans open-weight and hosted models. Model versions, inference settings
+and tool interfaces will be fixed before the main experiment.
 
 Each model will receive the **same questions with and without Margin**, in fresh
 contexts, with matched settings and three repetitions. Supplied-data tasks will give
@@ -100,7 +98,7 @@ overflow and tool-selection failures will remain visible in the results.
 
 For reasoning-trace analysis, we will retain prompts, final answers, actual tool calls,
 arguments, responses, errors, timestamps and one-line explanations of important choices.
-We will additionally capture model-emitted thinking where exposed by the local runtime;
+We will additionally capture model-emitted thinking where exposed by the inference runtime;
 [LM Studio's streaming API](https://lmstudio.ai/docs/developer/rest/streaming-events)
 provides reasoning and tool events. Hosted APIs may expose only
 [summaries](https://developers.openai.com/api/docs/guides/reasoning#reasoning-summaries). Explanations
